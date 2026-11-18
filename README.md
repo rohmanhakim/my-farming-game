@@ -29,7 +29,6 @@ The game offers two modes: a **Gentle Core** that is always available and never 
     - [Milestone 1 — Interaction prototype](#milestone-1--interaction-prototype)
     - [Milestone 2 — Validation](#milestone-2--validation)
     - [Later (ideas, not promises)](#later-ideas-not-promises)
-  - [Open questions](#open-questions)
   - [Technical direction](#technical-direction)
   - [How this README gets updated](#how-this-readme-gets-updated)
   - [Documentation hub](#documentation-hub)
@@ -125,19 +124,6 @@ One small playable scene, placeholder art, for validating feel rather than visua
 Explicitly deferred from the prototype: large maps, crafting/economy depth beyond collectathon slots, detailed real-time calendars, combat, online multiplayer, long reading-heavy dialogue.
 
 **In product-prototype scope** (source of truth: GDD §15, delivered across phases — see `PHASE.md`): Collectathon inventory, four care animals (chicken, sheep, cow, beehive), seasonal crop and animal behavior, optional sticker system, Dora/Blues Clues-style picture dialogue with parent guidance.
-
-## Open questions
-
-From `docs/GDD.md` §16 — brainstorming, not decided:
-
-1. ~~How short should in-session growth stages be, and should plants get bounded growth while the game is closed?~~ **RESOLVED 2026-11-18** — Medium ≈30–45 s per stage, no growth while closed by default; Fast/Slow presets + optional positive-only catch-up on the options screen before a new game (`docs/GDD.md` §4).
-2. Which tasks or dialogue events change an NPC's relationship, and by how much?
-3. What should high relationships unlock?
-4. How should a parent and child split tasks across two gamepads or tablet turn-taking?
-5. ~~Which PC gamepad and mouse mappings should the prototype use?~~ **RESOLVED 2026-11-18** — controls.md §2/§4 locked (gamepad + DST-style keyboard/mouse, seat rule: one keyboard+mouse seat, gamepad for a second player). *Tablet layout remains open (Phase-003).*
-6. What research is needed for original, non-chibi European-comics character design?
-7. Which open story questions in `docs/world.md` should be decided next?
-8. What grown-up gesture or question best protects the challenge-layer menu so a child cannot accidentally flip layers during play?
 
 ## Technical direction
 
