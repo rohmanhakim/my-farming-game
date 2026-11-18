@@ -1,1 +1,8 @@
 .unipi/*
+
+# AI agent skills (restorable: `npx skills experimental_install`)
+.agents/
+
+# Godot 4+ specific ignores
+src/.godot/
+src/android/

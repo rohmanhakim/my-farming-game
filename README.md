@@ -1,9 +1,9 @@
 # Project My Farming Game
 
 > **Working title:** TBD
-> **Status:** 🟡 Design draft — no code yet
+> **Status:** 🟡 Design draft · 🟡 Godot project initialised in `src/` (4.7, C#) — no gameplay code yet
 > **Design version:** GDD v0.18 · World v0.10 (both 2026-11-18)
-> **Last README update:** 2026-11-18 (✅ Milestone 0 complete — all 4 items decided)
+> **Last README update:** 2026-11-18 (✅ Milestone 0 complete — all 4 items decided · 🆕 `docs/project-structure.md` added, 17 Godot/game-dev skills installed)
 
 ![](docs/assets/game-screenshoot-small.jpeg)
 
@@ -171,12 +171,14 @@ This README is the centralized navigation hub for the project. Every design docu
 | [Events (`docs/events.md`)](./docs/events.md) | Core events (Butterfly Garden task), daily/ambient events, seasonal events, relationship milestones. |
 | [Progressive Challenge & Sticker System (`docs/progression.md`)](./docs/progression.md) | Sticker book, optional neighbour requests, optional tools, seasonal mysteries, parent role evolution. |
 | [Challenge Layers & Parent Controls (`docs/challenge-layers.md`)](./docs/challenge-layers.md) | Optional challenge layers, parent-controlled toggles, five-stage growth map, one-click reset. |
+| [Project Structure (`docs/project-structure.md`)](./docs/project-structure.md) | Technical contract for coding sessions: repository and `src/` folder layout, Phase-001 task→file map, naming rules, InputMap and autoload registries, asset/placeholder pipeline, version-control rules, headless verification commands, installed AI skills, open toolchain blockers. |
 
 ### How the docs fit together
 
 - **[README.md](#)** — This file. Centralized hub and honest project snapshot. Bumped when the project changes.
 - **[docs/GDD.md](./docs/GDD.md)** — Authoritative for gameplay, audience, and project decisions. All other docs expand it.
 - **[docs/world.md](./docs/world.md)** — Expands the GDD's setting; the GDD remains authoritative for gameplay.
+- **[docs/project-structure.md](./docs/project-structure.md)** — The technical (non-gameplay) contract: where code and assets live, how they are named and verified. Never overrides the GDD or a phase task.
 - **Everything else** — Expands the GDD and/or world.md in a specific domain (characters, places, crops, animals, items, inventory, mechanics, controls, events, progression).
 
 Every document includes a "Related documents" section at the end so you can follow links from any page to any other page.
