@@ -1,7 +1,7 @@
 # Characters
 
 > **Status:** Finalized for prototype (design v0.5)
-> **Version:** 0.5
+> **Version:** 0.9
 > **Last updated:** 2026-11-18
 > **Purpose:** The final cast for the Gentle Core prototype, plus clearly-marked future cast. Names below are locked for the prototype unless playtesting proves otherwise. Backgrounds are brief and adjustable.
 
@@ -71,27 +71,29 @@ Kids love collecting friends. A page makes each neighbour concrete and memorable
 |---|---|
 | **Role** | The one who notices, reaches, kneels, and does. |
 | **Name** | **Kit** (short, single-syllable, word-shape readable for pre-readers; chosen over Wren / Tolly / Moss / Nell / Junie). |
-| **Identity** | A local child or a recent arrival — either works; see world.md §7. |
+| **Identity** | A **recent arrival from a city far away**, here because the family asked them to help take care of the family's land on Bramblewick Lane — decided (world.md §7.1). |
 | **Defining trait** | Curiosity, not exceptionalism. Not "chosen," just paying attention. |
 | **Customization** | Name (defaults to Kit), appearance, and door colour (creative ownership, GDD pillar 4). |
-| **Background (adjustable)** | The child lives on Bramblewick Lane and tends the front garden. They are new to gardening or new to the lane; either framing works. |
+| **Background (adjustable)** | **City-born and city-raised**; the family **heirloom house** on Bramblewick Lane was left in their care by the parents, whose jobs keep them in the city. The child looks after the house and the tangled front garden. "New to gardening" remains the adjustable knob. **⚠️ Day-to-day presence in the house is still open — world.md §7.5.** |
 
 The child is never blamed, never behind, and never compared to anyone.
 
 ---
 
-## 7. Parent character (second player, co-play)
+## 7. Adult character (second player, co-play) — Ada
 
 | | |
 |---|---|
-| **Role** | A caregiver who gardens alongside the child, follows the child's lead, shares tasks, and acts as the "difficulty dial" — managing which challenge layers are active through a grown-up menu, deciding with the child when the game is ready to grow, and helping with reading and menus. |
+| **Role** | An adult who gardens alongside the child, follows the child's lead, shares tasks, and acts as the "difficulty dial" — managing which challenge layers are active through a grown-up menu, deciding with the child when the game is ready to grow, and helping with reading and menus. |
 | **Name** | **Ada** (default; warm, short name. Optional and customizable to mirror child customization; alternatives: Ben, Cara, Dan, Eve, Fay). |
-| **Identity** | Parent or caregiver of the main character. Lives in the same home. |
+| **Identity** | **The parents' old friend.** She has been taking care of the family's heirloom house on Bramblewick Lane while the child was raised in the city; when the player arrives, **Ada helps him settle**. Lives at/near the house. *(Decided — world.md §7.5.)* |
 | **Defining trait** | Supportive, patient, happy to take turns or help when asked. |
 | **Customization** | Name and appearance (optional, mirrors child customization). |
-| **Background (adjustable)** | The parent moved to Bramblewick Lane with the child and enjoys the garden, but lets the child decide what to do each day. As the child grows, the parent helps decide when the garden is ready for new challenges — turning on optional layers like coins, tool upgrades, or crafting through the grown-up menu. |
+| **Background (adjustable)** | Kept the house for the parents while the child grew up in the city; helps the child on arrival, gardens alongside them, but **never does the child's doing** (Marlow's rule applies to every adult). Lets the child decide what to do each day. As the child grows, the parent helps decide when the garden is ready for new challenges — turning on optional layers like coins, tool upgrades, or crafting through the grown-up menu. |
 
-The parent has no authority over the child's day. Co-play is real-time collaboration on PC (two gamepads) or turn-taking on touchscreen.
+Ada has no authority over the child's day. Co-play is real-time collaboration on PC (two gamepads) or turn-taking on touchscreen.
+
+**Who Ada is in the room:** the human playing Player 2 is usually the child's **parent or caregiver** — whoever the adult in the room is, they are Ada on screen. This keeps GDD §2's "parent is the difficulty dial" (grown-up menu, challenge layers, session timer) true of the *adult playing*, while Ada's in-world identity stays the family friend.
 
 ---
 
@@ -124,6 +126,29 @@ The parent has no authority over the child's day. Co-play is real-time collabora
 - He remembers, kindly. Unfinished tasks are restated with no penalty.
 - He gives, he doesn't award. Rewards are things he set aside for the child — never points handed down.
 - He is not a substitute parent. He does not manage meals, bedtime, or behaviour. If the player never visits him, the game still works.
+
+**Knowledge layers (decided — world.md §7.3, "a+")**
+
+| Layer | Content | Rule |
+|---|---|---|
+| 1 · What | Goal, reward, next step | **Always says it**, one picture + one sentence. Never hides the want |
+| 2 · Where / who | "The beds by the gate" | **Always points**, never fetches |
+| 3 · How | The method (which tool, what order) | **Never says it first** — only on request or after the hint ladder |
+| 4 · Why | The lane's memory, why anything works | **Never** — max two allusions per playthrough, as shrugs (world.md §4.1) |
+| 5 · Doing | The action itself | **Never.** And he never judges the result |
+
+**Invitation, not instruction:** everything about what happens next is offered ("Would you like to plant them now, or shall we look at the lane first?"); declining is always free. In co-play he **addresses the pair**, so parent and child decide out loud (GDD §10).
+
+**Hint ladder (just-in-time, escalating, no failure state):**
+
+1. **0 s** — child acts → world feedback (sparkle, sound, benign puff if the tool is wrong)
+2. **~15 s stuck** — picture bubble *points* at the object (icon only, no words)
+3. **Still stuck** — leading question: *"Shall we try the seed box?"*
+4. **Still stuck** — plain instruction: *"Tap the bed with the seed box."*
+
+The ~15 s window is deliberate: **in co-play the parent speaks first** ("which tool do you think plants things?") and Marlow stays quiet; in solo play the ladder is the fallback. One behaviour, two audiences. Never: a wrong hint, a countdown, a buzzer, a scolding, or lost progress.
+
+**Allowed wrongness — (a+):** he may be wrong only about **flavour** (years, stories, which flower is which), corrected **by the world on screen in the same beat** and laughed off (*"No — Lace Flower! Ha — these old eyes. Your eyes are better than mine, you know."*). **Actionable knowledge is never wrong** — a child can never follow him into a dead end, so the parent never has to overrule the game.
 
 ---
 
@@ -219,7 +244,7 @@ Implementation notes:
 |---|---|
 | [README.md](../README.md) | Centralized hub for the project. |
 | [GDD.md](./GDD.md) | Design pillars and audience shape the cast; pillar 4 (creative ownership) covers customization. |
-| [world.md](./world.md) | Bramblewick Lane premise and Mr. Marlow's background story; see §7 for the newcomer-vs-local framing. |
+| [world.md](./world.md) | Bramblewick Lane premise and Mr. Marlow's background story; §7.1 now records the **decided** newcomer framing (city arrival, family land). |
 | [places.md](./places.md) | Mr. Marlow's cottage and seed shed are places on the lane. |
 | [events.md](./events.md) | Mr. Marlow's requests drive the core Butterfly Garden task and daily events. |
 | [challenge-layers.md](./challenge-layers.md) | Defines optional challenge layers and parent-controlled toggles. |
@@ -231,3 +256,7 @@ Implementation notes:
 - **0.3 — 2026-11-18:** Added introduction rhythm (one neighbour per stage), traces before faces, memorable character formula, and Collection Book friendship pages. Updated future cast table with per-character introduction triggers tied to the stage map.
 - **0.4 — 2026-11-18:** Finalized cast for prototype. Locked names: Kit (player), Ada (parent), Mr. Marlow (confirmed prototype NPC; resolves world.md open question #6). Added memorable-formula fields for Marlow (silhouette, sensory signature, unique knowledge, memory, gift). Added code-ready character data registry (section 11). Clarified future cast names remain tentative; only roles and introduction triggers are locked.
 - **0.5 — 2026-11-18:** Introduction rhythm clarified: one new character *at a time*, up to **two per stage** — two Stage-2 introductions (allotment neighbour, brook keeper) are accepted; the rule's intent is avoiding overload, not a hard count of one.
+- **0.6 — 2026-11-18:** Main character **identity decided** (world.md §7.1): recent arrival from a city far away, asked by the family to take care of the family's land on Bramblewick Lane. Background row updated (tangled garden = the unattended family plot); "new to gardening" kept as the adjustable knob. Related-documents note updated.
+- **0.7 — 2026-11-18:** §8 writing rules extended with the **decided** Marlow knowledge model (world.md §7.3, "a+"): five knowledge layers, invitation-not-instruction, addressing the pair for co-play, the four-step hint ladder with its **~15 s parent-speaks-first window**, and flavour-only wrongness repaired on screen. Explicit prohibitions: never a wrong hint, countdown, buzzer, scolding, or lost progress.
+- **0.8 — 2026-11-18:** Main character background set by world.md §7.5: **family heirloom house**, parents busy in the city, child is the caretaker, **city-born** so Marlow knows the family but has never met the player (first meeting = genuine introduction). Ada's background row flagged **⚠️ pending** while the day-to-day-presence sub-thread (world.md §7.5) is settled.
+- **0.9 — 2026-11-18:** **Ada's identity decided (world.md §7.5 sub-thread):** she is **the parents' old friend** who kept the heirloom house while the child was raised in the city, and helps him when he arrives — not the parent. §7 retitled "Adult character"; Role/Identity/Background rows rewritten; the Marlow rule (adults never do the child's doing) extended to her; new "who Ada is in the room" note keeps GDD §2's parent-as-difficulty-dial true of the human Player 2. The ⚠️ pending flag from v0.8 is cleared.

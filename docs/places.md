@@ -1,7 +1,7 @@
 # Places
 
 > **Status:** Brainstorming draft
-> **Version:** 0.4
+> **Version:** 0.5
 > **Last updated:** 2026-11-18
 > **Purpose:** Places available in the game that the player can explore, adjusted to the scope of the game described in the GDD. One lane, eight places, no map. All names are tentative and can be changed. Every element here is a proposal pending playtesting.
 
@@ -17,7 +17,7 @@ The world is readable at a glance and small enough that children can navigate it
 
 | Place | What it is | Why it exists | Interactive objects | Unlock state | Time / season variants |
 |---|---|---|---|---|---|
-| **The player's home** | A small cottage or hillside home with a brightly painted door and a front garden (2–3 beds). | Tutorial space, creative-ownership space, the visual "nothing is here yet" hook. | Garden beds, decoration spots, sleep/rest point, seed box; seed packet left on the gate (trace for Mr. Marlow). | Available from start. | Door/window light shows day vs night; garden looks different per season; Marlow's gate greeting in the morning. |
+| **The player's home** | A **family heirloom** cottage with a brightly painted door and a wild front garden (2–3 beds) — **overgrown but never derelict**: loved, alive, waiting. | Tutorial space, creative-ownership space, the visual "nothing is here yet" hook. | Garden beds, decoration spots, sleep/rest point, seed box; seed packet left on the gate (trace for Mr. Marlow); boxes and a small cart at the gate (the arrival). | Available from start. | Door/window light shows day vs night; garden looks different per season; Marlow's gate greeting in the morning. |
 | **Bramblewick Lane** | The curved path itself, with hedgerows, dry-stone walls, a stile, and a gate. | The GDD's "small shared or public-feeling space"; a soft world border. | Path edges, hedgerows, gate; small footprints in the mud near the stile (trace for a child of the lane). | Available from start. | Lighting changes day/night; ambient creatures appear by season; a distant wave from a future neighbour in the afternoon. |
 | **Mr. Marlow's cottage + seed shed** | A leaning shed of jars, packets, labels, and a big hand-illustrated ledger. | Task hub, reward source, non-currency economy. | Marlow, seed packets, ledger, gift drawer. | Available from start. | Marlow present at the gate in the morning and late afternoon; shed lit at night; kindly restates unfinished tasks if visited. |
 | **The allotment beds** | A few shared beds tended by other (future) characters. | Future NPC home without expanding the map. | Shared planting beds; half-painted birdhouse leaning on a bed (trace for the allotment neighbour). | Available from start (future NPC use deferred). | Seasonal planting visuals; the allotment neighbour tends the beds on sunny afternoons after introduction (Stage 2). |
@@ -55,3 +55,4 @@ The world is readable at a glance and small enough that children can navigate it
 - **0.2 — 2026-11-18:** Added the Market Stand as a parent-unlocked place for the Garden Coins challenge layer. Noted that new places are parent-unlocked.
 - **0.3 — 2026-11-18:** Added trace objects (seed packet, footprints, birdhouse, laundry) and per-place presence schedules so each place feels inhabited before its character is formally introduced.
 - **0.4 — 2026-11-18:** Recounted to **eight places** (stile and market stand were already listed here; world.md now matches). Brook unlock changed to "earned early through exploration" (early exploration reward). Added the unlit-lantern trace to Lantern Hill.
+- **0.5 — 2026-11-18:** Player's home updated per world.md §7.5: **family heirloom** cottage, **overgrown-never-derelict** art rule (no decay, no rubbish, no loneliness), arrival props (boxes + cart at the gate) added as interactive/trace objects.

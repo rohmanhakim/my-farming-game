@@ -1,7 +1,7 @@
 # World, Setting, and Background Story
 
 > **Status:** Brainstorming draft — story and setting proposal referenced by the GDD
-> **Version:** 0.4
+> **Version:** 0.10
 > **Last updated:** 2026-11-18
 > **Purpose:** A working document for the background-story premise, the place, the lore, and the characters who carry it. It expands the story and setting direction in [GDD.md](./GDD.md); the GDD remains authoritative for gameplay, audience, and project decisions. World details here are proposals until validated through playtesting.
 
@@ -9,7 +9,11 @@
 
 ## 1. Premise in one paragraph
 
-The player is a child who lives on **Bramblewick Lane**, a short, quiet lane of small garden homes built into grassy hillsides. The lane is friendly but a little faded: the gardens are tangled, the butterfly meadow has gone quiet, and nobody quite remembers when the last lantern on Lantern Hill was lit.
+The player is a child from **a city far away** who has recently come to **Bramblewick Lane** because **their family asked them to help take care of the family's land** — the house, the front garden, and the beds that have grown tangled while nobody was tending them. The lane itself is a short, quiet lane of small garden homes built into grassy hillsides: friendly but a little faded, with a butterfly meadow that has gone quiet and nobody quite remembering when the last lantern on Lantern Hill was lit.
+
+**The house is a family heirloom** — kept in the family for generations, stood empty for a while, now the child's to look after. **The parents' jobs keep them in the city**, and they asked the child to take care of the house themselves.
+
+**The ask is an invitation, not a duty** (guardrail): the family trusted the child with the house and land; nothing can be neglected into failure, and the tangled garden is the opening invitation rather than a mess anyone is blamed for. The *trust* belongs to the child — no adult in the story does the child's doing (Marlow's rule applies to everyone). **Ada — the parents' old friend — has been taking care of the house while the child was raised in the city, and helps him when he arrives** ([characters.md](./characters.md) §7). The house is never empty, and the child's responsibilities are never done for him.
 
 At the end of the lane lives **Mr. Marlow**, an old gardener who has kept the lane's seed shed for longer than anyone can remember. He knows the name of every plant, every bird, and every story on the lane — but his knees no longer let him kneel, and his hands are too stiff for small seeds.
 
@@ -105,6 +109,13 @@ Bramblewick Lane is old in the way hedgerows are old — nobody planted it on pu
 
 This is not magic with rules the child must learn. It is a *justification for visible feedback*: gardens that look cared for, neighbours who light up, paths that seem brighter. It lets consequences be environmental and understandable rather than scored (per GDD §3).
 
+**How the device is used (decision — §7.2): A as the base, C as the intent, B capped at two lines.**
+
+- **A — base: pure ambience, never acknowledged.** The lane's memory appears only as *behaviour* — trace objects, light, coincidence, the lane looking brighter where care was given. No character names it, no UI explains it, no lore screen defines it. It is felt, not told.
+- **C — intent: left to the child and parent.** Because nothing is stated, a coincidence on screen becomes a conversation between child and parent on the sofa (GDD §10: invite conversation, don't prescribe an answer). Pre-readers already think animistically; for them it needs no explanation to be true.
+- **B — capped at two lines.** Mr. Marlow may allude to it **at most twice per playthrough**, always as an open-ended observation and immediately changed subject — e.g. *"Huh. This lane has a way of remembering things, doesn't it?"* Never an explanation, never a rule, never a condition for anything.
+- **The one hard rule (soft-magic discipline): the lane's memory may create wonder, but never resolve a problem.** It cannot plant, water, catch, or give for the child; it cannot be failed, triggered, or optimised. Every reward still passes through the child's own hands (consistent with §4.4: Marlow names the goal, the child discovers the method).
+
 ### 4.2 The seed shed ledger
 
 Mr. Marlow keeps a **ledger** — a big, hand-illustrated book of seed packets, plant sketches, and notes in a looping hand. It records two things:
@@ -112,13 +123,19 @@ Mr. Marlow keeps a **ledger** — a big, hand-illustrated book of seed packets, 
 1. **What has been promised.** If the child accepts a task and leaves it unfinished, it stays in the ledger. This is the in-world reason the NPC can kindly restate it later — no menu, no quest log, no shame, just a line in a book he opens when they next meet.
 2. **What has grown.** Completed tasks leave a sketch, a pressed flower, or a seed packet behind the page.
 
-The ledger is a *candidate interface object* for the relationship meter: a child who cannot read yet can still see a page filling up. **Status: proposal; validate before building.**
+The ledger is the relationship UI **and** a collectible object — **decided (§7.4): it is "both", placed world-only.**
+
+- **Where:** it lives open on the seed-shed table and is opened by interacting there (close-up view). It is **not** in the pause menu, so it cannot collide with the Collection Book or the sticker book — three book-shaped icons in one row is exactly the distinguishability risk §7.4 was about.
+- **What it shows:** pictures only — sketches, pressed flowers, the seed packet from the first task. No text, no numbers, no hearts. A child who cannot read yet can still see a page filling up.
+- **Behaviour is the real meter:** how Marlow greets you, what he recalls, what he has kept aside — the ledger confirms it, it does not replace it. (Numeric relationship meter stays deferred; see Phase-001.)
+- **Validation to run anyway:** a Human playtest must confirm a child *chooses* to open it and understands what the pictures mean; if children never visit the shed, reconsider a pause-menu tab (option ii) later.
+- **Prototype scope:** the ledger ships in Phase-001 Task 1.6 as a prop + picture-only close-up + a `Ledger.Note()` API; warmth-driven pages (repeated kind interactions) remain a later rule.
 
 ### 4.3 What went quiet
 
 Years ago — nobody says how many — the lane began to slow down. Not dramatically. The butterflies stopped coming to the meadow first. Then the lantern on the hill was not lit one autumn and never relit. Then people simply stopped climbing the hill.
 
-Nobody is sad about it exactly. Everyone is simply *used to it*. Mr. Marlow is the only one who remembers that it used to be otherwise, and he remembers imperfectly — which is the point. **He names the goal; the child discovers the method.**
+Nobody is sad about it exactly. Everyone is simply *used to it*. Mr. Marlow is the only one who remembers that it used to be otherwise, and his memory of *years and stories* is imperfect — which is the point, and the only place he is ever wrong (§7.3: **a+** — flavour may be wrong, instructions never). **He names the goal; the child discovers the method.**
 
 This is the engine of the whole story: a gentle, unsolved, entirely non-threatening mystery, revealed in small pieces through ordinary acts of care.
 
@@ -133,7 +150,7 @@ This is the thematic core: **the wise neighbour has knowledge but limited physic
 - No origin myth, no map beyond the lane, no named history dates.
 - No explanation for *why* things went quiet until much later, if ever. It should resolve as "the lane is awake again," not as an answer to a question.
 - No threat, no antagonist, no deadline. The lane did not decline because of anyone's failure.
-- No rules about who (or what) the lane's memory is. Whether it is metaphor, weather, or something more is left open — see §7.
+- No rules about who (or what) the lane's memory is. Whether it is metaphor, weather, or something more is **deliberately left open and will stay open — decided (§7.2)**; it is used as an unnamed literary device only (§4.1).
 
 ---
 
@@ -153,6 +170,10 @@ This is the thematic core: **the wise neighbour has knowledge but limited physic
 
 - **He never has authority over the child.** No scolding, no disappointment, no "you should have." He reacts to what happened, not to what was expected.
 - **He never does the task for the child.** He names the goal, supplies the seed or tool, and is genuinely surprised by the method.
+- **Five layers of what he knows (decided, §7.3):** **What** (goal/reward) — always says it · **Where/who** — always points, never fetches · **How** (the method) — never says it first; only on request or after the hint ladder · **Why** (the lane's memory) — never, capped at two allusions (§4.1) · **Doing it** — never.
+- **He offers, never instructs.** Everything about what happens next is an invitation ("Would you like to…, or shall we…?"); declining is always fine and nothing is lost.
+- **He speaks to the pair.** In co-play his invitations are phrased for the sofa, so parent and child decide out loud (GDD §10).
+- **He may be wrong only about flavour** — years, stories, which flower is which — and the world corrects him **in the same beat, on screen**, and he laughs it off: *"No — Lace Flower! Ha, these old eyes. Your eyes are better than mine."* Actionable knowledge is never wrong. (Hint ladder timings: [characters.md](./characters.md) §8.)
 - **He always needs the child for something physical.** He cannot kneel, reach, or carry. Every request has an honest in-story reason.
 - **He remembers, kindly.** Unfinished tasks are restated with no penalty: "Hmm, we didn't finish that last time. Would you like to try it now?"
 - **He gives, he doesn't award.** Rewards are things he set aside *for* the child — "I kept this packet for you" — never points handed down.
@@ -165,7 +186,7 @@ This is the thematic core: **the wise neighbour has knowledge but limited physic
 | | |
 |---|---|
 | **Role** | The one who notices, reaches, kneels, and does |
-| **Identity** | A local child, or a recent arrival — either works; see §7 |
+| **Identity** | A recent arrival from a city far away, here to help take care of the family's land — **decided**; see §7 |
 | **Defining trait** | Curiosity, not exceptionalism. Not "chosen," just paying attention. |
 | **Naming** | Short, single-syllable, word-shape readable for pre-readers: **Kit, Wren, Tolly, Moss, Nell, Junie** |
 | **Customization** | Name, appearance, and door colour are the obvious personalization levers (GDD pillar 4) |
@@ -205,13 +226,36 @@ Each later reward should follow the same shape: **Marlow has been holding someth
 
 ## 7. Open sub-questions inside this document
 
-1. **Is the child a newcomer or a local?** Newcomer explains the overgrown garden and gives a natural "show me the lane" tour; a local explains why everyone already knows them and makes the lane feel lived-in. **Recommend testing the newcomer framing first** because it makes the bare garden diegetic rather than unexplained.
-2. **Is the lane's memory literal magic, metaphor, or weather?** Keeping it unresolved protects the gentle tone; naming it early may create rules the game must then obey. **Recommend: leave it unnamed.**
-3. **How much does Marlow know?** He should know enough to point and not enough to solve. Defining exactly what he does *not* know is a writing task for the dialogue pass.
-4. **Does the ledger become the relationship UI, a collectible, both, or neither?** Depends on whether a picture-book object survives contact with the fixed-tool-belt UI. Validate early — it is the one element here with interface implications.
-5. **How does the child's home get explained?** Inherited, newly moved-in, or simply "your house" — affects only the opening minute, but affects art (overgrown vs. plain) and first dialogue.
+1. **RESOLVED (2026-11-18, v0.5) — newcomer, and the reason is the family land.** The child comes from **a city far away** and has recently arrived because **the family asked them to take care of the family's land on Bramblewick Lane** (house + front garden + tangled beds). The family moved together; the parent/caregiver lives in the same home ([characters.md](./characters.md) §7) — the *trust* is the child's alone.
+   - **Why this framing:** it makes the tangled garden diegetic (nobody was tending it), gives every first meeting a natural introduction ("You must be the new one on the lane"), and hands the child an age-appropriate honour rather than a chore.
+   - **How it is shown:** visually only — boxes, a cart, the wild garden, Marlow's one-line greeting. No reading required.
+   - **Guardrail:** the ask is an invitation, never a duty with consequences; nothing fails if ignored.
+   - **Rejected:** the *local* framing (garden stays unexplained; first meetings aren't introductions) — see the options considered in the session report.
+   - **Open thread feeding Q5:** *who* in the family asked, and whether the house is inherited, newly re-opened, or simply "your house" — decided next, with question 5 below.
+2. **RESOLVED (2026-11-18, v0.6) — left unnamed, used deliberately as a literary device (A base / C intent / B capped at two lines).**
+   - **Decision:** the lane's memory is **never named, never explained, never a mechanic**. It exists as *soft magic* (Sanderson) and as Todorov's *marvellous* — an event that could be ordinary or supernatural, with the narrative refusing to choose.
+   - **A (base):** pure ambience — traces, light, coincidence; nobody says the word.
+   - **C (intent):** left open for the child/parent to interpret together — a conversation starter, not a stated rule (GDD §10).
+   - **B (capped):** Marlow may allude to it **at most twice per playthrough**, as an open-ended observation, never an explanation.
+   - **Hard rule:** the memory may create wonder, never solve a problem — no failing, triggering, or optimising it; every reward passes through the child's hands.
+   - **Research basis:** soft vs. hard magic systems (Sanderson); Todorov's *fantastique*; works that never name it — *My Neighbor Totoro*, *Winnie-the-Pooh*, *The Magic Faraway Tree*, *Where the Wild Things Are*; pre-reader animism.
+   - **Rejected:** naming it as literal magic (creates rules the game must then obey and a lore the child must memorise — guardrail), or dropping it entirely (loses the feedback-as-consequence device of §4.1).
+3. **RESOLVED (2026-11-18, v0.7) — (a+): knows everything, says only what's needed, and never decides anything.** Written as a five-layer rule: **What** always said · **Where** always pointed · **How** only on request or after the hint ladder · **Why** never (two allusions max, §4.1) · **Doing never**. Plus: he **offers, never instructs** (invitations, declining is free); he **addresses the pair** so the parent decides out loud with the child; and **(a+)** he may be wrong only about *flavour* (years, stories, names), repaired on screen in the same beat and laughed off — **actionable knowledge is never wrong**, so a child can never follow a bad hint.
+   - **Hint ladder (just-in-time, no failure state):** 0 s world feedback → **~15 s** picture bubble points (no words) → leading question (*"Shall we try the seed box?"*) → plain instruction (*"Tap the bed with the seed box"*). The 15 s window exists so **in co-play the parent speaks first**; in solo play it is simply breathing room. One behaviour, two audiences.
+   - **Rejected:** (b) freely-wrong mentor — a parent left overruling the game becomes technical support, not a co-explorer; and the GDD's pillar 6 (*repairing a misunderstanding*) is served by the narrow flavour carve-out instead.
+   - **Research basis:** Gandalf-as-mentor studies (supplies mission, means, and warnings — never the outcome; success = the hero becomes self-sufficient), Vogler's mentor gift, and the game-writing rule that an NPC hiding *what they want* is an unfair puzzle.
+   - **Write-up lives in:** §5.1 rules here, and the full ladder in [characters.md](./characters.md) §8.
+4. **RESOLVED (2026-11-18, v0.8) — both, placed world-only (option i).** The ledger is simultaneously the relationship UI and a collectible object: an in-world book on the seed-shed table whose picture-only pages (sketches, pressed flowers, seed packets) *are* the meter — no numbers, no hearts, numeric meter still deferred. **Rejected:** a pause-menu tab (three book icons — ledger, Collection Book, sticker book — in one row fails the "distinguishable at a glance" test) and absorbing the Collection Book (couples two systems that ship in different phases). **Placement:** Phase-001 **Task 1.6** owns the prop, the close-up and a `Ledger.Note()` API; Tasks 1.7/1.8 call it — this closes the gap where events.md called "ledger page fills" Prototype scope but no task built it. **Validate:** Human playtest must confirm a child opens it voluntarily and reads the pictures; revisit option (ii) only if children never visit the shed.
+5. **RESOLVED (2026-11-18, v0.9) — family heirloom house; parents busy in the city; child is the caretaker.**
+   - **Call 1 — whose house:** a **family heirloom**, kept in the family for generations and stood empty for a while. **The parents' jobs keep them in the city**, and they asked the player to take care of the house themselves. *(Rejected: a relative's house the family mims — ownership felt borrowed; bare "your house" — lost the warmth and made "family land" mean nothing.)*
+   - **Call 2 — art: overgrown, never derelict.** The house is plain and *loved* (the bright painted door stays); the garden is wild — weeds, closed gate, seed packet on the latch, boxes and a small cart at the gate. **Art note: no decay, no rubbish, no loneliness** — overgrown means *alive and waiting*, not abandoned (Totoro's rule: the mess is exciting, not sad).
+   - **Call 3 — Marlow knows the family, never the player.** He knows the parents, the grandparents, and the family beyond — but the player was **born and raised in the city**, so this is the first time they meet. Effect: every first interaction is a genuine introduction; Marlow can greet warmly from knowledge (*"Your folk kept this garden, once"*) while knowing **nothing about this child** — which is exactly why every choice belongs to the player (ties to §7.3: his knowledge is wide but his authority is zero).
+   - **Sub-thread RESOLVED (2026-11-18, v0.10) — day-to-day presence: Ada.** **Ada is the parents' old friend**, who has been taking care of the heirloom house while the child was raised in the city, and **helps him when he arrives**. So: parents busy in the city · the house is never empty · the child's responsibilities are never done for him (Marlow's rule extends to every adult) · Player 2's on-screen avatar is Ada, while the human in the room is usually the child's own parent (keeps GDD §2's "parent is the difficulty dial" true). *(Rejected: parent-commute model and the lone-resident/Totoro model — both left a 4–6-year-old alone in the house, which reads badly to adult gatekeepers.)* See [characters.md](./characters.md) §7.
 6. **Is Mr. Marlow the right name and voice?** **RESOLVED — keep Mr. Marlow.** (see docs/characters.md §8 and change log v0.4). Alternatives not used: Ms. Fennel, Mrs. Tansy, Old Marlow, "the keeper of the shed." Herb and gardener naming gives British-countryside flavour without any recognisable source.
-7. **Does the eventual payoff stay on Lantern Hill?** It matches the GDD's deferred lookout reward, but the ceremony/lantern idea touches seasons and calendars, which are explicitly out of prototype scope. Keep as horizon, not mechanic.
+7. **RESOLVED (2026-11-18, v0.10) — A now (horizon), C as the direction when a later phase needs an ending.**
+   - **Now:** Lantern Hill stays a **horizon** — visible from day one, locked behind the stile, the lantern left unlit as a trace object. Lighting it is **never promised** as a required feature, so no ceremony, gathering, or calendar system enters scope.
+   - **Later:** when a phase actually needs an ending, the direction is **(C) a local payoff** — the emotional payoff already exists in the first beat: **the butterflies come back**; the reward is the lane coming back to life. Lantern Hill remains a *place to visit*, not the finale.
+   - **Rejected:** (B) committing now to a lantern ceremony — it would drag seasons, calendars, NPC gatherings, and a set-piece into scope, which the GDD excludes from the prototype.
 
 ---
 
@@ -246,3 +290,9 @@ Each later reward should follow the same shape: **Marlow has been holding someth
 - **0.2 — 2026-11-17:** Linked this story and setting proposal from the GDD and clarified the division of authority. Replaced direct character analogies with original archetype descriptions and kept character design open for research.
 - **0.3 — 2026-11-18:** Added a Design intent row on "a world that feels inhabited, not lonely" and section 3.4 "Traces of life: the inhabited lane" — trace objects make the lane feel populated before any character is formally introduced.
 - **0.4 — 2026-11-18:** Reconciled with places.md: place table now lists all **eight** places (renamed to "Mr. Marlow's cottage + seed shed"; added market stand and stile); recount from six to eight places throughout; added the lantern trace; guardrail clarified — brook is the early exploration reward, market stand and Lantern Hill are parent-unlocked.
+- **0.5 — 2026-11-18:** **§7.1 resolved (Milestone 0, story questions):** the child is a **newcomer from a city far away**, asked by the family to take care of the **family's land** on Bramblewick Lane. §1 premise rewritten to match (tangled garden = the unattended family plot; the ask is an invitation, never a duty), §5.2 identity row set to decided, local framing rejected with reasons, open thread recorded for Q5 (who asked / how the house is explained). Research basis: Animal Crossing / Pokémon / My Neighbor Totoro newcomer frames; Stardew's "inherited plot" device without its adult-burnout premise.
+- **0.6 — 2026-11-18:** **§7.2 resolved:** "the lane remembers" stays **unnamed** and is codified as a literary device — A base (pure ambience), C intent (child/parent interpret it together), B capped at two allusions by Marlow, plus the hard rule that soft magic may create wonder but never resolve a problem. §4.1 gained the device rules; §4.5's "left open" bullet now points at the decision instead of the open question. Research basis: Sanderson's soft/hard magic, Todorov's *fantastique*, Ghibli/Pooh/Faraway Tree precedents, pre-reader animism.
+- **0.7 — 2026-11-18:** **§7.3 resolved — Marlow's knowledge set as "a+".** Five-layer rule (What always · Where always · How on request/after ladder · Why never · Doing never), he **offers rather than instructs**, he **addresses the pair** so the parent decides out loud, and he may be wrong **only about flavour**, repaired on screen in the same beat and laughed off (actionable knowledge never wrong). Hint ladder recorded with the deliberate ~15 s "parent speaks first" window; §4.3 and §5.1 updated to match. Research basis: Gandalf-as-mentor scholarship, Vogler's mentor gift, and the game-writing rule that an NPC hiding what it wants is an unfair puzzle. Full ladder written up in characters.md §8.
+- **0.8 — 2026-11-18:** **§7.4 resolved — the ledger is "both", placed world-only (option i).** §4.2 flipped from *proposal* to *decided*: in-world book on the seed-shed table, picture-only pages that are the relationship meter, behaviour-first (numeric meter still deferred), absent from the pause menu to avoid a three-book icon row (also rejecting option iii, merging with the Collection Book). Placed in Phase-001 **Task 1.6** with a `Ledger.Note()` API for Tasks 1.7/1.8 — closing the gap where events.md called "ledger page fills" Prototype scope but no task owned it. Validation: Human playtest must show a child opens it voluntarily.
+- **0.9 — 2026-11-18:** **§7.5 resolved (Q5, three calls):** the home is a **family heirloom** whose parents' jobs keep them in the city, with the player asked to take care of the house themselves; art rule **overgrown but never derelict** (no decay, no rubbish, no loneliness — "alive and waiting"); Marlow **knows the whole family but has never met the player** (city-born), so every first meeting is a genuine introduction and every choice is the child's. §1 premise rewritten accordingly; characters.md background rows and places.md home row updated. **⚠️ Open sub-thread recorded:** who is in the house day-to-day — "by himself" vs characters.md §7's co-resident parent; three reconciliation options pending (parent commutes · caregiver at the house · child resident with adults on the lane).
+- **0.10 — 2026-11-18:** **§7 sub-thread and §7.7 both resolved — §7 is now fully closed (all 7 items).** *Presence:* **Ada is the parents' old friend** who kept the heirloom house while the child was raised in the city and helps him on arrival; parents stay busy in the city, the house is never empty, and no adult ever does the child's doing (Marlow's rule extended to her — characters.md §7 retitled "Adult character", ⚠️ flag cleared). *Payoff:* Lantern Hill = **horizon now (A)**, with **(C) the local payoff — the butterflies come back — as the direction** when a later phase needs an ending; committing to a lantern ceremony (B) rejected as scope poison. §1 premise updated to name Ada.

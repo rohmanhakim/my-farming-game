@@ -1,7 +1,7 @@
 # Phase-001 — Interaction Prototype
 
 > **Status:** Planning draft  
-> **Version:** 0.4  
+> **Version:** 0.8  
 > **Milestone:** 1 — Interaction Prototype  
 > **Purpose:** Break Milestone 1 down into session tasks. Each task produces one scoped, playtested artifact that can be created and validated in a single session with AI assistance.
 
@@ -158,7 +158,8 @@ Each task includes:
 - Plant action: with Seed Box active, interact on empty bed → plant seed
 - Growth stages: Seed → Sprout → Bloom (3 stages)
 - Each stage has a visible sprite change
-- Growth timer: ~30–45 seconds of accumulated play time per stage
+- Growth timer: ~30–45 seconds of accumulated play time per stage — this is the **Medium** default of the Milestone 0 growth decision (GDD §4, v0.16). Read it as a named setting (Fast / **Medium** / Slow), not a hard-coded constant, but **do not build the options screen in this task** — it is not in Phase-001 scope yet
+- No growth while the game is closed (the **Paused** default of the same decision); end-of-day/sleep must not grant an extra stage
 - Watering (with Watering Can active) optionally advances one stage immediately with sparkle/sound feedback
 - Plants never wither
 
@@ -238,7 +239,9 @@ Each task includes:
 - Dialogue states: Greeting → Task Offer → Task Active (restatement) → Task Complete → Reward Given
 - Marlow supplies 3 Butterfly Garden flower seeds when task is accepted
 - Marlow kindly restates unfinished task if player talks to him again
+- **Decline / back input (controls.md gap fix):** gamepad **B** or **right-click** closes the bubble, declines the offer, or backs out — this is what "no punishment for declining" needs to be operable
 - No numeric relationship meter (dialogue state only)
+- **The ledger (world.md §7.4 — decided: world-only):** `Ledger.tscn` prop open on the shed table. Interact at the table → close-up of the pages, **pictures only** (sketches, pressed flower, seed packet — no text, no numbers, no hearts). One page shows the active promise. Expose a `Ledger.Note()` API so Tasks 1.7/1.8 can add a page when a promise is made or kept. **Not** reachable from the pause menu
 
 **Acceptance criteria:**
 - Player can walk to Marlow and interact
@@ -246,14 +249,17 @@ Each task includes:
 - Accepting the task gives the player 3 flower seeds in the seed box
 - Talking to Marlow with an unfinished task restates it kindly
 - No punishment for declining or walking away
+- B / right-click closes the bubble or declines the offer, and declining leaves the task available
+- Player can open the ledger at the shed table and see picture-only pages; opening it is optional and never required to proceed; the ledger appears nowhere in the pause menu
 
 **Team Preparation:**
 - Placeholder Mr. Marlow sprite (colored rectangle acceptable)
 - Placeholder dialogue bubble UI
 - Picture icons for the task (flower icon, net icon)
+- Placeholder ledger sprite + 2–3 page images (sketch, pressed flower, seed packet)
 
 **Tests:**
-- **Software:** Dialogue states transition correctly (Greeting → Task Offer → Task Active → Task Complete → Reward Given); accepting task gives 3 flower seeds; Marlow restates unfinished task kindly; no punishment for declining
+- **Software:** Dialogue states transition correctly (Greeting → Task Offer → Task Active → Task Complete → Reward Given); accepting task gives 3 flower seeds; Marlow restates unfinished task kindly; no punishment for declining; B / right-click closes the bubble and declining leaves the task state unchanged; ledger opens/closes from the shed table and renders pages as images only; calling `Ledger.Note()` adds a page; no ledger entry exists in the pause menu
 - **Human:** Picture bubble is understandable without reading; child understands what Marlow wants and what the reward is; declining or walking away doesn't feel punitive
 
 **AI assistance:** Prompt for "Godot 4.x C# NPC dialogue system with picture bubbles, task offer/accept/restate states, and item delivery."
@@ -533,3 +539,7 @@ After Milestone 1, the next phase document (Phase-002, planned) will cover:
 - **0.1–0.2 — 2026-11-18:** Earlier planning iterations (task breakdown, tests, dependencies).
 - **0.3 — 2026-11-18:** GDScript → **C#** throughout (engine decision, PHASE.md §6). Out-of-scope list annotated with the target future phase for each deferred item (product prototype = source of truth). Milestone 2 preview updated for the four care animals; forward reference to Phase-002 marked "(planned)"; day/night & seasons noted as always-on Gentle Core.
 - **0.4 — 2026-11-18:** Added a **Notes & learnings** fill-in block to every task (1.1–1.12): outcome, what worked, problems & fixes, deviations, and a task-specific handoff question for the next task — to be completed before starting the next task. Task format list in §2 updated accordingly.
+- **0.5 — 2026-11-18:** Task 1.4 growth timing aligned with the Milestone 0 decision (GDD §4, v0.16): ~30–45 s/stage is the **Medium** default of a named Fast/Medium/Slow setting, and growth is **Paused** while the game is closed (sleep grants no extra stage). The pre-game options screen itself is explicitly **not** added to Task 1.4 scope — see the session report for the pending placement question.
+- **0.6 — 2026-11-18:** ⚠️ **Reconciliation pending (design vs. phase doc):** Milestone 0 decision 2 (GDD §4 v0.17, mechanics.md §2) defines an 8-phase stepped clock — 3-hour jumps, ≈3 min of play per step, reset to Dawn on sleep — plus an **always-on HUD clock dial**, neither of which Task 1.10/1.11 currently mentions. Task 1.11's undefined "cycle duration" is now effectively 8 steps ≈ 24 min per in-game day. **Not edited into task scope yet:** the human must place the HUD clock (extend Task 1.11 vs. add a task) before these tasks are worked on.
+- **0.7 — 2026-11-18:** **Task 1.6 gains the ledger** per world.md §7.4 decision ("both", world-only placement): prop + picture-only close-up + `Ledger.Note()` API for Tasks 1.7/1.8, explicitly absent from the pause menu. Scope, acceptance criteria, team prep (placeholder pages) and software tests updated. This closes the gap where events.md marked "ledger page fills" as Prototype scope but no task owned it.
+- **0.8 — 2026-11-18:** **Gap A closed** (controls decision session): Task 1.6 gains the explicit **decline/back input** — gamepad B or right-click — so "no punishment for declining" is actually operable; acceptance criteria and software tests updated. Help tooltip (Back/Select) formally deferred out of Phase-001.

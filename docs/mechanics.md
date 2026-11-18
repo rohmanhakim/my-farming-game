@@ -1,7 +1,7 @@
 # Mechanics
 
 > **Status:** Brainstorming draft
-> **Version:** 0.5
+> **Version:** 0.7
 > **Last updated:** 2026-11-18
 > **Purpose:** Recommended player verbs and mechanics adjusted to the scope of the game described in the GDD. Every element here is a proposal pending playtesting. The GDD remains authoritative for gameplay, audience, and project decisions.
 
@@ -27,10 +27,24 @@ The game has two modes:
 
 A day/night cycle runs through play. It is cosmetic and gently gating — never punitive.
 
-- **Day:** Butterflies visit flowers; most neighbours are out and about; the lane is bright.
-- **Night:** Fireflies appear in season; the lane takes on a quieter, darker palette; some neighbours are indoors.
-- **Sleep/rest:** The child can end the day by resting at home. Sleep advances the calendar by one day. There is no penalty for sleeping early, late, or not at all.
-- **No time pressure:** The clock does not cause crop death, missed events, or lost progress. Events that occur at a specific time of day will recur or be restated kindly.
+**Clock model (Milestone 0 decision 2, GDD §4):** the day is divided into **8 phases of 3 in-game hours** each, and the clock **jumps one 3-hour step at a time** — it never ticks minute by minute. One step ≈ **3 minutes of play** (≈24-minute in-game day; tunable). The clock runs only while playing, stops when the pause menu is open, does not advance while the game is closed, and resets to Dawn when the child sleeps.
+
+| # | Phase | Clock | What is true |
+|---|---|---|---|
+| 1 | Dawn | 06:00–09:00 | Morning greeting; the lane wakes |
+| 2 | Morning | 09:00–12:00 | Marlow at the gate; butterflies visit grown flowers |
+| 3 | Midday | 12:00–15:00 | Brightest; neighbours out and about |
+| 4 | Afternoon | 15:00–18:00 | Distant wave; brook keeper on warm afternoons; Marlow's late-afternoon presence |
+| 5 | Evening | 18:00–21:00 | Evening settling begins; gold light |
+| 6 | Dusk | 21:00–00:00 | Lane darkens; fireflies appear in season; Marlow may be indoors |
+| 7 | Night | 00:00–03:00 | Quiet dark palette; seed shed lit; Moon Petal glows |
+| 8 | Small hours | 03:00–06:00 | Deepest dark; quiet only — nothing lost or missed |
+
+- **HUD clock:** a corner dial (arc of daylight + sun/moon marker) jumps one step at a time, with the phase's light tint over the scene; an optional digital readout is for the grown-up. No essential action depends on reading it.
+- **Day (phases 1–5):** Butterflies visit flowers; most neighbours are out and about; the lane is bright.
+- **Night (phases 6–8):** Fireflies appear in season; the lane takes on a quieter, darker palette; some neighbours are indoors.
+- **Sleep/rest:** The child can end the day by resting at home. Sleep advances the calendar by one day and returns the clock to Dawn (06:00). There is no penalty for sleeping early, late, or not at all.
+- **No time pressure:** The clock does not cause crop death, missed events, or lost progress. Events that occur at a specific time of day will recur or be restated kindly. The clock never counts down to anything.
 
 ---
 
@@ -80,10 +94,12 @@ These verbs are inactive in Gentle Core. A parent turns them on in the grown-up 
 
 ## 5. Garden growth model
 
-- Plants advance through visible growth stages while the game is being played.
+- Plants advance through visible growth stages while the game is being played, on **accumulated play time**.
+- **Stage timing (Milestone 0 decision, GDD §4):** default **Medium ≈ 30–45 s per stage** (seed → bloom ≈ 2 min); **Fast ≈ 15–20 s** and **Slow ≈ 60–90 s** presets available.
 - Watering is optional: it accelerates growth and gives cheerful immediate feedback, but plants continue to grow without it.
 - Plants never wither, die, or become worse because the child stopped playing.
-- A small, bounded amount of positive growth may occur while the game is closed (TBD — see GDD open question).
+- **Nothing grows while the game is closed** (default). The optional **Gentle catch-up** setting adds at most one stage on the next launch and never skips a plant past bloom — positive only, never a penalty.
+- Growth settings are chosen on the options screen **before starting a new game**; sleep/rest does not grant an extra growth stage.
 - Once grown, plants keep blooming into later seasons (they only need their own season to *sprout*), so spring flowers still draw butterflies in summer.
 - The initial garden is small (two or three beds) so tending remains play, not field maintenance.
 
@@ -146,3 +162,5 @@ These items may reappear as opt-in challenge layers managed by the parent (see c
 - **0.3 — 2026-11-18:** Added Two Modes principle (Gentle Core always on; challenge layers opt-in). Added optional verbs (sell, buy, craft, upgrade, toggle settings) for challenge layers. Re-framed excluded mechanics as "Gentle Core exclusions" with note that they may reappear as opt-in layers.
 - **0.4 — 2026-11-18:** Added NPC scheduled presence and kind restatement of declined greetings to the Interact verb notes.
 - **0.5 — 2026-11-18:** Audience reworded (mainly pre-elementary–1st grade with a parent; older kids accommodated by challenge layers). Added season-persistence rule for grown plants (butterfly consistency), the care menu (dedicated control), hay/milk to Feed and Collect verbs, and merged the split Gentle Core exclusion list.
+- **0.6 — 2026-11-18:** §5 garden growth model synced to Milestone 0 decision 1 (GDD §4): stage timing Medium ≈30–45 s with Fast/Slow presets, nothing grows while the game is closed (optional positive-only Gentle catch-up), settings chosen before a new game; sleep grants no extra stage.
+- **0.7 — 2026-11-18:** §2 day/night cycle rewritten to Milestone 0 decision 2 (GDD §4 v0.17): **8 day phases × 3 in-game hours**, clock stepped in 3-hour jumps (≈3 min play per step), running only while playing, reset to Dawn on sleep, plus a stepped HUD dial. Phase table maps presence/events to phases; the clock explicitly never drives growth, care, or penalties.

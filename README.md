@@ -2,8 +2,8 @@
 
 > **Working title:** TBD
 > **Status:** 🟡 Design draft — no code yet
-> **Design version:** GDD v0.15 · World v0.4 (both 2026-11-18)
-> **Last README update:** 2026-11-18
+> **Design version:** GDD v0.18 · World v0.10 (both 2026-11-18)
+> **Last README update:** 2026-11-18 (✅ Milestone 0 complete — all 4 items decided)
 
 ![](docs/assets/game-screenshoot-small.jpeg)
 
@@ -31,8 +31,9 @@ The game offers two modes: a **Gentle Core** that is always available and never 
     - [Later (ideas, not promises)](#later-ideas-not-promises)
   - [Open questions](#open-questions)
   - [Technical direction](#technical-direction)
-  - [Team and constraints](#team-and-constraints)
   - [How this README gets updated](#how-this-readme-gets-updated)
+  - [Documentation hub](#documentation-hub)
+    - [How the docs fit together](#how-the-docs-fit-together)
 
 ---
 
@@ -93,10 +94,10 @@ No game code yet. The engine is chosen (Godot 4.x with C#); the current mileston
 
 ### Milestone 0 — Design decisions
 - [x] Choose engine — **Godot 4.x with C#** (see [Technical direction](#technical-direction))
-- [ ] Decide in-session growth timing and closed-game growth policy
-- [ ] Decide whether there is any in-game clock
-- [ ] Resolve the open story questions in `docs/world.md` §7 that affect the first minute of play
-- [ ] Record chosen PC control mappings
+- [x] Decide in-session growth timing and closed-game growth policy — **Medium ≈30–45 s per stage, no growth while closed** (Fast/Slow presets + optional positive-only "Gentle catch-up" on the options screen before starting a new game; see `docs/GDD.md` §4)
+- [x] Decide whether there is any in-game clock — **yes: a coarse stepped clock in the HUD.** 8 day phases × 3 in-game hours, jumping one 3-hour step at a time (≈3 min of play per step, ≈24-min in-game day), running only while playing. Drives atmosphere, NPC presence, and events only — never growth or penalties (`docs/GDD.md` §4)
+- [x] Resolve the open story questions in `docs/world.md` §7 that affect the first minute of play — **all 7 resolved** (newcomer from the city · lane's memory unnamed, used as a literary device · Marlow "a+" knowledge rule · ledger = both, world-only · heirloom house + Ada the family friend · Marlow name kept · Lantern Hill is a horizon)
+- [x] Record chosen PC control mappings — **gamepad table confirmed + Don't Starve Together-style keyboard/mouse** (WASD or click-to-move, left-click = walk to it then act, Space = quick action, right-click = cancel, wheel = belt, Esc = pause). **Seat rule:** keyboard + mouse is locked to one player; the second player needs a gamepad, otherwise co-op does not start (`docs/controls.md` §2–§4). Back/Select help tooltip deferred.
 
 ### Milestone 1 — Interaction prototype
 One small playable scene, placeholder art, for validating feel rather than visuals:
@@ -129,11 +130,11 @@ Explicitly deferred from the prototype: large maps, crafting/economy depth beyon
 
 From `docs/GDD.md` §16 — brainstorming, not decided:
 
-1. How short should in-session growth stages be, and should plants get bounded growth while the game is closed?
+1. ~~How short should in-session growth stages be, and should plants get bounded growth while the game is closed?~~ **RESOLVED 2026-11-18** — Medium ≈30–45 s per stage, no growth while closed by default; Fast/Slow presets + optional positive-only catch-up on the options screen before a new game (`docs/GDD.md` §4).
 2. Which tasks or dialogue events change an NPC's relationship, and by how much?
 3. What should high relationships unlock?
 4. How should a parent and child split tasks across two gamepads or tablet turn-taking?
-5. Which PC gamepad and mouse mappings should the prototype use?
+5. ~~Which PC gamepad and mouse mappings should the prototype use?~~ **RESOLVED 2026-11-18** — controls.md §2/§4 locked (gamepad + DST-style keyboard/mouse, seat rule: one keyboard+mouse seat, gamepad for a second player). *Tablet layout remains open (Phase-003).*
 6. What research is needed for original, non-chibi European-comics character design?
 7. Which open story questions in `docs/world.md` should be decided next?
 8. What grown-up gesture or question best protects the challenge-layer menu so a child cannot accidentally flip layers during play?
@@ -150,13 +151,6 @@ From `docs/GDD.md` §16 — brainstorming, not decided:
 - The team's existing experience ✓
 
 The first technical prototype must answer movement, planting, watering, growth feedback, and saving **before** substantial content production starts.
-
-## Team and constraints
-
-- **Team:** Two people, with AI assistance. Passion project, no fixed content or feature cap.
-- **Process:** Small, testable milestones so the core experience stays playable and coherent.
-- **Assets:** Free royalty-free resources may be used — record each asset's license, attribution requirement, and suitability before use.
-- **Safety:** No personal-data collection, no open chat or user-generated public content. Child-privacy and age-rating review required before any release. Online features and monetization are out of scope.
 
 ## How this README gets updated
 

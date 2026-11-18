@@ -1,7 +1,7 @@
 # Controls
 
 > **Status:** Brainstorming draft
-> **Version:** 0.4
+> **Version:** 0.6
 > **Last updated:** 2026-11-18
 > **Purpose:** General gamepad control scheme for this kind of game, adjusted to the scope of the game described in the GDD. Assumes an XBOX-layout gamepad. All mappings are tentative (see GDD open question Q5) and subject to playtesting.
 
@@ -30,7 +30,7 @@
 | Open care menu | Right Stick (RS) click, or on-screen care icon | Dedicated button — the D-pad stays reserved for movement. Shows animal care meters and which animals need attention. Picture icons, no reading required. |
 | Pause menu / calendar & settings | Start | Opens pause: day/night indicator, season calendar, Collection Book, sticker book, settings, save, quit. |
 | Open grown-up menu | Start (hold 3 seconds) or dedicated on-screen button | Parent-only. Opens challenge-layer toggles, session timer, and stage-approval menu. Protected by grown-up gesture or question. |
-| Help tooltip / inspect | Back (Select) | Shows a contextual hint or spoken/visual cue for the highlighted object. |
+| Help tooltip / inspect | Back (Select) | Shows a contextual hint or spoken/visual cue for the highlighted object. **Deferred — no Phase-001 task builds it** (the hint ladder in characters.md §8 covers help for now). |
 | Reserved (unassigned in prototype) | LT / RT | Held for future tools or camera options if needed. |
 
 ---
@@ -42,19 +42,26 @@
 - Simultaneous input is never essential. Either player can move, interact, or use tools independently.
 - Tasks work in solo play and remain flexible for co-play or touch turn-taking.
 
+**Seat rule (decided): keyboard + mouse is locked to one player.** At most **one** seat may use keyboard + mouse; **the other seat must use a gamepad.** If no gamepad is connected, **co-op cannot be started** — the game runs single-player with keyboard + mouse. Reason: a keyboard and a mouse are two separate devices, so two people cannot share that seat without fighting over the same hands; a gamepad is self-contained, which is why two gamepads remain the real co-play configuration (GDD §8).
+
 ---
 
-## 4. Fully mouse-controlled PC scheme
+## 4. Keyboard + mouse scheme (PC) — **Don't Starve Together-style** (decided)
 
-Designed so all-mouse interactions map naturally to future touchscreen input without changing the underlying activity. The care menu opens from an on-screen care icon (same picture view as the gamepad RS binding).
+Two ways to do everything, available at the same time, exactly as DST does it: **walk with WASD *or* click-to-move**, and **one left-click both approaches and acts** (Kit walks to the target, then does it). Designed so every mouse gesture maps 1:1 to a future touchscreen tap without changing the underlying activity. The care menu opens from an on-screen care icon (same picture view as the gamepad RS binding).
 
-| Action | Mouse control |
+| Action | Keyboard + mouse |
 |---|---|
-| Move character | Click or tap on ground to walk there. |
-| Interact / use tool | Left-click on object or character. |
-| Cancel / back | Right-click or click the cancel button. |
-| Cycle tool belt | Scroll wheel or dedicated on-screen belt buttons. |
-| Pause / calendar & settings | ESC key or on-screen pause button. |
+| Move character | **WASD / arrow keys**, *or* **left-click the ground** to walk there (hold LMB to keep walking toward the cursor) |
+| Interact / use tool / talk / plant / water | **Left-click the object or character** — Kit walks over, then acts |
+| Quick action (nearest thing in front of Kit) | **Space** — DST's auto-action, minus combat |
+| Cancel / back (decline a bubble, exit a menu) | **Right-click**, or a visible on-screen cancel button |
+| Cycle tool belt | **Mouse wheel** or dedicated on-screen belt buttons |
+| Pause / calendar & settings | **ESC** key or on-screen pause button |
+
+**Deliberately not carried over from DST:** combat keys (F), camera rotation (Q/E — our camera is fixed), all Ctrl/Alt/Shift modifiers (control goals forbid memory-heavy combos), number hotbar (no inventory in the prototype), map key (one lane, no map).
+
+**Seat rule:** see §3 — keyboard + mouse belongs to **one** player only; a second player requires a gamepad, otherwise co-op does not start.
 
 ---
 
@@ -71,9 +78,11 @@ Designed so all-mouse interactions map naturally to future touchscreen input wit
 
 ---
 
-## 6. Calendar, season, and day/night UI
+## 6. Calendar, season, day/night, and clock UI
 
-- The **Start** pause menu shows the current season, day, and time of day visually (icons, not text-dependent).
+- **HUD clock (always visible while playing):** a small corner dial — an arc of daylight with a sun/moon marker — that **jumps one 3-hour step at a time** (8 day phases; Milestone 0 decision 2, GDD §4). It is icon-based, needs no reading, and shows nothing that can be missed. A small digital readout beside it ("09:00") is there for the grown-up.
+- The **Start** pause menu shows the current season, day, and time of day visually (icons, not text-dependent), matching the HUD dial.
+- The clock stops while any menu is open and does not advance while the game is closed; sleeping returns it to Dawn.
 - Sleep/rest at home is prompted through a clear visual button; sleeping advances the day gently.
 - No simultaneous button combos are required to check time or season.
 
@@ -105,3 +114,5 @@ Designed so all-mouse interactions map naturally to future touchscreen input wit
 - **0.2 — 2026-11-18:** Added collectathon inventory open (Y button), care menu (D-Pad Up), and exclusion of real-time caretaking timers.
 - **0.3 — 2026-11-18:** Added grown-up menu button mapping (Start hold 3 seconds) for parent-controlled challenge layers.
 - **0.4 — 2026-11-18:** Care menu moved from D-Pad Up (conflicted with D-pad movement) to a dedicated RS click / on-screen icon. Y opens the grid only; Collection Book lives in the pause menu. Combo rules relaxed: simple two-button inputs and short holds are allowed.
+- **0.5 — 2026-11-18:** §6 retitled and extended for Milestone 0 decision 2 (in-game clock): added the **always-on HUD clock dial** (8 day phases, stepped 3-hour jumps, icon-based, adult digital readout), pause/close behaviour, and sleep resetting to Dawn; pause calendar now mirrors the dial.
+- **0.6 — 2026-11-18:** **Milestone 0 (control mappings) decided.** §4 rewritten as the **Don't Starve Together-style keyboard + mouse scheme**: WASD/arrow *or* click-to-move, left-click = walk-to-then-act, Space = quick action on the nearest interactable, right-click = cancel, wheel = belt, Esc = pause; DST's combat keys, camera rotation, modifiers, hotbar and map deliberately dropped. New **seat rule** in §3 and §4: **keyboard + mouse is locked to one player — a second player must use a gamepad, otherwise co-op cannot start.** Back/Select help tooltip marked **deferred** (no Phase-001 task builds it). Gamepad table (§2) unchanged and confirmed.

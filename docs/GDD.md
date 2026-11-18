@@ -1,7 +1,7 @@
 # Game Design Document
 
 > **Status:** Brainstorming draft
-> **Version:** 0.15
+> **Version:** 0.18
 > **Last updated:** 2026-11-18
 > **Purpose:** A living document for shaping the game together. The concept and audience below come from the initial brief; unconfirmed details are proposals, not commitments.
 
@@ -153,21 +153,59 @@ Rewards should not be limited to currency or more items. Early rewards should in
 
 Gardening is a playful option, not a maintenance obligation. Crops should not die, spoil, or create a backlog that pressures the child to return and keep everything in order. Keep planting, growth, and harvesting simple, with useful feedback and rewards that do not require managing large quantities of produce or supplies.
 
-### Plant growth model (proposal)
+### Plant growth model (decision — Milestone 0, 2026-11-18)
 
 **Design principle:** The garden always moves forward, and the player's care makes it sparkle.
 
 - Plants advance through growth stages while the game is being played, so the child can see progress and connect it to activity in the garden.
+- Growth is measured in **accumulated play time**, not in in-game days, and it advances **only while the game is being played**.
 - Watering is optional for plant survival and growth. It speeds up growth and gives cheerful immediate feedback, but plants continue to grow without it. A specific NPC task may ask the player to try watering as an activity; this must never imply that plants will suffer if left unwatered.
-- Plant stages and feedback should be quick enough to make progress visible during a play session. Exact timing is TBD.
 - Plants never wither, die, or become worse because the child stopped playing.
-- Consider a small, bounded amount of positive growth while the game is closed, so returning after a break can bring a pleasant surprise without creating a real-time schedule or daily obligation.
 - Keep the initial garden small (for example, two or three beds) so tending it remains play rather than field maintenance.
 - Give watering an immediate response—such as a sparkle, sound, or visiting insect—even when a full growth-stage change takes longer.
 
+**Decided settings — defaults chosen for the prototype, adjustable on the options screen before starting a new game:**
+
+| Setting | Options | **Default** |
+|---|---|---|
+| **Growth speed** (time per growth stage) | Fast ≈ 15–20 s · **Medium ≈ 30–45 s** · Slow ≈ 60–90 s | **Medium** — seed → bloom ≈ 2 minutes of play |
+| **Growth while the game is closed** | **Paused** · Gentle catch-up | **Paused** — nothing grows while closed |
+
+- **Stage advances tick live while playing,** so the child watches the plant change; ending the day (sleep/rest) does **not** add an extra stage, so growth is never double-counted.
+- **Gentle catch-up** (the optional setting) grants **at most one stage** when the game is next opened and **never skips a plant past bloom**. It can only move a plant forward — there is no penalty, debt, or missed-day state, ever.
+- **Rationale:** the default follows the genre norm — *Stardew Valley*, *Harvest Moon*, and *Ooblets* all grow only during play (Stardew's ≈14-minute in-game day and its 4-day parsnip scale to a child's play beat, not to a stopwatch); only *Animal Crossing* grows on the real-world clock, which requires owning a clock this design does not need. The catch-up option is the positive-only exception the earlier proposal asked for, kept off by default so the simplest configuration has zero schedule.
+- **Options screen, not in-game tuning:** both settings are chosen by the grown-up on the options screen **before starting a new game** (they may be changed only by starting a new game, so a mid-game change can never surprise the child). Neither setting may ever surface as a warning, a reminder, or an obligation.
+- **Prototype validation:** Phase-001 ships and tests the **Medium / Paused** defaults. Preset values are provisional and may be re-tuned after the first playtest.
+
 For the Butterfly Garden task, planting and watering flowers should create visible progress in-session. The arrival of butterflies can be a short, clearly signaled event rather than a long idle wait.
 
-**Prototype question:** Test whether plants should pause completely while the game is closed or receive bounded catch-up growth.
+### In-day clock and day phases (decision — Milestone 0, 2026-11-18)
+
+**The game has a clock, shown in the HUD, but it moves in coarse steps — never minute by minute.**
+
+- **8 day phases, 3 in-game hours each** (24 hours = 8 × 3). Each phase owns a fixed clock range, so the child always sees where in the day they are without reading a schedule.
+- **Stepped, not continuous:** the clock jumps **one 3-hour step at a time**, and the phase changes with it. It never ticks by the minute.
+- **Step rate:** one step ≈ **3 minutes of play** → a full in-game day ≈ **24 minutes of play** (tunable constant; may become a Gentle/Long day option later).
+- **Runs only while playing:** the clock stops when the pause menu is open and does not advance while the game is closed — consistent with the growth decision above.
+- **Sleep/rest** ends the day: the calendar day increments and the clock resets to **Dawn (06:00)**. Sleeping early, late, or never carries no penalty.
+
+| # | Phase | Clock | Light | What is true in this phase |
+|---|---|---|---|---|
+| 1 | **Dawn** | 06:00–09:00 | First light, soft pink | Morning greeting; the lane wakes |
+| 2 | **Morning** | 09:00–12:00 | Bright, clear | Mr. Marlow at the gate; butterflies visit grown flowers |
+| 3 | **Midday** | 12:00–15:00 | Highest, brightest | Neighbours out and about |
+| 4 | **Afternoon** | 15:00–18:00 | Long light | Distant wave from a future neighbour; brook keeper on warm afternoons; Marlow's late-afternoon presence |
+| 5 | **Evening** | 18:00–21:00 | Gold → amber | Evening settling begins; lane softens |
+| 6 | **Dusk** | 21:00–00:00 | Lane darkens | Fireflies appear in season; Marlow may be indoors |
+| 7 | **Night** | 00:00–03:00 | Dark, quiet palette | Seed shed lit; Moon Petal glows; garden lantern useful |
+| 8 | **Small hours** | 03:00–06:00 | Deepest dark | Quiet only — nothing is lost, missed, or closed |
+
+**HUD clock:** a small dial in the corner of the screen — an arc of daylight with a sun/moon marker that **jumps one step at a time**, plus the current phase's light tint. A small digital readout ("09:00") may sit beside it for the grown-up; **no essential action ever depends on reading it.**
+
+**What the clock does and does not drive:**
+
+- **Drives:** lighting/day-night transition, NPC presence schedules ("morning", "late afternoon" become phase numbers), time-of-day events (morning greeting, evening settling, butterflies by day, fireflies at night), night-only visuals, the calendar readout.
+- **Never drives:** plant growth (accumulated play time, §4 above), animal care, penalties, deadlines, or anything that can be missed. Events tied to a phase recur or are restated kindly.
 
 ### Session shape
 
@@ -231,8 +269,8 @@ These are ideas, not promised features.
 
 ### Open design questions
 
-- How short should in-session growth stages be, and should there be bounded growth while the game is closed?
-- Is there any in-game clock, and if so, does it affect play?
+- **Decided (v0.16):** in-session growth timing and closed-game growth policy — Medium (≈30–45 s per stage) and no growth while closed, both adjustable on the pre-game options screen (see §4 plant growth model).
+- **Decided (v0.17):** yes — a coarse, HUD-visible, phase-based in-day clock: 8 phases × 3 in-game hours, advanced in 3-hour steps (≈3 minutes of play per step), running only while playing. It affects atmosphere, NPC presence, and event availability **only** — never growth, never penalties (see §4 in-day clock and day phases).
 - What, if anything, should be earned or unlocked?
 
 ## 7. World and Characters
@@ -265,7 +303,13 @@ For the PC prototype, offer two selectable control schemes: gamepad and fully mo
 
 Prioritize iPad and Android tablets for touchscreen adaptation. Touch co-play uses turn-taking, while all tasks remain playable solo.
 
-**Exact PC mappings, tablet layout, and how flexible tasks support solo, two-gamepad, and touch turn-taking play:** TBD.
+**Exact PC mappings — decided (v0.18; full tables in [controls.md](./controls.md) §2 and §4):**
+
+- **Gamepad:** left stick/D-pad move · A interact · B cancel · X or LB+RB cycle tool belt · Start pause · (Y inventory, RS care menu, Start-hold grown-up menu in later phases).
+- **Keyboard + mouse, Don't Starve Together-style:** WASD/arrow keys *or* left-click-to-move · **left-click a target = walk to it, then act** · Space = quick action on the nearest interactable · right-click = cancel · mouse wheel = cycle the tool belt · Esc = pause. Deliberately not carried over from DST: combat keys, camera rotation, Ctrl/Alt/Shift modifiers, number hotbar, map.
+- **Seat rule:** keyboard + mouse is **locked to one player**; the other seat must use a gamepad. **If no gamepad is connected, co-op cannot start** — the game runs single-player.
+
+**Still TBD:** tablet layout, and how flexible tasks support solo, two-gamepad, and touch turn-taking play (Phase-003+).
 
 ## 9. Art Direction
 
@@ -390,11 +434,11 @@ These are not ruled out for the passion project; they are deferred from the init
 
 ## 16. Open Questions for Brainstorming
 
-1. How short should in-session growth stages be, and should plants receive bounded growth while the game is closed?
+1. **RESOLVED (2026-11-18, v0.16):** growth timing and closed-game policy decided — see §4 plant growth model. Defaults: **Medium ≈30–45 s per growth stage**, **no growth while the game is closed**; Fast/Slow presets and an optional positive-only “Gentle catch-up” are selectable on the options screen before starting a new game. *Former question: how short should in-session growth stages be, and should plants receive bounded growth while the game is closed?*
 2. Which tasks or dialogue events should change an NPC's relationship, and by how much?
 3. Which special events, places, dialogue, or unique items should high relationships unlock?
 4. How should a parent and child share tasks while collaborating with two gamepads or taking turns on a tablet?
-5. Which PC gamepad and mouse mappings should the prototype use, and what tablet layout works best?
+5. **RESOLVED for PC (2026-11-18, v0.18):** mappings locked in [controls.md](./controls.md) §2/§4 — gamepad table as written, plus a **Don't Starve Together-style keyboard + mouse scheme** (WASD or click-to-move, left-click = walk-to-then-act, Space = quick action, right-click = cancel, wheel = belt, Esc = pause) and the **seat rule** (keyboard + mouse belongs to one player; a second player needs a gamepad, otherwise co-op does not start). *Still open:* the **tablet layout** half of this question — Phase-003.
 6. What research and visual exploration are needed to create original characters that fit the non-chibi European cartoon-comics direction?
 7. Which open story and setting questions in [world.md](./world.md) should be decided next?
 8. What grown-up gesture or question best protects the challenge-layer menu so a child cannot accidentally flip layers during play?
@@ -434,3 +478,6 @@ These are not ruled out for the passion project; they are deferred from the init
 - **0.13 — 2026-11-18:** Expanded scope: collectathon inventory (picture-based, auto-stacking, no currency), three care animals (chicken, sheep, beehive) with gentle care meter and no death penalty, seasons affecting crops and animal behavior, progressive sticker system, and Dora/Blues Clues-style picture dialogue with parent guidance role.
 - **0.14 — 2026-11-18:** Added Two Modes principle (Gentle Core always on; challenge layers opt-in and parent-controlled), expanded audience to preschool through fifth grade, added pillar 10 (the parent is the difficulty dial), and introduced challenge-layers.md as the source of truth for toggles and stages.
 - **0.15 — 2026-11-18:** Audience clarified: primary audience is pre-elementary through first grade playing with a parent, with older children accommodated through the optional challenge layers. §5 MVP vs §15 product-prototype scope disambiguated (product prototype is the source of truth; Phase-001 is the interaction prototype). Time Awareness removed as a layer (day/night and seasons always on, Gentle Core); control-combo rule relaxed (simple two-button inputs and short holds allowed); four care animals (cow added); places recounted to eight; engine recorded as Godot with C# (see PHASE.md).
+- **0.16 — 2026-11-18:** **Milestone 0 decision 1 (growth timing):** §4 plant growth model moved from proposal to decision. Growth runs on accumulated play time, live during play, never on an in-game day and never while closed. Presets set (Fast ≈15–20 s / **Medium ≈30–45 s** / Slow ≈60–90 s per stage) with **Medium** as default; growth-while-closed set to **Paused** by default with an optional positive-only “Gentle catch-up” (max +1 stage, never past bloom). Both are options-screen choices made **before starting a new game**, per genre comparison (Stardew Valley / Harvest Moon / Ooblets grow only during play; Animal Crossing is the real-clock exception). Open question §16.1 resolved; §6 growth question closed, clock question narrowed.
+- **0.17 — 2026-11-18:** **Milestone 0 decision 2 (in-game clock):** added §4 "In-day clock and day phases" — the game *does* have a clock, shown in the HUD as a stepped dial: **8 day phases × 3 in-game hours**, jumping one 3-hour step at a time (≈3 min of play per step, ≈24-minute in-game day), running only while playing, resetting to Dawn on sleep. Phase table maps every phase to its light, its NPC presence, and its events (morning greeting → small hours). Explicitly excluded from driving growth, care, or penalties. §6 clock question closed; this answers GDD §6/README "decide whether there is any in-game clock" (Milestone 0 item 2).
+- **0.18 — 2026-11-18:** **Milestone 0 decision 3 (control mappings):** §8 records the decided PC mappings — gamepad table unchanged, keyboard + mouse redefined as a **Don't Starve Together-style** scheme (dual movement, one-click walk-to-then-act, Space quick action), plus the **seat rule** that keyboard + mouse is locked to one player and co-op needs a gamepad for the second seat. DST's combat/camera/modifier/hotbar keys explicitly rejected. §16 Q5 resolved for PC; tablet layout left open for Phase-003. Full tables live in controls.md v0.6.

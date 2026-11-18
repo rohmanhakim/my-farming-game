@@ -1,7 +1,7 @@
 # Crops
 
 > **Status:** Brainstorming draft
-> **Version:** 0.3
+> **Version:** 0.4
 > **Last updated:** 2026-11-18
 > **Purpose:** Crops available in the game, adjusted to the scope of the game described in the GDD. All names are tentative and can be changed. Every element here is a proposal pending playtesting.
 
@@ -20,10 +20,12 @@ The crop list is intentionally tiny. There is no economy, no sell pressure, and 
 
 ## 2. Growth model (summary)
 
-- Plants advance through visible growth stages in-session.
+- Plants advance through visible growth stages in-session, on **accumulated play time** (no in-game-day requirement).
+- **Stage timing (GDD §4 decision, Milestone 0):** default **Medium ≈ 30–45 s per stage** — seed → sprout → bloom in ≈ 2 minutes of play. **Fast ≈ 15–20 s** and **Slow ≈ 60–90 s** presets exist for the options screen.
 - Watering is optional and speeds growth with sparkle/sound feedback.
 - Plants grow without watering; watering never feels obligatory.
-- Bounded growth while the game is closed is TBD (see GDD open question).
+- **Growth while the game is closed:** **paused by default** — nothing grows while the game is off. The optional **Gentle catch-up** setting adds at most one stage when the game is next opened and never pushes a plant past bloom (positive-only; no penalty either way).
+- Both settings are chosen on the options screen **before starting a new game** and are not changed mid-game.
 - Initial garden size: two or three beds.
 
 ---
@@ -105,3 +107,4 @@ Winter has few or no outdoor crops, consistent with the lane resting. Indoor or 
 - **0.1 — 2026-11-18:** Initial draft. Small seasonal crop list with no withering, no economy, and automatic shelf routing. Butterfly Garden flowers supplied by NPC task.
 - **0.2 — 2026-11-18:** Added Carrot Patch to starting seeds; added Tomato Vine, Herb Pot. Clover Vine and Berry Spray noted as bee food. Winter indoor crops (Frost Leaf, Herb Pot) keep gardening alive in cold months.
 - **0.3 — 2026-11-18:** Reconciled tables with change log 0.2 (Carrot Patch, Tomato Vine, Herb Pot now appear in the tables; bee-food notes added to Clover Vine and Berry Spray). Added the season-persistence rule: grown plants keep blooming after their season, so butterfly visits in spring and summer are consistent.
+- **0.4 — 2026-11-18:** Growth model §2 updated to the Milestone 0 decision (GDD §4, v0.16): stage timing default **Medium ≈30–45 s** (Fast/Slow presets for the options screen), growth paused while the game is closed by default, optional positive-only Gentle catch-up (+1 stage max, never past bloom), both set before starting a new game. Replaced the old “closed-game growth is TBD” line.

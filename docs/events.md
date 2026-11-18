@@ -1,7 +1,7 @@
 # Events
 
 > **Status:** Brainstorming draft
-> **Version:** 0.5
+> **Version:** 0.7
 > **Last updated:** 2026-11-18
 > **Purpose:** Events available during one playthrough, adjusted to the scope of the game described in the GDD. Driven by calendar, season, and day/night — never by time pressure or punishment. All names are tentative and can be changed. Every element here is a proposal pending playtesting.
 
@@ -24,12 +24,14 @@ The game has two modes:
 |---|---|---|---|---|
 | **Butterfly Garden task** | Player accepts Mr. Marlow's first request. | Plant and water three Meadow Bell / Honey Cup / Lace Flower seeds. | Butterfly net; unlocks find & catch verb. | Prototype |
 | **Task restatement** | Player speaks to Marlow with an unfinished task. | Marlow kindly restates the request: "Hmm, we didn't finish that last time. Would you like to try it now?" | No penalty; task remains available. | Prototype |
-| **Show butterfly to Marlow** | Player has a caught butterfly and speaks to Marlow. | Marlow reacts with delight and notes it in the ledger. | Relationship warmth; ledger page fills (candidate UI). | Prototype |
+| **Show butterfly to Marlow** | Player has a caught butterfly and speaks to Marlow. | Marlow reacts with delight and notes it in the ledger. | Relationship warmth; a page fills in the ledger (world-only, decided — world.md §7.4). | Prototype |
 | **Release butterfly in garden** | Player releases a caught butterfly in the front garden. | Butterfly flutters around the garden; adds life to the space. | Visual joy; no item gain. | Prototype |
 
 ---
 
 ## 3. Daily / ambient events
+
+**Time-of-day triggers below are read as day phases, not clock times** (Milestone 0 decision 2, GDD §4 / mechanics.md §2): *morning* = Dawn or Morning · *afternoon* = Afternoon · *day* = phases 1–5 · *evening* = Evening or Dusk · *night* = phases 6–8. The clock jumps in 3-hour steps while playing and stops when the game is closed, so an event that misses its phase simply recurs or is restated kindly.
 
 | Event | Trigger | What happens | Scope |
 |---|---|---|---|
@@ -81,7 +83,7 @@ Each arrival is preceded by a **trace event** (laundry, footprints, birdhouse, s
 | Milestone | Trigger | What happens | Scope |
 |---|---|---|---|
 | **First task complete** | Butterfly Garden flowers grown and shown to Marlow. | Marlow gives the butterfly net. | Prototype |
-| **Ledger page fills** | Repeated kind interactions and completed tasks (candidate). | A pressed flower or sketch appears behind a ledger page. | Later — candidate relationship UI |
+| **Ledger page fills** | Repeated kind interactions and completed tasks. | A pressed flower or sketch appears behind a ledger page. | Later — warmth-driven pages; the ledger itself ships in Phase-001 Task 1.6 (world.md §7.4) |
 
 ## 7. Stage-Gated Events (challenge layers only)
 
@@ -121,3 +123,5 @@ Missing a festival or market day simply means waiting for it to return next seas
 - **0.3 — 2026-11-18:** Added Two Modes principle and Stage-Gated Events for challenge layers (market day, crafting fair, festivals, Lantern Hill ceremony).
 - **0.4 — 2026-11-18:** Added neighbour trace and distant wave ambient events, plus character arrival events for Mr. Marlow, the allotment neighbour, the brook keeper, a child of the lane, and the Hill Visitor — each gated to a stage with picture-only greetings.
 - **0.5 — 2026-11-18:** Day/night and seasons confirmed always-on (Gentle Core): stage-gated festivals now activate at Stage 4 with all layers on instead of a Time Awareness layer. Trace list completed to all five traces (added seed packet, lantern). Care and product events include the cow and milk.
+- **0.6 — 2026-11-18:** Milestone 0 decision 2 (in-game clock): time-of-day triggers in §3 now explicitly map to the eight named day phases in mechanics.md §2 (stepped 3-hour clock); missed-phase events still recur or restate kindly.
+- **0.7 — 2026-11-18:** Ledger rows updated to the world.md §7.4 decision: ledger is **both** relationship UI and collectible, placed **world-only** at the seed-shed table, shipping in Phase-001 Task 1.6; the warmth-driven page rule stays a later event.
