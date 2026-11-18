@@ -3,7 +3,7 @@
 > **Purpose:** This file tells an AI assistant how to run a development session in this repository so that each session is self-contained, leaves the docs truthful, and never blocks on a human mid-task.
 >
 > **Audience:** The AI agent (primary) and the two-person team (secondary).
-> **Companion docs:** [`PHASE.md`](./PHASE.md) (roadmap), [`README.md`](./README.md) (project hub), [`docs/`](./docs/) (design + phase task lists).
+> **Companion docs:** [`docs/PHASE.md`](./docs/PHASE.md) (roadmap), [`README.md`](./README.md) (project hub), [`docs/`](./docs/) (design + phase task lists).
 >
 > **If you are the AI reading this:** read this file completely before touching anything, then follow **§4 Session protocol** for the current task and **§7 Phase completion** when a phase ends. When this file and a phase document disagree about *process*, this file wins; when they disagree about *gameplay design*, the GDD wins (see §2).
 
@@ -14,7 +14,7 @@ You're a Senior Game Developer that will develop a current described project:
 ## 1. Project snapshot
 
 - **Game:** A gentle, fully 2D life-and-garden game for young children (pre-elementary–1st grade, played with a parent). No punishment, no currency in Phase-001, no reading required to act.
-- **Engine:** Godot 4.x with **C#** (not GDScript — see `PHASE.md` §6).
+- **Engine:** Godot 4.x with **C#** (not GDScript — see `docs/PHASE.md` §6).
 - **Status:** Follow the `README.md` "Status" line — it is the honest snapshot of how much code exists.
 - **Team:** Two people with AI assistance. Tasks are scoped so one task = one AI-assisted session.
 - **Platforms:** PC first; tablets from Phase-003 onward.
@@ -24,7 +24,7 @@ You're a Senior Game Developer that will develop a current described project:
 | Question | Authoritative doc |
 |---|---|
 | Gameplay rules, audience, pillars, open questions | [`docs/GDD.md`](./docs/GDD.md) |
-| Roadmap, phases, guardrails, team & workflow | [`PHASE.md`](./PHASE.md) |
+| Roadmap, phases, guardrails, team & workflow | [`docs/PHASE.md`](./docs/PHASE.md) |
 | What to build in this phase, task by task | [`docs/Phase-00N.md`](./docs/Phase-001.md) (current phase) |
 | Setting, lore, places | [`docs/world.md`](./docs/world.md) |
 | Domain detail (characters, crops, animals, items, inventory, mechanics, controls, events, progression, challenge layers) | the matching file in `docs/` |
@@ -69,7 +69,7 @@ At the start of the session, the AI should re-verify these quickly (list the fil
 
 ### 4.2 Choosing the task
 
-1. Open the current phase document (the newest `docs/Phase-00N.md`; `PHASE.md` §3 says which phases exist).
+1. Open the current phase document (the newest `docs/Phase-00N.md`; `docs/PHASE.md` §3 says which phases exist).
 2. Pick the **lowest-numbered task whose `Notes & learnings > Outcome / status` still says `TBD`** — unless the human names a different task.
 3. Read the whole task **and** the previous task's handoff note before writing code.
 4. **One task per session.** Do not start the next task, even if it looks small. Scope creep breaks the "playtestable after every task" guarantee.
@@ -78,7 +78,7 @@ At the start of the session, the AI should re-verify these quickly (list the fil
 
 - Implement exactly the task's **Scope** against its **Acceptance criteria**. No drive-by refactors, no extra systems — log those as suggestions for later instead.
 - Follow existing conventions in the repo (folder structure, naming, scene layout, coding style) as established by previous tasks. If none exist yet, establish them in the first task and record the choice in that task's *Deviations from scope or plan* note.
-- Respect `PHASE.md` §7 **guardrails** at all times: no antagonist/threat/deadline/decay, no disappointment from Mr. Marlow, no reading required to proceed, no map-size expansion, original designs only.
+- Respect `docs/PHASE.md` §7 **guardrails** at all times: no antagonist/threat/deadline/decay, no disappointment from Mr. Marlow, no reading required to proceed, no map-size expansion, original designs only.
 - Verify as you go: the project builds, the game runs headless/scripted where possible, no errors in the Godot output log.
 
 ### 4.4 Testing policy — software vs. human
@@ -133,7 +133,7 @@ Halt and ask the human instead of guessing when:
 - The docs are **silent or contradictory** about design.
 - A **Dependencies** task is not actually finished (its Notes still say `TBD`).
 - Completing the task would require **scope beyond the task's Scope** section.
-- Work would violate a `PHASE.md` §7 guardrail.
+- Work would violate a `docs/PHASE.md` §7 guardrail.
 - Something needs a human-only action (Godot editor GUI operation, account/license, playtest scheduling).
 
 State the exact blocker and what you need; do not fabricate placeholders that look like finished work.
@@ -163,7 +163,7 @@ When the **last task** of a phase is finished (including its human playtests, wh
 Bring **every** document in line with the implementation as it now exists. For each item: fix it, bump `Version` + `Last updated`, add a Change log entry.
 
 - [ ] `docs/Phase-00N.md` — all Notes filled; status header changed from *Planning draft* to the completion state; exit-criteria checkboxes truthful; change log records the phase's completion.
-- [ ] `PHASE.md` — phase table row updated (done instead of "(planned)"), phase detail section still accurate, status/version refreshed.
+- [ ] `docs/PHASE.md` — phase table row updated (done instead of "(planned)"), phase detail section still accurate, status/version refreshed.
 - [ ] `README.md` — **Status**, design version, screenshot, Current status, Roadmap, and Documentation table all match reality; remove "no code yet"-style claims if code exists.
 - [ ] `docs/GDD.md` — milestones / open questions resolved or re-marked as still open; any decision changed during implementation is written back here (the GDD is the gameplay source of truth).
 - [ ] Domain docs (`world.md`, `characters.md`, `places.md`, `crops.md`, `animals.md`, `items.md`, `inventory.md`, `mechanics.md`, `controls.md`, `events.md`, `progression.md`, `challenge-layers.md`) — anything implemented differently than written is corrected at the source, not left as a discrepancy.
@@ -174,7 +174,7 @@ Bring **every** document in line with the implementation as it now exists. For e
 
 ### 7.3 Hand-off to the next phase
 
-- Write the next `docs/Phase-00N.md` **only when the human schedules it** (`PHASE.md` §3: future phase docs are planned on demand), reusing the carry-forward advice from the retrospective.
+- Write the next `docs/Phase-00N.md` **only when the human schedules it** (`docs/PHASE.md` §3: future phase docs are planned on demand), reusing the carry-forward advice from the retrospective.
 - Only start next-phase work after the sync sweep is complete and the human confirms.
 
 ---

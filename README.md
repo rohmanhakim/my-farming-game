@@ -87,7 +87,7 @@ Where the project actually is right now:
 - [ ] First playtest with a child
 - [ ] Decisions made on the open questions below
 
-No game code yet. The engine is chosen (Godot 4.x with C#); the current milestone is **building the smallest scene** that answers the interaction questions (Phase-001 — see `PHASE.md`).
+No game code yet. The engine is chosen (Godot 4.x with C#); the current milestone is **building the smallest scene** that answers the interaction questions (Phase-001 — see `docs/PHASE.md`).
 
 ## Roadmap
 
@@ -123,7 +123,7 @@ One small playable scene, placeholder art, for validating feel rather than visua
 
 Explicitly deferred from the prototype: large maps, crafting/economy depth beyond collectathon slots, detailed real-time calendars, combat, online multiplayer, long reading-heavy dialogue.
 
-**In product-prototype scope** (source of truth: GDD §15, delivered across phases — see `PHASE.md`): Collectathon inventory, four care animals (chicken, sheep, cow, beehive), seasonal crop and animal behavior, optional sticker system, Dora/Blues Clues-style picture dialogue with parent guidance.
+**In product-prototype scope** (source of truth: GDD §15, delivered across phases — see `docs/PHASE.md`): Collectathon inventory, four care animals (chicken, sheep, cow, beehive), seasonal crop and animal behavior, optional sticker system, Dora/Blues Clues-style picture dialogue with parent guidance.
 
 ## Technical direction
 

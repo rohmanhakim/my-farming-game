@@ -43,12 +43,12 @@ This document is **not** a substitute for Task 1.1: it supplies the agreement th
 ```text
 my-farming-game/
 ├── AGENTS.md              # how an AI session runs (process)
-├── PHASE.md               # roadmap
 ├── README.md              # project hub + documentation table
 ├── docs/                  # ALL design documents (never code)
 │   ├── GDD.md, world.md, characters.md, places.md, crops.md, animals.md,
 │   │   items.md, inventory.md, mechanics.md, controls.md, events.md,
 │   │   progression.md, challenge-layers.md
+│   ├── PHASE.md           # roadmap
 │   ├── Phase-001.md       # current phase task list
 │   ├── project-structure.md   # THIS document
 │   └── assets/            # README screenshots only — NOT game assets
@@ -236,7 +236,7 @@ Adding an autoload is a structural decision that must be recorded here plus in t
 - **Game assets live only in `src/assets/`** so Godot imports them (`*.import` sidecars are generated next to the source file).
 - **Placeholders first, always.** Prefer in-scene `ColorRect` / `PlaceholderTexture2D` over image files. When an image file *is* the placeholder, its file name starts with `ph_` and it is marked temporary — final art swaps in with **no code changes** (same node paths, same region sizes where practical).
 - **Licensing:** every asset that is not `ph_` gets a row in `src/assets/LICENSES.md` (name, source, license, date). Royalty-free only; record it at the moment the file lands, not later.
-- **Art style guardrail:** non-pixel-art, European children's-book look; original designs only (PHASE.md §7). Never copy existing characters/assets.
+- **Art style guardrail:** non-pixel-art, European children's-book look; original designs only (docs/PHASE.md §7). Never copy existing characters/assets.
 - Placeholder directories are **not** duplicated: an `assets/art/.../ph_*.png` *is* the placeholder convention.
 
 ---
