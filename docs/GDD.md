@@ -1,24 +1,24 @@
 # Game Design Document
 
 > **Status:** Brainstorming draft
-> **Version:** 0.12
-> **Last updated:** 2026-11-17
+> **Version:** 0.15
+> **Last updated:** 2026-11-18
 > **Purpose:** A living document for shaping the game together. The concept and audience below come from the initial brief; unconfirmed details are proposals, not commitments.
 
 ## 1. High Concept
 
 A gentle, fully 2D life-and-garden game for young children. Players care for a small garden, explore beyond home, and help friendly characters with everyday tasks. Farming, exploration, and community interactions work together as parts of one cozy world. The presentation uses illustrated, non-pixel-art graphics.
 
-The game takes inspiration from the welcoming farming and community feel of *Stardew Valley*, while aiming for a much smaller scope and an experience designed specifically for children from pre-elementary through first grade.
+The game takes inspiration from the welcoming farming and community feel of *Stardew Valley*, while aiming for a much smaller scope and an experience designed specifically for young children from pre-elementary through first grade, playing with a parent — while accommodating older children (up to fifth grade) through optional challenge layers defined in this design.
 
 **Working title:** TBD
 
 ## 2. Audience and Play Context
 
-- **Primary audience:** Children from pre-elementary through first grade.
+- **Primary audience:** Children from **pre-elementary through first grade**, playing with a parent or caregiver. The game accommodates older children (through fifth grade and beyond) through the optional challenge layers defined below. The whole experience grows with the child: younger players (pre-elementary–1st grade) use Gentle Core only; older players (2nd–5th grade+) can opt into challenge layers managed by a parent or caregiver.
 - **Intended play modes:** A child can play alone or with a parent. Parent-child play is designed for collaboration on one device.
-- **Parent/caregiver role:** Collaborate with the child in real time when using separate PC gamepads; touchscreen co-play can use turn-taking.
-- **Working literacy assumption:** The intended player can talk and is beginning to read or can read simple text. This needs validation because reading and language abilities vary across the target age range.
+- **Parent/caregiver role:** The parent acts as the "difficulty dial" — managing which challenge layers are active through a grown-up menu, helping with reading and menus, and deciding with the child when the game is ready to grow. On PC with separate gamepads, parent and child collaborate in real time; on touchscreen they take turns.
+- **Working literacy assumption:** Essential actions and feedback never depend on fluent reading. Text is always paired with pictures, icons, and voice-over. Reading ability varies widely across the target age range, so the game must be playable by a non-reader in Gentle Core.
 - **Likely considerations:** Players may be new to games, and some may benefit from visual cues, short text, or spoken support even if reading is an intended part of the experience.
 - **Prototype platform:** PC.
 - **Longer-term platform goal:** Multiplatform, with iPad and Android tablets as the priority touchscreen devices.
@@ -35,6 +35,10 @@ Text can be part of the experience, but essential actions and feedback should no
 4. **Creative ownership:** Players can personalize a garden or space without needing to optimize it.
 5. **Warm illustrated world:** Expressive characters, clear shapes, and inviting environments support the experience.
 6. **Practice everyday social skills:** Through ordinary interactions, players can explore communication, cooperation, boundaries, and caring for shared spaces.
+7. **Collectathon inventory:** Picture-based slots, auto-stacking, and a collection book give kids the joy of collecting without inventory stress. No currency, no sorting, no "full" penalty.
+8. **Gentle animal care:** Caring for farm animals teaches responsibility through positive care loops. Animals nap if ignored — they never die, run away, or become permanently unhappy.
+9. **Progressive challenge (opt-in):** Optional stickers, multi-step requests, and seasonal mysteries grow with the child's skill when a parent turns them on. Nothing is ever locked behind them; the core loop always remains available.
+10. **The parent is the difficulty dial:** Challenge layers are turned on or off by a parent or caregiver through a grown-up menu. The game never auto-scales based on age or playtime. Gentle Core remains available at every stage, no matter how many layers are active.
 
 ### Intended emotional experience
 
@@ -45,6 +49,24 @@ Players should feel curious, capable, welcomed, and proud of what they have made
 The game should let players practice interactions that can help them navigate life beyond home, such as greeting someone, asking before taking or using something, taking turns, offering help, sharing, and responding when another character has a different need or preference.
 
 Some situations may offer simple choices and show understandable consequences. Consequences should be proportionate, connected to what happened, and focused on how people or the shared environment respond. When possible, players should be able to repair a misunderstanding or try a kinder approach. Avoid rigid good/bad scoring, shame, or presenting complex moral questions as having one simplistic answer.
+
+### Two Modes: Gentle Core + Opt-in Challenge Layers
+
+The game offers two modes that share one world:
+
+**Gentle Core (always on):** Plant, water, harvest, care for animals, decorate. No death, no currency, no reading required, no time pressure, no penalties. A child can play forever here.
+
+**Challenge Layers (opt-in, parent-controlled):** Garden coins, tool upgrades, crafting, multi-step requests, festivals, and deeper systems. Each layer is toggled by the parent in a grown-up menu. Layers are additive — turning one on never removes Gentle Core features.
+
+Layers progress through five stages:
+
+- **Stage 1 — My First Garden** (preschool): Gentle Core only
+- **Stage 2 — Garden Helpers** (K–1st): Multi-step requests (day/night and seasons are always on — Gentle Core)
+- **Stage 3 — Farm Manager in Training** (2nd–3rd): Garden coins, tool upgrades, crafting
+- **Stage 4 — Bramblewick Farmer** (4th–5th): Festivals, relationship meters, expanded world
+- **Stage 5 — Standard Sim** (5th grade+): Full economy, expanded systems
+
+The parent can return to Gentle Core at any time with one click. See [challenge-layers.md](./challenge-layers.md) for the full layer definitions and stage map.
 
 ### Social interaction anchor: reciprocal requests
 
@@ -83,7 +105,7 @@ The request uses already-known verbs (plant and water), states the expected rewa
 - **Shovel or trowel:** Not part of the initial loadout; reserve digging as a possible later ability or reward.
 - **Future tools:** A bug net, ladder, sprinkler, or similar tool should be introduced only when it opens a distinct new verb or place.
 
-Avoid a loose, sortable inventory. The proposal is a fixed tool belt with large icon slots for the watering can, seed box, and one earned tool. Harvests go automatically to a garden shelf rather than accumulating in a large player inventory.
+A loose, sortable inventory is avoided. The tool belt holds a small set of large icon slots for the watering can, seed box, and earned tools. Harvests and animal products route automatically to collectathon inventory slots (see inventory.md) rather than accumulating in a large player inventory. There is no currency, no sorting, and no "full" penalty — overflow goes to the Overflow Nest at Mr. Marlow's shed.
 
 #### Design-pattern references
 
@@ -161,6 +183,8 @@ The child can play alone, and no activity should require a parent to be present.
 
 ### MVP proposal
 
+> **Scope note:** This MVP describes the **Phase-001 interaction prototype** — a vertical slice of the core loop (see PHASE.md). The full **product prototype** scope, which is the source of truth for what the finished prototype contains (collectathon inventory, care animals, sticker book), is defined in §15 and delivered across later phases.
+
 - Play solo or collaborate with a parent on the same device, discussing choices and solving small problems.
 - Move around one small home or garden area.
 - Interact with garden beds.
@@ -191,16 +215,19 @@ These are ideas, not promised features.
 ### Starting principles
 
 - Do not use crop death, debt, lost belongings, shame, or harsh failure states in the initial design.
+- Animals never die, run away, or become permanently unhappy from neglect. They nap and wait for care.
 - Do not require fast reactions, precise timing, or reading-heavy instructions.
 - Let children experiment; make important actions reversible where practical.
 - Give clear feedback when an action succeeds, is unavailable, or needs another step.
-- Keep any resource or inventory system small and understandable.
-- Make gardening forgiving and optional; do not make crops a recurring chore or require players to keep large quantities of items organized.
+- Keep any resource or inventory system small and understandable. Collectathon slots auto-stack; no manual sorting.
+- Make gardening forgiving and optional; do not make crops a recurring chore. Plants grow without watering; watering speeds growth with cheerful feedback.
 - Use early rewards to introduce new ways to play, not only to increase item counts.
 - Show social consequences through character responses and the state of the shared space, rather than abstract punishment or moral scores.
 - Let players revisit a social interaction, make amends, or try another response where practical.
 - Make task expectations and outcomes clear; do not make a child responsible for an outcome they could not understand or reasonably control.
 - Do not take away unrelated progress or make the player lose something already earned because a task remains unfinished.
+- Seasons affect which crops grow and how animals behave, but missing a season is never a failure — it simply returns next year.
+- Optional stickers, requests, and mysteries grow with the child's skill when a parent turns them on. Nothing is locked behind them; Gentle Core always remains available.
 
 ### Open design questions
 
@@ -227,7 +254,7 @@ The world should be readable at a glance and small enough that children can navi
 - Keep the number of buttons and actions low.
 - Make the primary interaction consistent throughout the game.
 - Use large, easy-to-select targets if touch is supported.
-- Avoid requiring simultaneous or complex button combinations.
+- Simple two-button inputs and short holds are acceptable (e.g. LB+RB, hold-Start for the grown-up menu); avoid rapid or memory-heavy button sequences.
 - Offer a clear way to pause and reach settings.
 
 ### Proposed interaction model
@@ -353,11 +380,13 @@ Playtests with children should be conducted with appropriate adult supervision a
 These are not ruled out for the passion project; they are deferred from the initial prototype so the core experience can be tested first:
 
 - Large maps or many locations.
-- Complex crafting, inventory, or economy systems.
-- Seasons and detailed calendars.
+- Complex crafting, economy systems, or sellable stockpiles.
+- Detailed real-time calendars (seasons affect crops and animals in simple, visible ways).
 - Combat or dangerous failure.
 - Online multiplayer and public social systems.
 - Long, reading-heavy dialogue or exposition.
+
+**In product-prototype scope:** Collectathon inventory slots, four care animals (chicken, sheep, cow, beehive), gentle care meter with no death penalty, seasonal crop and animal behavior, optional sticker book, and Dora/Blues Clues-style picture dialogue with Mr. Marlow. (These are delivered across phases — Phase-001 is the interaction prototype only; see PHASE.md.)
 
 ## 16. Open Questions for Brainstorming
 
@@ -368,6 +397,25 @@ These are not ruled out for the passion project; they are deferred from the init
 5. Which PC gamepad and mouse mappings should the prototype use, and what tablet layout works best?
 6. What research and visual exploration are needed to create original characters that fit the non-chibi European cartoon-comics direction?
 7. Which open story and setting questions in [world.md](./world.md) should be decided next?
+8. What grown-up gesture or question best protects the challenge-layer menu so a child cannot accidentally flip layers during play?
+
+## Related documents
+
+| Document | Relationship |
+|---|---|
+| [README.md](../README.md) | Centralized hub; mirrors GDD version numbers in its header. |
+| [world.md](./world.md) | Expands the GDD's setting, story, and places; the GDD remains authoritative for gameplay. |
+| [characters.md](./characters.md) | Main character, parent, Mr. Marlow NPC, and future cast — aligned with GDD design pillars. |
+| [places.md](./places.md) | The eight places on Bramblewick Lane, mapped to GDD requirements. |
+| [crops.md](./crops.md) | Crop list, growth model, and Butterfly Garden flowers referenced by GDD tasks. |
+| [animals.md](./animals.md) | Gentle care animals supporting GDD pillar 8 (gentle animal care). |
+| [items.md](./items.md) | Starting loadout, earned items, and NPC-held items referenced throughout the GDD. |
+| [inventory.md](./inventory.md) | Collectathon slots implementing GDD pillar 7 (collectathon inventory). |
+| [mechanics.md](./mechanics.md) | Core verbs and systems aligned with GDD scope and audience. |
+| [controls.md](./controls.md) | Input mappings; GDD open question Q5 covers gamepad/mouse mappings. |
+| [events.md](./events.md) | Core/daily/seasonal events driving the GDD's want → task → reward loop. |
+| [progression.md](./progression.md) | Stickers, optional requests, and tools supporting GDD pillar 9 (progressive challenge). |
+| [challenge-layers.md](./challenge-layers.md) | Defines optional challenge layers, parent-controlled toggles, and the five-stage growth map. |
 
 ## 17. Change Log
 
@@ -383,3 +431,6 @@ These are not ruled out for the passion project; they are deferred from the init
 - **0.10 — 2026-11-17:** Proposed that plants grow during play and watering optionally accelerates growth with immediate positive feedback. Added small-garden and no-withering guardrails, optional bounded away-time growth, and playtest questions about whether watering feels fun rather than obligatory.
 - **0.11 — 2026-11-17:** Set a hybrid bright-and-earthy palette direction and an angled top-down/three-quarter camera direction. Left original character design for further research and emphasized a distinct visual identity.
 - **0.12 — 2026-11-17:** Linked the Bramblewick Lane and Mr. Marlow story proposal in [world.md](./world.md), resolving the background-story premise question while keeping its open details subject to research and playtesting.
+- **0.13 — 2026-11-18:** Expanded scope: collectathon inventory (picture-based, auto-stacking, no currency), three care animals (chicken, sheep, beehive) with gentle care meter and no death penalty, seasons affecting crops and animal behavior, progressive sticker system, and Dora/Blues Clues-style picture dialogue with parent guidance role.
+- **0.14 — 2026-11-18:** Added Two Modes principle (Gentle Core always on; challenge layers opt-in and parent-controlled), expanded audience to preschool through fifth grade, added pillar 10 (the parent is the difficulty dial), and introduced challenge-layers.md as the source of truth for toggles and stages.
+- **0.15 — 2026-11-18:** Audience clarified: primary audience is pre-elementary through first grade playing with a parent, with older children accommodated through the optional challenge layers. §5 MVP vs §15 product-prototype scope disambiguated (product prototype is the source of truth; Phase-001 is the interaction prototype). Time Awareness removed as a layer (day/night and seasons always on, Gentle Core); control-combo rule relaxed (simple two-button inputs and short holds allowed); four care animals (cow added); places recounted to eight; engine recorded as Godot with C# (see PHASE.md).

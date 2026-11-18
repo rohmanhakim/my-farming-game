@@ -2,14 +2,16 @@
 
 > **Working title:** TBD
 > **Status:** 🟡 Design draft — no code yet
-> **Design version:** GDD v0.12 · World v0.2 (both 2026-11-17)
-> **Last README update:** 2026-11-17
+> **Design version:** GDD v0.15 · World v0.4 (both 2026-11-18)
+> **Last README update:** 2026-11-18
 
 ![](docs/assets/game-screenshoot-small.jpeg)
 
-A gentle, fully 2D life-and-garden game for young children (pre-elementary through first grade). The player cares for a small garden, explores a quiet lane, and helps friendly neighbours with ordinary tasks — farming, exploration, and everyday social learning as parts of one cozy world.
+A gentle, fully 2D life-and-garden game for young children — mainly pre-elementary through first grade, played with a parent — that grows with the child (older children up to fifth grade are accommodated through the optional challenge layers). The player cares for a small garden, tends friendly farm animals, explores a quiet lane, and helps neighbours with everyday tasks — farming, animal care, exploration, and everyday social learning as parts of one cozy world.
 
-Inspired by the welcoming feel of games like *Stardew Valley*, but deliberately much smaller in scope and designed specifically for children: no crop death, no shame, no time pressure, no reading required to act.
+Inspired by the welcoming feel of games like *Stardew Valley*, but designed specifically for children: no crop death, no animal death, no shame, no time pressure, no reading required to act. Collect picture-based items, care for animals through gentle responsibility loops, and watch the garden change with the seasons.
+
+The game offers two modes: a **Gentle Core** that is always available and never gets harder, and **opt-in challenge layers** managed by a parent or caregiver through a grown-up menu. As the child grows, the parent can turn on layers like Words vs. Pictures, multi-step requests, garden coins, tool upgrades, crafting, and a gentle session timer (on by default) — gradually growing the game from a simple first garden into a full farming simulation. Day/night and seasons are always on: they belong to the Gentle Core, not to a challenge layer. Nothing is ever locked behind the challenge layers; the core loop always remains available.
 
 ---
 
@@ -43,11 +45,17 @@ The differentiator is an interactive, presenter-like story woven through the gam
 ## Design pillars
 
 1. **Easy to understand** — a child can see what to do and learn the controls by trying them.
-2. **Kind and low-pressure** — mistakes are safe; nothing punishes a break or an unusual order of play.
+2. **Kind and low-pressure** — mistakes are safe; nothing punishes a break or an unusual order of play. Animals nap if ignored — they never die or run away.
 3. **Small, satisfying activities** — short actions produce visible, cheerful results.
-4. **Creative ownership** — personalise a garden without needing to optimise it.
+4. **Creative ownership** — personalize a garden without needing to optimize it.
 5. **Warm illustrated world** — expressive characters, clear shapes, non-pixel-art children's-book style.
 6. **Practice everyday social skills** — greeting, asking, taking turns, offering help, repairing a misunderstanding.
+7. **Collectathon inventory** — picture-based slots, auto-stacking, and a collection book give kids the joy of collecting without inventory stress. No currency, no sorting, no "full" penalty.
+8. **Gentle animal care** — caring for farm animals teaches responsibility through positive care loops. Animals nap if ignored — they never die, run away, or become permanently unhappy.
+9. **Progressive challenge (opt-in)** — optional stickers, multi-step requests, and seasonal mysteries grow with the child's skill when a parent turns them on. Nothing is ever locked behind them; the core loop always remains available.
+10. **The parent is the difficulty dial** — challenge layers are turned on or off by a parent or caregiver through a grown-up menu. The game never auto-scales based on age or playtime. Gentle Core remains available at every stage.
+
+> **Core vs. layers:** Day/night, seasons, and the seasonal calendar are always on (Gentle Core — see `docs/mechanics.md` §2–§3). The Session Timer layer is the one layer that defaults to **on**; all others default to off.
 
 ## The core loop
 
@@ -61,14 +69,7 @@ The first beat is **The Butterfly Garden**: plant and water three flowers for Mr
 
 ## Documentation
 
-Everything currently lives in `docs/`. The GDD is authoritative for gameplay, audience, and project decisions.
-
-| Document | What's in it | Status |
-|---|---|---|
-| [`docs/GDD.md`](docs/GDD.md) | Audience, pillars, core loop, rules, controls, art direction, accessibility, safety, prototype plan, change log | Draft v0.12 |
-| [`docs/world.md`](docs/world.md) | Bramblewick Lane, Mr. Marlow, the seed-shed ledger, lore rules, cast, open story questions | Draft v0.2 |
-
-Both documents carry their own status header, open-question list, and change log. Read the change log before editing so the version history stays coherent.
+The [Game Design Document](./docs/GDD.md) is the **single source of truth** for gameplay, audience, and project decisions. This README is the **project-wide summary and navigation hub** for everything else. Every document in `docs/` carries its own status header, open-question list, and change log — read the change log before editing so the version history stays coherent. For the full list, see the [Documentation hub](#documentation-hub) below.
 
 ## Current status
 
@@ -80,18 +81,18 @@ Where the project actually is right now:
 - [x] Rules/difficulty guardrails written (no crop death, no shame, no timers)
 - [x] Art direction narrowed (angled top-down, earthy base + bright accents, non-chibi, non-pixel)
 - [x] Background-story premise written (Bramblewick Lane, Mr. Marlow)
-- [ ] Engine selected
+- [x] Engine selected — **Godot 4.x with C#**
 - [ ] Repository scaffolding (project folder, build running)
 - [ ] First playable prototype
 - [ ] First playtest with a child
 - [ ] Decisions made on the open questions below
 
-Nothing is implemented yet. The current milestone is **decisions, not code**: pick an engine, then build the smallest scene that answers the interaction questions.
+No game code yet. The engine is chosen (Godot 4.x with C#); the current milestone is **building the smallest scene** that answers the interaction questions (Phase-001 — see `PHASE.md`).
 
 ## Roadmap
 
 ### Milestone 0 — Design decisions
-- [ ] Choose engine (see [Technical direction](#technical-direction))
+- [x] Choose engine — **Godot 4.x with C#** (see [Technical direction](#technical-direction))
 - [ ] Decide in-session growth timing and closed-game growth policy
 - [ ] Decide whether there is any in-game clock
 - [ ] Resolve the open story questions in `docs/world.md` §7 that affect the first minute of play
@@ -120,7 +121,9 @@ One small playable scene, placeholder art, for validating feel rather than visua
 - Touchscreen adaptation (iPad / Android tablets first)
 - Relationship meter and high-relationship events
 
-Explicitly deferred from the prototype: large maps, crafting/economy depth, seasons and calendars, combat, online multiplayer, long reading-heavy dialogue.
+Explicitly deferred from the prototype: large maps, crafting/economy depth beyond collectathon slots, detailed real-time calendars, combat, online multiplayer, long reading-heavy dialogue.
+
+**In product-prototype scope** (source of truth: GDD §15, delivered across phases — see `PHASE.md`): Collectathon inventory, four care animals (chicken, sheep, cow, beehive), seasonal crop and animal behavior, optional sticker system, Dora/Blues Clues-style picture dialogue with parent guidance.
 
 ## Open questions
 
@@ -133,17 +136,18 @@ From `docs/GDD.md` §16 — brainstorming, not decided:
 5. Which PC gamepad and mouse mappings should the prototype use?
 6. What research is needed for original, non-chibi European-comics character design?
 7. Which open story questions in `docs/world.md` should be decided next?
+8. What grown-up gesture or question best protects the challenge-layer menu so a child cannot accidentally flip layers during play?
 
 ## Technical direction
 
 **Prototype platform:** PC. **Longer-term goal:** multiplatform, iPad and Android tablets prioritised for touch.
 
-**Engine:** TBD. Evaluate candidates against:
-- 2D workflow and art pipeline (illustrated, non-pixel assets)
-- Speed of PC prototyping
-- Future touch input without rewriting activities
-- Eventual multiplatform deployment
-- The team's existing experience
+**Engine:** **Godot 4.x with C#** (chosen). Selected against:
+- 2D workflow and art pipeline (illustrated, non-pixel assets) ✓
+- Speed of PC prototyping ✓
+- Future touch input without rewriting activities ✓
+- Eventual multiplatform deployment ✓
+- The team's existing experience ✓
 
 The first technical prototype must answer movement, planting, watering, growth feedback, and saving **before** substantial content production starts.
 
@@ -152,7 +156,7 @@ The first technical prototype must answer movement, planting, watering, growth f
 - **Team:** Two people, with AI assistance. Passion project, no fixed content or feature cap.
 - **Process:** Small, testable milestones so the core experience stays playable and coherent.
 - **Assets:** Free royalty-free resources may be used — record each asset's license, attribution requirement, and suitability before use.
-- **Safety:** No personal-data collection, no open chat or user-generated public content. Child-privacy and age-rating review required before any release. Online features and monetisation are out of scope.
+- **Safety:** No personal-data collection, no open chat or user-generated public content. Child-privacy and age-rating review required before any release. Online features and monetization are out of scope.
 
 ## How this README gets updated
 
@@ -161,10 +165,41 @@ This file is meant to be edited as the project develops. Suggested conventions:
 - **Bump `Last README update`** every time you touch this file, using `YYYY-MM-DD`.
 - **Tick checkboxes** as things land; add new items rather than rewriting sections.
 - **Move work from "Current status" → "Roadmap" → "Done"** as it happens.
-- **Bump the design version numbers** only in `docs/GDD.md` and `docs/world.md` (their change logs are the source of truth); mirror the versions in the header here.
-- **When the working title is chosen**, replace "Project My Farm" in the header and the `Working title` line.
+- **Bump version numbers** in each document's own header and change log (the change log is the source of truth for that document); mirror the GDD version in the header here. The GDD is the single source of truth for gameplay and project decisions.
+- **When the working title is chosen**, replace "Project My Farming Game" in the header and the `Working title` line.
 - **When the engine is chosen**, fill in [Technical direction](#technical-direction) and note the decision in the GDD change log.
 - Keep this file an honest snapshot: if something is speculative, label it as a proposal.
+
+---
+
+## Documentation hub
+
+This README is the centralized navigation hub for the project. Every design document lives in `docs/` and cross-links to the others. The **[Game Design Document](./docs/GDD.md) is the single source of truth** for gameplay decisions; **this README is the project-wide summary** for readability and navigation. Start with the GDD, then branch out to the documents below.
+
+| Document | What it covers |
+|---|---|
+| [Game Design Document (`docs/GDD.md`)](./docs/GDD.md) | Authoritative source for gameplay, audience, design pillars, core loop, milestones, open questions, and technical direction. |
+| [World, Setting & Background Story (`docs/world.md`)](./docs/world.md) | Bramblewick Lane premise, Mr. Marlow, the seed-shed ledger, places, lore, and the Butterfly Garden story beat. Expands the GDD's setting direction. |
+| [Characters (`docs/characters.md`)](./docs/characters.md) | Main player character, parent/caregiver co-play role, Mr. Marlow (NPC), seasonal visitor, and future cast. |
+| [Places (`docs/places.md`)](./docs/places.md) | The eight places on Bramblewick Lane: home, lane, Mr. Marlow's cottage + seed shed, allotment beds, brook & footbridge, market stand, stile, Lantern Hill. |
+| [Crops (`docs/crops.md`)](./docs/crops.md) | Crop list, growth model, seasons, starting seeds, Butterfly Garden flowers, and later seasonal crops. |
+| [Animals (`docs/animals.md`)](./docs/animals.md) | Chicken, sheep, cow, and beehive — gentle care meters, seasonal behavior, and collectathon products; plus the lane's ambient creatures. |
+| [Items (`docs/items.md`)](./docs/items.md) | Starting loadout (hands, watering can, seed box), earned items (butterfly net), grown crops, decorations, and NPC-held items. |
+| [Inventory System (`docs/inventory.md`)](./docs/inventory.md) | Collectathon slot categories, auto-stacking, Overflow Nest at Marlow's shed, Collection Book. |
+| [Mechanics (`docs/mechanics.md`)](./docs/mechanics.md) | Core verbs (move, interact, plant, water, harvest, find & catch, sleep, decorate, talk/give, feed, brush, collect), day/night cycle, seasons, tool belt, co-play. |
+| [Controls (`docs/controls.md`)](./docs/controls.md) | Xbox gamepad, mouse, and touchscreen control mappings; co-play schemes; calendar UI. |
+| [Events (`docs/events.md`)](./docs/events.md) | Core events (Butterfly Garden task), daily/ambient events, seasonal events, relationship milestones. |
+| [Progressive Challenge & Sticker System (`docs/progression.md`)](./docs/progression.md) | Sticker book, optional neighbour requests, optional tools, seasonal mysteries, parent role evolution. |
+| [Challenge Layers & Parent Controls (`docs/challenge-layers.md`)](./docs/challenge-layers.md) | Optional challenge layers, parent-controlled toggles, five-stage growth map, one-click reset. |
+
+### How the docs fit together
+
+- **[README.md](#)** — This file. Centralized hub and honest project snapshot. Bumped when the project changes.
+- **[docs/GDD.md](./docs/GDD.md)** — Authoritative for gameplay, audience, and project decisions. All other docs expand it.
+- **[docs/world.md](./docs/world.md)** — Expands the GDD's setting; the GDD remains authoritative for gameplay.
+- **Everything else** — Expands the GDD and/or world.md in a specific domain (characters, places, crops, animals, items, inventory, mechanics, controls, events, progression).
+
+Every document includes a "Related documents" section at the end so you can follow links from any page to any other page.
 
 ---
 

@@ -1,8 +1,8 @@
 # World, Setting, and Background Story
 
 > **Status:** Brainstorming draft — story and setting proposal referenced by the GDD
-> **Version:** 0.2
-> **Last updated:** 2026-11-17
+> **Version:** 0.4
+> **Last updated:** 2026-11-18
 > **Purpose:** A working document for the background-story premise, the place, the lore, and the characters who carry it. It expands the story and setting direction in [GDD.md](./GDD.md); the GDD remains authoritative for gameplay, audience, and project decisions. World details here are proposals until validated through playtesting.
 
 ---
@@ -28,11 +28,12 @@ The premise exists to serve the GDD, not the other way around. Every element bel
 | Reciprocal request anchor (want → task → reward) | Mr. Marlow holds seeds, tools, and knowledge the child wants; the child has small, capable hands he does not. The exchange is *mutually needed*, not a chore assignment. |
 | NPC remembers unfinished tasks | He is a permanent neighbour at the end of the lane, never leaves, and is always reachable. |
 | Relationship meter | The seed shed's ledger and the lane's own memory respond visibly to how the player has treated people and place. |
-| Rewards that unlock new verbs/places | The lane is designed as a series of gentle locks: gate, stile, brook, orchard, hill. |
+| Rewards that unlock new verbs/places | The lane is designed as a series of gentle locks: gate, brook (early exploration reward), stile, hill. |
 | Presenter-like interactive storytelling | Mr. Marlow *is* the narrator. He addresses the player, pauses, notices what actually happened, and reacts. No disembodied voice needed. |
 | Not a parent/child dynamic | He has no authority over the child's day, no punishment, no disappointment. He is a neighbour who can be visited or not. |
-| Small, readable world | One lane, six places, no map. |
+| Small, readable world | One lane, eight places, no map. |
 | First beat: The Butterfly Garden | The missing butterflies are the first mystery and the first task. |
+| A world that feels inhabited, not lonely | Trace objects (laundry, footprints, birdhouse, seed packet, unlit lantern) appear at places before their character is met. The child senses neighbours exist without reading a single line of dialogue. |
 
 ---
 
@@ -63,18 +64,32 @@ A curved lane, roughly the length of a short walk, running from the player's hom
 
 | Place | What it is | Why it exists |
 |---|---|---|
-| **The player's home** | A small cottage or hillside home with a round, brightly painted door and a front garden that starts bare or overgrown | Tutorial space, creative-ownership space, the visual "nothing is here yet" hook |
+| **The player's home** | A small cottage or hillside home with a brightly painted door and a front garden that starts bare or overgrown | Tutorial space, creative-ownership space, the visual "nothing is here yet" hook |
 | **Bramblewick Lane** | The curved path itself, with hedgerows, walls, a stile, a gate | The GDD's "small shared or public-feeling space"; a soft world border |
-| **Marlow's seed shed** | A leaning shed of jars, packets, labels, and a big hand-illustrated ledger | Task hub, reward source, non-currency economy |
+| **Mr. Marlow's cottage + seed shed** | A leaning shed of jars, packets, labels, and a big hand-illustrated ledger | Task hub, reward source, non-currency economy |
 | **The allotment** | A few shared beds tended by other (future) characters | Future NPC home without expanding the map |
 | **The brook and footbridge** | A small crossing with flat stones and reeds | Early exploration reward; home for later requests |
+| **The market stand** | A roadside table where harvests can be sold and seeds or decorations bought | Optional place for the Garden Coins challenge layer; parent-unlocked |
+| **The stile** | A wooden stile at the lane's upper end, leading toward Lantern Hill | Gentle world gate; locked until later |
 | **Lantern Hill** | A hill at the lane's end with a broad oak and an old, unlit lantern post | Long-arc payoff destination; matches the GDD's deferred "ladder to a lookout" reward |
 
 ### 3.3 Visual character
 
-- **Hobbiton-adjacent, not Hobbiton.** Grass-grown roofs, round bright doors, stone walls, picket and picket-adjacent fences, laundry lines, wheelbarrows, terracotta pots, hand-painted signs. Avoid hobbit proportions, pipe-weed, and any design that reads as a copy rather than a homage.
+- **Hobbiton-adjacent, not Hobbiton.** Grass-grown roofs, bright doors, stone walls, picket and picket-adjacent fences, laundry lines, wheelbarrows, terracotta pots, hand-painted signs. Avoid hobbit proportions, pipe-weed, and any design that reads as a copy rather than a homage.
 - **Earthy base, bright accents.** Consistent with the GDD palette direction: subdued greens, browns, and stonework, with saturated flowers, doors, seed packets, and characters popping against it.
 - **Everything is small and made by hand.** Nothing industrial, nothing looming, no skyline. The largest object in the world is the oak on the hill.
+
+### 3.4 Traces of life: the inhabited lane
+
+Before any neighbour is met, the lane shows that others live here. Trace objects are picture-only — no text, no lore to memorise:
+
+- **Laundry on a line** by the brook → hints at the brook keeper
+- **A half-painted birdhouse** leaning on an allotment bed → hints at the allotment neighbour
+- **Small footprints** in the mud near the stile → hints at a child of the lane
+- **A seed packet** left on the player's gate → hints at Mr. Marlow (already met)
+- **An unlit lantern** left on the hill → hints at the seasonal visitor
+
+These traces answer "who lives here?" without a single word of dialogue. The world feels inhabited from day one, so the child never feels alone — but they still meet only one neighbour at a time (never more than two per stage), so they are never overwhelmed.
 
 ---
 
@@ -195,7 +210,7 @@ Each later reward should follow the same shape: **Marlow has been holding someth
 3. **How much does Marlow know?** He should know enough to point and not enough to solve. Defining exactly what he does *not* know is a writing task for the dialogue pass.
 4. **Does the ledger become the relationship UI, a collectible, both, or neither?** Depends on whether a picture-book object survives contact with the fixed-tool-belt UI. Validate early — it is the one element here with interface implications.
 5. **How does the child's home get explained?** Inherited, newly moved-in, or simply "your house" — affects only the opening minute, but affects art (overgrown vs. plain) and first dialogue.
-6. **Is Mr. Marlow the right name and voice?** Alternatives: **Ms. Fennel**, **Mrs. Tansy**, **Old Marlow**, or a role-first "the keeper of the shed." Herb and gardener naming gives British-countryside flavour without any recognisable source.
+6. **Is Mr. Marlow the right name and voice?** **RESOLVED — keep Mr. Marlow.** (see docs/characters.md §8 and change log v0.4). Alternatives not used: Ms. Fennel, Mrs. Tansy, Old Marlow, "the keeper of the shed." Herb and gardener naming gives British-countryside flavour without any recognisable source.
 7. **Does the eventual payoff stay on Lantern Hill?** It matches the GDD's deferred lookout reward, but the ceremony/lantern idea touches seasons and calendars, which are explicitly out of prototype scope. Keep as horizon, not mechanic.
 
 ---
@@ -208,10 +223,26 @@ Each later reward should follow the same shape: **Marlow has been holding someth
 - No expansion by map-size: grow the cast before the geography.
 - Original designs throughout — the direction is a *homage to a mood*, never a reproduction of anyone's characters, assets, or compositions (GDD §9).
 - Every element here is a proposal. Marked items must be validated through playtesting before they are treated as decisions.
+- The brook is an **early exploration reward** (discovered through play, not parent-gated). New *optional* places — the market stand and Lantern Hill — are parent-unlocked: the parent decides when the child is ready to explore them.
 
 ---
+
+## Related documents
+
+| Document | Relationship |
+|---|---|
+| [README.md](../README.md) | Centralized hub for the project. |
+| [GDD.md](./GDD.md) | Authoritative for gameplay, audience, and project decisions; this document expands its setting direction. |
+| [characters.md](./characters.md) | Mr. Marlow, the main character, and the parent/caregiver role carry the story in this document. |
+| [places.md](./places.md) | The eight places of Bramblewick Lane described here. |
+| [crops.md](./crops.md) | Butterfly Garden flowers (Meadow Bell, Honey Cup, Lace Flower) are the first story task. |
+| [events.md](./events.md) | Butterfly Garden task and Lantern Hill events originate from this premise. |
+| [progression.md](./progression.md) | Relationship milestones reference the ledger and high-relationship events proposed here. |
+| [challenge-layers.md](./challenge-layers.md) | Defines optional challenge layers and parent-controlled toggles. |
 
 ## 9. Change log
 
 - **0.1 — 2026-11-17:** Initial brainstorming draft: Bramblewick Lane premise, Mr. Marlow as the wise-friend narrator, the "lane remembers" lore rule, the seed-shed ledger as a candidate relationship/unfinished-task object, six places, the Butterfly Garden mapped onto the premise, and seven open sub-questions.
 - **0.2 — 2026-11-17:** Linked this story and setting proposal from the GDD and clarified the division of authority. Replaced direct character analogies with original archetype descriptions and kept character design open for research.
+- **0.3 — 2026-11-18:** Added a Design intent row on "a world that feels inhabited, not lonely" and section 3.4 "Traces of life: the inhabited lane" — trace objects make the lane feel populated before any character is formally introduced.
+- **0.4 — 2026-11-18:** Reconciled with places.md: place table now lists all **eight** places (renamed to "Mr. Marlow's cottage + seed shed"; added market stand and stile); recount from six to eight places throughout; added the lantern trace; guardrail clarified — brook is the early exploration reward, market stand and Lantern Hill are parent-unlocked.

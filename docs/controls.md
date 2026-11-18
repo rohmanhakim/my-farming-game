@@ -1,0 +1,107 @@
+# Controls
+
+> **Status:** Brainstorming draft
+> **Version:** 0.4
+> **Last updated:** 2026-11-18
+> **Purpose:** General gamepad control scheme for this kind of game, adjusted to the scope of the game described in the GDD. Assumes an XBOX-layout gamepad. All mappings are tentative (see GDD open question Q5) and subject to playtesting.
+
+---
+
+## 1. Control goals (from GDD §8)
+
+- Keep the number of buttons and actions low.
+- Make the primary interaction consistent throughout the game.
+- Use large, easy-to-select targets if touch is supported.
+- Simple two-button inputs and short holds are acceptable (e.g. LB+RB to cycle, hold Start for the grown-up menu); avoid rapid, memory-heavy button sequences.
+- Offer a clear way to pause and reach settings.
+- Essential actions must not depend on reading.
+
+---
+
+## 2. XBOX-layout gamepad (PC prototype)
+
+| Action | XBOX button | Notes |
+|---|---|---|
+| Move character / move menu cursor | Left Stick or D-Pad | Walking only; no run required. The D-pad is reserved for movement only (menus use dedicated buttons). |
+| Interact / use selected tool / confirm | A | Talk to NPCs, plant, water, harvest, open seed shed, catch/release creatures. |
+| Cancel / back | B | Exit menus, decline a task, put tool away. |
+| Open / cycle fixed tool belt | X / LB + RB | Cycles watering can → seed box → earned tools (e.g. butterfly net, brush, basket). Large icon slots; no sortable inventory. (LB+RB is a simple two-button input, allowed per the control goals.) |
+| Open collectathon inventory | Y | Opens the collectathon slot grid. Picture-based, no reading required. (The Collection Book lives in the pause menu.) |
+| Open care menu | Right Stick (RS) click, or on-screen care icon | Dedicated button — the D-pad stays reserved for movement. Shows animal care meters and which animals need attention. Picture icons, no reading required. |
+| Pause menu / calendar & settings | Start | Opens pause: day/night indicator, season calendar, Collection Book, sticker book, settings, save, quit. |
+| Open grown-up menu | Start (hold 3 seconds) or dedicated on-screen button | Parent-only. Opens challenge-layer toggles, session timer, and stage-approval menu. Protected by grown-up gesture or question. |
+| Help tooltip / inspect | Back (Select) | Shows a contextual hint or spoken/visual cue for the highlighted object. |
+| Reserved (unassigned in prototype) | LT / RT | Held for future tools or camera options if needed. |
+
+---
+
+## 3. Two-gamepad parent-child co-play (PC)
+
+- **Player 1 (child):** Full control scheme as above.
+- **Player 2 (parent):** Identical scheme; real-time collaboration.
+- Simultaneous input is never essential. Either player can move, interact, or use tools independently.
+- Tasks work in solo play and remain flexible for co-play or touch turn-taking.
+
+---
+
+## 4. Fully mouse-controlled PC scheme
+
+Designed so all-mouse interactions map naturally to future touchscreen input without changing the underlying activity. The care menu opens from an on-screen care icon (same picture view as the gamepad RS binding).
+
+| Action | Mouse control |
+|---|---|
+| Move character | Click or tap on ground to walk there. |
+| Interact / use tool | Left-click on object or character. |
+| Cancel / back | Right-click or click the cancel button. |
+| Cycle tool belt | Scroll wheel or dedicated on-screen belt buttons. |
+| Pause / calendar & settings | ESC key or on-screen pause button. |
+
+---
+
+## 5. Touchscreen (iPad / Android tablets; longer-term goal)
+
+| Action | Touch control |
+|---|---|
+| Move character | Tap on ground to walk there. |
+| Interact / use tool | Tap on object or character. |
+| Cancel / back | Tap the on-screen back button. |
+| Cycle tool belt | Tap the tool-belt icons at screen edge. |
+| Pause / calendar & settings | Tap the pause button. |
+| Co-play | Turn-taking on the same screen; real-time not required. |
+
+---
+
+## 6. Calendar, season, and day/night UI
+
+- The **Start** pause menu shows the current season, day, and time of day visually (icons, not text-dependent).
+- Sleep/rest at home is prompted through a clear visual button; sleeping advances the day gently.
+- No simultaneous button combos are required to check time or season.
+
+---
+
+## 7. Excluded from controls
+
+- Rapid or memory-heavy button sequences and quick-time events. (Simple two-button inputs like LB+RB and short holds like the grown-up-menu gesture are fine.)
+- Camera rotation or 3D camera controls (fixed angled top-down / three-quarter view per GDD).
+- Inventory sorting or weight management.
+- Voice commands (optional spoken prompts may be added for accessibility, but not required to play).
+- Real-time caretaking timers that punish the child for stepping away.
+
+---
+
+## Related documents
+
+| Document | Relationship |
+|---|---|
+| [README.md](../README.md) | Centralized hub for the project; technical direction covers engine and platform evaluation. |
+| [GDD.md](./GDD.md) | Open question Q5 covers gamepad/mouse mappings; design pillars shape control goals. |
+| [mechanics.md](./mechanics.md) | Core verbs (move, interact, plant, etc.) map to the buttons listed here. |
+| [inventory.md](./inventory.md) | Y button opens collectathon inventory; RS click opens the care menu; Collection Book is in the pause menu. |
+| [challenge-layers.md](./challenge-layers.md) | Defines optional challenge layers and the grown-up menu mapping. |
+
+## 8. Change log
+
+- **0.1 — 2026-11-18:** Initial draft. XBOX layout with fixed tool belt cycling, pause/calendar access, two-gamepad co-play, mouse scheme, and touchscreen mapping. Day/night and season UI noted. Exact mappings TBD per GDD open question Q5.
+- **0.2 — 2026-11-18:** Added collectathon inventory open (Y button), care menu (D-Pad Up), and exclusion of real-time caretaking timers.
+- **0.3 — 2026-11-18:** Added grown-up menu button mapping (Start hold 3 seconds) for parent-controlled challenge layers.
+- **0.4 — 2026-11-18:** Care menu moved from D-Pad Up (conflicted with D-pad movement) to a dedicated RS click / on-screen icon. Y opens the grid only; Collection Book lives in the pause menu. Combo rules relaxed: simple two-button inputs and short holds are allowed.
