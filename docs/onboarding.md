@@ -1,7 +1,7 @@
 # Onboarding — The Short Start
 
 > **Status:** Proposal — new document
-> **Version:** 0.1
+> **Version:** 0.4
 > **Last updated:** 2026-11-19
 > **Purpose:** How a new player (ages 6+) learns the game. Owner direction (2026-11-19): **short** — the guided part should take about **5 minutes**, not 30. After that, the game teaches through gentle, one-time nudges while the player plays freely.
 
@@ -27,9 +27,10 @@
 | 6 | Forage | Pick berries from bushes on the lane (marked with a sparkle) | Forage | 60 s |
 | 7 | First order | Hand the berries to Marlow → coins pop into the wallet; the **order board** appears | Money | 30 s |
 | 8 | Second order | Marlow pins "5 carrots" to the board and points at Kit's garden | Orders match what you grow | 20 s |
-| 9 | Free play | A small goal icon shows "Save up for chickens 🐔" | Saving for a goal | — |
+| 9 | Feed the animals | Back home, Ada shows the 5 hens and the cow: scoop feed into the coop and barn | Animals need food every day | 40 s |
+| 10 | Free play | A goal icon shows "Feed lasts 7 days 🌾 — earn coins for more" | Saving for a goal | — |
 
-**Total ≈ 4–5 minutes.** From here the player is free.
+**Total ≈ 5 minutes.** From here the player is free.
 
 ## 3. One-time nudges (Days 1–7, only when relevant)
 
@@ -40,9 +41,9 @@
 | A crop turns yellow (2 dry days) | Marlow or Ada: "That one's thirsty! Water it today." |
 | A crop is lost (3 dry days) | Small note: "Dry too long. Water every day." (once) |
 | Carrots ready | Sparkle on the beds + the order card lights up |
-| Enough coins for a coop | Marlow: "You could get chickens now." (shop icon) |
-| First hens arrive | "Feed them every day" (feed icon over the coop) |
-| First egg | Egg orders appear on the board |
+| Feed running low (2 days left) | Ada: "We're nearly out of feed. Call the feed seller — your parents left the number by the phone. Before 6 in the evening!" (phone icon) |
+| First morning | "Collect eggs and milk!" (icons over the coop and barn) |
+| First eggs and milk | Egg and milk orders appear on the board |
 | Hen unfed for 2 days | Ada: "The hens are hungry!" |
 | First rain | "Rain waters the garden for you today." |
 
@@ -69,3 +70,6 @@ Playtest with 6–8-year-olds: can they finish the guided start without adult he
 ## 7. Change log
 
 - **0.1 — 2026-11-19:** New document (owner: tutorial yes, but 30 minutes is too long). A ≈ 5-minute guided start teaching move, clear, plant, water, forage, first order, and saving for a goal; one-time contextual nudges for Days 1–7 (sleep, watering, yellow and lost crops, coop, feeding, rain); a toggle to turn nudges off.
+- **0.2 — 2026-11-19:** Goal step and nudge now point at the empty starting coop (buy hens, not a coop).
+- **0.3 — 2026-11-19:** Starting hens and cow: new step 9 (feed the animals), goal is earning coins before the week of feed runs out; nudges for low feed and first eggs/milk.
+- **0.4 — 2026-11-19:** Low-feed nudge points to phoning the feed seller (number left by the parents) and its 18:00 cut-off.

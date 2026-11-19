@@ -1,7 +1,7 @@
 # Mechanics
 
 > **Status:** Brainstorming draft — **updated for the direction reset 2026-11-19**
-> **Version:** 0.10
+> **Version:** 0.12
 > **Last updated:** 2026-11-19
 > **Purpose:** Player verbs and systems. Every element is a proposal pending playtesting. The GDD remains authoritative for gameplay, audience, and project decisions.
 
@@ -22,7 +22,7 @@ The game is a realistic but kid-friendly, educational farm sim for PC (GDD §1�
 
 ## 2. Day and night cycle
 
-**Clock model (Milestone 0 decision 2, GDD §4):** 8 phases × 3 in-game hours; the clock jumps one 3-hour step at a time (≈3 minutes of play per step, ≈24-minute in-game day). Runs only while playing; stops in the pause menu and while closed; resets to Dawn on sleep.
+**Clock model (Milestone 0 decision 2, GDD §4):** 8 phases × 3 in-game hours; the clock jumps one 3-hour step at a time (≈ 2 min 15 s of play per step; the playable day 06:00 → 02:00 lasts ≈ 15 real minutes). Runs only while playing; stops in the pause menu and while closed; resets to Dawn on sleep.
 
 | # | Phase | Clock | What is true |
 |---|---|---|---|
@@ -43,7 +43,7 @@ The game is a realistic but kid-friendly, educational farm sim for PC (GDD §1�
 
 ## 3. Calendar and seasons
 
-Seasons decide what sprouts, which fish and creatures appear, festival dates, and **seasonal prices** (out-of-season goods pay more). Season length TBD.
+Seasons decide what sprouts, which fish and creatures appear, festival dates, and **seasonal prices** (out-of-season goods pay more). **Each season is 30 days** (120-day year, like Harvest Moon).
 
 - **Spring:** First crops; butterflies return (optional Butterfly Garden request).
 - **Summer:** Warm crops; fish grow fast; fireflies.
@@ -78,7 +78,8 @@ Seasons decide what sprouts, which fish and creatures appear, festival dates, an
 | **Subscribe / cancel** | Accept a standing daily order (e.g. 6 eggs by 10:00) or cancel it. | Daily HUD reminder; missed day = unpaid, no penalty; a helper can deliver it. |
 | **Hire / dismiss** | Hire a farmhand for a job and area, or let them go. | Daily wage from the wallet; unpaid = day off, never debt. |
 | **Sell** | Sell at the market stall, shipping box, or farm shop. | Seasonal and demand pricing (economy.md). |
-| **Buy** | Seeds, animals, tools, buildings, land, blueprints, automation. | Money never goes below zero. |
+| **Buy** | Seeds, animals, tools, buildings, blueprints, automation (at the seed shed). | Money never goes below zero. |
+| **Order feed** | Phone the feed seller from home (the parents left the number) for grain, hay, or fish food. | Before 18:00 → delivered to the feed bins at Dawn next day; later → the day after; no fee. |
 | **Trade** | Swap goods with the travelling merchant. | Rare seeds, breeds, decorations. |
 | **Process** | Turn produce into jam, bread, cheese, pie, smoked fish. | Kitchen/mill; worth more than raw goods. |
 | **Craft** | Make tools, fences, decorations, sprinklers, feeders from blueprints. | Workshop; recipes shown in pictures + short text. |
@@ -178,3 +179,5 @@ Optional long-term systems — decoration and farm charm, collections, contests,
 - **0.8 — 2026-11-19:** **Direction reset (GDD v0.19).** Two-modes/challenge-layer framing replaced by three difficulty modes. Watering now required; neglect rule (dry → yellow → gone; animals gone with gravestone card). Sell/buy/craft/upgrade promoted to **core economy and building verbs** with new verbs: take order, trade, process, build/place/move, expand land, enter contest, fish, forage. New **§7 Automation** (sprinklers, auto-feeders, pond auto-feeder, helpers, windmill/pump). Clock phases now drive order refresh, shop hours, and shipping payout. Touchscreen and turn-taking co-play removed (PC only). Exclusions rewritten; §11 points to the endgame in progression.md.
 - **0.9 — 2026-11-19:** Owner picks: single difficulty mode; **day-based growth** and the 3-days neglect rule (§1, §6); 'Expand land' verb replaced by **Clear land** (all land owned, overgrown); garden shelf removed; Butterfly Garden now optional; co-play decided (shared farm, dynamic split screen).
 - **0.10 — 2026-11-19:** Added **subscribe/cancel** (standing daily orders with reminder) and **hire/dismiss** verbs; helpers now explicitly hired farmhands (daily wage) or befriended garden sprites.
+- **0.11 — 2026-11-19:** Added **Order feed** (phone the feed seller from home, 18:00 cut-off, Dawn delivery to feed bins); Buy no longer lists land.
+- **0.12 — 2026-11-19:** Clock step ≈ 2 min 15 s (≈ 15-minute playable day); seasons 30 days.

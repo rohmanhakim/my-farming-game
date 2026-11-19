@@ -1,7 +1,7 @@
 # Buildings & Farm Structures
 
 > **Status:** Brainstorming draft
-> **Version:** 0.2
+> **Version:** 0.5
 > **Last updated:** 2026-11-19
 > **Purpose:** Everything Kit can build on the farm — cost, footprint, capacity, when it unlocks, what it teaches, and how it fits the land. Sized against the farm map below so the land is a real, countable limit. Costs come from [economy.md](./economy.md) (≈ half real price). All numbers are proposals pending playtesting.
 
@@ -39,13 +39,13 @@ Cost tiers: see economy.md for exact numbers (coins). Footprint in tiles (width 
 |---|---|---|---|---|---|---|---|
 | **Tilled bed** | Plant one crop | free (hoe) | 1 × 1 | 1 crop | Start | Soil and seeds | Sprinklers water beds in range; crops are the biggest land user. |
 | **Compost bin** | Scraps → compost (better crop quality) | 300 | 1 × 1 | — | T1 | Recycling, soil health | A helper can empty it. |
-| **Small coop** | Houses chickens | 750 | 4 × 3 = 12 | **5 hens** | T1 (after first order) | What hens need | Fits one auto-feeder. |
+| **Small coop** | Houses chickens. **One old coop is on the farm from the start** (front garden, already cleared); extra coops cost | 750 | 4 × 3 = 12 | **5 hens** | T1 (after first order) | What hens need | Fits one auto-feeder. |
 | **Big coop** (upgrade) | More hens | +1,250 | 6 × 4 = 24 | **10 hens** | T2 | Scaling up | — |
 | **Beehive** | Honey; pollinates crops within 5 tiles | 2,000 | 1 × 1 | 1 colony | T2 | Pollination | Up to 8 hives = an apiary (8 tiles). No feeding; needs flowers nearby. |
 | **Workshop** | Craft tools, fences, decorations, sprinklers, feeders | 15,000 | 4 × 3 = 12 | — | T2 | Making and repairing | Required to craft automation. |
 | **Kitchen** (house upgrade) | Jam, bread, cheese, pie, smoked fish | 25,000 | 0 (in house) | — | T2 | Where food comes from | Processed goods earn more per tile. |
 | **Market stall** | Sell to passers-by on the lane | 1,500 | 0 (on the lane) | — | T2 | Pricing, demand | A helper can stock it. |
-| **Small barn** | Houses cows and sheep | 75,000 | 6 × 5 = 30 | **5 stalls** | T3 | Large animals' needs | Fits auto-feeders. |
+| **Small barn** | Houses cows and sheep. **One old barn is on the farm from the start** (edge of Field A, ground around it cleared); extra barns cost | 75,000 | 6 × 5 = 30 | **5 stalls** | T3 | Large animals' needs | Fits auto-feeders. |
 | **Big barn** (upgrade) | More stalls | +75,000 | 8 × 6 = 48 | **10 stalls** | T3 | Scaling up | — |
 | **Small fish pond** | Stock, feed, harvest fish | 10,000 | 4 × 4 = 16 | **10 fish** | T3 | Water ecosystems | Pond auto-feeder fixture. Free in Field E's pond spot after clearing (no dig cost). |
 | **Large fish pond** | More fish | 30,000 | 6 × 6 = 36 | **25 fish** | T3 | — | — |
@@ -84,6 +84,8 @@ If a player wants three barns, a second greenhouse, and a big orchard, something
 ## 5. Placement rules
 
 - Every building except the kitchen and market stall uses farm tiles, and can only be placed on **cleared** land.
+- **Feed bins:** every coop, barn, and pond has a built-in feed bin; home-ordered feed is delivered into it at Dawn (economy.md §2), and auto-feeders draw from the silo instead.
+- **Starting buildings (owner decision 2026-11-19):** the old coop (with 5 hens) and old barn (with 1 cow) are free and usable as they are; they can be upgraded (big coop / big barn) or moved like any other building.
 - Buildings can be **moved** for free and **sold back** for half what Kit paid.
 - When land is full, growth means **better use of land**: hydroponics, greenhouse, orchards, processing, layout.
 
@@ -110,3 +112,6 @@ If a player wants three barns, a second greenhouse, and a big orchard, something
 
 - **0.1 — 2026-11-19:** New document (owner request). Catalogue of 18 farm structures — bed, compost bin, coop, beehive/apiary, workshop, kitchen, market stall, silo, barn, fish pond, orchard, sprinklers, windmill/water pump, greenhouse, hydroponics, farm shop, helper post, decorations — each with cost tier, footprint, unlock tier, education angle, and automation/land tie-in. Placement rules (move free, sell back at half, land as the final limit).
 - **0.2 — 2026-11-19:** **Aligned with the land (owner request).** Added **§2 farm map**: front garden + five fields, **992 tiles, all owned from the start but overgrown**. Every building now has an exact footprint and a **capacity** (5-stall barn = 5 animals; coop, pond, greenhouse, hydroponics likewise); costs in coins from economy.md (≈ half real price). Added §4 worked example showing a full farm fits the land with ~414 crop tiles left. "Land bought" replaced by "land cleared". Hydroponics now needs no watering; showcase added.
+- **0.3 — 2026-11-19:** Farm now **starts with an old empty coop and barn** (free, usable as is); Kit buys animals first and pays only for extra or bigger buildings.
+- **0.4 — 2026-11-19:** Starting coop holds 5 hens and starting barn 1 cow.
+- **0.5 — 2026-11-19:** Feed bins in coop/barn/pond receive home-ordered feed.

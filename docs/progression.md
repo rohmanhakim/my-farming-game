@@ -1,7 +1,7 @@
 # Progression: Farm Growth, Automation, and Long-Term Goals
 
 > **Status:** Design draft — **restructured 2026-11-19**
-> **Version:** 0.6
+> **Version:** 0.8
 > **Last updated:** 2026-11-19
 > **Purpose:** How the farm grows from a tangled plot to a full, automated farm (*Harvest Moon*-style), what limits it at each point, and what there is to chase once it runs well. Replaces the old parent-controlled layers and five-stage age map. Everything after the core farm loop is **optional**.
 
@@ -42,9 +42,9 @@ Tiers are reached by **what the farm is**, not by time played or age. They gate 
 
 | Tier | Reached when | Typical limit | What opens | Order size |
 |---|---|---|---|---|
-| **T1 — Small plot** | Start of game | **Money** (500 coins, 3 cleared beds) | Seeds, clearing the front garden, compost bin, small coop + hens, the order board (first order on Day 1) | 1–6 items |
+| **T1 — Small plot** | Start of game | **Money** (500 coins, 3 cleared beds) | Seeds, clearing the front garden, compost bin, **5 hens + 1 cow already in the old coop and barn**, feed, the order board (first order on Day 1) | 1–6 items |
 | **T2 — Growing farm** | First 10 orders delivered | **Money** | Big coop, beehive, workshop, kitchen (processing), market stall, first blueprints, scythe/hammer/axe, brush, fishing rod | 3–10 items, mixed |
-| **T3 — Working farm** | First back field (Field A) fully cleared | **Money + time** (hand-tending and clearing get busy) | Barn, silo, fish pond, orchard, travelling merchant visits, festivals & contests | Baskets, weekly repeats |
+| **T3 — Working farm** | First back field (Field A) fully cleared | **Money + time** (hand-tending and clearing get busy) | Cows and sheep for the **old starting barn**, extra/bigger barns, silo, fish pond, orchard, travelling merchant visits, festivals & contests | Baskets, weekly repeats |
 | **T4 — Automated farm** | First sprinkler or auto-feeder placed | **Land** begins to bite | Sprinklers (all grades), auto-feeders, pond auto-feeder, windmill/pump, greenhouse, helpers | Bulk orders, catering |
 | **T5 — Full land** | All five back fields cleared | **Land only** | Hydroponics, farm shop, lane restoration, endgame goals (§6) | Standing orders, festival catering |
 
@@ -179,3 +179,5 @@ Missing a mystery means waiting for it to return next year.
 - **0.4 — 2026-11-19:** **Restructured for the direction reset (GDD v0.19).** Parent-controlled layers, the five-stage age map, and the parent-role table removed. Added **farm growth tiers T1–T5** (money → land as the limit), **land expansion** (fields behind the house), **orders as progression**, and a new **§6 After the farm is running** with optional long-term goals: decoration and **farm charm**, collections (rare crops, fish, breeds, recipes, forage), festival trophies, **lane restoration**, a showcase/museum, mastery tracks, and prestige rare items. Stickers updated for orders, automation, fish pond, contests, and land. Character introductions now tied to farm tiers.
 - **0.5 — 2026-11-19:** **Owner decisions:** all land is **unlocked from the start but overgrown** — §4 rewritten from buying fields to **clearing** them (debris table, tools, no stamina or deadline); tier triggers updated (T3 = Field A cleared, T5 = all fields cleared); single difficulty mode; first beat is a first order, Butterfly Garden optional.
 - **0.6 — 2026-11-19:** Subscription (daily) orders added to §5; Busy Hands sticker covers farmhands and garden sprites.
+- **0.7 — 2026-11-19:** T1/T3 rows updated for the free starting coop and barn (buy animals first, more buildings later).
+- **0.8 — 2026-11-19:** T1 notes the starting 5 hens and 1 cow.

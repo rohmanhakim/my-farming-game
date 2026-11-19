@@ -1,7 +1,7 @@
 # Game Design Document
 
 > **Status:** Brainstorming draft — **direction reset 2026-11-19** (see v0.19–v0.20 change log)
-> **Version:** 0.22
+> **Version:** 0.27
 > **Last updated:** 2026-11-19
 > **Purpose:** A living document for shaping the game together. Confirmed owner decisions are marked **decided**; everything else is a proposal, not a commitment.
 
@@ -13,7 +13,7 @@ Farming, community, and exploration are parts of one warm world. Neglect has rea
 
 The game takes inspiration from the welcoming farming and community feel of *Stardew Valley* and the farm-growth arc of *Harvest Moon*, with a smaller scope and a teaching-friendly tone.
 
-**Working title:** TBD
+**Working title:** **Fields & Sunshine** (owner pick 2026-11-19; chosen after trying Seeds & Sunshine and Greens & Sunshine; a formal trademark check is still needed before release). The setting stays Bramblewick Lane; the title does not need to match it.
 
 ## 2. Audience and Play Context
 
@@ -49,7 +49,7 @@ The *educational* pillar, made concrete. Every system should serve at least one 
 | 1 | Plants need water every day, the right season, and good soil | Daily watering, 3-dry-days rule, seasons, compost |
 | 2 | Animals depend on us for food and shelter every day | Daily feeding, housing capacity, 3-unfed-days rule |
 | 3 | Food comes from farms and is changed into other food | Milk → cheese, wheat → flour → bread, fruit → jam/pie |
-| 4 | Money is earned, spent, and saved up for a goal | Orders, prices, saving for a coop or barn |
+| 4 | Money is earned, spent, and saved up for a goal | Orders, prices, saving for hens, a cow, or a bigger barn |
 | 5 | Prices change with the season and how much is for sale | Seasonal and demand pricing |
 | 6 | Keeping a promise matters, and you choose what to promise | Accepting and delivering orders (optional) |
 | 7 | Space and time must be planned | Clearing land, building footprints, days to harvest |
@@ -86,12 +86,12 @@ The first beat teaches the game's real loop — produce → order → money → 
 
 | Beat | Design |
 |---|---|
-| Player's want | On Day 1 Kit sees a hen in Marlow's yard and a picture of eggs; Kit wants chickens of their own (a coop costs more than Kit has). |
+| Player's want | Kit starts with 5 hens, a cow, and about a week of feed — but the feed will run out and the garden is bare. Kit wants coins for feed and seeds (and, one day, more animals). |
 | NPC's request (quick) | Marlow: "Bring me 3 handfuls of wild berries from the lane." Foraging is possible right away, so the **first order is paid within minutes** (coins + the order board opens). |
 | NPC's request (farming) | Marlow then orders **5 carrots**, which Kit grows from the starter seeds (3 days, watered daily). |
 | Player's choice | Accept, decline, or leave it. Marlow restates kindly; if the carrots are lost to neglect he simply waits for the next batch. |
-| Reward | Coins (enough, with savings, for a small coop and 2 hens around Day 12–15 — economy.md §5.3) and the **order board**, where neighbours post repeat orders. |
-| Loop back | Eggs → egg orders from Marlow and the baker → repeat and bigger orders. |
+| Reward | Coins for feed and seeds and the **order board**, where neighbours post repeat orders. |
+| Loop back | Eggs and milk → egg and milk orders from Marlow and the baker → repeat, subscription, and bigger orders. |
 
 **The Butterfly Garden** stays as an **optional later request** in Spring (plant and water three flowers → butterfly net → catching butterflies). It is no longer the opening.
 
@@ -102,6 +102,8 @@ The first beat teaches the game's real loop — produce → order → money → 
 - **Old family hoe:** For tilling cleared ground.
 - **Seed box:** Starts with two or three basic seeds; more are bought at the seed shed.
 - **Purse:** 500 coins (economy.md §1).
+- **Starting animals:** 5 hens (old coop) and 1 cow (old barn), with ≈ 7 days of feed (35 chicken-feed portions, 7 hay portions) already in their feed bins.
+- **Ordering feed from home (owner decision 2026-11-19):** animal feed (grain, hay, fish food) is ordered **by phone from home**: Kit's parents left the **feed seller's number** on a note by the house phone (they kept the farm running this way). No shop trip needed. Orders placed **before 18:00** arrive at **Dawn next day**, straight into the **feed bins** in the coop, barn, or pond; orders after 18:00 arrive the day after. No delivery fee. Kit feeds animals by scooping from the bin. **Seeds, saplings, and everything else are still bought in person at Marlow's seed shed** (shop hours).
 - **Future tools:** Introduced when they open a new verb or make a chore faster (scythe, hammer, axe, brush, fishing rod, net…).
 
 The tool belt holds a small set of large icon slots. Harvests and products go to picture-based, auto-stacking inventory slots (inventory.md). Overflow goes to a storage chest; there is no sorting and no "full" penalty.
@@ -190,11 +192,11 @@ One rule for everything that lives on the farm: **3 days in a row without care �
 
 - **8 day phases, 3 in-game hours each** (24 hours = 8 × 3).
 - **Stepped, not continuous:** the clock jumps **one 3-hour step at a time**.
-- **Step rate:** one step ≈ **3 minutes of play** → a full in-game day ≈ **24 minutes of play** (tunable).
+- **Day length (decided 2026-11-19): ≈ 15 real minutes** for the playable day, 06:00 → 02:00 bedtime (20 in-game hours). That is **45 real seconds per in-game hour**, so one 3-hour step ≈ **2 min 15 s**. (Harvest Moon ≈ 18 min, Stardew Valley ≈ 14 min.)
 - **Runs only while playing:** stops in the pause menu and while the game is closed.
 - **Sleep/rest** ends the day: the calendar day increments and the clock resets to **Dawn (06:00)**.
 - **Bedtime at 02:00 (proposal):** if Kit is still up at 02:00, Kit heads home and sleeps automatically — no penalty. Without this, a player who never sleeps would freeze the calendar now that growth is day-based.
-- **⚠️ Day length open (§16 Q13):** *Harvest Moon* runs about 1 in-game minute per real second (≈ 18 real minutes from 06:00 to midnight); *Stardew Valley* ≈ 14 real minutes per day. Ours is ≈ 24 minutes; a shorter day (≈ 16–18 min) is recommended.
+- **Seasons (decided 2026-11-19): 30 days each, like *Harvest Moon*** — 4 seasons, a **120-day year**.
 
 | # | Phase | Clock | Light | What is true in this phase |
 |---|---|---|---|---|
@@ -224,7 +226,7 @@ One rule for everything that lives on the farm: **3 days in a row without care �
 
 ### Buildings (decided direction 2026-11-19)
 
-Kit can build coops, barns, a fish pond, beehives/apiary, an orchard, a workshop, a kitchen, a storage silo, compost bins, sprinklers/irrigation, a windmill/water pump, a **greenhouse** (any crop, any season), a **hydroponics** bay (faster, water-efficient, needs power), a market stall, helper posts, and a farm shop. Each has a cost, a land footprint, an unlock tier, and an education angle — full catalogue in [buildings.md](./buildings.md). Money gates them early; cleared land, then total land (992 tiles), gates them late. Capacity comes from the building (a 5-stall barn holds 5 animals).
+**The farm starts with an old coop holding 5 hens and an old barn (5 stalls) holding 1 cow, plus about a week of feed** — family buildings and animals (owner decision 2026-11-19, like *Harvest Moon*). Kit buys more animals and feed as the farm grows. More and bigger buildings come later. Kit can build more coops, barns, a fish pond, beehives/apiary, an orchard, a workshop, a kitchen, a storage silo, compost bins, sprinklers/irrigation, a windmill/water pump, a **greenhouse** (any crop, any season), a **hydroponics** bay (faster, water-efficient, needs power), a market stall, helper posts, and a farm shop. Each has a cost, a land footprint, an unlock tier, and an education angle — full catalogue in [buildings.md](./buildings.md). Money gates them early; cleared land, then total land (992 tiles), gates them late. Capacity comes from the building (a 5-stall barn holds 5 animals).
 
 ### After the farm is running (all optional)
 
@@ -251,7 +253,7 @@ Short sessions are satisfying; long sessions are possible. There is no required 
 - Clear weeds and stones; till; plant; water daily; see crops grow over days, yellow after 2 dry days, gone after 3.
 - Forage wild berries; Marlow's first order (berries) and second order (carrots); coins.
 - Order board with simple repeat orders matched to what Kit can produce.
-- Buy seeds, a small coop, and hens at the seed shed (half real price).
+- Start with 5 hens and 1 cow in the old coop and barn, plus a week of feed; buy seeds, feed, and more hens at the seed shed (half real price).
 - Feed hens daily, collect eggs, deliver egg orders; the hen-loss message card.
 - Save and load (versioned JSON).
 
@@ -330,7 +332,7 @@ Movement plus one primary interaction action; simple visual menus for seeds, ord
 
 Develop an original visual identity. Do not copy any particular game's characters, assets, settings, or exact visual style.
 
-**Palette refinement, camera implementation, animation complexity, and character research:** TBD.
+**Primary references Pioneers of Olive Town and Harvest Moon: Home Sweet Home; proportions (≈ 5 heads tall — not chibi), palette, and music direction:** [art-audio.md](./art-audio.md). Camera implementation and animation complexity: TBD.
 
 ## 10. Story, Dialogue, Audio, and Text
 
@@ -381,7 +383,7 @@ The premise and cast are in [world.md](./world.md). Voice, localisation, and mus
 
 ### First playable
 
-Phase-001 vertical slice (§5): clearing, planting, day-based growth and neglect, the first orders, buying a coop and hens, feeding and eggs, save/load. Placeholder art.
+Phase-001 vertical slice (§5): clearing, planting, day-based growth and neglect, the first orders, feeding the starting hens and cow, eggs and milk, buying feed and seeds, save/load. Placeholder art.
 
 ### Playtesting questions
 
@@ -417,8 +419,8 @@ Playtests with children are conducted with appropriate adult supervision and con
 10. **CLOSED (v0.20):** no difficulty modes, so no mode switching.
 11. **RESOLVED (v0.20):** day-based growth, Harvest Moon-style (§4).
 12. **RESOLVED (v0.20):** the first beat is a first order; the Butterfly Garden is optional and later (§3).
-13. **⚠️ OPEN — day length.** Keep ≈ 24 real minutes, or shorten to ≈ 16–18 like Harvest Moon / Stardew? (Recommendation: 18.)
-14. **⚠️ OPEN — season length.** Proposed 28 days (economy.md assumes it).
+13. **RESOLVED (v0.26):** day length ≈ 15 real minutes (06:00 → 02:00).
+14. **RESOLVED (v0.26):** 30-day seasons, 120-day year (Harvest Moon).
 15. **⚠️ OPEN — order premium.** Should orders pay ×1.25 the market price? (economy.md §6, recommended.)
 
 ## Related documents
@@ -440,6 +442,7 @@ Playtests with children are conducted with appropriate adult supervision and con
 | [buildings.md](./buildings.md) | Farm map (992 tiles) and everything Kit can build. |
 | [economy.md](./economy.md) | Prices (sell ≈ real, buy ≈ half) and balance check; full sheet in data/economy.csv. |
 | [onboarding.md](./onboarding.md) | The short guided start. |
+| [art-audio.md](./art-audio.md) | Art and music brief: references, proportions, music direction. |
 | [challenge-layers.md](./challenge-layers.md) | The single difficulty mode and its rules. |
 
 ## 17. Change Log
@@ -466,3 +469,8 @@ Playtests with children are conducted with appropriate adult supervision and con
 - **0.20 — 2026-11-19:** **Owner picks from the design review.** **One difficulty mode** (realistic but kid-friendly) replaces Easy/Normal/Realistic. **Age band 6+** with design requirements (icon-first, short text, read-aloud, small numbers) and rating target. **Land all unlocked but overgrown**, cleared at the player's pace; animal limits = **housing capacity**. **Day-based growth** (min 1 day) replaces the Milestone 0 play-time model; one neglect rule — **3 days in a row without water/food → gone**, 2 warning days. **First beat = first order** (berries, then carrots); Butterfly Garden optional and later. Added **learning goals** (10), **co-op** rules (shared farm, merging split screen), **save versioning**, Phase-001 as a **vertical slice** (orders + chickens), 02:00 bedtime proposal, economy.md and onboarding.md links. Open: day length (Q13), season length (Q14), order premium (Q15).
 - **0.21 — 2026-11-19:** Owner requests confirmed in the docs: **subscription orders** (standing daily deliveries at a set time, reminder, cancel any time, missed day = just unpaid) in §4 *Neighbour orders*; **hired helpers alongside machines** in §4 *Automation* — paid farmhands (daily wage, day off if unpaid, never debt) and befriended original garden sprites.
 - **0.22 — 2026-11-19:** **Selling points ordered (owner):** automation first, **decoration second** — high concept and pillar 8 updated (decoration + farm charm).
+- **0.23 — 2026-11-19:** **Starting buildings (owner decision):** the farm starts with an **old empty coop (5 hens) and old empty barn (5 stalls)**, Harvest Moon-style; Kit buys only the animals at first and can add more/bigger buildings later. First-beat want/reward, learning goal 4, buildings note, and first playable updated.
+- **0.24 — 2026-11-19:** **Starting animals (owner decision):** the old coop holds **5 hens** and the old barn **1 cow**, with ≈ 7 days of feed; 500 starting coins kept. First beat's want is now coins for feed and seeds; first playable updated.
+- **0.25 — 2026-11-19:** Feed is **ordered from home** (by phone — the parents left the feed seller's number) before 18:00 and delivered to the feed bins at Dawn next day; no fee.
+- **0.26 — 2026-11-19:** **Day length ≈ 15 real minutes** (06:00 → 02:00; 45 s per in-game hour; one 3-hour step ≈ 2 min 15 s) and **30-day seasons / 120-day year** like Harvest Moon (owner decisions). Q13–Q14 resolved. **Kit is a boy** (characters.md).
+- **0.27 — 2026-11-19:** Working title set to **Fields & Sunshine**; art primary references (Pioneers of Olive Town, Harvest Moon: Home Sweet Home) and ≈ 5-head proportions linked from §9.

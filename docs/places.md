@@ -1,7 +1,7 @@
 # Places
 
 > **Status:** Brainstorming draft
-> **Version:** 0.7
+> **Version:** 0.9
 > **Last updated:** 2026-11-19
 > **Purpose:** Places available in the game that the player can explore, adjusted to the scope of the game described in the GDD. One lane, eight places, no map — plus Kit's farm, which grows into the fields behind the house. All names are tentative and can be changed. Every element here is a proposal pending playtesting.
 
@@ -32,8 +32,8 @@ The lane is readable at a glance and small enough to navigate without a map. Pla
 
 | Area | What it is | Unlock |
 |---|---|---|
-| **Front garden** | Starting plot, 8 × 6 = 48 tiles (3 beds clear) | Start |
-| **Fields A–E behind the house** | Overgrown family fields (120–320 tiles each, buildings.md §2); hold buildings, beds, orchard, fish pond (buildings.md) | **Owned from the start**, overgrown; cleared at the player's pace (progression.md §4); all five cleared = T5 Full land |
+| **Front garden** | Starting plot, 8 × 6 = 48 tiles (3 beds clear) + the **old coop** with 5 hens | Start |
+| **Fields A–E behind the house** | Overgrown family fields (120–320 tiles each, buildings.md §2); the **old barn** (with 1 cow) stands at the edge of Field A; hold buildings, beds, orchard, fish pond (buildings.md) | **Owned from the start**, overgrown; cleared at the player's pace (progression.md §4); all five cleared = T5 Full land |
 
 ## 3. Visual character (from world.md §3.3)
 
@@ -66,3 +66,5 @@ The lane is readable at a glance and small enough to navigate without a map. Pla
 - **0.5 — 2026-11-18:** Player's home updated per world.md §7.5: **family heirloom** cottage, **overgrown-never-derelict** art rule (no decay, no rubbish, no loneliness), arrival props (boxes + cart at the gate) added as interactive/trace objects.
 - **0.6 — 2026-11-19:** **Direction reset (GDD v0.19).** Parent-unlocked places removed. Added **§2.1 Kit's farm** (front garden + five fields behind the house, bought/cleared over time). Seed shed hosts the order board and building catalogue; market stand is the selling place and merchant spot, Kit's stall from T2; brook gains fishing and forage; stile and Lantern Hill reopen via lane restoration. Stage references replaced with farm tiers.
 - **0.7 — 2026-11-19:** Back fields are owned from the start and cleared, not bought (owner decision); sizes in buildings.md §2.
+- **0.8 — 2026-11-19:** Old coop (front garden) and old barn (edge of Field A) noted as starting buildings.
+- **0.9 — 2026-11-19:** Starting animals noted (5 hens in the coop, 1 cow in the barn).

@@ -1,7 +1,7 @@
 # Economy & Balance Sheet
 
 > **Status:** First draft for owner review — new document
-> **Version:** 0.2
+> **Version:** 0.7
 > **Last updated:** 2026-11-19
 > **Purpose:** Prices, income, and costs, plus a balance check showing how long each goal takes. Owner rule (2026-11-19): **what Kit sells ≈ real-world price; what Kit buys ≈ half the real price** (the kid-friendly part). The full price list is the spreadsheet **[`data/economy.csv`](./data/economy.csv)** (79 items; opens in Excel/Sheets). All prices are approximate US retail and must be checked before they are final.
 
@@ -12,8 +12,11 @@
 - **Coins.** **1 coin ≈ US$0.10** (10 coins ≈ $1), so prices stay whole numbers kids can count. An egg is 4 coins; a pie is 150.
 - Shown as a coin icon plus the number. Money never goes below 0; there is no debt.
 - **Starting money:** 500 coins (≈ $50).
+- **Starting animals and feed (owner decision):** 5 hens + 1 cow in the old coop and barn, with ≈ 7 days of feed (35 chicken portions + 7 hay portions ≈ 140 coins' worth).
 
 ## 2. Pricing rules
+
+**Ordering feed from home (owner decision 2026-11-19):** animal feed (grain, hay, fish food) is ordered **by phone from home**: Kit's parents left the **feed seller's number** on a note by the house phone. No shop trip needed. Orders placed **before 18:00** arrive at **Dawn next day**, straight into the **feed bins** in the coop, barn, or pond; orders after 18:00 arrive the day after. No delivery fee. Kit feeds animals by scooping from the bin. **Seeds, saplings, and everything else are still bought in person at Marlow's seed shed** (shop hours).
 
 | Rule | Value |
 |---|---|
@@ -94,30 +97,35 @@
 
 | Animal setup | Net per day (after feed) | Upfront cost | Payback |
 |---|---|---|---|
-| Small coop + 5 hens | 15 | 1,375 | **≈ 92 days** (≈ 69 with order premium) |
+| Starting 5 hens + 1 cow | 15 + 225 = 240 | 0 (given) | Earns from Day 1 |
+| 5 hens in a coop (if bought) | 15 | 625 | ≈ 42 days |
+| Extra small coop + 5 hens | 15 | 1,375 | ≈ 92 days |
 | Sheep (in an existing barn) | 25 | 1,500 | 60 days |
 | Beehive | 20 (3 seasons) | 2,000 | ≈ 100 days |
-| Small barn + 5 cows | 1,125 | 125,000 | ≈ 111 days |
+| 1 cow in the starting barn | 225 | 10,000 | ≈ 44 days |
+| Extra small barn + 5 cows | 1,125 | 125,000 | ≈ 111 days |
 | Small pond + 10 fish | 70 | 10,050 | ≈ 144 days |
 
-### 5.3 Rough timeline (one 28-day season = proposed, GDD §16)
+### 5.3 Rough timeline (30-day seasons, 15-minute days — GDD §4)
 
 | Goal | When (typical) |
 |---|---|
 | First order paid | Day 1 (forage) and Day 4 (carrots) |
-| Small coop + 2 hens | ≈ Day 12–15 (Spring) |
+| Eggs and milk income | From Day 1 (≈ 240 coins/day once feed is bought) |
 | Workshop / kitchen | Late Summer |
-| First barn and cow | ≈ end of Year 1 |
+| Second cow (starting barn) | ≈ Day 40–45 |
+| Second barn | Year 2 |
 | Sprinklers on most beds | Year 2 |
 | Greenhouse, farm shop | Year 2–3 |
 
 ## 6. Balance risks (for owner review)
 
-1. **Real-price animals pay back slowly.** Chickens take about 3 months of game time to pay for themselves, which is realistic but may feel slow. **Recommendation:** approve the **order premium (×1.25)** and let early neighbours mostly order eggs, so chickens feel worthwhile through orders.
-2. **Flowers and berries out-earn vegetables**, because real cut-flower and berry prices are high. Fine for realism; orders can steer variety by asking for vegetables.
-3. **Processing is very profitable** (a pie sells for about 3.5× its ingredients). That matches real bakeries and rewards the kitchen — keep, but watch it doesn't make raw selling pointless.
-4. **Season length** (28 days proposed) and **day length** (GDD §4) change every timeline above. Lock them before tuning further.
-5. All real prices are estimates and need a quick check against a real price source before they are final.
+1. **The starting cow earns a lot — kept on purpose (owner decision 2026-11-19).** 4 milk cans a day ≈ 240 coins from Day 1 is a generous start; crops produce nothing for the first few days, so animals carry the early income. Starting money stays 500.
+2. **Animal payback.** With the free starting coop and barn (owner decision), hens pay back in ≈ 42 days and a cow in ≈ 44. Extra buildings are slower (≈ 3–4 months), which fits the late game. The ×1.25 order premium is now optional (still open).
+3. **Flowers and berries out-earn vegetables**, because real cut-flower and berry prices are high. Fine for realism; orders can steer variety by asking for vegetables.
+4. **Processing is very profitable** (a pie sells for about 3.5× its ingredients). That matches real bakeries and rewards the kitchen — keep, but watch it doesn't make raw selling pointless.
+5. **Season and day length are now set** (30 days, ≈ 15 minutes): a Year-1 is ≈ 120 days ≈ 30 hours of play. Re-check the timeline in the first playtest.
+6. All real prices are estimates and need a quick check against a real price source before they are final.
 
 ## 7. Related documents
 
@@ -135,3 +143,8 @@
 
 - **0.1 — 2026-11-19:** New document (owner request). Coins at ≈ $0.10; sell ≈ real retail, buy ≈ half real; quality, seasonal, demand, and sell-back rules; proposed ×1.25 order premium. 79-item price sheet in `data/economy.csv`. Production assumptions, profit per tile, animal paybacks, a Year-1 timeline, and five balance risks.
 - **0.2 — 2026-11-19:** Added farmhand wage (≈ 400 coins/day, proposal) and subscription-order payment rule.
+- **0.3 — 2026-11-19:** Paybacks and timeline recomputed for the **free starting coop and barn**: hens ≈ 42 days, first cow ≈ 44 days, first hens ≈ Day 2–4, first cow ≈ mid-Summer.
+- **0.4 — 2026-11-19:** Starting 5 hens + 1 cow + 7 days of feed added; timeline updated; new balance risk: the starting cow's milk income from Day 1.
+- **0.5 — 2026-11-19:** Owner kept the generous start: full-yield starting cow and 500 starting coins.
+- **0.6 — 2026-11-19:** Feed is ordered from home before 18:00, delivered next Dawn, no fee.
+- **0.7 — 2026-11-19:** Timeline based on decided 30-day seasons and 15-minute days.

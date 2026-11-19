@@ -1,7 +1,7 @@
 # Phase-001 — First Playable (Vertical Slice)
 
 > **Status:** Planning draft  
-> **Version:** 0.10  
+> **Version:** 0.14  
 > **Last updated:** 2026-11-19  
 > **Milestone:** 1 — First playable  
 > **Purpose:** Break Milestone 1 down into session tasks. Each task produces one scoped, playtested artifact that can be created and validated in a single session with AI assistance.
@@ -17,8 +17,8 @@
 2. Marlow's first order: 3 handfuls of wild berries (forage) → coins; the order board opens.
 3. Marlow's second order: 5 carrots (3 days of watering) → coins.
 4. Crops grow one day per watered night; left dry they turn yellow (2 days) and are gone (3 days).
-5. Kit buys a small coop and hens at the seed shed (half real price).
-6. Kit feeds hens daily and collects eggs; egg orders appear and repeat; an unfed hen is gone after 3 days (gravestone message card).
+5. Kit starts with **5 hens and 1 cow** in the family's old coop and barn, plus ≈ 7 days of feed; Kit buys more feed and seeds at the seed shed (half real price).
+6. Kit feeds the animals daily and collects eggs and milk; egg and milk orders appear and repeat; an animal unfed for 3 days is gone (gravestone message card).
 7. Everything saves and loads.
 
 **Explicitly OUT of scope (deferred, not cut):** market stall, shipping box, demand pricing, inventory grid UI beyond the simple bag, stickers, clearing the back fields, other animals → **Phase-002**; barn, fish pond, processing, workshop, co-op split screen → **Phase-003**; automation, brook fishing, merchant, the Butterfly Garden request → **Phase-004**; festivals, charm, endgame → **Phase-005** (docs/PHASE.md §3).
@@ -110,8 +110,8 @@ Each task includes **Team Preparation**, **Tests** (Software / Human), and a **N
 **Artifact:** The in-game day: stepped clock, HUD dial, sleep, and the 02:00 bedtime. Moved early because growth and feeding are now day-based.
 
 **Scope:**
-- `GameClock` autoload: 8 phases × 3 in-game hours, stepped (GDD §4); step length as a named constant (≈ 3 min; day length still open — GDD §16 Q13)
-- Day counter + season (Spring only in this phase; season length constant, proposed 28)
+- `GameClock` autoload: 8 phases × 3 in-game hours, stepped (GDD §4); step length as a named constant (≈ 2 min 15 s per 3-hour step → ≈ 15-minute playable day, GDD §4)
+- Day counter + season (Spring only in this phase; season length constant = 30 days)
 - HUD clock dial (sun/moon marker + digital readout)
 - Sleep at Kit's bed → day rollover, clock to 06:00; **automatic bedtime at 02:00** (Kit goes home, no penalty)
 - `DayEnded` / `DayStarted` signals other systems subscribe to
@@ -286,23 +286,24 @@ Each task includes **Team Preparation**, **Tests** (Software / Human), and a **N
 
 ### Task 1.8 — Seed Shop & Buying
 
-**Artifact:** Buying at the seed shed: seeds, a small coop, and hens, at half real price (economy.md).
+**Artifact:** Buying at the seed shed: seeds, feed, and extra hens, at half real price (economy.md); the old coop and barn are pre-placed with their starting animals.
 
 **Scope:**
-- Shop UI at the seed shed: carrot and flower seed packets, small coop (750), laying hen (125), chicken feed (1 per portion)
+- Shop UI at the seed shed: carrot and flower seed packets, laying hen (125, only while the coop has room)
+- **Phone at home** (feed seller's number left by Kit's parents on a note): chicken feed (1 per portion), hay (15 per portion); orders before 18:00 are delivered to the coop/barn feed bins at the next Dawn (after 18:00 → the day after); no fee
+- The **old coop** (4 × 3, 5 hens) and **old barn** (6 × 5, 5 stalls, 1 cow) are pre-placed at game start with ≈ 7 days of feed; buying cows and extra buildings is Phase-002
 - Prices read from `data/economy.csv` (or a `.tres` generated from it)
-- Placing the coop: choose cleared tiles (4 × 3) in the front garden
 - Coop capacity 5 hens; buying more is blocked with a friendly "coop is full" icon
 
 **Acceptance criteria:**
 - Buying deducts coins and adds items/buildings; can't buy without enough coins
-- Coop placement only on cleared tiles; capacity enforced
+- Capacity enforced (coop full at start, so hens can only be bought after a loss)
 
 **Team Preparation:**
-- Placeholder shop panel, coop sprite
+- Placeholder shop panel; old-coop sprite
 
 **Tests:**
-- **Software:** purchases, wallet floor, placement validation, capacity cap
+- **Software:** purchases, wallet floor, capacity cap; feed order before/after 18:00 arrives on the right Dawn into the right bin
 - **Human:** prices and "not enough coins" are understandable
 
 **AI assistance:** Prompt for "Godot 4.x C# shop reading prices from CSV, with grid placement of a building."
@@ -318,22 +319,22 @@ Each task includes **Team Preparation**, **Tests** (Software / Human), and a **N
 
 ---
 
-### Task 1.9 — Chickens, Eggs & the Loss Rule
+### Task 1.9 — Hens, Cow, Eggs, Milk & the Loss Rule
 
-**Artifact:** Hens that need daily feeding, lay eggs, and are lost after 3 unfed days.
+**Artifact:** The starting 5 hens and 1 cow: daily feeding, eggs and milk, and loss after 3 unfed days.
 
 **Scope:**
-- Hen entity in the coop; feed with the feed scoop (once per day)
-- Fed today → 1 egg next morning in the nest (★ quality only in this phase)
+- Hen and cow entities in the old coop and barn; feed with the feed scoop (grain for hens, hay for the cow), once per day
+- Fed today → next morning 1 egg per hen, 4 milk cans from the cow (★ quality only in this phase)
 - 1 unfed day → need icon; 2 → flashing icon + Ada line; 3 → hen gone + **message card with gravestone picture**, name, and tip
-- Egg orders become available once Kit owns hens (Task 1.7 generator)
+- Egg and milk orders become available from Day 1 (Task 1.7 generator)
 
 **Acceptance criteria:**
 - Feeding resets the count; eggs appear only after fed days
 - Loss card appears once; no on-screen death; nothing else is removed
 
 **Team Preparation:**
-- Placeholder hen, egg, feed scoop, gravestone card illustration
+- Placeholder hen, cow, egg, milk can, feed scoop, gravestone card illustration
 
 **Tests:**
 - **Software:** scripted rollovers verify egg production and the 3-day loss; card shown once
@@ -425,7 +426,7 @@ Each task includes **Team Preparation**, **Tests** (Software / Human), and a **N
 
 **Scope:**
 - Steps 1–9 of onboarding.md §2 as a small step machine
-- One-time nudges from onboarding.md §3 that apply to this phase (sleep, watering, yellow, lost crop, coop affordable, feed hens, hungry hens)
+- One-time nudges from onboarding.md §3 that apply to this phase (sleep, watering, yellow, lost crop, feed low, first eggs/milk, hungry animals)
 - Nudges toggle in Settings
 
 **Acceptance criteria:**
@@ -490,7 +491,7 @@ Each task includes **Team Preparation**, **Tests** (Software / Human), and a **N
 - [ ] All 13 session tasks are done
 - [ ] A new player (6+) completes the guided start and the first two orders with little or no explanation
 - [ ] Crops grow by day, yellow at 2 dry days, and are lost at 3; hens are lost at 3 unfed days with the gentle card
-- [ ] Buying a coop and hens works at economy.md prices
+- [ ] Starting hens and cow work (feed, eggs, milk, loss rule); buying seeds and feed works at economy.md prices
 - [ ] Game saves and loads correctly (versioned)
 - [ ] Stable frame rate on target PC hardware
 - [ ] Placeholder art clearly marked as temporary
@@ -515,3 +516,7 @@ Phase-002 (planned — docs/PHASE.md §3): market stall and shipping box with se
 - **0.8 — 2026-11-18:** **Gap A closed** (controls decision session): Task 1.6 gains the explicit **decline/back input** — gamepad B or right-click — so "no punishment for declining" is actually operable; acceptance criteria and software tests updated. Help tooltip (Back/Select) formally deferred out of Phase-001.
 - **0.9 — 2026-11-19:** **Direction reset (GDD v0.19).** Core loop: watering now **required**; plants grow only while moist and, left dry, **turn yellow then are gone** (Normal timing; mode selector deferred). Task 1.4 scope/acceptance/tests/prep rewritten accordingly (no more "plants never wither"; yellow sprite and dry-soil look added). Task 1.6/1.7: Marlow gives replacement seeds for lost task flowers. Task 1.9 saves moisture/dryness timers. **Task 1.1 fixed:** `.gitignore` ignores only `.godot/`, `*.import` sidecars are committed (resolves project-structure.md §14.4); verify — don't change — Compatibility renderer and `MyFarmingGame` assembly. Out-of-scope list and Milestone 2 preview re-mapped to the new phase plan. "Child" wording replaced with player/Kit; playtest participants tied to the pending age-band decision.
 - **0.10 — 2026-11-19:** **Re-scoped to a vertical slice (owner decision).** Milestone 1 is now the money loop: clearing, day-based growth with the 3-dry-days rule, foraging, Marlow's first orders, order board with repeat orders, seed shop (half real price), small coop + hens with daily feeding and the 3-unfed-days loss card, versioned save, pause menu, and a ≈ 5-minute onboarding flow. Task list rebuilt (13 tasks): clock moved to 1.3 because growth is day-based; tool belt + bag + wallet (1.4); clearing/planting/growth (1.5); Marlow & first order (1.6); order board (1.7); shop (1.8); chickens (1.9); versioned save (1.10); pause & day/night (1.11); onboarding (1.12); playtest (1.13). Butterfly Garden, garden shelf, and play-time growth removed from this phase. All Notes & learnings blocks reset to _TBD_ (no task had started).
+- **0.11 — 2026-11-19:** Old coop pre-placed at game start (owner decision); Task 1.8 now sells seeds and hens only — no coop purchase or placement in this phase.
+- **0.12 — 2026-11-19:** Game starts with **5 hens and 1 cow** plus ≈ 7 days of feed (owner decision): Task 1.8 sells seeds, feed, and replacement hens; Task 1.9 covers hens and the cow (eggs, milk); exit criteria updated.
+- **0.13 — 2026-11-19:** Task 1.8 adds ordering feed by phone from home (18:00 cut-off, Dawn delivery into feed bins).
+- **0.14 — 2026-11-19:** Task 1.3 uses the decided clock (≈ 2 min 15 s per step, 15-minute day) and 30-day seasons.
