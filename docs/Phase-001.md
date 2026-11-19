@@ -1,7 +1,8 @@
 # Phase-001 — Interaction Prototype
 
 > **Status:** Planning draft  
-> **Version:** 0.8  
+> **Version:** 0.9  
+> **Last updated:** 2026-11-19  
 > **Milestone:** 1 — Interaction Prototype  
 > **Purpose:** Break Milestone 1 down into session tasks. Each task produces one scoped, playtested artifact that can be created and validated in a single session with AI assistance.
 
@@ -13,14 +14,14 @@
 
 **Core loop in this milestone:**
 1. Mr. Marlow offers the Butterfly Garden task (plant and water 3 flowers).
-2. Child plants seeds in a garden bed.
-3. Child waters plants (optional, speeds growth).
-4. Flowers grow through visible stages (seed → sprout → bloom).
-5. Child harvests flowers → they route automatically to the garden shelf.
-6. Child shows flowers to Mr. Marlow → receives the butterfly net.
+2. Kit plants seeds in a garden bed.
+3. Kit waters plants — **watering is required for growth** (GDD v0.19).
+4. Flowers grow through visible stages (seed → sprout → bloom) while the soil is moist; left dry, a plant **turns yellow, then is gone** (Normal-mode timing).
+5. Kit harvests flowers → they route automatically to the garden shelf.
+6. Kit shows flowers to Mr. Marlow → receives the butterfly net.
 7. Butterfly net unlocks simple catch/release butterfly interaction.
 
-**Explicitly OUT of scope (deferred to future phases, not cut):** Animals, collectathon inventory grid, sticker book → **Phase-002**; challenge layers, grown-up menu, multi-gamepad co-play → **Phase-003**; market stand → **Phase-004**; stile, Lantern Hill, brook, allotment beds, seasons beyond spring, numeric relationship meter → **later phases**. The product-prototype scope (GDD §15) remains the source of truth for the finished game.
+**Explicitly OUT of scope (deferred to future phases, not cut):** money, order board, shop, shipping box, animals and the animal loss rule, inventory grid, stickers, **difficulty-mode selector** → **Phase-002**; land expansion, buildings, fish pond, processing, local co-op → **Phase-003**; automation (sprinklers, feeders, helpers), brook, foraging, merchant → **Phase-004**; festivals, charm, endgame, numeric relationship meter → **Phase-005** (docs/PHASE.md §3). The product scope (GDD §15) remains the source of truth for the finished game.
 
 ## 2. Session Tasks
 
@@ -28,7 +29,7 @@ Tasks are ordered by dependency. After each task, the game should be runnable an
 
 Each task includes:
 - **Team Preparation** — what the team needs to have ready before starting (assets, hardware, decisions).
-- **Tests** — split into **Software tests** (verifiable by running the game or scripts, no human required) and **Human playtests** (require a person, ideally a child in the target age range, to play and give feedback).
+- **Tests** — split into **Software tests** (verifiable by running the game or scripts, no human required) and **Human playtests** (require a person, ideally a player in the target age band — ⚠️ band pending, GDD §16 Q9 — to play and give feedback).
 - **Notes & learnings** — an empty fill-in block. **When the task is done, fill it in before starting the next task**: what worked, what broke and how it was fixed, how the plan deviated, and concrete advice for the next task (and for Phase-002 planning). An unfilled block means the task isn't finished.
 
 ---
@@ -39,7 +40,8 @@ Each task includes:
 
 **Scope:**
 - Initialize Godot 4.x project
-- Set up `.gitignore` for Godot
+- Set up `.gitignore` for Godot: ignore **only** `.godot/`; **commit** `*.import` sidecars (Godot's recommendation; decided 2026-11-19 — the root `.gitignore` already does this)
+- Verify the project settings decided on 2026-11-19 are in place, do not change them: renderer **Compatibility** (`gl_compatibility`, no `Mobile` feature tag) and C# assembly name **`MyFarmingGame`**
 - Create root scene structure: `Main.tscn`, `Player.tscn`, `UI.tscn`
 - Create placeholder art assets (colored rectangles/simple sprites for player, NPC, garden bed, flowers, tools)
 - Confirm project runs and displays a blank scene
@@ -47,7 +49,8 @@ Each task includes:
 **Acceptance criteria:**
 - Godot project opens without errors
 - `Main.tscn` runs and shows a colored background with a placeholder player sprite
-- `.gitignore` excludes `.godot/`, `*.import`, build artifacts
+- `.gitignore` excludes `.godot/` only; `*.import` sidecars are committed
+- `project.godot` uses the Compatibility renderer and assembly `MyFarmingGame`; the generated `.csproj` is `MyFarmingGame.csproj`
 
 **Team Preparation:**
 - Godot 4.x installed on development machine
@@ -55,7 +58,7 @@ Each task includes:
 - Team agrees on project folder structure and naming conventions
 
 **Tests:**
-- **Software:** Project opens in Godot without errors; `Main.tscn` instantiates and runs; placeholder sprite visible on screen; `.gitignore` correctly excludes Godot artifacts
+- **Software:** Project opens in Godot without errors; `Main.tscn` instantiates and runs; placeholder sprite visible on screen; `git status` shows no `.godot/` files and does show new `*.import` sidecars; renderer reports Compatibility; `dotnet build` of `MyFarmingGame.csproj` succeeds
 - **Human:** None required
 
 **AI assistance:** Prompt for "Godot 4.x C# project structure for a 2D top-down farming game, including .gitignore and basic scene tree."
@@ -96,7 +99,7 @@ Each task includes:
 
 **Tests:**
 - **Software:** Gamepad left stick input moves player; mouse click on ground moves player to that position; Camera2D follows player with lerp; sprite flips by movement direction
-- **Human:** Controls feel comfortable for the target input device (gamepad and mouse); no accidental inputs; movement speed feels right for a young child
+- **Human:** Controls feel comfortable for the target input device (gamepad and mouse); no accidental inputs; movement speed feels right for a new player
 
 **AI assistance:** Prompt for "Godot 4.x C# 2D top-down player controller with gamepad and mouse click-to-move, fixed camera follow."
 
@@ -160,32 +163,33 @@ Each task includes:
 - Each stage has a visible sprite change
 - Growth timer: ~30–45 seconds of accumulated play time per stage — this is the **Medium** default of the Milestone 0 growth decision (GDD §4, v0.16). Read it as a named setting (Fast / **Medium** / Slow), not a hard-coded constant, but **do not build the options screen in this task** — it is not in Phase-001 scope yet
 - No growth while the game is closed (the **Paused** default of the same decision); end-of-day/sleep must not grant an extra stage
-- Watering (with Watering Can active) optionally advances one stage immediately with sparkle/sound feedback
-- Plants never wither
+- Watering (with Watering Can active) moistens the bed with immediate sparkle/sound feedback; **a plant grows only while its soil is moist**
+- **Neglect (GDD v0.19, challenge-layers.md §3, Normal values):** moist → dry (growth paused, cracked-soil look) → **yellow** (warning sprite) → **gone** (bed empty). Watering a yellow plant recovers it. Read grace times as a named Easy/Normal/Realistic setting with **Normal** active; do not build the mode selector
+- Dryness, like growth, advances only during play — never while the game is closed
 
 **Acceptance criteria:**
 - Player can plant a seed in an empty bed
 - Plant visually advances through seed → sprout → bloom
-- Watering a plant triggers immediate growth stage advance + sparkle particles
-- Plants do not die or wither
+- Watering a plant moistens it with sparkle particles; an unwatered plant stops growing
+- An unwatered plant turns yellow, then disappears, at the Normal grace times; watering at yellow recovers it
 - Bed returns to empty planting state after harvest
 
 **Team Preparation:**
-- Placeholder flower sprites for 3 growth stages (seed, sprout, bloom — distinct colors acceptable)
+- Placeholder flower sprites for 3 growth stages (seed, sprout, bloom — distinct colors acceptable) **plus a yellow (wilting) variant** and a dry-soil bed look
 - Placeholder sparkle particle effect for watering feedback
 
 **Tests:**
-- **Software:** Planting a seed changes bed to planted state; growth timer advances stage after ~30–45 seconds accumulated play time; watering triggers immediate stage advance + sparkle particles; plants never wither; bed returns to empty after harvest
-- **Human:** Growth timing feels satisfying (not too fast, not too slow); watering feels rewarding; child understands plants grow without needing adult explanation
+- **Software:** Planting a seed changes bed to planted state; growth timer advances stage after ~30–45 seconds accumulated play time; watering sets the bed moist + sparkle particles; growth pauses when dry; dry plant turns yellow then is removed at the Normal grace times (use a time-scale override in tests); watering at yellow restores growth; nothing advances while the game is closed; bed returns to empty after harvest
+- **Human:** Growth timing feels satisfying (not too fast, not too slow); watering feels rewarding; player reads the yellow stage as a warning and understands why a plant was lost; losing a plant feels fair, not punishing
 
-**AI assistance:** Prompt for "Godot 4.x C# garden bed with planting, 3 growth stages, timer-based growth, and watering acceleration."
+**AI assistance:** Prompt for "Godot 4.x C# garden bed with planting, 3 growth stages, growth only while watered, and dry → yellow → gone neglect."
 
 **Dependencies:** Task 1.2, Task 1.3.
 
 **Notes & learnings:**
 - **Outcome / status:** _TBD — fill in when done (date done, playtest verdict)_
 - **What worked well:** _TBD_
-- **Problems & fixes:** _TBD — growth timer accuracy, watering double-trigger, state reset bugs_
+- **Problems & fixes:** _TBD — growth timer accuracy, watering double-trigger, state reset bugs, dryness timer vs. pause/close_
 - **Deviations from scope or plan:** _TBD — actual growth timing, number of beds, sparkle feedback approach_
 - **Handoff to Task 1.5:** _TBD — how bed states are represented (the harvest task must read/clear them), signals or events already available for state changes_
 
@@ -235,7 +239,8 @@ Each task includes:
 **Scope:**
 - `Marlow.tscn` NPC at shed gate
 - Idle + talk gesture animations (placeholder)
-- Dialogue bubble UI: picture icon + short text, no reading required
+- Dialogue bubble UI: picture icon + short text (icon carries the meaning)
+- **Lost task flowers:** if a task flower is lost to neglect, Marlow kindly gives a replacement seed when Kit next talks to him (no blame)
 - Dialogue states: Greeting → Task Offer → Task Active (restatement) → Task Complete → Reward Given
 - Marlow supplies 3 Butterfly Garden flower seeds when task is accepted
 - Marlow kindly restates unfinished task if player talks to him again
@@ -260,7 +265,7 @@ Each task includes:
 
 **Tests:**
 - **Software:** Dialogue states transition correctly (Greeting → Task Offer → Task Active → Task Complete → Reward Given); accepting task gives 3 flower seeds; Marlow restates unfinished task kindly; no punishment for declining; B / right-click closes the bubble and declining leaves the task state unchanged; ledger opens/closes from the shed table and renders pages as images only; calling `Ledger.Note()` adds a page; no ledger entry exists in the pause menu
-- **Human:** Picture bubble is understandable without reading; child understands what Marlow wants and what the reward is; declining or walking away doesn't feel punitive
+- **Human:** Picture bubble is understandable at a glance; player understands what Marlow wants and what the reward is; declining or walking away doesn't feel punitive
 
 **AI assistance:** Prompt for "Godot 4.x C# NPC dialogue system with picture bubbles, task offer/accept/restate states, and item delivery."
 
@@ -282,7 +287,7 @@ Each task includes:
 **Scope:**
 - `TaskManager.cs` autoload/singleton
 - Task states: `NotOffered`, `Offered`, `Active`, `Completed`, `Rewarded`
-- Tracks: flowers planted (0/3), flowers watered (optional counter), flowers shown to Marlow
+- Tracks: flowers planted (0/3), flowers lost (replacement seeds granted), flowers shown to Marlow
 - Completes when player has harvested 3 flowers and interacts with Marlow
 - Triggers reward: butterfly net granted
 
@@ -336,7 +341,7 @@ Each task includes:
 
 **Tests:**
 - **Software:** Net appears as 3rd belt slot only after Task 1.7 completes; butterflies spawn near bloom-stage beds during daytime; interact with net catches butterfly (state change, visual feedback); interact in garden releases butterfly (flutter animation, then fade); no inventory entry created for caught butterflies
-- **Human:** Child understands they can catch a butterfly; catch action feels fun and not frustrating; release moment feels delightful; butterfly-net icon is distinguishable from other tools
+- **Human:** Player understands they can catch a butterfly; catch action feels fun and not frustrating; release moment feels delightful; butterfly-net icon is distinguishable from other tools
 
 **AI assistance:** Prompt for "Godot 4.x C# butterfly catch/release mechanic with simple butterfly AI and net tool."
 
@@ -357,7 +362,7 @@ Each task includes:
 
 **Scope:**
 - `SaveGame.cs` autoload/singleton
-- Save data: player position, day, season, tool belt slots, garden bed states, task state, shelf contents
+- Save data: player position, day, season, tool belt slots, garden bed states (**incl. moisture and dryness/yellow timers**), task state, shelf contents
 - Auto-save on: day change, task state change, harvest, menu pause
 - Manual save/load from pause menu
 - Save file: human-readable JSON at `user://savegame.json`
@@ -414,7 +419,7 @@ Each task includes:
 
 **Tests:**
 - **Software:** Pause menu opens on Start/ESC and closes on Resume; calendar displays current season (Spring), day number, and day/night indicator; Save button triggers manual save; Quit button exits to desktop; sleep button advances day counter by one; pause blocks game-time progression while open
-- **Human:** Calendar is readable at a glance without reading text; child can find pause button; icons are distinguishable; child understands what sleep button does
+- **Human:** Calendar is readable at a glance; player can find the pause button; icons are distinguishable; player understands what the sleep button does
 
 **AI assistance:** Prompt for "Godot 4.x C# pause menu with calendar UI showing season, day, and time of day using icons."
 
@@ -450,7 +455,7 @@ Each task includes:
 
 **Tests:**
 - **Software:** Lighting/color shifts smoothly between day and night over the cycle duration; no gameplay mechanic is gated by time of day; fireflies render only during night; no performance drop during transition
-- **Human:** Transition is not jarring or frightening for a child; night palette is dim but still readable; child feels no time pressure to hurry
+- **Human:** Transition is not jarring; night palette is dim but still readable; player feels no pressure to hurry
 
 **AI assistance:** Prompt for "Godot 4.x 2D day/night cycle with ColorRect lighting shift and ambient firefly particles."
 
@@ -461,7 +466,7 @@ Each task includes:
 - **What worked well:** _TBD_
 - **Problems & fixes:** _TBD — color modulation vs. Light2D choice, UI readability under night palette, performance_
 - **Deviations from scope or plan:** _TBD — palettes chosen, cycle duration, fireflies included or not_
-- **Handoff to Task 1.12:** _TBD — the actual cycle duration to expect during a playtest, anything that hurt readability for a child_
+- **Handoff to Task 1.12:** _TBD — the actual cycle duration to expect during a playtest, anything that hurt readability_
 
 ---
 
@@ -470,9 +475,10 @@ Each task includes:
 **Artifact:** Validated prototype ready for Milestone 1 exit review.
 
 **Scope:**
-- Playtest with target age group (or simulate child user testing)
+- Playtest with players in the target age band (or simulate)
 - Validate against GDD §14 playtest questions:
-  - Can a child start playing with little or no spoken explanation?
+  - Can a new player start with little or no spoken explanation?
+  - Do they understand that crops need water, and read yellow as a warning?
   - Can they tell what objects can be interacted with?
   - Do they understand how to plant, water, and finish?
   - Are controls comfortable?
@@ -487,16 +493,16 @@ Each task includes:
 - All tasks 1.1–1.11 are complete and integrated
 
 **Team Preparation:**
-- Playtest participants: children in the target age range (preschool–1st grade), with appropriate adult supervision and consent per GDD §14
+- Playtest participants: players in the target age band (**⚠️ pending owner decision, GDD §16 Q9**); for under-18 participants, appropriate adult supervision and consent per GDD §14
 - Playtest observation sheet based on GDD §14 playtest questions
 - Game build installed on test PC; gamepad connected; quiet play space
-- Fallback plan: if child participants are unavailable, two team members simulate child players and mark all findings as "needs child validation"
+- Fallback plan: if target-age participants are unavailable, two team members simulate players and mark all findings as "needs target-player validation"
 
 **Tests:**
 - **Software:** Run through all automated checks from Tasks 1.1–1.11 in one pass; frame rate stable on target PC; no runtime errors in Godot console; save/load works end-to-end
-- **Human:** All GDD §14 playtest questions answered — child starts without explanation, identifies interactable objects, plants/waters/finishes, understands Marlow's want and reward, finds butterfly net meaningful, controls comfortable, watering feels voluntary, plant growth readable after a break
+- **Human:** All GDD §14 playtest questions answered — new player starts without explanation, identifies interactable objects, plants/waters/finishes, reads the yellow warning, understands Marlow's want and reward, finds butterfly net meaningful, controls comfortable, crop loss feels fair, plant state readable after a break
 
-**AI assistance:** Prompt for "playtest observation sheet for children's farming game prototype, including the GDD §14 validation questions."
+**AI assistance:** Prompt for "playtest observation sheet for a kid-friendly farming game prototype, including the GDD §14 validation questions."
 
 **Dependencies:** All previous tasks.
 
@@ -504,7 +510,7 @@ Each task includes:
 - **Outcome / status:** _TBD — fill in when done (date done, milestone verdict)_
 - **What worked well:** _TBD_
 - **Problems & fixes:** _TBD — every issue found during playtest and how it was resolved_
-- **Playtest findings (GDD §14 answers):** _TBD — record each question's answer, and mark anything validated only by team simulation as "needs child validation"_
+- **Playtest findings (GDD §14 answers):** _TBD — record each question's answer, and mark anything validated only by team simulation as "needs target-player validation"_
 - **Advice for Phase-002 planning:** _TBD — carry-forward lessons (tool belt extension, task/dialogue patterns, save schema growth, placeholder art that needs real art)_
 
 ---
@@ -514,7 +520,7 @@ Each task includes:
 The milestone is complete when:
 
 - [ ] All 12 session tasks are done
-- [ ] A child can complete the Butterfly Garden task (plant 3 flowers, water, grow, harvest, show to Marlow, receive net) with little or no spoken explanation
+- [ ] A new player can complete the Butterfly Garden task (plant 3 flowers, water, grow, harvest, show to Marlow, receive net) with little or no spoken explanation
 - [ ] Game saves and loads correctly
 - [ ] Game runs at stable frame rate on target PC hardware
 - [ ] Placeholder art is clearly marked as temporary
@@ -524,13 +530,14 @@ The milestone is complete when:
 
 ## 4. What Comes Next (Milestone 2 Preview)
 
-After Milestone 1, the next phase document (Phase-002, planned) will cover:
+After Milestone 1, the next phase document (Phase-002, planned — docs/PHASE.md §3) will cover:
 
-- Animals (chicken, sheep, cow, beehive) with gentle care meters
-- Collectathon inventory grid with auto-stacking and Overflow Nest
-- Sticker book and Collection Book
-- Second place on the lane (brook or allotment beds)
-- Challenge layers (multi-step requests)
+- Money, the **order board** and first neighbour orders (matched to what Kit can produce)
+- Seed shop, shipping box / market selling
+- Inventory grid with auto-stacking, storage chest, wallet
+- Chickens and the coop, with care meter and the **animal loss rule** (gravestone message card)
+- Difficulty-mode selector (Easy / Normal / Realistic)
+- Sticker book
 
 ---
 
@@ -543,3 +550,4 @@ After Milestone 1, the next phase document (Phase-002, planned) will cover:
 - **0.6 — 2026-11-18:** ⚠️ **Reconciliation pending (design vs. phase doc):** Milestone 0 decision 2 (GDD §4 v0.17, mechanics.md §2) defines an 8-phase stepped clock — 3-hour jumps, ≈3 min of play per step, reset to Dawn on sleep — plus an **always-on HUD clock dial**, neither of which Task 1.10/1.11 currently mentions. Task 1.11's undefined "cycle duration" is now effectively 8 steps ≈ 24 min per in-game day. **Not edited into task scope yet:** the human must place the HUD clock (extend Task 1.11 vs. add a task) before these tasks are worked on.
 - **0.7 — 2026-11-18:** **Task 1.6 gains the ledger** per world.md §7.4 decision ("both", world-only placement): prop + picture-only close-up + `Ledger.Note()` API for Tasks 1.7/1.8, explicitly absent from the pause menu. Scope, acceptance criteria, team prep (placeholder pages) and software tests updated. This closes the gap where events.md marked "ledger page fills" as Prototype scope but no task owned it.
 - **0.8 — 2026-11-18:** **Gap A closed** (controls decision session): Task 1.6 gains the explicit **decline/back input** — gamepad B or right-click — so "no punishment for declining" is actually operable; acceptance criteria and software tests updated. Help tooltip (Back/Select) formally deferred out of Phase-001.
+- **0.9 — 2026-11-19:** **Direction reset (GDD v0.19).** Core loop: watering now **required**; plants grow only while moist and, left dry, **turn yellow then are gone** (Normal timing; mode selector deferred). Task 1.4 scope/acceptance/tests/prep rewritten accordingly (no more "plants never wither"; yellow sprite and dry-soil look added). Task 1.6/1.7: Marlow gives replacement seeds for lost task flowers. Task 1.9 saves moisture/dryness timers. **Task 1.1 fixed:** `.gitignore` ignores only `.godot/`, `*.import` sidecars are committed (resolves project-structure.md §14.4); verify — don't change — Compatibility renderer and `MyFarmingGame` assembly. Out-of-scope list and Milestone 2 preview re-mapped to the new phase plan. "Child" wording replaced with player/Kit; playtest participants tied to the pending age-band decision.

@@ -13,11 +13,11 @@ You're a Senior Game Developer that will develop a current described project:
 
 ## 1. Project snapshot
 
-- **Game:** A gentle, fully 2D life-and-garden game for young children (pre-elementary–1st grade, played with a parent). No punishment, no currency in Phase-001, no reading required to act.
-- **Engine:** Godot 4.x with **C#** (not GDScript — see `docs/PHASE.md` §6).
+- **Game:** A fully 2D, realistic but kid-friendly, educational farming game. Kit (17) grows the family plot into a farm through neighbour orders, investment, and automation; neglect has gentle consequences (crops yellow then are lost; neglected animals are gone, shown only as a gravestone message). Three difficulty modes: Easy / Normal / Realistic. (Direction reset 2026-11-19 — see GDD v0.19.)
+- **Engine:** Godot 4.x with **C#** (not GDScript — see `docs/PHASE.md` §6); renderer Compatibility (`gl_compatibility`); assembly `MyFarmingGame`.
 - **Status:** Follow the `README.md` "Status" line — it is the honest snapshot of how much code exists.
 - **Team:** Two people with AI assistance. Tasks are scoped so one task = one AI-assisted session.
-- **Platforms:** PC first; tablets from Phase-003 onward.
+- **Platforms:** **PC only.** No mobile or tablet work.
 
 ## 2. Source of truth (resolve conflicts in this order)
 
@@ -27,7 +27,7 @@ You're a Senior Game Developer that will develop a current described project:
 | Roadmap, phases, guardrails, team & workflow | [`docs/PHASE.md`](./docs/PHASE.md) |
 | What to build in this phase, task by task | [`docs/Phase-00N.md`](./docs/Phase-001.md) (current phase) |
 | Setting, lore, places | [`docs/world.md`](./docs/world.md) |
-| Domain detail (characters, crops, animals, items, inventory, mechanics, controls, events, progression, challenge layers) | the matching file in `docs/` |
+| Domain detail (characters, crops, animals, buildings, items, inventory, mechanics, controls, events, progression, difficulty modes) | the matching file in `docs/` |
 | Project-wide summary / navigation | [`README.md`](./README.md) |
 
 Rules:
@@ -78,7 +78,7 @@ At the start of the session, the AI should re-verify these quickly (list the fil
 
 - Implement exactly the task's **Scope** against its **Acceptance criteria**. No drive-by refactors, no extra systems — log those as suggestions for later instead.
 - Follow existing conventions in the repo (folder structure, naming, scene layout, coding style) as established by previous tasks. If none exist yet, establish them in the first task and record the choice in that task's *Deviations from scope or plan* note.
-- Respect `docs/PHASE.md` §7 **guardrails** at all times: no antagonist/threat/deadline/decay, no disappointment from Mr. Marlow, no reading required to proceed, no map-size expansion, original designs only.
+- Respect `docs/PHASE.md` §7 **guardrails** at all times: no antagonist/threat/hard deadline; losses only from player neglect, warned first, never while closed, shown kindly (no on-screen death); no disappointment from Mr. Marlow; no debt; the lane never grows (only Kit's farm does); original designs only.
 - Verify as you go: the project builds, the game runs headless/scripted where possible, no errors in the Godot output log.
 
 ### 4.4 Testing policy — software vs. human
@@ -86,7 +86,7 @@ At the start of the session, the AI should re-verify these quickly (list the fil
 Each task's **Tests** field is split into **Software** and **Human**.
 
 - **Software tests** are yours: run them programmatically (headless Godot runs, scripted scene instantiation, `dotnet build`, JSON validation, unit/integration scripts under a `tests/` folder — whatever the project adopts). Prefer automated checks that leave no state behind.
-- **Human tests** are **never yours**. You cannot judge "feels comfortable for a young child", "not frightening", "icons distinguishable at a glance", and so on.
+- **Human tests** are **never yours**. You cannot judge "feels comfortable for a new player", "loss feels fair, not punishing", "icons distinguishable at a glance", and so on.
 
 **Mandatory declaration.** If the task you just finished has any **Human** test, state it explicitly in your session summary, in this exact spirit:
 
@@ -142,7 +142,7 @@ State the exact blocker and what you need; do not fabricate placeholders that lo
 
 - **Language:** C# everywhere in the game (`*.cs`); GDScript only if a third-party addon requires it, and then flag it in Notes.
 - **Godot:** target the Godot 4.x version installed on the machine — check it (`godot --version` / the editor) rather than assuming; record the exact version in Task 1.1's Notes.
-- **Version control:** commit at natural checkpoints (task start state, working skeleton, finished task). Keep `.godot/`, import outputs, and build artifacts out of commits per `.gitignore`. Never commit `user://` save data.
+- **Version control:** commit at natural checkpoints (task start state, working skeleton, finished task). Only `.godot/` is ignored; **commit `*.import` sidecars**. Keep build artifacts and `user://` save data out of commits.
 - **Save data:** one slot, auto-save, human-readable JSON at `user://savegame.json` (schema per the GDD / phase doc).
 - **Headless validation:** prefer `godot --headless --path <project>` runs plus `dotnet build` for CI-able checks; verify exact flags against the installed version and record working commands in the task's Notes so later sessions can reuse them.
 - **Automation:** when a task's Software tests are repetitive, leave behind a repeatable script/test the next session can re-run.
@@ -166,7 +166,7 @@ Bring **every** document in line with the implementation as it now exists. For e
 - [ ] `docs/PHASE.md` — phase table row updated (done instead of "(planned)"), phase detail section still accurate, status/version refreshed.
 - [ ] `README.md` — **Status**, design version, screenshot, Current status, Roadmap, and Documentation table all match reality; remove "no code yet"-style claims if code exists.
 - [ ] `docs/GDD.md` — milestones / open questions resolved or re-marked as still open; any decision changed during implementation is written back here (the GDD is the gameplay source of truth).
-- [ ] Domain docs (`world.md`, `characters.md`, `places.md`, `crops.md`, `animals.md`, `items.md`, `inventory.md`, `mechanics.md`, `controls.md`, `events.md`, `progression.md`, `challenge-layers.md`) — anything implemented differently than written is corrected at the source, not left as a discrepancy.
+- [ ] Domain docs (`world.md`, `characters.md`, `places.md`, `crops.md`, `animals.md`, `buildings.md`, `items.md`, `inventory.md`, `mechanics.md`, `controls.md`, `events.md`, `progression.md`, `challenge-layers.md`) — anything implemented differently than written is corrected at the source, not left as a discrepancy.
 - [ ] Cross-links still valid (relative links, tables of contents, "Related documents" sections).
 - [ ] Search for stale markers: `TBD` in finished work, `(planned)` labels that are now real, version/date mismatches, "no code yet" claims, references to renamed files/scenes.
 
@@ -193,3 +193,4 @@ Bring **every** document in line with the implementation as it now exists. For e
 ## 9. Change log
 
 - **0.1 — 2026-11-18:** Initial working agreement: source-of-truth map, one-task-per-session protocol, human pre-session preparation checklist, software-vs-human testing split with mandatory playtest declaration, mandatory Notes & learnings gotcha capture, stop-and-ask conditions, phase retrospective and doc-sync sweep.
+- **0.2 — 2026-11-19:** Synced with the owner's direction reset (GDD v0.19): project snapshot rewritten (Kit 17, realistic-but-kid-friendly, orders, automation, three modes), **PC only**, Compatibility renderer and `MyFarmingGame` assembly recorded, guardrail summary updated to the new PHASE.md §7, `.import` sidecars now committed (only `.godot/` ignored), `buildings.md` added to the domain-doc lists, human-test examples de-aged.
