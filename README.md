@@ -1,6 +1,6 @@
-# Project My Farming Game
+# Fields & Sunshine
 
-> **Working title:** TBD
+> **Working title:** Fields & Sunshine (chosen 2026-11-19; trademark check pending)
 > **Status:** 🟡 Design draft (direction reset 2026-11-19) · 🟡 Godot project initialised in `src/` (4.7, C#, Compatibility renderer, assembly `MyFarmingGame`) — no gameplay code yet
 > **Design version:** GDD v0.22 · World v0.12 (both 2026-11-19)
 > **Last README update:** 2026-11-19 (🔄 owner picks: one mode, ages 6+, day-based growth, land owned but overgrown, first order as the opening, Phase-001 vertical slice · 🆕 `docs/economy.md` + price sheet, `docs/onboarding.md`)
@@ -104,7 +104,7 @@ Full plan: [`docs/PHASE.md`](./docs/PHASE.md).
 - **Bump `Last README update`** every time you touch this file (`YYYY-MM-DD`).
 - **Tick checkboxes** as things land; add new items rather than rewriting sections.
 - **Mirror the GDD version** in the header; each doc's change log is the source of truth for that doc.
-- **When the working title is chosen**, replace "Project My Farming Game" in the header and the `Working title` line.
+- **If the working title changes**, update the header and the `Working title` line.
 - Keep this file an honest snapshot: if something is speculative, label it as a proposal.
 
 ---
@@ -128,6 +128,7 @@ Full plan: [`docs/PHASE.md`](./docs/PHASE.md).
 | [Progression (`docs/progression.md`)](./docs/progression.md) | Farm growth tiers, clearing the land, orders as progression, and long-term goals (charm, collections, trophies, restoration, mastery). |
 | [Difficulty (`docs/challenge-layers.md`)](./docs/challenge-layers.md) | The single mode — realistic but kid-friendly — and its rules. |
 | [Economy (`docs/economy.md`)](./docs/economy.md) | 🆕 Prices (sell ≈ real, buy ≈ half), balance check; full sheet in [`docs/data/economy.csv`](./docs/data/economy.csv). |
+| [Art & Audio Brief (`docs/art-audio.md`)](./docs/art-audio.md) | 🆕 Reference games (with links), "not too chibi" proportions, palette, Harvest Moon-style fun music. |
 | [Onboarding (`docs/onboarding.md`)](./docs/onboarding.md) | 🆕 The ≈ 5-minute guided start and Day 1–7 nudges. |
 | [Roadmap (`docs/PHASE.md`)](./docs/PHASE.md) | Phases from prototype to release; guardrails. |
 | [Phase-001 (`docs/Phase-001.md`)](./docs/Phase-001.md) | Current phase task list. |
