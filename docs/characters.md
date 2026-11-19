@@ -1,7 +1,7 @@
 # Characters
 
 > **Status:** Finalized for prototype (design v0.5) — **updated for the direction reset 2026-11-19**
-> **Version:** 0.11
+> **Version:** 0.12
 > **Last updated:** 2026-11-19
 > **Purpose:** The final cast for the prototype, plus clearly-marked future cast. Names below are locked for the prototype unless playtesting proves otherwise. Backgrounds are brief and adjustable.
 
@@ -71,6 +71,7 @@ A page makes each neighbour concrete and memorable, turning a brief greeting int
 |---|---|
 | **Role** | The one who notices, reaches, kneels, and does. |
 | **Name** | **Kit** (short, single-syllable, easy to read; chosen over Wren / Tolly / Moss / Nell / Junie). |
+| **Gender** | **Boy** (decided 2026-11-19). The player names him (default Kit) and picks his look; he is always a teen boy. |
 | **Age** | **17** (decided 2026-11-19). Old enough to run a farm, handle money, and be trusted with the family land; young enough to still be learning. Drawn with teen proportions, not as a small child. |
 | **Identity** | A **17-year-old recent arrival from a city far away**, here because the family asked them to take care of — and make something of — the family's land on Bramblewick Lane (world.md §7.1). |
 | **Defining trait** | Curiosity and follow-through. Not "chosen," just paying attention — and willing to learn the work. |
@@ -265,3 +266,4 @@ Implementation notes:
 - **0.9 — 2026-11-18:** **Ada's identity decided (world.md §7.5 sub-thread):** she is **the parents' old friend** who kept the heirloom house while the child was raised in the city, and helps him when he arrives — not the parent. §7 retitled "Adult character"; Role/Identity/Background rows rewritten; the Marlow rule (adults never do the child's doing) extended to her; new "who Ada is in the room" note keeps GDD §2's parent-as-difficulty-dial true of the human Player 2. The ⚠️ pending flag from v0.8 is cleared.
 - **0.10 — 2026-11-19:** **Direction reset (GDD v0.19).** **Kit is 17** (new Age row; teen proportions; identity and background now include growing the land into a working farm). Ada's "difficulty dial"/grown-up-menu role and the "parent in the room" note retired — Ada is any second player or a solo-play NPC. Introductions paced by **farm tiers** instead of age stages; future cast gains **the baker** and **the travelling merchant**, and "a child of the lane" becomes **a friend of Kit's age**. Marlow now also keeps the order board and has his own order tastes; hint ladder's parent-speaks-first window generalised to the second player. Pre-reader wording removed; registry `stageIntroduced` → `tierIntroduced`.
 - **0.11 — 2026-11-19:** Owner picks: Marlow's first gift is now the **first order** (berries, then carrots) — the butterfly net moves to the optional Butterfly Garden request; merchant arrives when Field A is cleared; single difficulty mode.
+- **0.12 — 2026-11-19:** **Kit is a boy** (owner decision); name and appearance stay customizable.
