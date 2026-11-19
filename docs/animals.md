@@ -1,7 +1,7 @@
 # Animals & Fish Pond
 
 > **Status:** Design draft — **updated for the direction reset 2026-11-19**
-> **Version:** 0.4
+> **Version:** 0.5
 > **Last updated:** 2026-11-19
 > **Purpose:** Farm animals, the fish pond, and the lane's wild creatures. Care is real responsibility: well-cared animals give better products; neglected animals are gone. Kid-friendly presentation — no sickness, no vet, no on-screen death.
 
@@ -9,10 +9,10 @@
 
 ## 1. Scope and Design Intent
 
-- **Four farm species** (chicken, sheep, cow, beehive) plus **pond fish**. There is **no fixed cap** on how many — the number is limited by money (buying animals and housing) and later by land (coop, barn, pond footprints; buildings.md).
+- **Four farm species** (chicken, sheep, cow, beehive) plus **pond fish**. **The limit is the housing** (owner decision 2026-11-19): a barn with 5 stalls holds 5 cows/sheep, a small coop holds 5 hens, a small pond holds 10 fish (buildings.md §3). More animals need bigger buildings, which need money and cleared land.
 - **One care need per species**, shown as a picture icon. Simple to learn, real enough to matter.
-- **Realistic consequence, kid-friendly presentation** (GDD pillar 2): if an animal's care meter empties, it is **gone right away**. A short message card appears with a **picture of a small gravestone** and the animal's name. Nothing is shown dying; there is no sickness or vet system.
-- **Nothing happens while the game is closed.** Meters drain only during play.
+- **Realistic consequence, kid-friendly presentation** (GDD pillar 2): if an animal goes **3 days in a row without food**, it is **gone right away**. A short message card appears with a **picture of a small gravestone** and the animal's name. Nothing is shown dying; there is no sickness or vet system.
+- **Nothing happens while the game is closed.** Days only pass during play.
 - **Automation is the long-term answer:** auto-feeders (fed from the silo) and helpers keep meters full on a big farm.
 
 ---
@@ -23,7 +23,7 @@
 |---|---|---|---|---|---|
 | **Chicken** | Feed grain | Corn kernel | Egg | Coop | Lays Spring–Autumn; rests in Winter (no eggs) but still eats — needs more grain in Winter |
 | **Sheep** | Feed hay + brush when fluffy | Hay bale / comb | Wool | Barn | Wool grows faster in Summer, thickens in Autumn |
-| **Cow** | Feed hay | Hay bale | Milk | Barn | Milk daily year-round; grazes in pasture Spring/Summer |
+| **Cow** | Feed hay | Hay bale | Milk | Barn | 4 milk cans (≈ 20 L) daily year-round; grazes in pasture Spring/Summer |
 | **Beehive** | Flowers nearby | Flower petal | Honey | Hive / apiary | Active Spring–Autumn; sleeps in Winter (no loss while asleep) |
 | **Pond fish** | Feed fish food | Fish-food flake | Fish | Fish pond | Grow faster in Summer; slow in Winter; some species only stock in certain seasons |
 
@@ -31,27 +31,28 @@ Breeds (speckled hen, black sheep, highland cow, rare bee strains, rare fish) ar
 
 ---
 
-## 3. Care Meter and Loss Rule
+## 3. Daily Care and the Loss Rule
 
-Each animal (and each pond, as a group) has **one** heart-shaped meter, no numbers.
+Animals need **food once per in-game day** (the same daily rhythm as watering crops). Each animal (and each pond, as a group) shows a heart meter with no numbers.
 
-| Meter | What the player sees | Effect |
+| Unfed days in a row | What the player sees | Effect |
 |---|---|---|
-| **Full** | Happy animal | Produces; quality rises over time |
-| **Low** (threshold by mode) | Need icon bounces above the animal; Marlow or Ada may mention it | Production slows; quality stops rising |
-| **Empty** | — | **The animal is gone.** Message card: gravestone picture + "*Bramble the hen is gone. Hens need grain every day.*" (tip shown in Easy and Normal). |
+| **0** (fed today) | Happy animal, full heart | Produces; quality can rise |
+| **1** | Need icon above the animal; heart ⅔ | No product tomorrow |
+| **2** | Icon flashes, heart ⅓; Ada or Marlow mentions it | Warning |
+| **3** | — | **The animal is gone.** Message card: gravestone picture + "*Bramble the hen is gone. Hens need food every day.*" plus a tip ("An auto-feeder can help"). |
 
-- **Refilling:** one feed / brush / flower visit restores the meter fully.
-- **Drain rate** depends on difficulty mode (challenge-layers.md §3: ≈3 / 2 / 1 in-game days from full to empty).
-- **Beehives** do not have a loss state in Winter while asleep; in other seasons, no flowers nearby → the hive leaves (same message card, a picture of an empty hive instead of a gravestone).
-- **Fish:** the pond meter covers all its fish. Empty → the pond's fish are gone (one message card for the pond). Overfeeding is not punished (no added complexity).
-- **After a loss:** nothing else is taken away; the housing stays, and a new animal can be bought.
+- **Feeding resets the count to 0.** Brushing (sheep) and flowers nearby (bees) raise quality but are not survival needs.
+- **Beehives** need no feeding; with no flowers within 5 tiles for 3 days in a warm season the colony leaves (empty-hive picture instead of a gravestone). Asleep in Winter: no loss.
+- **Fish:** one feed per day feeds the whole pond; 3 unfed days → the pond's fish are gone (one card). Overfeeding is not punished.
+- **After a loss:** nothing else is taken away; the building stays and a new animal can be bought.
+- The same **3-days-in-a-row** count is used for crops (crops.md §2) so there is one rule to learn.
 
 ---
 
 ## 4. Quality Products
 
-- Products come in **1–3 stars**. Quality rises with **consistent care** (meter kept above low), brushing, good feed (silo hay vs. bought), and nearby flowers for bees.
+- Products come in **1–3 stars**. Quality rises with **consistent care** (no missed feeding days), brushing, good feed (silo hay vs. bought), and nearby flowers for bees.
 - Higher quality sells for more, scores better in contests, and some orders ask for it ("a 3-star cheese for the festival").
 - Quality never drops below 1 star; neglect only stops it rising — the real cost of neglect is the loss rule.
 
@@ -62,7 +63,7 @@ Each animal (and each pond, as a group) has **one** heart-shaped meter, no numbe
 | UI element | Implementation |
 |---|---|
 | **Need icons** | Corn kernel, hay bale, comb, petal, fish-food flake — bounce above the animal/pond |
-| **Care meter** | Heart bar, no numbers; also visible in the care menu (controls.md §2) |
+| **Care meter** | Heart bar (full / ⅔ / ⅓), no numbers; also in the care menu (controls.md §2) |
 | **Product ready** | Egg glows in nest; wool looks fluffy; honey drips; milk pail full; fish jump in the pond |
 | **Loss card** | Small, gentle gravestone illustration (or empty hive / still pond), animal name, one-line tip; dismissed with one button |
 
@@ -72,11 +73,13 @@ Each animal (and each pond, as a group) has **one** heart-shaped meter, no numbe
 
 - **Build:** a fish pond structure (buildings.md; footprint 4, bigger ponds 6/9) from T3.
 - **Stock:** buy fingerlings from the travelling merchant or the shop, or release fish caught at the brook.
-- **Feed:** fish food (bought, or crafted from crops) — one feed fills the pond meter.
+- **Capacity:** small pond 10 fish, large pond 25 fish (buildings.md).
+- **Feed:** fish food (bought, or crafted from crops) — once a day for the whole pond.
 - **Harvest:** when fish are grown, collect them with a net or fishing rod; the pond restocks from remaining fish over time.
 - **Use:** sell, deliver in orders (a fishmonger neighbour, festival catering), or process (smoked fish, fish pie).
-- **Automation:** a **pond auto-feeder** keeps the meter full; a helper can harvest.
-- **Limits:** money for the pond and stock early; land (pond footprint) later.
+- **Output:** ≈ 2 fish per day from a full small pond (economy.md §4).
+- **Automation:** a **pond auto-feeder** feeds it daily; a helper can harvest.
+- **Limits:** money for the pond and stock early; cleared land (16 or 36 tiles) later.
 - **Education:** water ecosystems, how fish farms work, feeding regularly.
 
 ---
@@ -110,7 +113,7 @@ Butterflies and fireflies are always released — never kept or sold.
 
 - Sickness, injury, vet visits, medicine.
 - On-screen death or any graphic depiction of loss.
-- Needs or meters draining while the game is closed.
+- Anything advancing while the game is closed.
 - Breeding/genetics simulation (breeds are bought or won, not bred) — may be revisited later.
 - Pets (dogs, cats) and working animals — deferred, not ruled out.
 
@@ -125,7 +128,8 @@ Butterflies and fireflies are always released — never kept or sold.
 | [buildings.md](./buildings.md) | Coop, barn, apiary, fish pond, silo, auto-feeders. |
 | [mechanics.md](./mechanics.md) | Feed, brush, collect, fish, stock verbs. |
 | [inventory.md](./inventory.md) | Animal products by quality. |
-| [challenge-layers.md](./challenge-layers.md) | Drain rates and warning thresholds per mode. |
+| [challenge-layers.md](./challenge-layers.md) | The single mode's 3-days rule. |
+| [economy.md](./economy.md) | Animal, feed, and product prices; paybacks. |
 | [progression.md](./progression.md) | Breeds, quality stickers, contests. |
 | [events.md](./events.md) | Care, product, loss, and seasonal events. |
 
@@ -135,3 +139,4 @@ Butterflies and fireflies are always released — never kept or sold.
 - **0.2 — 2026-11-18:** Three care animals added (chicken, sheep, beehive) with gentle care meter, no death/neglect penalty, seasonal behavior, and collectathon inventory integration.
 - **0.3 — 2026-11-18:** Added the **cow** (fourth care animal, produces milk) and a new §6 covering ambient/collectible creatures (butterflies, firefly, frog), making change log 0.1 truthful. Seasonal behavior aligned with similar farming games: chicken lays spring–autumn and rests in winter; beehive active spring through autumn. Exclusions reworded for the initial four.
 - **0.4 — 2026-11-19:** **Direction reset (GDD v0.19).** Nap state removed: an animal whose meter empties is **gone right away**, shown only as a short message card with a **gravestone picture** (empty hive for bees); no sickness or vet. 4-animal cap removed — numbers limited by money and housing/land. Sheep now also eat hay. Added **quality products (1–3 stars)**, **§6 Fish Pond** (stock, feed, harvest; pond auto-feeder; money then land limit), brook fishing, breeds as a collection, and automation (auto-feeders, helpers) as the long-term answer to neglect. Products now sold and used in orders and processing.
+- **0.5 — 2026-11-19:** **Owner decisions:** animal numbers capped by **housing capacity** (5-stall barn = 5 animals; coop 5/10 hens; pond 10/25 fish). Meter-drain-by-mode replaced by the single-mode **daily feeding rule: 3 unfed days in a row → gone** (warnings on days 1–2), matching the crops' 3-dry-days rule. Pond capacity, output, and land footprint added; economy.md linked.

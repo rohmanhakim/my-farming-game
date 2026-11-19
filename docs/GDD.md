@@ -1,7 +1,7 @@
 # Game Design Document
 
-> **Status:** Brainstorming draft — **direction reset 2026-11-19** (see v0.19 change log)
-> **Version:** 0.19
+> **Status:** Brainstorming draft — **direction reset 2026-11-19** (see v0.19–v0.20 change log)
+> **Version:** 0.20
 > **Last updated:** 2026-11-19
 > **Purpose:** A living document for shaping the game together. Confirmed owner decisions are marked **decided**; everything else is a proposal, not a commitment.
 
@@ -9,7 +9,7 @@
 
 A fully 2D, **realistic but kid-friendly, educational** farming-life game for PC. The player is **Kit, a 17-year-old** who has come from the city to look after the family's land on Bramblewick Lane. Kit grows crops, raises animals, stocks a fish pond, fills **orders from the neighbours**, and slowly grows a small, tangled plot into a working farm — the way a *Harvest Moon* farm grows: the challenge rises naturally as the farm gets bigger. **Automation** (sprinklers, feeders, helpers), unlocked later by crafting or buying it, is the game's key selling point: the moment the farm starts running itself is the payoff for everything before it.
 
-Farming, community, and exploration are parts of one warm world. Neglect has real but gentle consequences — crops turn yellow and are lost, neglected animals are gone — always shown without anything graphic. The presentation uses illustrated, non-pixel-art graphics.
+Farming, community, and exploration are parts of one warm world. Neglect has real but gentle consequences — crops turn yellow and are lost, neglected animals are gone — always shown without anything graphic. There is **one difficulty: realistic but kid-friendly**. The presentation uses illustrated, non-pixel-art graphics.
 
 The game takes inspiration from the welcoming farming and community feel of *Stardew Valley* and the farm-growth arc of *Harvest Moon*, with a smaller scope and a teaching-friendly tone.
 
@@ -17,11 +17,12 @@ The game takes inspiration from the welcoming farming and community feel of *Sta
 
 ## 2. Audience and Play Context
 
-- **Audience (decided direction, age band open):** Kid-friendly and educational, but **no longer aimed at pre-elementary children**. Content is safe for children; systems are a real (if simple) farm sim with money, consequences, and planning.
-  - **⚠️ Needs owner decision — target age band.** The previous band (pre-elementary → 5th grade, parent-led) no longer fits a 17-year-old protagonist, money management, and loss from neglect. Working assumption for writing only: **roughly ages 8 and up, plus families and teens**, with no reading-free requirement. This affects text density, age rating, tutorial depth, and the Easy mode's tuning. See §16 Q9.
-- **Play modes:** Solo, or **local co-op on one PC** (two gamepads, or keyboard + mouse plus one gamepad — controls.md §3). Co-op is optional; nothing requires a second player.
-- **Second player:** Plays **Ada**, the family friend (characters.md §7). The "parent is the difficulty dial" role is retired: difficulty is now a **mode** chosen in settings (§6), not a set of parent-only toggles.
-- **Reading:** Short, simple sentences, always paired with icons. Fluent reading is not required for core actions, but text is now part of the experience (orders, prices, recipes).
+- **Audience (decided 2026-11-19): ages 6 and up**, plus families and teens. Kid-friendly and educational; no longer aimed at pre-elementary children.
+  - **What 6+ requires of the design:** icon-first UI (every price, order, and need shows a picture plus a small number); sentences of about 10 words or fewer; numbers kept small (counts up to about 20 in orders; coins shown as icon + number); optional **read-aloud** for dialogue and order cards; no reflex or timing tests; losses shown without anything frightening.
+  - **Rating target:** an all-ages / 6+ rating (e.g. ESRB E, PEGI 3–7) — no violence; animal loss is shown only as a gravestone message card. Formal rating review before release (§12).
+- **Play modes:** Solo, or **local co-op** on one PC: one house, one farm, one map, shared wallet and orders, with a **dynamic split screen** that merges into one view when the two players are close together (§4 *Co-play*).
+- **Second player:** Plays **Ada**, the family friend (characters.md §7).
+- **Reading:** helpful but not required for core actions; short text always comes with icons, and key text can be read aloud.
 - **Platform:** **PC only** (decided 2026-11-19). No tablet, mobile, or touchscreen versions are planned.
 
 ## 3. Design Goals
@@ -31,13 +32,30 @@ The game takes inspiration from the welcoming farming and community feel of *Sta
 1. **Easy to understand:** A player can see what to do and learn the controls by trying them.
 2. **Realistic but kid-friendly:** Plants need water, animals need care, money must be earned. Neglect has consequences — crops yellow and are lost; neglected animals are gone — but nothing is shown graphically: an animal loss is a short message with a picture of a gravestone. No sickness, no vet, no gore.
 3. **Educational:** Players learn real things through play — seasons and what grows when, what animals need, where food comes from (milk → cheese, wheat → bread, fruit → jam/pie), and simple money sense (earn, budget, save up, invest in tools).
-4. **Grow your farm (Harvest Moon-style):** Challenge rises naturally as the farm grows. Early limits are **money**; the final limit is **land size**. There is no fixed cap on beds or animals.
+4. **Grow your farm (Harvest Moon-style):** Challenge rises naturally as the farm grows. All land is Kit's from day one but overgrown and must be cleared. Early limits are **money**, then **cleared land**; the final limit is **total land**. Animal numbers are limited by **housing** (a 5-stall barn holds 5 cows).
 5. **Automation is the payoff:** Sprinklers, feeders, and helpers are unlocked by crafting or buying them at the right point in progression, turning chores into a farm that runs itself.
 6. **Many ways to earn, none mandatory:** Neighbour orders are the main income; market sales, contests, foraging and fishing, trading, crafting, and friendship rewards are alternatives. The player chooses how much money to chase — there is no pressure and no debt (§4 *Ways to earn and acquire*).
 7. **Small, satisfying activities:** Short actions produce visible, cheerful results.
 8. **Creative ownership:** Players lay out and decorate their farm without needing to optimise it.
 9. **Warm illustrated world:** Expressive characters, clear shapes, and inviting environments.
 10. **Practice everyday social skills:** Through ordinary interactions — greeting, keeping a promise, delivering what was asked, negotiating a trade — players explore communication, reliability, and caring for shared spaces.
+
+### Learning goals (decided 2026-11-19)
+
+The *educational* pillar, made concrete. Every system should serve at least one goal.
+
+| # | A player learns that… | Taught by |
+|---|---|---|
+| 1 | Plants need water every day, the right season, and good soil | Daily watering, 3-dry-days rule, seasons, compost |
+| 2 | Animals depend on us for food and shelter every day | Daily feeding, housing capacity, 3-unfed-days rule |
+| 3 | Food comes from farms and is changed into other food | Milk → cheese, wheat → flour → bread, fruit → jam/pie |
+| 4 | Money is earned, spent, and saved up for a goal | Orders, prices, saving for a coop or barn |
+| 5 | Prices change with the season and how much is for sale | Seasonal and demand pricing |
+| 6 | Keeping a promise matters, and you choose what to promise | Accepting and delivering orders (optional) |
+| 7 | Space and time must be planned | Clearing land, building footprints, days to harvest |
+| 8 | Tools and machines save work | Tool upgrades, sprinklers, feeders, helpers |
+| 9 | Waste can be reused | Compost, scraps, cleared debris → materials |
+| 10 | Nature works together | Bees pollinate crops; rain waters fields; ponds and brooks |
 
 ### Intended emotional experience
 
@@ -47,17 +65,9 @@ Players should feel curious, capable, responsible, and proud of the farm they bu
 
 The game lets players practise interactions that help beyond home: greeting someone, asking before taking, taking turns, offering help, keeping an agreement, and responding when someone has a different need. Consequences are proportionate, connected to what happened, and focused on how people or the shared space respond. When possible, players can repair a misunderstanding or try again. Avoid rigid good/bad scoring or shame.
 
-### Difficulty: three modes, one world (decided direction 2026-11-19)
+### Difficulty: one mode (decided 2026-11-19)
 
-The old *Gentle Core + six opt-in challenge layers + five-stage map* structure is **retired**. Difficulty is now one **mode** chosen when starting a new game and changeable any time in Settings. All modes have the same content, the same progression, and the same consequences — only the *tuning* differs. Full table in [challenge-layers.md](./challenge-layers.md) (now *Difficulty Modes*).
-
-| Mode | Who it is for | In short |
-|---|---|---|
-| **Easy** | Younger or newer players, families | Long grace before crops yellow and animals are lost; cheaper start; generous order pay |
-| **Normal** (default) | Most players | The intended balance |
-| **Realistic** | Players who want a real farm sim | Shorter grace, tighter money, prices that swing more with season and demand |
-
-Why three: one mode per audience the owner named (kid-friendly, standard, "realistic"), few enough to explain in one sentence each, and it keeps one tuning table instead of a matrix of toggles. See challenge-layers.md §2 for the reasoning and §16 Q10 for what is still open.
+There is **one mode: realistic but kid-friendly** — no difficulty choice and no mode switching. Realistic: daily watering and feeding, real sell prices, losses from neglect. Kid-friendly: two warning days before any loss, buying at about half the real price, no debt, nothing changes while the game is closed. Challenge comes from the farm growing, not from a setting. Rules table: [challenge-layers.md](./challenge-layers.md).
 
 ### Social interaction anchor: reciprocal requests and orders
 
@@ -70,25 +80,29 @@ The shared pattern is that the player wants something and helps another person t
 
 Requests and orders are **optional and have no deadline penalty**. An unaccepted order simply waits or is replaced by a new one; an accepted order stays open until it is delivered or the player cancels it, with no loss. NPCs remember kindly: "We didn't finish that last time. Would you like to try it now?"
 
-### First want-task-reward beat: The Butterfly Garden
+### First want-task-reward beat: The First Order (decided 2026-11-19)
 
-**Status:** Proposal, kept from v0.9; validate through playtesting.
+The first beat teaches the game's real loop — produce → order → money → invest — instead of a butterfly net.
 
-| Beat | Proposal |
+| Beat | Design |
 |---|---|
-| Player's want | Kit sees butterflies in a sketch in Marlow's ledger and wants them back in the garden. |
-| NPC's request | Marlow offers flower seeds and asks Kit to plant and water three flowers so butterflies will come. |
-| Player's choice | Accept, decline, or leave it unfinished. Marlow remembers and kindly offers it again. If the flowers are lost to neglect, Marlow hands over replacement seeds without blame. |
-| Reward | A butterfly net, unlocking a new activity: finding and catching butterflies and bugs. |
-| Loop back | Kit can show a butterfly to Marlow or release it in the garden. Soon after, Marlow introduces the **order board** — the start of the farm economy. |
+| Player's want | On Day 1 Kit sees a hen in Marlow's yard and a picture of eggs; Kit wants chickens of their own (a coop costs more than Kit has). |
+| NPC's request (quick) | Marlow: "Bring me 3 handfuls of wild berries from the lane." Foraging is possible right away, so the **first order is paid within minutes** (coins + the order board opens). |
+| NPC's request (farming) | Marlow then orders **5 carrots**, which Kit grows from the starter seeds (3 days, watered daily). |
+| Player's choice | Accept, decline, or leave it. Marlow restates kindly; if the carrots are lost to neglect he simply waits for the next batch. |
+| Reward | Coins (enough, with savings, for a small coop and 2 hens around Day 12–15 — economy.md §5.3) and the **order board**, where neighbours post repeat orders. |
+| Loop back | Eggs → egg orders from Marlow and the baker → repeat and bigger orders. |
+
+**The Butterfly Garden** stays as an **optional later request** in Spring (plant and water three flowers → butterfly net → catching butterflies). It is no longer the opening.
 
 #### Starting loadout and item handling
 
 - **Hands:** Planting, harvesting, decorating, talking, and general interaction.
-- **Watering can:** Starts with the player. **Watering is now required for growth** (pillar 2).
+- **Watering can:** Starts with the player. Watering is required for growth, once per day.
+- **Old family hoe:** For tilling cleared ground.
 - **Seed box:** Starts with two or three basic seeds; more are bought at the seed shed.
-- **Small purse:** A little starting money (amount set by mode).
-- **Future tools:** Introduced when they open a new verb or make a chore faster (net, brush, fishing rod, hoe, scythe, sprinkler…).
+- **Purse:** 500 coins (economy.md §1).
+- **Future tools:** Introduced when they open a new verb or make a chore faster (scythe, hammer, axe, brush, fishing rod, net…).
 
 The tool belt holds a small set of large icon slots. Harvests and products go to picture-based, auto-stacking inventory slots (inventory.md). Overflow goes to a storage chest; there is no sorting and no "full" penalty.
 
@@ -139,7 +153,7 @@ Orders are the main income, but **none of these is mandatory**: the player decid
 | Way | What it gives | Notes |
 |---|---|---|
 | **Neighbour orders** | Money, relationship, repeat/bigger orders | Main income (above). |
-| **Market stall / shipping box** | Money | Sell any produce. **Seasonal pricing** (out-of-season goods pay more) and **demand pricing** (selling lots of one thing lowers its price for a while). Swing size set by mode. |
+| **Market stall / shipping box** | Money | Sell any produce. **Seasonal pricing** (out-of-season goods pay more) and **demand pricing** (selling lots of one thing lowers its price for a while). Prices in economy.md. |
 | **Town board & festival contests** | Money, ribbons, unique items | Board posts one-off jobs (e.g. "fix the fence"); seasonal festivals hold produce and animal contests judged on quality. |
 | **Foraging, fishing & exploring** | Wild goods to use, sell, or deliver | Berries, mushrooms, herbs along the lane; fishing at the brook; finds while exploring. |
 | **Travelling merchants** | Trades, rare seeds, rare items | Visit on certain days; trade goods for goods, or buy rarities. |
@@ -152,27 +166,22 @@ Orders are the main income, but **none of these is mandatory**: the player decid
 
 ### Neglect and consequences (decided 2026-11-19)
 
-- **Crops:** Crops need water to grow. A crop left dry **stops growing**, then **turns yellow** (a clearly visible warning stage), and if still neglected it is **gone** — the bed is empty again. Watering a yellow crop recovers it. Grace times depend on mode (challenge-layers.md §3).
-- **Animals and fish:** Each animal has a care meter. When it runs low, a picture icon shows the need. If the meter empties, the animal is **gone right away** — no nap stage, no sickness, no vet. The game shows a **short message with a picture of a gravestone** and nothing more; no on-screen death.
-- **Never while the game is closed:** needs and dryness advance only during play. Closing the game for a week loses nothing.
-- **Never a surprise:** every loss is preceded by a visible warning (dry soil → yellow crop; need icon → low meter).
-- **Recoverable:** a lost crop or animal can be replaced with money; no other progress is taken away. Automation (sprinklers, feeders) is the long-term answer.
+One rule for everything that lives on the farm: **3 days in a row without care → gone, with 2 warning days first.**
 
-### Plant growth model (decision — Milestone 0, 2026-11-18; amended 2026-11-19)
+- **Crops:** need water once per in-game day. Dry day 1 → no growth. **2 dry days in a row → yellow** (warning). **3 dry days in a row → gone** (tile stays tilled). Watering resets the count. Rain counts as watering.
+- **Animals and fish:** need food once per day. 1 unfed day → need icon. 2 → flashing icon, Ada/Marlow mention it. **3 unfed days in a row → gone right away** — no sickness, no vet. The game shows a **short message with a picture of a gravestone** and a tip; nothing is shown on screen.
+- **Never while the game is closed:** days only pass during play.
+- **Never a surprise:** every loss has two visible warning days.
+- **Recoverable:** a lost crop or animal can be replaced; nothing else is taken away. Automation (sprinklers, feeders) is the long-term answer.
 
-- Plants advance through growth stages **during play**, on **accumulated play time**, and only while the game is running.
-- **Amended:** a plant grows **only while watered**. Each watering keeps the soil moist for a while; when the soil is dry, growth pauses and the neglect clock (above) starts. Watering is no longer optional.
-- Plants never change while the game is closed.
+### Plant growth model (decided 2026-11-19 — replaces the Milestone 0 play-time model)
 
-**Decided settings — chosen on the options screen before starting a new game:**
+**Day-based, like *Harvest Moon*.** Every crop takes **at least one in-game day**; most take 3–12 days (crops.md §3–§5).
 
-| Setting | Options | **Default** |
-|---|---|---|
-| **Growth speed** (time per growth stage while watered) | Fast ≈ 15–20 s · **Medium ≈ 30–45 s** · Slow ≈ 60–90 s | **Medium** — seed → harvest ≈ 2 minutes of watered play for the first crops; later crops have more stages |
-| **Growth while the game is closed** | **Paused** · Gentle catch-up | **Paused** |
-
-- Ending the day does not add an extra stage. Gentle catch-up adds at most one stage on next launch and never past harvest-ready.
-- **⚠️ Open (§16 Q11):** with money and orders in play, these short play-time stages may need re-tuning — or a switch to Harvest Moon-style day-based growth. Kept as decided until a playtest says otherwise.
+- A crop grows **one day overnight** if it was watered (or rained on) that day.
+- Regrowing crops (tomato, berries, hay grass) produce again every few days.
+- Nothing grows while the game is closed.
+- *Superseded:* the Milestone 0 decision (v0.16) of play-time stages (Fast/Medium/Slow ≈ 15–90 s per stage, Gentle catch-up) is retired — it made crops ready in about 2 minutes, too fast for an economy and for the neglect rule.
 
 ### In-day clock and day phases (decision — Milestone 0, 2026-11-18)
 
@@ -183,6 +192,8 @@ Orders are the main income, but **none of these is mandatory**: the player decid
 - **Step rate:** one step ≈ **3 minutes of play** → a full in-game day ≈ **24 minutes of play** (tunable).
 - **Runs only while playing:** stops in the pause menu and while the game is closed.
 - **Sleep/rest** ends the day: the calendar day increments and the clock resets to **Dawn (06:00)**.
+- **Bedtime at 02:00 (proposal):** if Kit is still up at 02:00, Kit heads home and sleeps automatically — no penalty. Without this, a player who never sleeps would freeze the calendar now that growth is day-based.
+- **⚠️ Day length open (§16 Q13):** *Harvest Moon* runs about 1 in-game minute per real second (≈ 18 real minutes from 06:00 to midnight); *Stardew Valley* ≈ 14 real minutes per day. Ours is ≈ 24 minutes; a shorter day (≈ 16–18 min) is recommended.
 
 | # | Phase | Clock | Light | What is true in this phase |
 |---|---|---|---|---|
@@ -197,7 +208,7 @@ Orders are the main income, but **none of these is mandatory**: the player decid
 
 **HUD clock:** a small dial with a sun/moon marker that jumps one step at a time, plus a digital readout ("09:00").
 
-**What the clock drives:** lighting, NPC presence, shop hours, order-board refresh, shipping-box payout, time-of-day events. **What it never drives:** plant growth (play time, above) or care-meter decay (play time). Missed time-of-day events recur.
+**What the clock drives:** lighting, NPC presence, shop hours, order-board refresh, shipping-box payout, time-of-day events. **Day rollover** (sleep or 02:00 bedtime) drives crop growth, watering/feeding counts, and the 3-days rule. Missed time-of-day events recur.
 
 ### Automation (decided 2026-11-19 — key selling point)
 
@@ -208,7 +219,7 @@ Orders are the main income, but **none of these is mandatory**: the player decid
 
 ### Buildings (decided direction 2026-11-19)
 
-Kit can build coops, barns, a fish pond, beehives/apiary, an orchard, a workshop, a kitchen, a storage silo, compost bins, sprinklers/irrigation, a windmill/water pump, a **greenhouse** (any crop, any season), a **hydroponics** bay (faster, water-efficient, needs power), a market stall, helper posts, and a farm shop. Each has a cost, a land footprint, an unlock tier, and an education angle — full catalogue in [buildings.md](./buildings.md). Money gates them early; land gates them late.
+Kit can build coops, barns, a fish pond, beehives/apiary, an orchard, a workshop, a kitchen, a storage silo, compost bins, sprinklers/irrigation, a windmill/water pump, a **greenhouse** (any crop, any season), a **hydroponics** bay (faster, water-efficient, needs power), a market stall, helper posts, and a farm shop. Each has a cost, a land footprint, an unlock tier, and an education angle — full catalogue in [buildings.md](./buildings.md). Money gates them early; cleared land, then total land (992 tiles), gates them late. Capacity comes from the building (a 5-stall barn holds 5 animals).
 
 ### After the farm is running (all optional)
 
@@ -216,34 +227,37 @@ When the land is full and automation runs the chores, long-term goals remain: **
 
 ### Session shape
 
-Short sessions are satisfying; long sessions are possible. There is no required daily check-in and nothing advances while the game is closed. An optional **break reminder** lives in Settings (on by default in Easy).
+Short sessions are satisfying; long sessions are possible. There is no required daily check-in and nothing advances while the game is closed. An optional **break reminder** lives in Settings (off by default). Onboarding is kept short — see [onboarding.md](./onboarding.md).
 
-### Co-play
+### Co-play (decided 2026-11-19)
 
-Solo play is complete. On one PC two players can farm together in real time (controls.md §3). Tasks never require simultaneous input. Online play is not planned.
+- **One house, one farm, one map**, shared wallet, inventory storage, and order board. Either player can deliver an order.
+- **Dynamic split screen:** when the players are close, one shared camera; when they move apart, the screen splits (vertically) and merges back smoothly when they meet again.
+- Solo play is complete; tasks never require two players. Online play is not planned.
 
 ## 5. Player Activities
 
-### MVP proposal (Phase-001 interaction prototype)
+### First playable (Phase-001 vertical slice, decided 2026-11-19)
 
-> **Scope note:** This MVP is the **Phase-001 interaction prototype** — a vertical slice of planting and the first request (docs/PHASE.md). The full product scope (§15) is delivered across later phases.
+> **Scope note:** Phase-001 is now a **vertical slice of the money loop** (docs/Phase-001.md).
 
-- Move around a small home garden and the path to the seed shed.
-- Interact with garden beds; choose from two or three seeds.
-- Plant and water crops; see them grow while watered; see them **turn yellow and be lost if left dry** (Normal-mode timing).
-- Harvest crops.
-- Complete the Butterfly Garden task and receive the butterfly net; catch or release butterflies.
-- Use a fixed tool belt; route harvests to a garden shelf.
-- Save progress locally.
+- Move around the front garden, the lane, and Marlow's seed shed.
+- Day clock, sleep, and the 02:00 bedtime.
+- Clear weeds and stones; till; plant; water daily; see crops grow over days, yellow after 2 dry days, gone after 3.
+- Forage wild berries; Marlow's first order (berries) and second order (carrots); coins.
+- Order board with simple repeat orders matched to what Kit can produce.
+- Buy seeds, a small coop, and hens at the seed shed (half real price).
+- Feed hens daily, collect eggs, deliver egg orders; the hen-loss message card.
+- Save and load (versioned JSON).
 
 ### Later activities (product scope)
 
-- Neighbour orders, market stall, shipping box, and money.
-- Animals (chicken, sheep, cow, beehive), fish pond, and buildings.
-- Land expansion and farm layout.
+- Market stall and shipping box.
+- More animals (sheep, cow, beehive), fish pond, and buildings.
+- Clearing the back fields and farm layout.
 - Kitchen/workshop processing and crafting; blueprints.
 - Automation: sprinklers, feeders, pond feeders, helpers.
-- Foraging, fishing, travelling merchants, festivals and contests.
+- Fishing, travelling merchants, festivals and contests, the optional Butterfly Garden request.
 - More neighbours, relationships, recipes.
 
 ## 6. Rules and Difficulty
@@ -254,7 +268,7 @@ Solo play is complete. On one PC two players can farm together in real time (con
 - No sickness, injury, vet, gore, or on-screen death.
 - No debt, loans, or bankruptcy; money never goes below zero.
 - Nothing changes while the game is closed.
-- Every loss is warned visibly first, and is replaceable with money.
+- Every loss is warned visibly for two days first, and is replaceable with money.
 - Orders and requests are optional with no deadline penalty.
 - Do not require fast reactions or precise timing.
 - Keep inventory small and understandable: auto-stacking picture slots, no manual sorting.
@@ -262,15 +276,15 @@ Solo play is complete. On one PC two players can farm together in real time (con
 - Show social consequences through character responses, not moral scores.
 - Do not take away unrelated progress because a task is unfinished.
 - Seasons decide what grows; out-of-season seeds do not sprout (no loss).
-- The farm's challenge grows with the farm: money first, then land (progression.md).
+- The farm's challenge grows with the farm: money first, then cleared land, then total land (progression.md).
 
-### Difficulty modes
+### Difficulty
 
-**Easy / Normal / Realistic** (§3; full tuning table in challenge-layers.md). Selected at new game; changeable in Settings at any time.
+**One mode: realistic but kid-friendly** (§3; rules in challenge-layers.md).
 
 ### Open design questions
 
-- **Decided (v0.16):** growth timing and closed-game growth policy (§4). **Amended (v0.19):** growth needs water.
+- **Superseded (v0.20):** play-time growth (v0.16) replaced by day-based growth (§4).
 - **Decided (v0.17):** coarse, HUD-visible, phase-based in-day clock (§4).
 - **Decided (v0.19):** what is earned or unlocked — money from orders and other optional sources, spent on seeds, animals, buildings, land, tools, and automation.
 
@@ -330,7 +344,7 @@ The premise and cast are in [world.md](./world.md). Voice, localisation, and mus
 - Forgiving interaction and movement.
 - Visible warnings before every loss.
 - Adjustable sound and music; visual feedback for audio cues.
-- Easy mode and an optional break reminder.
+- Optional read-aloud for dialogue and order cards; optional break reminder.
 - Settings that a grown-up can find and understand.
 
 ## 12. Safety, Privacy, and Caregiver Considerations
@@ -343,7 +357,14 @@ The premise and cast are in [world.md](./world.md). Voice, localisation, and mus
 
 - **Platform:** **PC only** (Windows first; macOS/Linux exports considered later). No mobile or tablet.
 - **Engine:** Godot 4.x with **C#** (docs/PHASE.md §6). Renderer: **Compatibility (`gl_compatibility`)** — the lightest 2D-friendly renderer with the widest PC hardware support. Assembly name: **`MyFarmingGame`**.
-- The first technical prototype answers movement, planting, watering, growth/neglect feedback, and saving before content production begins.
+- The first playable (Phase-001) answers movement, clearing, planting, day-based growth and neglect, orders, buying, chickens, and saving before content production begins.
+
+### Save system (decided direction 2026-11-19)
+
+- One slot, auto-save at sleep and on key events, human-readable JSON at `user://savegame.json`.
+- **Versioned from day one:** a top-level `schemaVersion` integer; on load, migrations run in order (`v1 → v2 → …`) so old saves keep working as systems are added.
+- **Safe writes:** write to a temp file, then rename; keep the previous save as `savegame.bak.json` and fall back to it if the main file fails to parse.
+- Each system owns its own section (`clock`, `farm`, `inventory`, `wallet`, `orders`, `animals`…), registered with the save autoload so new systems plug in without touching old ones (project-structure.md §8).
 
 ### Development approach
 
@@ -353,43 +374,47 @@ The premise and cast are in [world.md](./world.md). Voice, localisation, and mus
 
 ## 14. Prototype and Validation Plan
 
-### First prototype
+### First playable
 
-One small playable scene with: a controllable character; garden beds and basic seeds; planting and watering; visible growth while watered and visible yellowing/loss when dry; Marlow's request to plant and water three flowers; the butterfly net reward; a garden shelf.
+Phase-001 vertical slice (§5): clearing, planting, day-based growth and neglect, the first orders, buying a coop and hens, feeding and eggs, save/load. Placeholder art.
 
 ### Playtesting questions
 
-- Can a new player start with little or no explanation?
+- Can a 6-year-old start with little or no explanation (with read-aloud on)?
 - Can they tell what objects can be interacted with?
 - Do they understand that crops need water, and read the yellow stage as a warning?
 - Does losing a crop feel fair and teach something, rather than feel punishing?
 - Are controls comfortable for gamepad and keyboard + mouse?
 - Do they understand the NPC's want, the task, and the reward before accepting?
-- Does earning the butterfly net feel like a meaningful new way to play?
+- Does the first order (berries → coins) make the money loop clear within the first few minutes?
+- Do kids understand the 3-days rule from the warnings alone?
 - (Later phases) Do orders feel like an invitation rather than a to-do list? Does automation feel like a reward?
 
 Playtests with children are conducted with appropriate adult supervision and consent.
 
 ## 15. Product Scope
 
-**In product scope (delivered across phases — docs/PHASE.md):** neighbour orders and money; market stall and shipping box with seasonal/demand pricing; four animal species (chicken, sheep, cow, beehive) with care meters and quality products; fish pond; buildings; land expansion; kitchen/workshop processing; blueprints and crafting; automation (sprinklers, feeders, pond auto-feeders, helpers); foraging and fishing; travelling merchants; festivals and contests; relationships, recipes; difficulty modes; sticker/achievement book.
+**In product scope (delivered across phases — docs/PHASE.md):** neighbour orders and money; market stall and shipping box with seasonal/demand pricing; four animal species (chicken, sheep, cow, beehive) with care meters and quality products; fish pond; buildings; clearing the overgrown fields; kitchen/workshop processing; blueprints and crafting; automation (sprinklers, feeders, pond auto-feeders, helpers); foraging and fishing; travelling merchants; festivals and contests; relationships, recipes; long-term goals (charm, collections, lane restoration); sticker/achievement book.
 
 **Not planned:** mobile/tablet versions; online multiplayer; combat; sickness/vet systems; debt or loans; real-money purchases.
 
 ## 16. Open Questions for Brainstorming
 
-1. **RESOLVED (v0.16, amended v0.19):** growth timing — Medium ≈30–45 s per watered stage, paused while closed.
+1. **SUPERSEDED (v0.20):** play-time growth replaced by day-based growth (§4).
 2. Which orders and dialogue events change an NPC's relationship, and by how much?
 3. Which recipes, blueprints, and special events should high relationships unlock?
-4. How should two co-op players share the farm (shared purse? shared orders)?
+4. **RESOLVED (v0.20):** co-op shares one house, farm, map, wallet, and orders, with a merging split screen (§4).
 5. **RESOLVED for PC (v0.18):** control mappings in controls.md. (Tablet half dropped — PC only.)
 6. What research is needed to design original teen/adult characters in the European comics direction?
 7. Which open story questions in [world.md](./world.md) should be decided next?
 8. ~~Grown-up gesture to protect the challenge-layer menu~~ — **closed (v0.19):** layers retired; difficulty mode lives in normal Settings.
-9. **⚠️ NEW — target age band.** What exact age band and rating are we aiming for now that the protagonist is 17 and the game has money and loss? (Affects text density, Easy-mode tuning, tutorial, rating.)
-10. **⚠️ NEW — mode switching.** Should switching *up* to Realistic mid-game be allowed, or only switching down? (Current proposal: both, any time.)
-11. **⚠️ NEW — growth time base.** Keep play-time stages, or move to Harvest Moon-style in-game-day growth now that the farm is an economy?
-12. **⚠️ NEW — Butterfly Garden fit.** Does the gentle butterfly-net first beat still fit a 17-year-old protagonist, or should the first request be a first order (e.g. "six eggs")?
+9. **RESOLVED (v0.20):** target age band **6+** (§2).
+10. **CLOSED (v0.20):** no difficulty modes, so no mode switching.
+11. **RESOLVED (v0.20):** day-based growth, Harvest Moon-style (§4).
+12. **RESOLVED (v0.20):** the first beat is a first order; the Butterfly Garden is optional and later (§3).
+13. **⚠️ OPEN — day length.** Keep ≈ 24 real minutes, or shorten to ≈ 16–18 like Harvest Moon / Stardew? (Recommendation: 18.)
+14. **⚠️ OPEN — season length.** Proposed 28 days (economy.md assumes it).
+15. **⚠️ OPEN — order premium.** Should orders pay ×1.25 the market price? (economy.md §6, recommended.)
 
 ## Related documents
 
@@ -407,8 +432,10 @@ Playtests with children are conducted with appropriate adult supervision and con
 | [controls.md](./controls.md) | PC input mappings. |
 | [events.md](./events.md) | Daily, seasonal, order, contest, and merchant events. |
 | [progression.md](./progression.md) | Farm growth tiers: money → buildings → automation → land. |
-| [buildings.md](./buildings.md) | Everything Kit can build: cost, footprint, unlock tier, education angle. |
-| [challenge-layers.md](./challenge-layers.md) | Difficulty modes (Easy / Normal / Realistic) — replaces the challenge layers. |
+| [buildings.md](./buildings.md) | Farm map (992 tiles) and everything Kit can build. |
+| [economy.md](./economy.md) | Prices (sell ≈ real, buy ≈ half) and balance check; full sheet in data/economy.csv. |
+| [onboarding.md](./onboarding.md) | The short guided start. |
+| [challenge-layers.md](./challenge-layers.md) | The single difficulty mode and its rules. |
 
 ## 17. Change Log
 
@@ -431,3 +458,4 @@ Playtests with children are conducted with appropriate adult supervision and con
 - **0.17 — 2026-11-18:** **Milestone 0 decision 2 (in-game clock):** added §4 "In-day clock and day phases" — the game *does* have a clock, shown in the HUD as a stepped dial: **8 day phases × 3 in-game hours**, jumping one 3-hour step at a time (≈3 min of play per step, ≈24-minute in-game day), running only while playing, resetting to Dawn on sleep. Phase table maps every phase to its light, its NPC presence, and its events (morning greeting → small hours). Explicitly excluded from driving growth, care, or penalties. §6 clock question closed; this answers GDD §6/README "decide whether there is any in-game clock" (Milestone 0 item 2).
 - **0.18 — 2026-11-18:** **Milestone 0 decision 3 (control mappings):** §8 records the decided PC mappings — gamepad table unchanged, keyboard + mouse redefined as a **Don't Starve Together-style** scheme (dual movement, one-click walk-to-then-act, Space quick action), plus the **seat rule** that keyboard + mouse is locked to one player and co-op needs a gamepad for the second seat. DST's combat/camera/modifier/hotbar keys explicitly rejected. §16 Q5 resolved for PC; tablet layout left open for Phase-003. Full tables live in controls.md v0.6.
 - **0.19 — 2026-11-19:** **Direction reset (owner decisions).** (1) **Rewards:** neighbour **orders** for farm output are the main income — varied, matched to what Kit can produce, optional, growing into repeat and bigger orders. (2) **Kit is 17**; audience is kid-friendly and educational but no longer pre-elementary — **exact age band flagged as open (§16 Q9)**; parent-as-difficulty-dial retired. (3) **Pillars rewritten** around *realistic but kid-friendly* and *educational*; **neglect has consequences** — crops yellow then are lost; neglected animals/fish are gone immediately, shown only as a short message with a gravestone picture; no sickness or vet; nothing changes while closed. Growth now **requires watering** (Milestone 0 growth decision amended). (4) **Harvest Moon-style growth:** money is the early limit, land size the final one; fixed 2–3 bed and 4-animal caps removed. Gentle Core + challenge layers + five stages **collapsed into three difficulty modes: Easy / Normal / Realistic**. (5) **Automation** (sprinklers, feeders, pond feeders, helpers) is the key selling point, unlocked by crafting or buying; the old "defer the garden helper" note reversed. (6) **PC only** — tablet/touch plans removed; renderer Compatibility, assembly `MyFarmingGame`. Added **§4 Ways to earn and acquire** (market/shipping box with seasonal and demand pricing, board and contests, foraging/fishing, travelling merchants, processing, shop blueprints/automation, friendship recipes, quality products — all optional, no debt) and the **fish pond**. Added **Buildings** (greenhouse, hydroponics, barn, coop, silo, windmill, farm shop… — new [buildings.md](./buildings.md)) and **After the farm is running** (decorations and farm charm, collections, trophies, lane restoration, showcase, mastery, prestige items). New open questions Q9–Q12.
+- **0.20 — 2026-11-19:** **Owner picks from the design review.** **One difficulty mode** (realistic but kid-friendly) replaces Easy/Normal/Realistic. **Age band 6+** with design requirements (icon-first, short text, read-aloud, small numbers) and rating target. **Land all unlocked but overgrown**, cleared at the player's pace; animal limits = **housing capacity**. **Day-based growth** (min 1 day) replaces the Milestone 0 play-time model; one neglect rule — **3 days in a row without water/food → gone**, 2 warning days. **First beat = first order** (berries, then carrots); Butterfly Garden optional and later. Added **learning goals** (10), **co-op** rules (shared farm, merging split screen), **save versioning**, Phase-001 as a **vertical slice** (orders + chickens), 02:00 bedtime proposal, economy.md and onboarding.md links. Open: day length (Q13), season length (Q14), order premium (Q15).
