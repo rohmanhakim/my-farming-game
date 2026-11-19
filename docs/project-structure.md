@@ -1,7 +1,7 @@
 # Project Structure
 
 > **Status:** Proposal for team agreement — input to Phase-001 Task 1.1 ("Team agrees on project folder structure and naming conventions")
-> **Version:** 0.2
+> **Version:** 0.3
 > **Last updated:** 2026-11-19
 > **Purpose:** The repository layout, Godot folder structure, naming rules, input/autoload registries, asset pipeline, and verification commands that every development session follows when adding code or assets under `src/`. It is a *technical* contract only — it never overrides a gameplay decision.
 
@@ -96,11 +96,12 @@ src/
 │
 ├── scripts/                   # every .cs, grouped by the layer it belongs to
 │   ├── autoloads/             # cross-scene singletons — ONLY the ones in §8
-│   │   ├── ToolBelt.cs        # Task 1.3
-│   │   ├── TaskManager.cs     # Task 1.7
-│   │   ├── SaveGame.cs        # Task 1.9
-│   │   ├── GameClock.cs       # proposed — Task 1.10/1.11 (§8)
-│   │   └── EventBus.cs        # proposed — first needed ≈ Task 1.4/1.5 (§8)
+│   │   ├── GameClock.cs       # Task 1.3
+│   │   ├── ToolBelt.cs, Inventory.cs, Wallet.cs   # Task 1.4
+│   │   ├── OrderManager.cs    # Task 1.7
+│   │   ├── SaveGame.cs        # Task 1.10
+│   │   ├── Onboarding.cs      # Task 1.12
+│   │   └── EventBus.cs        # proposed (§8)
 │   ├── player/
 │   │   └── PlayerController.cs   # Task 1.2
 │   ├── world/
@@ -162,18 +163,19 @@ Quick lookup so a session knows where its artifact belongs. Scope still comes fr
 
 | Task | Creates (under `src/`) |
 |---|---|
-| 1.1 Project Foundation | `.gitignore` entries (§10), `scenes/main/Main.tscn`, `scenes/player/Player.tscn`, `scenes/ui/UI.tscn`, placeholder art (§9) |
-| 1.2 Player Movement | `scripts/player/PlayerController.cs`, `assets/art/characters/`, InputMap actions `move_*` (§7) |
-| 1.3 Fixed Tool Belt | `scripts/autoloads/ToolBelt.cs`, `scenes/ui/ToolBelt.tscn`, `scripts/ui/ToolBeltView.cs`, actions `cycle_tool_*` |
-| 1.4 Garden Beds & Planting | `scenes/world/GardenBed.tscn`, `scripts/world/GardenBed.cs`, `scripts/core/GrowthTiming.cs`, `data/growth_timing.tres` |
-| 1.5 Harvest & Garden Shelf | `scenes/ui/GardenShelf.tscn`, `scripts/ui/GardenShelfView.cs`, `EventBus` (if not already added) |
-| 1.6 Marlow NPC & Picture-Bubble Dialogue | `scenes/world/Marlow.tscn` + `Ledger.tscn`, `scripts/world/Marlow.cs` + `Ledger.cs`, `scenes/ui/PictureBubble.tscn`, `scripts/ui/DialogueBubbleView.cs` |
-| 1.7 Task State Machine | `scripts/autoloads/TaskManager.cs` (registered in `project.godot`) |
-| 1.8 Butterfly Net & Catch/Release | `scenes/world/Butterfly.tscn`, `scripts/world/Butterfly.cs`, net tool slot in `ToolBelt` |
-| 1.9 Save / Load | `scripts/autoloads/SaveGame.cs` |
-| 1.10 Pause Menu & Calendar UI | `scenes/ui/PauseMenu.tscn`, `scripts/ui/PauseMenuView.cs`, action `pause` |
-| 1.11 Day / Night Cycle | `scenes/ui/DayNightOverlay.tscn`, `scripts/ui/DayNightView.cs`, `scripts/autoloads/GameClock.cs` (if not already added) |
-| 1.12 Playtest & Iterate | fixes only — no new top-level folders |
+| 1.1 Project Foundation | `scenes/main/Main.tscn`, `scenes/player/Player.tscn`, `scenes/ui/UI.tscn`, placeholder art (§9) |
+| 1.2 Player Movement | `scripts/player/PlayerController.cs`, InputMap `move_*`, `interact`, `cancel` (§7) |
+| 1.3 Day Clock & Sleep | `scripts/autoloads/GameClock.cs`, `scenes/ui/ClockDial.tscn`, `scripts/ui/ClockDialView.cs`, bed interactable |
+| 1.4 Tool Belt, Bag & Wallet | `scripts/autoloads/ToolBelt.cs` + `Inventory.cs` + `Wallet.cs`, `scenes/ui/ToolBelt.tscn`, `scenes/ui/Bag.tscn`, actions `cycle_tool_*`, `open_inventory` |
+| 1.5 Clearing, Planting & Growth | `scenes/world/FarmGrid.tscn`, `scripts/world/FarmGrid.cs`, `scripts/world/CropTile.cs`, `data/crops.tres` |
+| 1.6 Marlow & First Order | `scenes/world/Marlow.tscn` + `Ledger.tscn` + `BerryBush.tscn`, `scripts/world/*.cs`, `scenes/ui/PictureBubble.tscn` |
+| 1.7 Order Board | `scripts/autoloads/OrderManager.cs`, `scenes/ui/OrderBoard.tscn`, `scripts/ui/OrderBoardView.cs` |
+| 1.8 Seed Shop | `scenes/ui/Shop.tscn`, `scripts/ui/ShopView.cs`, `scripts/core/PriceTable.cs` (reads `docs/data/economy.csv` → `data/prices.tres`) |
+| 1.9 Chickens & Loss Rule | `scenes/world/Coop.tscn`, `scenes/world/Hen.tscn`, `scripts/world/Hen.cs`, `scenes/ui/LossCard.tscn` |
+| 1.10 Save / Load | `scripts/autoloads/SaveGame.cs` (versioned, section registration) |
+| 1.11 Pause & Day/Night | `scenes/ui/PauseMenu.tscn`, `scenes/ui/DayNightOverlay.tscn`, action `pause` |
+| 1.12 Onboarding | `scripts/autoloads/Onboarding.cs`, `scenes/ui/Nudge.tscn` |
+| 1.13 Playtest & Iterate | fixes only — no new top-level folders |
 
 ---
 
@@ -220,11 +222,14 @@ Rules: D-pad stays reserved for movement (`controls.md` §2); no action may requ
 
 | Autoload | File | Added in | Responsibility | Must not break |
 |---|---|---|---|---|
-| `ToolBelt` | `scripts/autoloads/ToolBelt.cs` | Task 1.3 | active tool + slot list; grants the net | 1.4/1.8 read active tool through it |
-| `TaskManager` | `scripts/autoloads/TaskManager.cs` | Task 1.7 | Butterfly Garden task state (`NotOffered → Offered → Active → Completed → Rewarded`) | Marlow dialogue (1.6), save (1.9) |
-| `SaveGame` | `scripts/autoloads/SaveGame.cs` | Task 1.9 | one-slot auto-save at `user://savegame.json` | nothing else writes `user://` |
-| `EventBus` *(proposed)* | `scripts/autoloads/EventBus.cs` | first needed ≈ Task 1.4/1.5 | decoupled game events (`FlowerHarvested`, `TaskStateChanged`, …) | keep tiny — one signal per real event, no logic |
-| `GameClock` *(proposed)* | `scripts/autoloads/GameClock.cs` | Task 1.10/1.11 | coarse stepped clock (8 phases × 3 h), season/day, day/night palette hook | drives **atmosphere only** — never growth, never penalties (GDD §4) |
+| `GameClock` | `scripts/autoloads/GameClock.cs` | Task 1.3 | stepped clock (8 phases), day/season, sleep and 02:00 bedtime, `DayEnded`/`DayStarted` signals | day rollover drives growth and hunger counts — fire exactly once |
+| `ToolBelt` | `scripts/autoloads/ToolBelt.cs` | Task 1.4 | active tool + slots | other systems read the active tool through it |
+| `Inventory` | `scripts/autoloads/Inventory.cs` | Task 1.4 | auto-stacking items | — |
+| `Wallet` | `scripts/autoloads/Wallet.cs` | Task 1.4 | coins; never below 0 | — |
+| `OrderManager` | `scripts/autoloads/OrderManager.cs` | Task 1.7 | order generation (producible items only), accept/deliver, repeat orders | never offers what Kit cannot produce |
+| `SaveGame` | `scripts/autoloads/SaveGame.cs` | Task 1.10 | versioned JSON save, section registration, backup | nothing else writes `user://` |
+| `Onboarding` | `scripts/autoloads/Onboarding.cs` | Task 1.12 | guided start + one-time nudges | never blocks play |
+| `EventBus` *(proposed)* | `scripts/autoloads/EventBus.cs` | when first needed | decoupled game events | keep tiny |
 
 Adding an autoload is a structural decision that must be recorded here plus in the task's *Deviations* note. Do not create autoloads for convenience.
 
@@ -351,3 +356,4 @@ Restore after cloning: `npx skills experimental_install` · Update: `npx skills 
 
 - **0.1 — 2026-11-18:** Initial structure plan: repository and `src/` layout, task→file map for Phase-001, naming conventions, InputMap and autoload registries, placeholder/licence asset pipeline, version-control rules, intended headless verification commands, the 17 installed Godot/game-dev skills with when-to-load guidance, session checklist, and five open decisions/blockers (missing Godot binary, missing `.csproj`, spaced assembly name, `*.import` conflict, mobile renderer preset).
 - **0.2 — 2026-11-19:** Owner decisions applied (PC only): §14 items 3–5 **resolved** — assembly renamed `MyFarmingGame`, `.import` sidecars committed with only `.godot/` ignored, renderer switched to Compatibility. §2, §4, §10, §11 updated to match; `android/` ignore and the `grown_up_menu` input action removed; art guardrail wording updated. Flagged that `.agents/skills/` is committed despite being described as gitignored.
+- **0.3 — 2026-11-19:** Phase-001 re-scoped to a vertical slice: §5 task→file map rebuilt for the 13 new tasks; §8 autoload registry updated (GameClock first, ToolBelt/Inventory/Wallet, OrderManager, versioned SaveGame, Onboarding; TaskManager removed). Note: §4's scene/script tree still lists some Phase-001 v0.9 file names (GardenBed, GardenShelf, Butterfly) — treat §5 as authoritative until Task 1.1 settles the tree.

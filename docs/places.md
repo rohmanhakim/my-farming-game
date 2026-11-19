@@ -1,7 +1,7 @@
 # Places
 
 > **Status:** Brainstorming draft
-> **Version:** 0.6
+> **Version:** 0.7
 > **Last updated:** 2026-11-19
 > **Purpose:** Places available in the game that the player can explore, adjusted to the scope of the game described in the GDD. One lane, eight places, no map — plus Kit's farm, which grows into the fields behind the house. All names are tentative and can be changed. Every element here is a proposal pending playtesting.
 
@@ -9,7 +9,7 @@
 
 ## 1. Scope and design intent
 
-The lane is readable at a glance and small enough to navigate without a map. Places are gentle locks rather than open-world gates: the stile and Lantern Hill reopen through optional **lane restoration** (progression.md §6.4). The brook is an early exploration reward; the market stand becomes Kit's stall at farm tier T2. **The farm is the part that grows:** fields behind the house are bought or cleared one at a time (progression.md §4); the lane itself never expands.
+The lane is readable at a glance and small enough to navigate without a map. Places are gentle locks rather than open-world gates: the stile and Lantern Hill reopen through optional **lane restoration** (progression.md §6.4). The brook is an early exploration reward; the market stand becomes Kit's stall at farm tier T2. **The farm is the part that grows:** the fields behind the house are all Kit's from the start but overgrown, and are cleared at the player's pace (progression.md §4); the lane itself never expands.
 
 ---
 
@@ -32,8 +32,8 @@ The lane is readable at a glance and small enough to navigate without a map. Pla
 
 | Area | What it is | Unlock |
 |---|---|---|
-| **Front garden** | Starting plot (~12 tiles) | Start |
-| **Fields 1–5 behind the house** | Overgrown family fields, each larger than the last; hold buildings, beds, orchard, fish pond (buildings.md) | Bought or cleared one at a time (progression.md §4); all five = T5 Full land |
+| **Front garden** | Starting plot, 8 × 6 = 48 tiles (3 beds clear) | Start |
+| **Fields A–E behind the house** | Overgrown family fields (120–320 tiles each, buildings.md §2); hold buildings, beds, orchard, fish pond (buildings.md) | **Owned from the start**, overgrown; cleared at the player's pace (progression.md §4); all five cleared = T5 Full land |
 
 ## 3. Visual character (from world.md §3.3)
 
@@ -55,7 +55,7 @@ The lane is readable at a glance and small enough to navigate without a map. Pla
 | [animals.md](./animals.md) | Animals live at specific places on the lane (coop, beehive, etc.). |
 | [events.md](./events.md) | Daily and seasonal events occur at places on the lane. |
 | [buildings.md](./buildings.md) | What can be built on the farm's fields. |
-| [progression.md](./progression.md) | Land expansion and lane restoration. |
+| [progression.md](./progression.md) | Clearing land and lane restoration. |
 
 ## 4. Change log
 
@@ -65,3 +65,4 @@ The lane is readable at a glance and small enough to navigate without a map. Pla
 - **0.4 — 2026-11-18:** Recounted to **eight places** (stile and market stand were already listed here; world.md now matches). Brook unlock changed to "earned early through exploration" (early exploration reward). Added the unlit-lantern trace to Lantern Hill.
 - **0.5 — 2026-11-18:** Player's home updated per world.md §7.5: **family heirloom** cottage, **overgrown-never-derelict** art rule (no decay, no rubbish, no loneliness), arrival props (boxes + cart at the gate) added as interactive/trace objects.
 - **0.6 — 2026-11-19:** **Direction reset (GDD v0.19).** Parent-unlocked places removed. Added **§2.1 Kit's farm** (front garden + five fields behind the house, bought/cleared over time). Seed shed hosts the order board and building catalogue; market stand is the selling place and merchant spot, Kit's stall from T2; brook gains fishing and forage; stile and Lantern Hill reopen via lane restoration. Stage references replaced with farm tiers.
+- **0.7 — 2026-11-19:** Back fields are owned from the start and cleared, not bought (owner decision); sizes in buildings.md §2.

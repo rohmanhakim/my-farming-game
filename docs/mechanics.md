@@ -1,7 +1,7 @@
 # Mechanics
 
 > **Status:** Brainstorming draft — **updated for the direction reset 2026-11-19**
-> **Version:** 0.8
+> **Version:** 0.9
 > **Last updated:** 2026-11-19
 > **Purpose:** Player verbs and systems. Every element is a proposal pending playtesting. The GDD remains authoritative for gameplay, audience, and project decisions.
 
@@ -14,7 +14,9 @@ The game is a realistic but kid-friendly, educational farm sim for PC (GDD §1�
 - **One lane, a growing farm:** Bramblewick Lane stays small; Kit's farm grows into the fields behind the house.
 - **Consequences, kindly shown:** dry crops yellow then are lost; neglected animals and fish are gone (gravestone message card). Nothing changes while the game is closed; every loss is warned first.
 - **Money is core:** earned mainly through neighbour orders, plus optional alternatives (GDD §4 *Ways to earn*). No debt.
-- **Difficulty modes** (Easy / Normal / Realistic, challenge-layers.md) tune the numbers only.
+- **One difficulty mode:** realistic but kid-friendly (challenge-layers.md).
+- **All land is Kit's but overgrown;** clearing it is part of play (progression.md §4).
+- **Day-based:** crops grow and animals need food per in-game day; **3 days in a row without care → gone**, with 2 warning days.
 
 ---
 
@@ -35,7 +37,7 @@ The game is a realistic but kid-friendly, educational farm sim for PC (GDD §1�
 
 - **HUD clock:** a corner dial with sun/moon marker plus a digital readout.
 - **Sleep/rest:** ends the day, pays out the shipping box, resets the clock to Dawn. No penalty for when you sleep.
-- The clock drives light, presence, shop hours, order refresh, and shipping payout. Growth and care meters run on play time (§5, animals.md §3).
+- The clock drives light, presence, shop hours, order refresh, and shipping payout. Day rollover (sleep or the 02:00 bedtime) advances crop growth and the watering/feeding counts (§6, animals.md §3).
 
 ---
 
@@ -43,7 +45,7 @@ The game is a realistic but kid-friendly, educational farm sim for PC (GDD §1�
 
 Seasons decide what sprouts, which fish and creatures appear, festival dates, and **seasonal prices** (out-of-season goods pay more). Season length TBD.
 
-- **Spring:** Butterfly Garden flowers; butterflies return.
+- **Spring:** First crops; butterflies return (optional Butterfly Garden request).
 - **Summer:** Warm crops; fish grow fast; fireflies.
 - **Autumn:** Harvest crops, orchard fruit; harvest festival.
 - **Winter:** Few outdoor crops; greenhouse, kitchen, and workshop shine; hens rest.
@@ -58,11 +60,11 @@ Seasons decide what sprouts, which fish and creatures appear, festival dates, an
 | **Interact** | Talk, use beds, open shops/boards, pick up. | One primary action. |
 | **Plant** | Put a seed in an empty bed. | Seeds bought or given. |
 | **Water** | Moisten a bed's soil. | **Required for growth**; recovers a yellow crop. |
-| **Harvest** | Gather a ready crop or fruit. | Goes to inventory (garden shelf in Phase-001). |
+| **Harvest** | Gather a ready crop or fruit. | Goes to the inventory. |
 | **Feed** | Fill an animal's or the pond's meter. | Grain, hay, fish food. |
 | **Brush** | Groom the sheep. | Raises wool quality. |
 | **Collect** | Take eggs, milk, wool, honey, fish. | Quality 1–3 stars. |
-| **Find & catch** | Net butterflies/fireflies. | Unlocked by the Butterfly Garden task; always released. |
+| **Find & catch** | Net butterflies/fireflies. | Unlocked by the optional Butterfly Garden request; always released. |
 | **Fish** | Cast a rod at the brook or pond. | Simple timing-free catch (no reflex test). |
 | **Forage** | Pick wild berries, herbs, mushrooms. | Along the lane; seasonal. |
 | **Sleep / rest** | End the day. | At home. |
@@ -73,14 +75,14 @@ Seasons decide what sprouts, which fish and creatures appear, festival dates, an
 | Verb | What it does | Notes |
 |---|---|---|
 | **Take order** | Accept an order from the board or a neighbour. | Optional; no deadline penalty; cancel any time. |
-| **Sell** | Sell at the market stall, shipping box, or farm shop. | Seasonal and demand pricing (swing by mode). |
+| **Sell** | Sell at the market stall, shipping box, or farm shop. | Seasonal and demand pricing (economy.md). |
 | **Buy** | Seeds, animals, tools, buildings, land, blueprints, automation. | Money never goes below zero. |
 | **Trade** | Swap goods with the travelling merchant. | Rare seeds, breeds, decorations. |
 | **Process** | Turn produce into jam, bread, cheese, pie, smoked fish. | Kitchen/mill; worth more than raw goods. |
 | **Craft** | Make tools, fences, decorations, sprinklers, feeders from blueprints. | Workshop; recipes shown in pictures + short text. |
 | **Build / place / move** | Place buildings, beds, decorations; move them freely. | Land footprint is the late-game limit (buildings.md). |
 | **Upgrade** | Improve tools or buildings. | Bigger watering can, bigger coop, better sprinklers. |
-| **Expand land** | Buy or clear a new field. | progression.md §4. |
+| **Clear land** | Remove weeds, stones, stumps, logs with hands, scythe, hammer, axe. | All land is owned; clearing gives materials (progression.md §4). |
 | **Enter contest** | Submit a product to a festival contest. | Optional; ribbons and prizes. |
 | **Decorate** | Place decorations to raise farm charm. | progression.md §6.1. |
 
@@ -88,11 +90,9 @@ Seasons decide what sprouts, which fish and creatures appear, festival dates, an
 
 ## 6. Garden growth and neglect model
 
-- Growth on **accumulated play time while the soil is moist**: default **Medium ≈ 30–45 s per stage**; Fast/Slow presets on the new-game screen.
-- One watering keeps soil moist ≈ one in-game day; sprinklers water each Dawn.
-- **Dry → yellow → gone**, with grace times set by mode (challenge-layers.md §3). Watering at yellow recovers the crop.
-- Nothing grows or dries while the game is closed; the optional Gentle catch-up setting adds at most one stage on next launch.
-- Sleep does not grant an extra stage.
+- **Day-based (Harvest Moon-style):** a crop grows one day overnight if it was watered (or rained on) that day; every crop takes at least 1 day (crops.md).
+- **Neglect:** 2 dry days in a row → yellow; 3 → gone (tile stays tilled). Watering resets the count.
+- Sprinklers water each Dawn. Nothing changes while the game is closed.
 - Grown crops remain harvestable after their season ends.
 
 ---
@@ -118,14 +118,14 @@ Automation never removes manual verbs. It is unlocked by **crafting or buying** 
 - **Storage chest / silo:** overflow and feed storage; no "full" penalty.
 - **Wallet:** money shown on the HUD.
 - **Care menu:** a dedicated control (controls.md §2) shows each animal's and pond's meter.
-- **Garden shelf:** the Phase-001 stand-in for the inventory.
 
 ---
 
 ## 9. Co-play
 
-- Two players on one PC in real time (controls.md §3); solo play is complete.
-- Proposed: shared farm, shared wallet, either player can deliver orders (GDD §16 Q4 open).
+- **One house, one farm, one map**; shared wallet, storage, and orders; either player can deliver.
+- **Dynamic split screen:** one camera when the players are close; splits when they move apart; merges again when they meet (controls.md §3).
+- Solo play is complete.
 
 ---
 
@@ -161,7 +161,8 @@ Optional long-term systems — decoration and farm charm, collections, contests,
 | [buildings.md](./buildings.md) | Build, place, automation fixtures. |
 | [events.md](./events.md) | Verbs trigger events. |
 | [progression.md](./progression.md) | Tiers, land, endgame. |
-| [challenge-layers.md](./challenge-layers.md) | Difficulty modes. |
+| [challenge-layers.md](./challenge-layers.md) | The single difficulty mode. |
+| [economy.md](./economy.md) | Prices. |
 
 ## 12. Change log
 
@@ -173,3 +174,4 @@ Optional long-term systems — decoration and farm charm, collections, contests,
 - **0.6 — 2026-11-18:** §5 garden growth model synced to Milestone 0 decision 1 (GDD §4): stage timing Medium ≈30–45 s with Fast/Slow presets, nothing grows while the game is closed (optional positive-only Gentle catch-up), settings chosen before a new game; sleep grants no extra stage.
 - **0.7 — 2026-11-18:** §2 day/night cycle rewritten to Milestone 0 decision 2 (GDD §4 v0.17): **8 day phases × 3 in-game hours**, clock stepped in 3-hour jumps (≈3 min play per step), running only while playing, reset to Dawn on sleep, plus a stepped HUD dial. Phase table maps presence/events to phases; the clock explicitly never drives growth, care, or penalties.
 - **0.8 — 2026-11-19:** **Direction reset (GDD v0.19).** Two-modes/challenge-layer framing replaced by three difficulty modes. Watering now required; neglect rule (dry → yellow → gone; animals gone with gravestone card). Sell/buy/craft/upgrade promoted to **core economy and building verbs** with new verbs: take order, trade, process, build/place/move, expand land, enter contest, fish, forage. New **§7 Automation** (sprinklers, auto-feeders, pond auto-feeder, helpers, windmill/pump). Clock phases now drive order refresh, shop hours, and shipping payout. Touchscreen and turn-taking co-play removed (PC only). Exclusions rewritten; §11 points to the endgame in progression.md.
+- **0.9 — 2026-11-19:** Owner picks: single difficulty mode; **day-based growth** and the 3-days neglect rule (§1, §6); 'Expand land' verb replaced by **Clear land** (all land owned, overgrown); garden shelf removed; Butterfly Garden now optional; co-play decided (shared farm, dynamic split screen).

@@ -1,7 +1,7 @@
 # Characters
 
 > **Status:** Finalized for prototype (design v0.5) — **updated for the direction reset 2026-11-19**
-> **Version:** 0.10
+> **Version:** 0.11
 > **Last updated:** 2026-11-19
 > **Purpose:** The final cast for the prototype, plus clearly-marked future cast. Names below are locked for the prototype unless playtesting proves otherwise. Backgrounds are brief and adjustable.
 
@@ -85,7 +85,7 @@ Kit is never shamed or compared to anyone; losses are lessons the game helps Kit
 
 | | |
 |---|---|
-| **Role** | An adult who farms alongside Kit, follows Kit's lead, and shares tasks. Playable as Player 2 in local co-op. (The former "difficulty dial" role is retired — difficulty is a Settings mode, challenge-layers.md.) |
+| **Role** | An adult who farms alongside Kit, follows Kit's lead, and shares tasks. Playable as Player 2 in local co-op. (The former "difficulty dial" role is retired — there is one difficulty mode, challenge-layers.md.) |
 | **Name** | **Ada** (default; warm, short name. Optional and customizable to mirror Kit's customization; alternatives: Ben, Cara, Dan, Eve, Fay). |
 | **Identity** | **The parents' old friend.** She has been taking care of the family's heirloom house on Bramblewick Lane while Kit was raised in the city; when Kit arrives, **Ada helps him settle**. Lives at/near the house. *(Decided — world.md §7.5.)* |
 | **Defining trait** | Supportive, patient, happy to take turns or help when asked. |
@@ -116,9 +116,9 @@ Ada has no authority over Kit's day. Co-play is real-time collaboration on one P
 |---|---|
 | **Distinct silhouette** | Soft hat with a tucked seed packet, gardening smock, walking stick; recognisable at a glance. |
 | **One sensory signature** | The rustle of his seed packet; the scent of dried herbs and earth. |
-| **One thing only they know** | The name of every plant and the story of the Butterfly Garden — knowledge no other character shares. |
+| **One thing only they know** | The name of every plant and the story of the old butterfly meadow — knowledge no other character shares. |
 | **Memory** | References what the player did last time ("You grew those blue flowers, didn't you?"), never with disappointment if it was weeks ago. |
-| **A gift, not a prize** | The butterfly net ("I kept this in the shed for a long time") — something set aside for Kit, never points handed down. |
+| **A gift, not a prize** | The first order and the order board ("Your folk sold me berries every summer") — later the butterfly net, "kept in the shed for a long time". Never points handed down. |
 
 ### Writing rules for Mr. Marlow
 - He never has authority over Kit. No scolding, no disappointment, no "you should have."
@@ -173,7 +173,7 @@ Kept here so the setting grows inward rather than outward — new faces on the s
 | **The baker** *(new)* | Runs the lane's small bakery. | Egg, flour, and fruit orders; bread and pie recipes. | First eggs collected (T2). |
 | **The brook keeper** | Concerned with the water and reeds. | Caring for the brook; fishing (gives the rod). | First brook visit (T3). |
 | **A friend of Kit's age** | A teen peer on the lane (replaces "a child of the lane"). | Friendship, festivals, contests. | Two neighbour tasks + brook visit (T3). |
-| **The travelling merchant** *(new)* | Visits on set days. | Trades, rare seeds and breeds. | First land expansion (T3). |
+| **The travelling merchant** *(new)* | Visits on set days. | Trades, rare seeds and breeds. | Field A cleared (T3). |
 | **The Hill Visitor (seasonal)** | Arrives only for a season or gathering; candidate for the Lantern Hill event. | Seasonal stories, hill-top payoff. | Lane restoration reaches Lantern Hill, winter (T5). |
 
 > **Note:** Future-cast names remain tentative; only their roles, task themes, and introduction triggers are locked. No future character is required for the core farm loop.
@@ -249,7 +249,7 @@ Implementation notes:
 | [GDD.md](./GDD.md) | Design pillars and audience shape the cast; pillar 4 (creative ownership) covers customization. |
 | [world.md](./world.md) | Bramblewick Lane premise and Mr. Marlow's background story; §7.1 now records the **decided** newcomer framing (city arrival, family land). |
 | [places.md](./places.md) | Mr. Marlow's cottage and seed shed are places on the lane. |
-| [events.md](./events.md) | Mr. Marlow's requests drive the core Butterfly Garden task and daily events. |
+| [events.md](./events.md) | Mr. Marlow's first orders and daily events. |
 | [progression.md](./progression.md) | Farm tiers that pace character introductions. |
 
 ## 13. Change log
@@ -264,3 +264,4 @@ Implementation notes:
 - **0.8 — 2026-11-18:** Main character background set by world.md §7.5: **family heirloom house**, parents busy in the city, child is the caretaker, **city-born** so Marlow knows the family but has never met the player (first meeting = genuine introduction). Ada's background row flagged **⚠️ pending** while the day-to-day-presence sub-thread (world.md §7.5) is settled.
 - **0.9 — 2026-11-18:** **Ada's identity decided (world.md §7.5 sub-thread):** she is **the parents' old friend** who kept the heirloom house while the child was raised in the city, and helps him when he arrives — not the parent. §7 retitled "Adult character"; Role/Identity/Background rows rewritten; the Marlow rule (adults never do the child's doing) extended to her; new "who Ada is in the room" note keeps GDD §2's parent-as-difficulty-dial true of the human Player 2. The ⚠️ pending flag from v0.8 is cleared.
 - **0.10 — 2026-11-19:** **Direction reset (GDD v0.19).** **Kit is 17** (new Age row; teen proportions; identity and background now include growing the land into a working farm). Ada's "difficulty dial"/grown-up-menu role and the "parent in the room" note retired — Ada is any second player or a solo-play NPC. Introductions paced by **farm tiers** instead of age stages; future cast gains **the baker** and **the travelling merchant**, and "a child of the lane" becomes **a friend of Kit's age**. Marlow now also keeps the order board and has his own order tastes; hint ladder's parent-speaks-first window generalised to the second player. Pre-reader wording removed; registry `stageIntroduced` → `tierIntroduced`.
+- **0.11 — 2026-11-19:** Owner picks: Marlow's first gift is now the **first order** (berries, then carrots) — the butterfly net moves to the optional Butterfly Garden request; merchant arrives when Field A is cleared; single difficulty mode.

@@ -1,7 +1,7 @@
 # Items
 
 > **Status:** Brainstorming draft — **updated for the direction reset 2026-11-19**
-> **Version:** 0.4
+> **Version:** 0.5
 > **Last updated:** 2026-11-19
 > **Purpose:** Items the player can obtain: tools, produce, processed goods, building and automation items, decorations, and rare items. All names are tentative; every element is a proposal pending playtesting.
 
@@ -20,14 +20,16 @@ Items are readable at a glance and stored in picture-based, auto-stacking slots 
 | **Hands** | Action | Plant, harvest, talk, give, place. |
 | **Watering can** | Tool | Water beds (required for growth). |
 | **Seed box** | Tool | Two or three starting seeds. |
-| **Purse** | Wallet | A little starting money (by mode). |
+| **Purse** | Wallet | 500 coins (economy.md). |
+| **Old family hoe** | Tool | Till cleared ground. |
 
 ## 3. Tools
 
 | Item | How obtained | What it does |
 |---|---|---|
-| **Butterfly net** | Butterfly Garden task (Marlow) | Catch/release butterflies and fireflies. |
-| **Hoe** | Shop, T2 | Clear and prepare new land; till faster. |
+| **Butterfly net** | Optional Butterfly Garden request (Marlow) | Catch/release butterflies and fireflies. |
+| **Hammer** | Shop, T2 | Break stones when clearing land. |
+| **Axe** | Shop, T2 | Clear stumps and logs. |
 | **Scythe** | Shop, T2 | Cut hay grass; harvest several crops at once. |
 | **Brush** | Shop or reward, T2 | Groom sheep (wool quality). |
 | **Fishing rod** | Brook keeper / shop, T2 | Fish at the brook and pond. |
@@ -78,7 +80,7 @@ Rare seeds, rare breeds, legendary fish, contest ribbons and trophies, fossils/s
 
 | Item | Held by | Notes |
 |---|---|---|
-| **Marlow's flower seeds** | Mr. Marlow | Given with the Butterfly Garden task (and again if lost). |
+| **Marlow's flower seeds** | Mr. Marlow | Given with the optional Butterfly Garden request. |
 | **Ledger** | Mr. Marlow | Picture pages recording promises and completed tasks; never carried. |
 | **Old meadow sketch / pressed flowers** | Ledger | Visual mystery and memories. |
 | **Unlit lantern** | Lantern Hill | World object; relit during lane restoration (progression.md §6.4). |
@@ -111,3 +113,4 @@ Rare seeds, rare breeds, legendary fish, contest ribbons and trophies, fossils/s
 - **0.2 — 2026-11-18:** Added opt-in items for challenge layers (Garden Coins, seed packets, tool upgrades, crafting outputs). Re-framed exclusions as "Gentle Core exclusions."
 - **0.3 — 2026-11-18:** Added missing earned tools (Brush, Basket, Trellis/stick, Compost bin), added Carrot Patch and the new seasonal crops (Tomato Vine, Herb Pot), clarified the two lanterns as different items, added milk to the Garden Coins sources, and fixed the duplicate §8 numbering.
 - **0.4 — 2026-11-19:** **Direction reset (GDD v0.19).** Opt-in/Gentle-Core split removed: money, seed packets, tool upgrades, and crafting outputs are core. Added purse, hoe/scythe/fishing rod, quality stacks, **processed goods** (jam, bread, cheese, pie, smoked fish, flour, fish food, compost), **blueprints, materials, and automation items** (sprinklers, feeders, helper contracts, feed), decorations for farm charm, rare/collectible items, and the order board. Compost bin moved to buildings.md.
+- **0.5 — 2026-11-19:** Purse fixed at 500 coins (single mode, economy.md); old family hoe in the starting loadout; Butterfly Garden marked optional.

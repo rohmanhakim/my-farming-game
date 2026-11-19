@@ -13,7 +13,7 @@ You're a Senior Game Developer that will develop a current described project:
 
 ## 1. Project snapshot
 
-- **Game:** A fully 2D, realistic but kid-friendly, educational farming game. Kit (17) grows the family plot into a farm through neighbour orders, investment, and automation; neglect has gentle consequences (crops yellow then are lost; neglected animals are gone, shown only as a gravestone message). Three difficulty modes: Easy / Normal / Realistic. (Direction reset 2026-11-19 — see GDD v0.19.)
+- **Game:** A fully 2D, realistic but kid-friendly, educational farming game. Kit (17) grows the family plot into a farm through neighbour orders, investment, and automation; neglect has gentle consequences (crops yellow then are lost; neglected animals are gone, shown only as a gravestone message). One difficulty mode (realistic but kid-friendly); ages 6+; day-based growth; 3 days without care → gone. (See GDD v0.20.)
 - **Engine:** Godot 4.x with **C#** (not GDScript — see `docs/PHASE.md` §6); renderer Compatibility (`gl_compatibility`); assembly `MyFarmingGame`.
 - **Status:** Follow the `README.md` "Status" line — it is the honest snapshot of how much code exists.
 - **Team:** Two people with AI assistance. Tasks are scoped so one task = one AI-assisted session.
@@ -27,7 +27,7 @@ You're a Senior Game Developer that will develop a current described project:
 | Roadmap, phases, guardrails, team & workflow | [`docs/PHASE.md`](./docs/PHASE.md) |
 | What to build in this phase, task by task | [`docs/Phase-00N.md`](./docs/Phase-001.md) (current phase) |
 | Setting, lore, places | [`docs/world.md`](./docs/world.md) |
-| Domain detail (characters, crops, animals, buildings, items, inventory, mechanics, controls, events, progression, difficulty modes) | the matching file in `docs/` |
+| Domain detail (characters, crops, animals, buildings, items, inventory, mechanics, controls, events, progression, difficulty, economy, onboarding) | the matching file in `docs/` |
 | Project-wide summary / navigation | [`README.md`](./README.md) |
 
 Rules:
@@ -166,7 +166,7 @@ Bring **every** document in line with the implementation as it now exists. For e
 - [ ] `docs/PHASE.md` — phase table row updated (done instead of "(planned)"), phase detail section still accurate, status/version refreshed.
 - [ ] `README.md` — **Status**, design version, screenshot, Current status, Roadmap, and Documentation table all match reality; remove "no code yet"-style claims if code exists.
 - [ ] `docs/GDD.md` — milestones / open questions resolved or re-marked as still open; any decision changed during implementation is written back here (the GDD is the gameplay source of truth).
-- [ ] Domain docs (`world.md`, `characters.md`, `places.md`, `crops.md`, `animals.md`, `buildings.md`, `items.md`, `inventory.md`, `mechanics.md`, `controls.md`, `events.md`, `progression.md`, `challenge-layers.md`) — anything implemented differently than written is corrected at the source, not left as a discrepancy.
+- [ ] Domain docs (`world.md`, `characters.md`, `places.md`, `crops.md`, `animals.md`, `buildings.md`, `economy.md`, `onboarding.md`, `items.md`, `inventory.md`, `mechanics.md`, `controls.md`, `events.md`, `progression.md`, `challenge-layers.md`) — anything implemented differently than written is corrected at the source, not left as a discrepancy.
 - [ ] Cross-links still valid (relative links, tables of contents, "Related documents" sections).
 - [ ] Search for stale markers: `TBD` in finished work, `(planned)` labels that are now real, version/date mismatches, "no code yet" claims, references to renamed files/scenes.
 
@@ -194,3 +194,4 @@ Bring **every** document in line with the implementation as it now exists. For e
 
 - **0.1 — 2026-11-18:** Initial working agreement: source-of-truth map, one-task-per-session protocol, human pre-session preparation checklist, software-vs-human testing split with mandatory playtest declaration, mandatory Notes & learnings gotcha capture, stop-and-ask conditions, phase retrospective and doc-sync sweep.
 - **0.2 — 2026-11-19:** Synced with the owner's direction reset (GDD v0.19): project snapshot rewritten (Kit 17, realistic-but-kid-friendly, orders, automation, three modes), **PC only**, Compatibility renderer and `MyFarmingGame` assembly recorded, guardrail summary updated to the new PHASE.md §7, `.import` sidecars now committed (only `.godot/` ignored), `buildings.md` added to the domain-doc lists, human-test examples de-aged.
+- **0.3 — 2026-11-19:** Snapshot synced with GDD v0.20 (single mode, 6+, day-based growth); `economy.md` and `onboarding.md` added to the domain-doc lists.

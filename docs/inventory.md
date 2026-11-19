@@ -1,7 +1,7 @@
 # Inventory System
 
 > **Status:** Design draft — **updated for the direction reset 2026-11-19**
-> **Version:** 0.3
+> **Version:** 0.4
 > **Last updated:** 2026-11-19
 > **Purpose:** Picture-based, auto-stacking inventory with a wallet and storage. Easy to read, no sorting, no "full" penalty.
 
@@ -48,7 +48,7 @@ A gallery in the pause menu showing every discoverable crop, fish, breed, recipe
 
 ## 8. Co-play
 
-On one PC, either player can open the inventory with their own controller; the wallet and storage are shared (proposal, GDD §16 Q4).
+On one PC, either player can open the inventory with their own controller; the wallet, storage, and orders are shared (decided 2026-11-19, GDD §4 *Co-play*).
 
 ## Related documents
 
@@ -69,3 +69,4 @@ On one PC, either player can open the inventory with their own controller; the w
 - **0.1 — 2026-11-18:** Initial draft. Slot categories, auto-stacking, Overflow Nest, Collection Book, opt-in categories, Gentle Core exclusions, parent role.
 - **0.2 — 2026-11-18:** Fixed duplicate section numbering (two §4s), added the missing change log, added milk to Animal Products, and noted that the Collection Book lives in the pause menu (not on Y).
 - **0.3 — 2026-11-19:** **Direction reset (GDD v0.19).** Wallet made core (no debt); opt-in coin/market categories and Gentle Core exclusions removed. Added Processed Goods and Materials categories, fish in Animal Products, **quality stacks**, storage chest at the house (replaces the Overflow Nest at Marlow's shed) and silo for feed. Parent role replaced by a co-play note; tablet turn-taking removed (PC only).
+- **0.4 — 2026-11-19:** Co-play sharing decided (shared wallet, storage, orders).

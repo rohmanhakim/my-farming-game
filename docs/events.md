@@ -1,7 +1,7 @@
 # Events
 
 > **Status:** Brainstorming draft — **updated for the direction reset 2026-11-19**
-> **Version:** 0.8
+> **Version:** 0.9
 > **Last updated:** 2026-11-19
 > **Purpose:** Events during a playthrough, driven by calendar, season, day phase, and the farm's growth. All names tentative; every element is a proposal pending playtesting.
 
@@ -17,11 +17,12 @@ Events are invitations, not obligations. Missed events recur or are restated kin
 
 | Event | Trigger | What happens | Reward / outcome | Scope |
 |---|---|---|---|---|
-| **Butterfly Garden task** | Kit accepts Marlow's first request | Plant and water three task flowers | Butterfly net; unlocks find & catch | Prototype |
+| **First order: wild berries** | Day 1, Kit meets Marlow | Forage 3 handfuls of berries on the lane | Coins; the order board opens | Phase-001 |
+| **Second order: carrots** | After the first order | Grow and deliver 5 carrots | Coins | Phase-001 |
+| **Butterfly Garden request** *(optional)* | Spring, after the first orders | Plant and water three task flowers | Butterfly net; unlocks find & catch | Phase-004 |
 | **Task restatement** | Talk to Marlow with an unfinished task | Kind restatement; replacement seeds if the flowers were lost | Task stays available | Prototype |
 | **Show butterfly to Marlow** | Kit has a caught butterfly | Marlow reacts; ledger page fills | Relationship warmth | Prototype |
 | **Release butterfly** | Release in the garden | Butterfly flutters around | Visual joy | Prototype |
-| **Order board opens** | After the Butterfly Garden task | Marlow introduces the board and the first small order | Start of the farm economy | Phase-002 |
 
 ## 3. Daily / ambient events
 
@@ -29,18 +30,19 @@ Time-of-day triggers are day phases (mechanics.md §2).
 
 | Event | Trigger | What happens | Scope |
 |---|---|---|---|
-| **New orders** | Dawn | Board refreshes with orders matched to what Kit can produce | Phase-002 |
+| **New orders** | Dawn | Board refreshes with orders matched to what Kit can produce | Phase-001 |
+| **Rain** | Some mornings (≈ 1 in 5 in Spring/Autumn) | Rain waters every outdoor crop for the day | Phase-002 |
 | **Sprinklers run** | Dawn | Sprinkled beds are watered (splash animation) | Phase-004 |
 | **Shipping payout** | Sleep | Money for goods left in the shipping box | Phase-002 |
 | **Watering feedback** | Water a bed | Soil darkens, sparkle and sound | Prototype |
 | **Crop dry** | Soil dries | Cracked-soil look; growth pauses | Prototype |
-| **Crop yellow (warning)** | Dry past grace (by mode) | Leaves droop and yellow | Prototype |
-| **Crop lost** | Yellow past grace | Plant disappears; bed empty; small note "*Dry too long. Water every day, or try a sprinkler.*" | Prototype |
+| **Crop yellow (warning)** | 2 dry days in a row | Leaves droop and yellow | Prototype |
+| **Crop lost** | 3 dry days in a row | Plant disappears; bed empty; small note "*Dry too long. Water every day, or try a sprinkler.*" | Prototype |
 | **Butterfly visits** | Grown flowers, day, Spring/Summer | Butterflies appear | Prototype |
 | **Fireflies** | Night, Summer | Fireflies over brook and garden | Later |
-| **Animal needs care** | Meter reaches warning threshold | Need icon above the animal/pond | Phase-002 |
-| **Product ready** | Egg, milk, wool, honey, fish ready | Glow / fluffy / drip / jumping fish | Phase-002 |
-| **Animal lost** | Meter empty | Message card with gravestone picture (empty hive for bees), name, tip | Phase-002 |
+| **Animal needs care** | 1–2 unfed days | Need icon above the animal/pond | Phase-001 (hens) |
+| **Product ready** | Egg, milk, wool, honey, fish ready | Glow / fluffy / drip / jumping fish | Phase-001 (hens) |
+| **Animal lost** | 3 unfed days in a row | Message card with gravestone picture (empty hive for bees), name, tip | Phase-001 (hens) |
 | **Neighbour trace** | A character is about to be introduced | Picture clue at their place | Phase-002+ |
 
 ## 4. Character arrival events
@@ -52,7 +54,7 @@ Time-of-day triggers are day phases (mechanics.md §2).
 | **The baker** | First eggs collected | Baker (egg and flour orders) | T2 |
 | **The brook keeper** | First visit to the brook | Brook keeper (gives fishing rod) | T3 |
 | **A friend of Kit's age** | Two neighbour tasks + brook visit | Friend (friendship, festivals) | T3 |
-| **Travelling merchant** | First land expansion | Merchant (trades, rarities) | T3 |
+| **Travelling merchant** | Field A cleared | Merchant (trades, rarities) | T3 |
 | **The Hill Visitor** | Lane restoration reaches Lantern Hill, winter | Hill Visitor | T5 |
 
 Each arrival is preceded by a trace (laundry, birdhouse, footprints, seed packet, unlit lantern).
@@ -92,7 +94,7 @@ Contests are optional; entries are judged on quality, never on reflexes.
 |---|---|
 | [README.md](../README.md) | Centralized hub for the project. |
 | [GDD.md](./GDD.md) | Orders, neglect, and ways to earn. |
-| [world.md](./world.md) | Butterfly Garden and Lantern Hill. |
+| [world.md](./world.md) | First beat, Butterfly Garden, and Lantern Hill. |
 | [characters.md](./characters.md) | Characters and introductions. |
 | [mechanics.md](./mechanics.md) | Verbs that trigger events. |
 | [crops.md](./crops.md) | Crop neglect events. |
@@ -110,3 +112,4 @@ Contests are optional; entries are judged on quality, never on reflexes.
 - **0.6 — 2026-11-18:** Milestone 0 decision 2 (in-game clock): time-of-day triggers in §3 now explicitly map to the eight named day phases in mechanics.md §2 (stepped 3-hour clock); missed-phase events still recur or restate kindly.
 - **0.7 — 2026-11-18:** Ledger rows updated to the world.md §7.4 decision: ledger is **both** relationship UI and collectible, placed **world-only** at the seed-shed table, shipping in Phase-001 Task 1.6; the warmth-driven page rule stays a later event.
 - **0.8 — 2026-11-19:** **Direction reset (GDD v0.19).** Gentle Core / stage-gated split removed; scope column now names phases. Added order, sprinkler, shipping-payout, crop dry/yellow/lost, and animal-lost (gravestone card) events; nap event removed. Arrivals tied to farm tiers, with the baker and travelling merchant added and "a child of the lane" reframed as a friend of Kit's age. Festivals and contests made core; Lantern Hill ceremony folded into lane restoration. New relationship milestones (repeat/bigger orders, recipe gifts, tier reached, restoration steps).
+- **0.9 — 2026-11-19:** Owner picks: first core events are now the **first orders** (berries, carrots, Phase-001); Butterfly Garden optional and later; crop yellow/lost triggers set to 2/3 dry days (single mode); merchant arrives when Field A is cleared.

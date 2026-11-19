@@ -1,7 +1,7 @@
 # World, Setting, and Background Story
 
 > **Status:** Brainstorming draft — story and setting proposal referenced by the GDD
-> **Version:** 0.11
+> **Version:** 0.12
 > **Last updated:** 2026-11-19
 > **Purpose:** A working document for the background-story premise, the place, the lore, and the characters who carry it. It expands the story and setting direction in [GDD.md](./GDD.md); the GDD remains authoritative for gameplay, audience, and project decisions. World details here are proposals until validated through playtesting.
 
@@ -36,7 +36,7 @@ The premise exists to serve the GDD, not the other way around. Every element bel
 | Presenter-like interactive storytelling | Mr. Marlow *is* the narrator. He addresses the player, pauses, notices what actually happened, and reacts. No disembodied voice needed. |
 | Not a parent/child dynamic | He has no authority over Kit's day, no punishment, no disappointment. He is a neighbour who can be visited or not. |
 | Small, readable world | One lane, eight places, no map. **Kit's farm grows** into the fields behind the house; the lane does not. |
-| First beat: The Butterfly Garden | The missing butterflies are the first mystery and the first task. |
+| First beat: the first order | Marlow buys wild berries, then carrots — Kit's first coins and the order board. The missing butterflies stay as the lane's quiet mystery and an optional request. |
 | A world that feels inhabited, not lonely | Trace objects (laundry, footprints, birdhouse, seed packet, unlit lantern) appear at places before their character is met. The player senses neighbours exist before reading a single line of dialogue. |
 
 ---
@@ -45,7 +45,7 @@ The premise exists to serve the GDD, not the other way around. Every element bel
 
 ### 3.1 Bramblewick Lane
 
-A curved lane, roughly the length of a short walk, running from the player's home up toward a hill. It is bordered by hedgerows, dry-stone walls, and the occasional wooden gate. Everything is within sight; the lane is the whole shared world. Behind the house lie the family's old fields — overgrown, fenced, and Kit's to reclaim one by one (progression.md §4).
+A curved lane, roughly the length of a short walk, running from the player's home up toward a hill. It is bordered by hedgerows, dry-stone walls, and the occasional wooden gate. Everything is within sight; the lane is the whole shared world. Behind the house lie the family's old fields — **all Kit's from the start**, but overgrown; Kit clears them at their own pace (progression.md §4).
 
 ```
         Lantern Hill (oak + old lantern post, lookout)
@@ -63,8 +63,8 @@ A curved lane, roughly the length of a short walk, running from the player's hom
      Player's home (round bright door)
        + front garden (starting plot, 2-3 beds)
                   |
-     Fields behind the house (bought/cleared
-       one by one: Kit's growing farm)
+     Fields A–E behind the house (all Kit's,
+       overgrown, cleared over time)
 ```
 
 ### 3.2 Places
@@ -214,7 +214,9 @@ Kept here so the setting grows *inward* rather than outward — new faces on the
 
 ## 6. How the story carries the first beat
 
-The Butterfly Garden task is Chapter One of this premise, not a tutorial bolted on:
+> **2026-11-19:** the opening beat is now **the first order** (GDD §3): berries on Day 1, carrots by Day 4. The Butterfly Garden below remains as an **optional Spring request** later in the game.
+
+The Butterfly Garden request, as it plays in-world:
 
 | Beat | In-world version |
 |---|---|
@@ -285,10 +287,10 @@ Each later reward should follow the same shape: **Marlow has been holding someth
 | [GDD.md](./GDD.md) | Authoritative for gameplay, audience, and project decisions; this document expands its setting direction. |
 | [characters.md](./characters.md) | Mr. Marlow, the main character, and the parent/caregiver role carry the story in this document. |
 | [places.md](./places.md) | The eight places of Bramblewick Lane described here. |
-| [crops.md](./crops.md) | Butterfly Garden flowers (Meadow Bell, Honey Cup, Lace Flower) are the first story task. |
+| [crops.md](./crops.md) | Starter carrots for the first order; Butterfly Garden flowers for the optional request. |
 | [events.md](./events.md) | Butterfly Garden task and Lantern Hill events originate from this premise. |
 | [progression.md](./progression.md) | Relationship milestones reference the ledger and high-relationship events proposed here. |
-| [challenge-layers.md](./challenge-layers.md) | Difficulty modes (Easy / Normal / Realistic). |
+| [challenge-layers.md](./challenge-layers.md) | The single difficulty mode. |
 | [buildings.md](./buildings.md) | What Kit can build on the farm. |
 
 ## 9. Change log
@@ -304,3 +306,4 @@ Each later reward should follow the same shape: **Marlow has been holding someth
 - **0.9 — 2026-11-18:** **§7.5 resolved (Q5, three calls):** the home is a **family heirloom** whose parents' jobs keep them in the city, with the player asked to take care of the house themselves; art rule **overgrown but never derelict** (no decay, no rubbish, no loneliness — "alive and waiting"); Marlow **knows the whole family but has never met the player** (city-born), so every first meeting is a genuine introduction and every choice is the child's. §1 premise rewritten accordingly; characters.md background rows and places.md home row updated. **⚠️ Open sub-thread recorded:** who is in the house day-to-day — "by himself" vs characters.md §7's co-resident parent; three reconciliation options pending (parent commutes · caregiver at the house · child resident with adults on the lane).
 - **0.10 — 2026-11-18:** **§7 sub-thread and §7.7 both resolved — §7 is now fully closed (all 7 items).** *Presence:* **Ada is the parents' old friend** who kept the heirloom house while the child was raised in the city and helps him on arrival; parents stay busy in the city, the house is never empty, and no adult ever does the child's doing (Marlow's rule extended to her — characters.md §7 retitled "Adult character", ⚠️ flag cleared). *Payoff:* Lantern Hill = **horizon now (A)**, with **(C) the local payoff — the butterflies come back — as the direction** when a later phase needs an ending; committing to a lantern ceremony (B) rejected as scope poison. §1 premise updated to name Ada.
 - **0.11 — 2026-11-19:** **Direction reset (GDD v0.19).** Premise now names **Kit, 17**, and adds the goal of turning the land into a working farm; the "nothing can be neglected into failure" line replaced (crops/animals can be lost; the farm never can). Map gains the **fields behind the house** (the farm grows, the lane does not). Seed shed hosts the **order board**; market stand is Kit's stall from T2; stile and Lantern Hill reopen through **lane restoration** (§7.7 "never promised" superseded, still optional). Pre-reader/sofa/parent-co-player wording replaced; future cast updated (friend of Kit's age, baker, merchant). §7 gets a reset note; §8 guardrails updated for neglect, farm growth, and no parent gating.
+- **0.12 — 2026-11-19:** Owner picks: first beat is now the **first order**; Butterfly Garden kept as an optional Spring request (§2, §6); back fields all owned from the start, cleared at Kit's pace.

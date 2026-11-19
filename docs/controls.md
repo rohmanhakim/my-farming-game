@@ -1,7 +1,7 @@
 # Controls
 
 > **Status:** Brainstorming draft
-> **Version:** 0.7
+> **Version:** 0.8
 > **Last updated:** 2026-11-19
 > **Purpose:** PC control schemes (gamepad and keyboard + mouse; **PC only** — no touch/mobile) for this kind of game, adjusted to the scope of the game described in the GDD. Assumes an XBOX-layout gamepad. All mappings are tentative (see GDD open question Q5) and subject to playtesting.
 
@@ -28,7 +28,7 @@
 | Open / cycle fixed tool belt | X / LB + RB | Cycles watering can → seed box → earned tools (e.g. butterfly net, brush, basket). Large icon slots; no sortable inventory. (LB+RB is a simple two-button input, allowed per the control goals.) |
 | Open collectathon inventory | Y | Opens the collectathon slot grid. Picture-based, no reading required. (The Collection Book lives in the pause menu.) |
 | Open care menu | Right Stick (RS) click, or on-screen care icon | Dedicated button — the D-pad stays reserved for movement. Shows care meters for every animal and the fish pond, and which need attention. Picture icons. |
-| Pause menu / calendar & settings | Start | Opens pause: day/night indicator, season calendar, Collection Book, sticker book, settings (incl. **difficulty mode** and break reminder), save, quit. |
+| Pause menu / calendar & settings | Start | Opens pause: day/night indicator, season calendar, Collection Book, sticker book, settings (volume, read-aloud, nudges, break reminder), save, quit. |
 | Help tooltip / inspect | Back (Select) | Shows a contextual hint or spoken/visual cue for the highlighted object. **Deferred — no Phase-001 task builds it** (the hint ladder in characters.md §8 covers help for now). |
 | Reserved (unassigned in prototype) | LT / RT | Held for future tools or camera options if needed. |
 
@@ -40,6 +40,7 @@
 - **Player 2 (Ada):** Identical scheme; real-time collaboration.
 - Simultaneous input is never essential. Either player can move, interact, or use tools independently.
 - Tasks work in solo play and in co-play.
+- **Camera (decided 2026-11-19): dynamic split screen.** One shared camera while both players are on screen together; when they move apart the view splits vertically, and it merges back smoothly when they meet. Both players share one house, farm, map, wallet, and order board.
 
 **Seat rule (decided): keyboard + mouse is locked to one player.** At most **one** seat may use keyboard + mouse; **the other seat must use a gamepad.** If no gamepad is connected, **co-op cannot be started** — the game runs single-player with keyboard + mouse. Reason: a keyboard and a mouse are two separate devices, so two people cannot share that seat without fighting over the same hands; a gamepad is self-contained, which is why two gamepads remain the real co-play configuration (GDD §8).
 
@@ -98,7 +99,7 @@ Two ways to do everything, available at the same time, exactly as DST does it: *
 | [GDD.md](./GDD.md) | Open question Q5 covers gamepad/mouse mappings; design pillars shape control goals. |
 | [mechanics.md](./mechanics.md) | Core verbs (move, interact, plant, etc.) map to the buttons listed here. |
 | [inventory.md](./inventory.md) | Y button opens collectathon inventory; RS click opens the care menu; Collection Book is in the pause menu. |
-| [challenge-layers.md](./challenge-layers.md) | Difficulty modes, chosen in the pause-menu Settings. |
+| [challenge-layers.md](./challenge-layers.md) | The single difficulty mode (no difficulty setting). |
 
 ## 8. Change log
 
@@ -109,3 +110,4 @@ Two ways to do everything, available at the same time, exactly as DST does it: *
 - **0.5 — 2026-11-18:** §6 retitled and extended for Milestone 0 decision 2 (in-game clock): added the **always-on HUD clock dial** (8 day phases, stepped 3-hour jumps, icon-based, adult digital readout), pause/close behaviour, and sleep resetting to Dawn; pause calendar now mirrors the dial.
 - **0.6 — 2026-11-18:** **Milestone 0 (control mappings) decided.** §4 rewritten as the **Don't Starve Together-style keyboard + mouse scheme**: WASD/arrow *or* click-to-move, left-click = walk-to-then-act, Space = quick action on the nearest interactable, right-click = cancel, wheel = belt, Esc = pause; DST's combat keys, camera rotation, modifiers, hotbar and map deliberately dropped. New **seat rule** in §3 and §4: **keyboard + mouse is locked to one player — a second player must use a gamepad, otherwise co-op cannot start.** Back/Select help tooltip marked **deferred** (no Phase-001 task builds it). Gamepad table (§2) unchanged and confirmed.
 - **0.7 — 2026-11-19:** **PC only (direction reset, GDD v0.19).** §5 touchscreen mapping and touch turn-taking removed; touch wording dropped from §1 and §4. **Grown-up menu (Start-hold) removed** — challenge layers are retired and the difficulty mode lives in normal Settings. Interact row extended for feed/deliver/shops/place; care menu now covers the fish pond; Player 2 named Ada.
+- **0.8 — 2026-11-19:** Co-op camera decided: **dynamic split screen** that merges when players are close; shared house/farm/map. Difficulty setting removed from the pause menu (single mode); read-aloud and nudges toggles added.
