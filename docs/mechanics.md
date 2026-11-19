@@ -1,7 +1,7 @@
 # Mechanics
 
 > **Status:** Brainstorming draft — **updated for the direction reset 2026-11-19**
-> **Version:** 0.9
+> **Version:** 0.10
 > **Last updated:** 2026-11-19
 > **Purpose:** Player verbs and systems. Every element is a proposal pending playtesting. The GDD remains authoritative for gameplay, audience, and project decisions.
 
@@ -75,6 +75,8 @@ Seasons decide what sprouts, which fish and creatures appear, festival dates, an
 | Verb | What it does | Notes |
 |---|---|---|
 | **Take order** | Accept an order from the board or a neighbour. | Optional; no deadline penalty; cancel any time. |
+| **Subscribe / cancel** | Accept a standing daily order (e.g. 6 eggs by 10:00) or cancel it. | Daily HUD reminder; missed day = unpaid, no penalty; a helper can deliver it. |
+| **Hire / dismiss** | Hire a farmhand for a job and area, or let them go. | Daily wage from the wallet; unpaid = day off, never debt. |
 | **Sell** | Sell at the market stall, shipping box, or farm shop. | Seasonal and demand pricing (economy.md). |
 | **Buy** | Seeds, animals, tools, buildings, land, blueprints, automation. | Money never goes below zero. |
 | **Trade** | Swap goods with the travelling merchant. | Rare seeds, breeds, decorations. |
@@ -104,7 +106,7 @@ Seasons decide what sprouts, which fish and creatures appear, festival dates, an
 | **Sprinklers** (basic / quality / deluxe) | Watering | Blueprint (craft) or buy; T4 (basic earlier via a reward) | Needs a water source in range (well, pond, pump). |
 | **Auto-feeder** | Feeding coop/barn animals | Craft or buy; T4 | Draws feed from the silo. |
 | **Pond auto-feeder** | Feeding fish | Craft or buy; T4 | Draws fish food from storage. |
-| **Helpers** | Harvesting, collecting, brushing, delivering, stall-keeping | Helper post; T4 | Each covers an area; friendly characters or creatures. |
+| **Helpers** — hired farmhands (daily wage) or befriended garden sprites (free, few jobs/day) | Watering, feeding, harvesting, collecting, brushing, clearing, delivering subscription orders, stall-keeping | Farmhand cottage (hire) or friendship (sprites); T4 | Each covers an area; friendly characters or creatures. |
 | **Windmill / water pump** | Water reach, milling, power | T4 | Powers hydroponics. |
 
 Automation never removes manual verbs. It is unlocked by **crafting or buying** at a point in progression, and every unit uses land.
@@ -175,3 +177,4 @@ Optional long-term systems — decoration and farm charm, collections, contests,
 - **0.7 — 2026-11-18:** §2 day/night cycle rewritten to Milestone 0 decision 2 (GDD §4 v0.17): **8 day phases × 3 in-game hours**, clock stepped in 3-hour jumps (≈3 min play per step), running only while playing, reset to Dawn on sleep, plus a stepped HUD dial. Phase table maps presence/events to phases; the clock explicitly never drives growth, care, or penalties.
 - **0.8 — 2026-11-19:** **Direction reset (GDD v0.19).** Two-modes/challenge-layer framing replaced by three difficulty modes. Watering now required; neglect rule (dry → yellow → gone; animals gone with gravestone card). Sell/buy/craft/upgrade promoted to **core economy and building verbs** with new verbs: take order, trade, process, build/place/move, expand land, enter contest, fish, forage. New **§7 Automation** (sprinklers, auto-feeders, pond auto-feeder, helpers, windmill/pump). Clock phases now drive order refresh, shop hours, and shipping payout. Touchscreen and turn-taking co-play removed (PC only). Exclusions rewritten; §11 points to the endgame in progression.md.
 - **0.9 — 2026-11-19:** Owner picks: single difficulty mode; **day-based growth** and the 3-days neglect rule (§1, §6); 'Expand land' verb replaced by **Clear land** (all land owned, overgrown); garden shelf removed; Butterfly Garden now optional; co-play decided (shared farm, dynamic split screen).
+- **0.10 — 2026-11-19:** Added **subscribe/cancel** (standing daily orders with reminder) and **hire/dismiss** verbs; helpers now explicitly hired farmhands (daily wage) or befriended garden sprites.

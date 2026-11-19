@@ -1,7 +1,7 @@
 # Progression: Farm Growth, Automation, and Long-Term Goals
 
 > **Status:** Design draft — **restructured 2026-11-19**
-> **Version:** 0.5
+> **Version:** 0.6
 > **Last updated:** 2026-11-19
 > **Purpose:** How the farm grows from a tangled plot to a full, automated farm (*Harvest Moon*-style), what limits it at each point, and what there is to chase once it runs well. Replaces the old parent-controlled layers and five-stage age map. Everything after the core farm loop is **optional**.
 
@@ -29,7 +29,7 @@ A picture gallery in the pause menu. Stickers are cosmetic achievements — noth
 | **Gold Star** | Get a 3-star animal product | Quality care |
 | **Pond Keeper** | Harvest 20 fish from your pond | Fish pond |
 | **Off the Clock** | Place your first sprinkler | Automation |
-| **Busy Hands** | Hire your first helper | Automation |
+| **Busy Hands** | Hire your first farmhand or befriend a garden sprite | Automation |
 | **Jam Session** | Make 10 jars of jam | Processing |
 | **Blue Ribbon** | Win a festival contest | Contests |
 | **New Friend** | Meet a second neighbour | Social |
@@ -78,6 +78,7 @@ Tiers are reached by **what the farm is**, not by time played or age. They gate 
 | Seasonal basket | "A winter basket: herbs, cheese, jam." | Seasons, storage, greenhouse |
 | Bulk | "Forty eggs for the festival." | Scaling up, automation |
 | Repeat / standing | "A basket every week." | Reliable supply, relationships |
+| **Subscription (daily)** | "6 eggs every morning by 10:00." Reminder each day; cancel any time | Routine, reliability, steady income |
 
 Orders always match what Kit can produce right now (GDD §4) and never carry a deadline penalty.
 
@@ -177,3 +178,4 @@ Missing a mystery means waiting for it to return next year.
 - **0.3 — 2026-11-18:** Removed the Time Awareness layer (always on, Gentle Core); Session Timer clarified on by default. Brush unlock corrected to the sheep; winter mystery reward renamed to the Garden lantern (a different item from Lantern Hill's unlit lantern); normalised "neighbor" to "neighbour".
 - **0.4 — 2026-11-19:** **Restructured for the direction reset (GDD v0.19).** Parent-controlled layers, the five-stage age map, and the parent-role table removed. Added **farm growth tiers T1–T5** (money → land as the limit), **land expansion** (fields behind the house), **orders as progression**, and a new **§6 After the farm is running** with optional long-term goals: decoration and **farm charm**, collections (rare crops, fish, breeds, recipes, forage), festival trophies, **lane restoration**, a showcase/museum, mastery tracks, and prestige rare items. Stickers updated for orders, automation, fish pond, contests, and land. Character introductions now tied to farm tiers.
 - **0.5 — 2026-11-19:** **Owner decisions:** all land is **unlocked from the start but overgrown** — §4 rewritten from buying fields to **clearing** them (debris table, tools, no stamina or deadline); tier triggers updated (T3 = Field A cleared, T5 = all fields cleared); single difficulty mode; first beat is a first order, Butterfly Garden optional.
+- **0.6 — 2026-11-19:** Subscription (daily) orders added to §5; Busy Hands sticker covers farmhands and garden sprites.

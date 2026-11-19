@@ -1,7 +1,7 @@
 # Events
 
 > **Status:** Brainstorming draft — **updated for the direction reset 2026-11-19**
-> **Version:** 0.9
+> **Version:** 0.10
 > **Last updated:** 2026-11-19
 > **Purpose:** Events during a playthrough, driven by calendar, season, day phase, and the farm's growth. All names tentative; every element is a proposal pending playtesting.
 
@@ -80,6 +80,8 @@ Contests are optional; entries are judged on quality, never on reflexes.
 |---|---|---|
 | **First order delivered** | First order | Neighbour thanks Kit; first sticker |
 | **Repeat order** | Several orders for one neighbour | Neighbour offers a weekly order |
+| **Subscription offered** | Many happy deliveries to one neighbour | Neighbour offers a standing daily order (item, amount, time); Kit may subscribe |
+| **Subscription reminder** | Each morning a subscription is due | HUD + board reminder until delivered; missed day = unpaid only |
 | **Bigger order** | Relationship grows | Bulk or catering order offered |
 | **Recipe gift** | High relationship | Neighbour shares a recipe or blueprint |
 | **Ledger page fills** | Completed tasks | Pressed flower or sketch in Marlow's ledger |
@@ -113,3 +115,4 @@ Contests are optional; entries are judged on quality, never on reflexes.
 - **0.7 — 2026-11-18:** Ledger rows updated to the world.md §7.4 decision: ledger is **both** relationship UI and collectible, placed **world-only** at the seed-shed table, shipping in Phase-001 Task 1.6; the warmth-driven page rule stays a later event.
 - **0.8 — 2026-11-19:** **Direction reset (GDD v0.19).** Gentle Core / stage-gated split removed; scope column now names phases. Added order, sprinkler, shipping-payout, crop dry/yellow/lost, and animal-lost (gravestone card) events; nap event removed. Arrivals tied to farm tiers, with the baker and travelling merchant added and "a child of the lane" reframed as a friend of Kit's age. Festivals and contests made core; Lantern Hill ceremony folded into lane restoration. New relationship milestones (repeat/bigger orders, recipe gifts, tier reached, restoration steps).
 - **0.9 — 2026-11-19:** Owner picks: first core events are now the **first orders** (berries, carrots, Phase-001); Butterfly Garden optional and later; crop yellow/lost triggers set to 2/3 dry days (single mode); merchant arrives when Field A is cleared.
+- **0.10 — 2026-11-19:** Added subscription-offered and daily subscription-reminder events.

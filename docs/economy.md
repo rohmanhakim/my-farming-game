@@ -1,7 +1,7 @@
 # Economy & Balance Sheet
 
 > **Status:** First draft for owner review — new document
-> **Version:** 0.1
+> **Version:** 0.2
 > **Last updated:** 2026-11-19
 > **Purpose:** Prices, income, and costs, plus a balance check showing how long each goal takes. Owner rule (2026-11-19): **what Kit sells ≈ real-world price; what Kit buys ≈ half the real price** (the kid-friendly part). The full price list is the spreadsheet **[`data/economy.csv`](./data/economy.csv)** (79 items; opens in Excel/Sheets). All prices are approximate US retail and must be checked before they are final.
 
@@ -23,6 +23,8 @@
 | **Seasonal price** | Out-of-season produce sells at ×1.5 (e.g. greenhouse tomatoes in winter) |
 | **Demand price** | Each item sold beyond 20 per day drops its price 2 % (to at most −30 %); recovers overnight |
 | **Neighbour orders** *(proposal — needs approval)* | Pay **×1.25** the sell price ("farm-fresh, delivered"); bulk orders ×1.1 |
+| **Farmhand wage** | ≈ half a real daily farm wage: **≈ 400 coins/day** per farmhand (proposal); garden sprites are free |
+| **Subscription orders** | Paid at the order price each delivered day |
 | **Sell-back** | Buildings and tools sell back for half what Kit paid |
 
 ## 3. Key prices (summary — full list in the CSV)
@@ -132,3 +134,4 @@
 ## 8. Change log
 
 - **0.1 — 2026-11-19:** New document (owner request). Coins at ≈ $0.10; sell ≈ real retail, buy ≈ half real; quality, seasonal, demand, and sell-back rules; proposed ×1.25 order premium. 79-item price sheet in `data/economy.csv`. Production assumptions, profit per tile, animal paybacks, a Year-1 timeline, and five balance risks.
+- **0.2 — 2026-11-19:** Added farmhand wage (≈ 400 coins/day, proposal) and subscription-order payment rule.
