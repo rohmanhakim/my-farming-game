@@ -1,289 +1,285 @@
 # Game Design Document
 
-> **Status:** Brainstorming draft
-> **Version:** 0.18
-> **Last updated:** 2026-11-18
-> **Purpose:** A living document for shaping the game together. The concept and audience below come from the initial brief; unconfirmed details are proposals, not commitments.
+> **Status:** Brainstorming draft — **direction reset 2026-11-19** (see v0.19 change log)
+> **Version:** 0.19
+> **Last updated:** 2026-11-19
+> **Purpose:** A living document for shaping the game together. Confirmed owner decisions are marked **decided**; everything else is a proposal, not a commitment.
 
 ## 1. High Concept
 
-A gentle, fully 2D life-and-garden game for young children. Players care for a small garden, explore beyond home, and help friendly characters with everyday tasks. Farming, exploration, and community interactions work together as parts of one cozy world. The presentation uses illustrated, non-pixel-art graphics.
+A fully 2D, **realistic but kid-friendly, educational** farming-life game for PC. The player is **Kit, a 17-year-old** who has come from the city to look after the family's land on Bramblewick Lane. Kit grows crops, raises animals, stocks a fish pond, fills **orders from the neighbours**, and slowly grows a small, tangled plot into a working farm — the way a *Harvest Moon* farm grows: the challenge rises naturally as the farm gets bigger. **Automation** (sprinklers, feeders, helpers), unlocked later by crafting or buying it, is the game's key selling point: the moment the farm starts running itself is the payoff for everything before it.
 
-The game takes inspiration from the welcoming farming and community feel of *Stardew Valley*, while aiming for a much smaller scope and an experience designed specifically for young children from pre-elementary through first grade, playing with a parent — while accommodating older children (up to fifth grade) through optional challenge layers defined in this design.
+Farming, community, and exploration are parts of one warm world. Neglect has real but gentle consequences — crops turn yellow and are lost, neglected animals are gone — always shown without anything graphic. The presentation uses illustrated, non-pixel-art graphics.
+
+The game takes inspiration from the welcoming farming and community feel of *Stardew Valley* and the farm-growth arc of *Harvest Moon*, with a smaller scope and a teaching-friendly tone.
 
 **Working title:** TBD
 
 ## 2. Audience and Play Context
 
-- **Primary audience:** Children from **pre-elementary through first grade**, playing with a parent or caregiver. The game accommodates older children (through fifth grade and beyond) through the optional challenge layers defined below. The whole experience grows with the child: younger players (pre-elementary–1st grade) use Gentle Core only; older players (2nd–5th grade+) can opt into challenge layers managed by a parent or caregiver.
-- **Intended play modes:** A child can play alone or with a parent. Parent-child play is designed for collaboration on one device.
-- **Parent/caregiver role:** The parent acts as the "difficulty dial" — managing which challenge layers are active through a grown-up menu, helping with reading and menus, and deciding with the child when the game is ready to grow. On PC with separate gamepads, parent and child collaborate in real time; on touchscreen they take turns.
-- **Working literacy assumption:** Essential actions and feedback never depend on fluent reading. Text is always paired with pictures, icons, and voice-over. Reading ability varies widely across the target age range, so the game must be playable by a non-reader in Gentle Core.
-- **Likely considerations:** Players may be new to games, and some may benefit from visual cues, short text, or spoken support even if reading is an intended part of the experience.
-- **Prototype platform:** PC.
-- **Longer-term platform goal:** Multiplatform, with iPad and Android tablets as the priority touchscreen devices.
-
-Text can be part of the experience, but essential actions and feedback should not depend on fluent reading.
+- **Audience (decided direction, age band open):** Kid-friendly and educational, but **no longer aimed at pre-elementary children**. Content is safe for children; systems are a real (if simple) farm sim with money, consequences, and planning.
+  - **⚠️ Needs owner decision — target age band.** The previous band (pre-elementary → 5th grade, parent-led) no longer fits a 17-year-old protagonist, money management, and loss from neglect. Working assumption for writing only: **roughly ages 8 and up, plus families and teens**, with no reading-free requirement. This affects text density, age rating, tutorial depth, and the Easy mode's tuning. See §16 Q9.
+- **Play modes:** Solo, or **local co-op on one PC** (two gamepads, or keyboard + mouse plus one gamepad — controls.md §3). Co-op is optional; nothing requires a second player.
+- **Second player:** Plays **Ada**, the family friend (characters.md §7). The "parent is the difficulty dial" role is retired: difficulty is now a **mode** chosen in settings (§6), not a set of parent-only toggles.
+- **Reading:** Short, simple sentences, always paired with icons. Fluent reading is not required for core actions, but text is now part of the experience (orders, prices, recipes).
+- **Platform:** **PC only** (decided 2026-11-19). No tablet, mobile, or touchscreen versions are planned.
 
 ## 3. Design Goals
 
-### Design pillars
+### Design pillars (decided 2026-11-19)
 
-1. **Easy to understand:** A child can see what to do and learn the controls by trying them.
-2. **Kind and low-pressure:** Mistakes are safe; the game does not punish a child for taking a break or doing things in an unexpected order.
-3. **Small, satisfying activities:** Short actions produce visible, cheerful results.
-4. **Creative ownership:** Players can personalize a garden or space without needing to optimize it.
-5. **Warm illustrated world:** Expressive characters, clear shapes, and inviting environments support the experience.
-6. **Practice everyday social skills:** Through ordinary interactions, players can explore communication, cooperation, boundaries, and caring for shared spaces.
-7. **Collectathon inventory:** Picture-based slots, auto-stacking, and a collection book give kids the joy of collecting without inventory stress. No currency, no sorting, no "full" penalty.
-8. **Gentle animal care:** Caring for farm animals teaches responsibility through positive care loops. Animals nap if ignored — they never die, run away, or become permanently unhappy.
-9. **Progressive challenge (opt-in):** Optional stickers, multi-step requests, and seasonal mysteries grow with the child's skill when a parent turns them on. Nothing is ever locked behind them; the core loop always remains available.
-10. **The parent is the difficulty dial:** Challenge layers are turned on or off by a parent or caregiver through a grown-up menu. The game never auto-scales based on age or playtime. Gentle Core remains available at every stage, no matter how many layers are active.
+1. **Easy to understand:** A player can see what to do and learn the controls by trying them.
+2. **Realistic but kid-friendly:** Plants need water, animals need care, money must be earned. Neglect has consequences — crops yellow and are lost; neglected animals are gone — but nothing is shown graphically: an animal loss is a short message with a picture of a gravestone. No sickness, no vet, no gore.
+3. **Educational:** Players learn real things through play — seasons and what grows when, what animals need, where food comes from (milk → cheese, wheat → bread, fruit → jam/pie), and simple money sense (earn, budget, save up, invest in tools).
+4. **Grow your farm (Harvest Moon-style):** Challenge rises naturally as the farm grows. Early limits are **money**; the final limit is **land size**. There is no fixed cap on beds or animals.
+5. **Automation is the payoff:** Sprinklers, feeders, and helpers are unlocked by crafting or buying them at the right point in progression, turning chores into a farm that runs itself.
+6. **Many ways to earn, none mandatory:** Neighbour orders are the main income; market sales, contests, foraging and fishing, trading, crafting, and friendship rewards are alternatives. The player chooses how much money to chase — there is no pressure and no debt (§4 *Ways to earn and acquire*).
+7. **Small, satisfying activities:** Short actions produce visible, cheerful results.
+8. **Creative ownership:** Players lay out and decorate their farm without needing to optimise it.
+9. **Warm illustrated world:** Expressive characters, clear shapes, and inviting environments.
+10. **Practice everyday social skills:** Through ordinary interactions — greeting, keeping a promise, delivering what was asked, negotiating a trade — players explore communication, reliability, and caring for shared spaces.
 
 ### Intended emotional experience
 
-Players should feel curious, capable, welcomed, and proud of what they have made. Social situations should invite reflection without making children feel judged or ashamed.
+Players should feel curious, capable, responsible, and proud of the farm they built. Losses should feel like a lesson that can be acted on ("I'll build a feeder next time"), never like shame.
 
 ### Social learning approach
 
-The game should let players practice interactions that can help them navigate life beyond home, such as greeting someone, asking before taking or using something, taking turns, offering help, sharing, and responding when another character has a different need or preference.
+The game lets players practise interactions that help beyond home: greeting someone, asking before taking, taking turns, offering help, keeping an agreement, and responding when someone has a different need. Consequences are proportionate, connected to what happened, and focused on how people or the shared space respond. When possible, players can repair a misunderstanding or try again. Avoid rigid good/bad scoring or shame.
 
-Some situations may offer simple choices and show understandable consequences. Consequences should be proportionate, connected to what happened, and focused on how people or the shared environment respond. When possible, players should be able to repair a misunderstanding or try a kinder approach. Avoid rigid good/bad scoring, shame, or presenting complex moral questions as having one simplistic answer.
+### Difficulty: three modes, one world (decided direction 2026-11-19)
 
-### Two Modes: Gentle Core + Opt-in Challenge Layers
+The old *Gentle Core + six opt-in challenge layers + five-stage map* structure is **retired**. Difficulty is now one **mode** chosen when starting a new game and changeable any time in Settings. All modes have the same content, the same progression, and the same consequences — only the *tuning* differs. Full table in [challenge-layers.md](./challenge-layers.md) (now *Difficulty Modes*).
 
-The game offers two modes that share one world:
+| Mode | Who it is for | In short |
+|---|---|---|
+| **Easy** | Younger or newer players, families | Long grace before crops yellow and animals are lost; cheaper start; generous order pay |
+| **Normal** (default) | Most players | The intended balance |
+| **Realistic** | Players who want a real farm sim | Shorter grace, tighter money, prices that swing more with season and demand |
 
-**Gentle Core (always on):** Plant, water, harvest, care for animals, decorate. No death, no currency, no reading required, no time pressure, no penalties. A child can play forever here.
+Why three: one mode per audience the owner named (kid-friendly, standard, "realistic"), few enough to explain in one sentence each, and it keeps one tuning table instead of a matrix of toggles. See challenge-layers.md §2 for the reasoning and §16 Q10 for what is still open.
 
-**Challenge Layers (opt-in, parent-controlled):** Garden coins, tool upgrades, crafting, multi-step requests, festivals, and deeper systems. Each layer is toggled by the parent in a grown-up menu. Layers are additive — turning one on never removes Gentle Core features.
+### Social interaction anchor: reciprocal requests and orders
 
-Layers progress through five stages:
-
-- **Stage 1 — My First Garden** (preschool): Gentle Core only
-- **Stage 2 — Garden Helpers** (K–1st): Multi-step requests (day/night and seasons are always on — Gentle Core)
-- **Stage 3 — Farm Manager in Training** (2nd–3rd): Garden coins, tool upgrades, crafting
-- **Stage 4 — Bramblewick Farmer** (4th–5th): Festivals, relationship meters, expanded world
-- **Stage 5 — Standard Sim** (5th grade+): Full economy, expanded systems
-
-The parent can return to Gentle Core at any time with one click. See [challenge-layers.md](./challenge-layers.md) for the full layer definitions and stage map.
-
-### Social interaction anchor: reciprocal requests
-
-The shared pattern is that the player wants something and helps another person to get it. The specific request and task can differ each time and should fit the character, situation, and desired reward.
+The shared pattern is that the player wants something and helps another person to get it.
 
 1. The player expresses interest in or asks for something.
-2. An NPC explains a clear task that would help them and what the player can receive for doing it.
-3. The player chooses whether to accept and completes the task, or leaves it unfinished.
-4. On completion, the NPC responds and gives the promised reward. Rewards should vary with the task and may include the thing the player wanted.
+2. An NPC explains a clear task, or posts an **order**, and what the player receives for it (money, an item, a recipe, a blueprint).
+3. The player chooses whether to accept and completes it, or leaves it.
+4. On completion, the NPC responds and gives the promised reward.
 
-This is a social exchange, not a hidden test: the player should understand the request and expected reward before agreeing. Tasks should be achievable, with outcomes based on the player's actions rather than confusing rules or arbitrary timers.
-
-If a task is left unfinished, the player does not receive its promised reward yet. When they next speak with that NPC, the NPC can remember and kindly restate the request, for example: "Hmm, we didn't finish that task last time. Would you like to try it now?" Taking a break or closing the game is not itself a failure. The player should be able to accept the task again or decline without shame or loss of unrelated progress.
+Requests and orders are **optional and have no deadline penalty**. An unaccepted order simply waits or is replaced by a new one; an accepted order stays open until it is delivered or the player cancels it, with no loss. NPCs remember kindly: "We didn't finish that last time. Would you like to try it now?"
 
 ### First want-task-reward beat: The Butterfly Garden
 
-**Status:** Proposed answer to open question 1; validate through playtesting.
-
-The first request should teach the reciprocal-task pattern using actions the player already knows, then reward the player with a new ability that opens another kind of play.
+**Status:** Proposal, kept from v0.9; validate through playtesting.
 
 | Beat | Proposal |
 |---|---|
-| Player's want | The player sees butterflies in a picture bubble and wants them to visit the garden. The desire is communicated visually before any reading is needed. |
-| NPC's request | The NPC offers flower seeds and asks the player to plant and water three flowers so butterflies will come. |
-| Player's choice | The player may accept, decline, or leave the task unfinished. The NPC remembers and kindly offers it again later. |
-| Reward | The NPC gives the player a butterfly net, unlocking a new activity: finding and catching friendly butterflies or bugs. |
-| Loop back | The player can show a discovered butterfly to the NPC or release it in the garden, where butterflies add life to the space. |
-
-The request uses already-known verbs (plant and water), states the expected reward before acceptance, and makes the desired outcome visible. The net adds a new verb rather than simply increasing a currency or item count.
+| Player's want | Kit sees butterflies in a sketch in Marlow's ledger and wants them back in the garden. |
+| NPC's request | Marlow offers flower seeds and asks Kit to plant and water three flowers so butterflies will come. |
+| Player's choice | Accept, decline, or leave it unfinished. Marlow remembers and kindly offers it again. If the flowers are lost to neglect, Marlow hands over replacement seeds without blame. |
+| Reward | A butterfly net, unlocking a new activity: finding and catching butterflies and bugs. |
+| Loop back | Kit can show a butterfly to Marlow or release it in the garden. Soon after, Marlow introduces the **order board** — the start of the farm economy. |
 
 #### Starting loadout and item handling
 
-- **Hands:** Available from the start for planting, harvesting, decorating, talking, and general interaction; these are actions, not inventory items.
-- **Watering can:** Starts with the player so the initial garden loop is usable.
-- **Seed box:** Starts with two or three basic seeds. Flower seeds for the first task are supplied by the NPC when the player accepts it.
-- **Shovel or trowel:** Not part of the initial loadout; reserve digging as a possible later ability or reward.
-- **Future tools:** A bug net, ladder, sprinkler, or similar tool should be introduced only when it opens a distinct new verb or place.
+- **Hands:** Planting, harvesting, decorating, talking, and general interaction.
+- **Watering can:** Starts with the player. **Watering is now required for growth** (pillar 2).
+- **Seed box:** Starts with two or three basic seeds; more are bought at the seed shed.
+- **Small purse:** A little starting money (amount set by mode).
+- **Future tools:** Introduced when they open a new verb or make a chore faster (net, brush, fishing rod, hoe, scythe, sprinkler…).
 
-A loose, sortable inventory is avoided. The tool belt holds a small set of large icon slots for the watering can, seed box, and earned tools. Harvests and animal products route automatically to collectathon inventory slots (see inventory.md) rather than accumulating in a large player inventory. There is no currency, no sorting, and no "full" penalty — overflow goes to the Overflow Nest at Mr. Marlow's shed.
+The tool belt holds a small set of large icon slots. Harvests and products go to picture-based, auto-stacking inventory slots (inventory.md). Overflow goes to a storage chest; there is no sorting and no "full" penalty.
 
 #### Design-pattern references
 
-These games were reviewed as references for pacing the first task and reward, not as templates to reproduce:
-
 | Reference | Broad pattern considered |
 |---|---|
-| *Stardew Valley* | A simple introduction to a character precedes a later gift that unlocks fishing. |
-| *Animal Crossing: New Horizons* | Short, explicit requests and workshops introduce tools and new capabilities. |
-| *Cozy Grove* | Small, untimed help requests connect to character stories and gradual world expansion. |
-| *Ooblets* | Stated goals and rewards can reopen places or systems. |
-| *Garden Story* | Villager requests can improve a community and unlock useful rewards. |
-| *Spiritfarer* | Helping characters can lead to new facilities and mechanics. |
+| *Harvest Moon* | Small plot → bigger farm; money gates early growth, land gates late growth; buildings and tools as investments. |
+| *Stardew Valley* | Shipping, community requests, crafting sprinklers as a mid-game milestone. |
+| *Animal Crossing: New Horizons* | Short, explicit requests; workshops introduce tools. |
+| *Cozy Grove* | Small, untimed help requests connected to character stories. |
+| *Spiritfarer* | Helping characters leads to new facilities and mechanics. |
 
-The shared principle is to begin with tools for verbs the player already has, then reward them with tools or access that introduce new verbs or places.
+These are references for pacing, never templates to reproduce.
 
 #### Later alternatives
 
-- **Ladder to a lookout:** Help grow and harvest vegetables for an NPC's picnic, then receive a ladder that opens a treehouse lookout. Keep this as a possible reward when a second area is introduced.
-- **Garden helper:** A creature or sprinkler waters a bed. Defer this because it automates an existing action instead of opening a new activity.
+- **Ladder to a lookout:** Help prepare a neighbour's picnic, receive a ladder that opens a lookout.
+- ~~Garden helper (deferred because it automates)~~ — **reversed 2026-11-19:** automation is now the key selling point (§4 *Automation*).
 
 ### NPC relationship meter (proposal)
 
-Track a separate social relationship value for each NPC. Keep it always visible in a subtle way in that NPC's dialogue box. Change it only in response to specific tasks or dialogue events; it does not change passively over time. The meter represents the history of that relationship, not a moral grade.
-
-At higher relationship levels, an NPC may offer something special during selected events. Rewards could include unique items that cannot be obtained through ordinary gameplay, access to a special place, special dialogue, or a memorable event in itself. A seasonal celebration such as New Year is one possible occasion. The exact events, thresholds, and reward mix are TBD.
+Track a separate relationship value per NPC, changed by delivered orders, completed tasks, and dialogue events — never passively. Higher relationships bring **repeat and bigger orders**, recipes, blueprints, and special events. It is the history of the relationship, not a moral grade.
 
 ## 4. Core Experience
 
-### Proposed core loop
+### Core loop (decided direction)
 
-1. Decide what the player would like to do, find, or unlock.
-2. Explore, care for the garden, or talk with a character to find a way forward.
-3. Help someone by completing a clear task in exchange for an agreed reward.
-4. See an immediate response and receive the reward; some rewards introduce a new activity, area, or mechanic.
-5. Enjoy the new possibility, continue exploring, or choose another goal.
+1. **Plan:** Decide what to grow, raise, or build, within the money and land Kit has.
+2. **Work the farm:** Plant, water, harvest; feed and care for animals; tend the fish pond.
+3. **Earn:** Fill neighbour orders (main income) or use any other way to earn (§4 *Ways to earn and acquire*).
+4. **Invest:** Spend on seeds, animals, buildings, tools, land, and — later — automation.
+5. **Grow:** A bigger farm brings bigger orders, new neighbours, and new challenges, until the land itself is the limit.
 
-This loop is a starting hypothesis and should be tested before expanding the feature set.
+### Neighbour orders — the main income (decided 2026-11-19)
 
-### Progression and novelty
+- Neighbours order farm output: **eggs, milk, fruit, vegetables, fish, pies, jam, seasonal baskets, and bulk orders**.
+- **Orders only ask for what Kit can actually produce** right now — an order generator draws from crops, animals, and recipes the player has unlocked, at quantities their farm size can supply.
+- **Optional, no pressure:** orders have no deadline penalty; ignoring them costs nothing but the missed money.
+- **Variety:** different neighbours have different tastes (Marlow likes herbs and honey; a baker wants eggs and wheat; a family wants a weekly basket).
+- **Growth:** satisfied neighbours send **repeat orders** and, as the relationship grows, **bigger orders** (bulk, mixed baskets, festival catering).
+- **Where:** the **order board** at the seed shed, plus hand-delivered requests when talking to a neighbour. Delivery is by hand or, later, via a delivery helper.
 
-Rewards should not be limited to currency or more items. Early rewards should introduce new possibilities that change how the player can interact with the game, such as a new activity, tool, place, or mechanic. Introduce these one at a time with clear, playful explanation. Avoid making progression depend on collecting and managing a large inventory.
+### Ways to earn and acquire (decided 2026-11-19 — all optional)
 
-### Gardening without chores
+Orders are the main income, but **none of these is mandatory**: the player decides how much money they want and how they want to get it.
 
-Gardening is a playful option, not a maintenance obligation. Crops should not die, spoil, or create a backlog that pressures the child to return and keep everything in order. Keep planting, growth, and harvesting simple, with useful feedback and rewards that do not require managing large quantities of produce or supplies.
+| Way | What it gives | Notes |
+|---|---|---|
+| **Neighbour orders** | Money, relationship, repeat/bigger orders | Main income (above). |
+| **Market stall / shipping box** | Money | Sell any produce. **Seasonal pricing** (out-of-season goods pay more) and **demand pricing** (selling lots of one thing lowers its price for a while). Swing size set by mode. |
+| **Town board & festival contests** | Money, ribbons, unique items | Board posts one-off jobs (e.g. "fix the fence"); seasonal festivals hold produce and animal contests judged on quality. |
+| **Foraging, fishing & exploring** | Wild goods to use, sell, or deliver | Berries, mushrooms, herbs along the lane; fishing at the brook; finds while exploring. |
+| **Travelling merchants** | Trades, rare seeds, rare items | Visit on certain days; trade goods for goods, or buy rarities. |
+| **Crafting / processing** | Higher-value goods | Turn produce into **jam, cheese, bread, pies, honey jars, smoked fish** at the kitchen/workshop — worth more than the raw item. |
+| **Shop purchases** | Seeds, animals, tools, **blueprints**, **automation** | The seed shed and the market sell what Kit needs to grow; blueprints unlock building and crafting recipes. |
+| **Friendship rewards** | Gifts, **recipes**, blueprints | Good relationships unlock recipes and helper blueprints, not just items. |
+| **Quality animal products** | Better prices and contest entries | Well-cared animals give higher-quality eggs, milk, wool, honey (shown as 1–3 stars) that sell for more. |
 
-### Plant growth model (decision — Milestone 0, 2026-11-18)
+**No debt, no loans, no bankruptcy.** Money can reach zero but never below; a broke player can always forage, fish, or fill a small order to restart.
 
-**Design principle:** The garden always moves forward, and the player's care makes it sparkle.
+### Neglect and consequences (decided 2026-11-19)
 
-- Plants advance through growth stages while the game is being played, so the child can see progress and connect it to activity in the garden.
-- Growth is measured in **accumulated play time**, not in in-game days, and it advances **only while the game is being played**.
-- Watering is optional for plant survival and growth. It speeds up growth and gives cheerful immediate feedback, but plants continue to grow without it. A specific NPC task may ask the player to try watering as an activity; this must never imply that plants will suffer if left unwatered.
-- Plants never wither, die, or become worse because the child stopped playing.
-- Keep the initial garden small (for example, two or three beds) so tending it remains play rather than field maintenance.
-- Give watering an immediate response—such as a sparkle, sound, or visiting insect—even when a full growth-stage change takes longer.
+- **Crops:** Crops need water to grow. A crop left dry **stops growing**, then **turns yellow** (a clearly visible warning stage), and if still neglected it is **gone** — the bed is empty again. Watering a yellow crop recovers it. Grace times depend on mode (challenge-layers.md §3).
+- **Animals and fish:** Each animal has a care meter. When it runs low, a picture icon shows the need. If the meter empties, the animal is **gone right away** — no nap stage, no sickness, no vet. The game shows a **short message with a picture of a gravestone** and nothing more; no on-screen death.
+- **Never while the game is closed:** needs and dryness advance only during play. Closing the game for a week loses nothing.
+- **Never a surprise:** every loss is preceded by a visible warning (dry soil → yellow crop; need icon → low meter).
+- **Recoverable:** a lost crop or animal can be replaced with money; no other progress is taken away. Automation (sprinklers, feeders) is the long-term answer.
 
-**Decided settings — defaults chosen for the prototype, adjustable on the options screen before starting a new game:**
+### Plant growth model (decision — Milestone 0, 2026-11-18; amended 2026-11-19)
+
+- Plants advance through growth stages **during play**, on **accumulated play time**, and only while the game is running.
+- **Amended:** a plant grows **only while watered**. Each watering keeps the soil moist for a while; when the soil is dry, growth pauses and the neglect clock (above) starts. Watering is no longer optional.
+- Plants never change while the game is closed.
+
+**Decided settings — chosen on the options screen before starting a new game:**
 
 | Setting | Options | **Default** |
 |---|---|---|
-| **Growth speed** (time per growth stage) | Fast ≈ 15–20 s · **Medium ≈ 30–45 s** · Slow ≈ 60–90 s | **Medium** — seed → bloom ≈ 2 minutes of play |
-| **Growth while the game is closed** | **Paused** · Gentle catch-up | **Paused** — nothing grows while closed |
+| **Growth speed** (time per growth stage while watered) | Fast ≈ 15–20 s · **Medium ≈ 30–45 s** · Slow ≈ 60–90 s | **Medium** — seed → harvest ≈ 2 minutes of watered play for the first crops; later crops have more stages |
+| **Growth while the game is closed** | **Paused** · Gentle catch-up | **Paused** |
 
-- **Stage advances tick live while playing,** so the child watches the plant change; ending the day (sleep/rest) does **not** add an extra stage, so growth is never double-counted.
-- **Gentle catch-up** (the optional setting) grants **at most one stage** when the game is next opened and **never skips a plant past bloom**. It can only move a plant forward — there is no penalty, debt, or missed-day state, ever.
-- **Rationale:** the default follows the genre norm — *Stardew Valley*, *Harvest Moon*, and *Ooblets* all grow only during play (Stardew's ≈14-minute in-game day and its 4-day parsnip scale to a child's play beat, not to a stopwatch); only *Animal Crossing* grows on the real-world clock, which requires owning a clock this design does not need. The catch-up option is the positive-only exception the earlier proposal asked for, kept off by default so the simplest configuration has zero schedule.
-- **Options screen, not in-game tuning:** both settings are chosen by the grown-up on the options screen **before starting a new game** (they may be changed only by starting a new game, so a mid-game change can never surprise the child). Neither setting may ever surface as a warning, a reminder, or an obligation.
-- **Prototype validation:** Phase-001 ships and tests the **Medium / Paused** defaults. Preset values are provisional and may be re-tuned after the first playtest.
-
-For the Butterfly Garden task, planting and watering flowers should create visible progress in-session. The arrival of butterflies can be a short, clearly signaled event rather than a long idle wait.
+- Ending the day does not add an extra stage. Gentle catch-up adds at most one stage on next launch and never past harvest-ready.
+- **⚠️ Open (§16 Q11):** with money and orders in play, these short play-time stages may need re-tuning — or a switch to Harvest Moon-style day-based growth. Kept as decided until a playtest says otherwise.
 
 ### In-day clock and day phases (decision — Milestone 0, 2026-11-18)
 
 **The game has a clock, shown in the HUD, but it moves in coarse steps — never minute by minute.**
 
-- **8 day phases, 3 in-game hours each** (24 hours = 8 × 3). Each phase owns a fixed clock range, so the child always sees where in the day they are without reading a schedule.
-- **Stepped, not continuous:** the clock jumps **one 3-hour step at a time**, and the phase changes with it. It never ticks by the minute.
-- **Step rate:** one step ≈ **3 minutes of play** → a full in-game day ≈ **24 minutes of play** (tunable constant; may become a Gentle/Long day option later).
-- **Runs only while playing:** the clock stops when the pause menu is open and does not advance while the game is closed — consistent with the growth decision above.
-- **Sleep/rest** ends the day: the calendar day increments and the clock resets to **Dawn (06:00)**. Sleeping early, late, or never carries no penalty.
+- **8 day phases, 3 in-game hours each** (24 hours = 8 × 3).
+- **Stepped, not continuous:** the clock jumps **one 3-hour step at a time**.
+- **Step rate:** one step ≈ **3 minutes of play** → a full in-game day ≈ **24 minutes of play** (tunable).
+- **Runs only while playing:** stops in the pause menu and while the game is closed.
+- **Sleep/rest** ends the day: the calendar day increments and the clock resets to **Dawn (06:00)**.
 
 | # | Phase | Clock | Light | What is true in this phase |
 |---|---|---|---|---|
-| 1 | **Dawn** | 06:00–09:00 | First light, soft pink | Morning greeting; the lane wakes |
-| 2 | **Morning** | 09:00–12:00 | Bright, clear | Mr. Marlow at the gate; butterflies visit grown flowers |
-| 3 | **Midday** | 12:00–15:00 | Highest, brightest | Neighbours out and about |
-| 4 | **Afternoon** | 15:00–18:00 | Long light | Distant wave from a future neighbour; brook keeper on warm afternoons; Marlow's late-afternoon presence |
-| 5 | **Evening** | 18:00–21:00 | Gold → amber | Evening settling begins; lane softens |
-| 6 | **Dusk** | 21:00–00:00 | Lane darkens | Fireflies appear in season; Marlow may be indoors |
-| 7 | **Night** | 00:00–03:00 | Dark, quiet palette | Seed shed lit; Moon Petal glows; garden lantern useful |
-| 8 | **Small hours** | 03:00–06:00 | Deepest dark | Quiet only — nothing is lost, missed, or closed |
+| 1 | **Dawn** | 06:00–09:00 | First light, soft pink | Morning greeting; new orders appear on the board |
+| 2 | **Morning** | 09:00–12:00 | Bright, clear | Mr. Marlow at the gate; seed shed open; butterflies visit flowers |
+| 3 | **Midday** | 12:00–15:00 | Highest, brightest | Neighbours out and about; market stall busiest |
+| 4 | **Afternoon** | 15:00–18:00 | Long light | Brook keeper on warm afternoons; travelling merchant on visiting days |
+| 5 | **Evening** | 18:00–21:00 | Gold → amber | Shops close; shipping box collected at the end of the day |
+| 6 | **Dusk** | 21:00–00:00 | Lane darkens | Fireflies in season; Marlow may be indoors |
+| 7 | **Night** | 00:00–03:00 | Dark, quiet palette | Seed shed lit; Moon Petal glows |
+| 8 | **Small hours** | 03:00–06:00 | Deepest dark | Quiet only |
 
-**HUD clock:** a small dial in the corner of the screen — an arc of daylight with a sun/moon marker that **jumps one step at a time**, plus the current phase's light tint. A small digital readout ("09:00") may sit beside it for the grown-up; **no essential action ever depends on reading it.**
+**HUD clock:** a small dial with a sun/moon marker that jumps one step at a time, plus a digital readout ("09:00").
 
-**What the clock does and does not drive:**
+**What the clock drives:** lighting, NPC presence, shop hours, order-board refresh, shipping-box payout, time-of-day events. **What it never drives:** plant growth (play time, above) or care-meter decay (play time). Missed time-of-day events recur.
 
-- **Drives:** lighting/day-night transition, NPC presence schedules ("morning", "late afternoon" become phase numbers), time-of-day events (morning greeting, evening settling, butterflies by day, fireflies at night), night-only visuals, the calendar readout.
-- **Never drives:** plant growth (accumulated play time, §4 above), animal care, penalties, deadlines, or anything that can be missed. Events tied to a phase recur or are restated kindly.
+### Automation (decided 2026-11-19 — key selling point)
+
+- **What:** **Sprinklers** (water an area of beds), **feeders** (keep animals' food meter topped up), **pond auto-feeders**, and **helpers** (a farmhand or creature who harvests, collects, or delivers).
+- **How it is unlocked:** by **crafting** it from a blueprint or **buying** it, once the player reaches the right point in progression (progression.md §3). Blueprints come from the shop, friendships, and contests.
+- **Why it matters:** automation is the answer to neglect at scale and the moment the farm "comes alive". It is gated by money and progression, then by land (each sprinkler, feeder, or helper still needs space and upkeep materials).
+- Automation never removes the manual verbs; players can always water and feed by hand.
+
+### Buildings (decided direction 2026-11-19)
+
+Kit can build coops, barns, a fish pond, beehives/apiary, an orchard, a workshop, a kitchen, a storage silo, compost bins, sprinklers/irrigation, a windmill/water pump, a **greenhouse** (any crop, any season), a **hydroponics** bay (faster, water-efficient, needs power), a market stall, helper posts, and a farm shop. Each has a cost, a land footprint, an unlock tier, and an education angle — full catalogue in [buildings.md](./buildings.md). Money gates them early; land gates them late.
+
+### After the farm is running (all optional)
+
+When the land is full and automation runs the chores, long-term goals remain: **decorations and farm charm** (beauty that brings visitors and wins the prettiest-farm contest), **collections** (rare crops, fish, breeds, recipes), **festival trophies**, **restoring the lane** (footbridge, meadow, stile, Lantern Hill), a **showcase/museum**, **mastery** goals, and rare **prestige** items. Details in [progression.md](./progression.md) §6.
 
 ### Session shape
 
-**Proposal:** Make it easy to have a satisfying short play session, while allowing children to continue when they want. There should be no required daily check-in or penalty for leaving.
+Short sessions are satisfying; long sessions are possible. There is no required daily check-in and nothing advances while the game is closed. An optional **break reminder** lives in Settings (on by default in Easy).
 
-**Target session length:** TBD; validate through playtesting.
+### Co-play
 
-### Parent-child co-play
-
-The child can play alone, and no activity should require a parent to be present. When playing together on PC, the child and parent use separate gamepads and collaborate in real time. On a touchscreen device, they can take turns on the same screen. Tasks should work in solo play and remain flexible enough for either real-time collaboration or touch turn-taking, without making simultaneous input essential. Activities should create opportunities to talk, make choices, and solve small problems together. Online play is not required.
+Solo play is complete. On one PC two players can farm together in real time (controls.md §3). Tasks never require simultaneous input. Online play is not planned.
 
 ## 5. Player Activities
 
-### MVP proposal
+### MVP proposal (Phase-001 interaction prototype)
 
-> **Scope note:** This MVP describes the **Phase-001 interaction prototype** — a vertical slice of the core loop (see docs/PHASE.md). The full **product prototype** scope, which is the source of truth for what the finished prototype contains (collectathon inventory, care animals, sticker book), is defined in §15 and delivered across later phases.
+> **Scope note:** This MVP is the **Phase-001 interaction prototype** — a vertical slice of planting and the first request (docs/PHASE.md). The full product scope (§15) is delivered across later phases.
 
-- Play solo or collaborate with a parent on the same device, discussing choices and solving small problems.
-- Move around one small home or garden area.
-- Interact with garden beds.
-- Choose from two or three seeds.
-- Plant and water crops using simple controls.
-- See crops change as they grow.
+- Move around a small home garden and the path to the seed shed.
+- Interact with garden beds; choose from two or three seeds.
+- Plant and water crops; see them grow while watered; see them **turn yellow and be lost if left dry** (Normal-mode timing).
 - Harvest crops.
-- Complete the proposed Butterfly Garden task: plant and water three flowers, then receive a butterfly net that unlocks a new activity.
-- Show or release butterflies in the garden as a simple way to connect the new activity back to the world and NPC.
-- Use a fixed tool belt with large icon slots; route harvests to a garden shelf rather than a loose inventory.
-- Use a small set of decorations to personalize the space.
+- Complete the Butterfly Garden task and receive the butterfly net; catch or release butterflies.
+- Use a fixed tool belt; route harvests to a garden shelf.
 - Save progress locally.
 
-**Starting loadout:** The player begins with hands, a watering can, and a seed box holding two or three basic seeds. The first accepted NPC task supplies its own flower seeds. Tools that unlock new verbs are earned through play.
+### Later activities (product scope)
 
-### Possible later activities
-
-- A second small area to explore.
-- More plants, characters, and decorations.
-- Simple giving or sharing interactions.
-- More structured parent-child cooperative activities that also work in solo play.
-- More ways to express creativity, such as arranging a garden or choosing colors.
-
-These are ideas, not promised features.
+- Neighbour orders, market stall, shipping box, and money.
+- Animals (chicken, sheep, cow, beehive), fish pond, and buildings.
+- Land expansion and farm layout.
+- Kitchen/workshop processing and crafting; blueprints.
+- Automation: sprinklers, feeders, pond feeders, helpers.
+- Foraging, fishing, travelling merchants, festivals and contests.
+- More neighbours, relationships, recipes.
 
 ## 6. Rules and Difficulty
 
 ### Starting principles
 
-- Do not use crop death, debt, lost belongings, shame, or harsh failure states in the initial design.
-- Animals never die, run away, or become permanently unhappy from neglect. They nap and wait for care.
-- Do not require fast reactions, precise timing, or reading-heavy instructions.
-- Let children experiment; make important actions reversible where practical.
-- Give clear feedback when an action succeeds, is unavailable, or needs another step.
-- Keep any resource or inventory system small and understandable. Collectathon slots auto-stack; no manual sorting.
-- Make gardening forgiving and optional; do not make crops a recurring chore. Plants grow without watering; watering speeds growth with cheerful feedback.
-- Use early rewards to introduce new ways to play, not only to increase item counts.
-- Show social consequences through character responses and the state of the shared space, rather than abstract punishment or moral scores.
-- Let players revisit a social interaction, make amends, or try another response where practical.
-- Make task expectations and outcomes clear; do not make a child responsible for an outcome they could not understand or reasonably control.
-- Do not take away unrelated progress or make the player lose something already earned because a task remains unfinished.
-- Seasons affect which crops grow and how animals behave, but missing a season is never a failure — it simply returns next year.
-- Optional stickers, requests, and mysteries grow with the child's skill when a parent turns them on. Nothing is locked behind them; Gentle Core always remains available.
+- Consequences are real but kid-friendly: crops yellow then disappear; neglected animals and fish are gone, shown only as a short message with a gravestone picture.
+- No sickness, injury, vet, gore, or on-screen death.
+- No debt, loans, or bankruptcy; money never goes below zero.
+- Nothing changes while the game is closed.
+- Every loss is warned visibly first, and is replaceable with money.
+- Orders and requests are optional with no deadline penalty.
+- Do not require fast reactions or precise timing.
+- Keep inventory small and understandable: auto-stacking picture slots, no manual sorting.
+- Early rewards should introduce new ways to play, not only bigger numbers.
+- Show social consequences through character responses, not moral scores.
+- Do not take away unrelated progress because a task is unfinished.
+- Seasons decide what grows; out-of-season seeds do not sprout (no loss).
+- The farm's challenge grows with the farm: money first, then land (progression.md).
+
+### Difficulty modes
+
+**Easy / Normal / Realistic** (§3; full tuning table in challenge-layers.md). Selected at new game; changeable in Settings at any time.
 
 ### Open design questions
 
-- **Decided (v0.16):** in-session growth timing and closed-game growth policy — Medium (≈30–45 s per stage) and no growth while closed, both adjustable on the pre-game options screen (see §4 plant growth model).
-- **Decided (v0.17):** yes — a coarse, HUD-visible, phase-based in-day clock: 8 phases × 3 in-game hours, advanced in 3-hour steps (≈3 minutes of play per step), running only while playing. It affects atmosphere, NPC presence, and event availability **only** — never growth, never penalties (see §4 in-day clock and day phases).
-- What, if anything, should be earned or unlocked?
+- **Decided (v0.16):** growth timing and closed-game growth policy (§4). **Amended (v0.19):** growth needs water.
+- **Decided (v0.17):** coarse, HUD-visible, phase-based in-day clock (§4).
+- **Decided (v0.19):** what is earned or unlocked — money from orders and other optional sources, spent on seeds, animals, buildings, land, tools, and automation.
 
 ## 7. World and Characters
 
-### Initial scope proposal
+- One lane (Bramblewick Lane) with its eight places, plus **Kit's farm**, which grows by clearing and buying **adjacent fields behind the house**. *The farm grows; the lane does not* — the "grow the cast before the geography" rule still applies to the lane (world.md §3.1).
+- A small cast introduced one at a time, each with their own orders and tastes.
 
-- One cozy home or garden hub.
-- One small nearby area, if needed to make exploration part of the first prototype.
-- One friendly character with a clear, achievable responsibility task.
-
-The world should be readable at a glance and small enough that children can navigate it without a map. Include a small shared or public-feeling space, such as a path or community garden, to support interactions outside the home.
-
-**Setting and background-story proposal:** See [world.md](./world.md). It introduces Bramblewick Lane, Mr. Marlow, and the mystery of the quieting lane. Specific character designs and open world details remain proposals for research and playtesting.
+**Setting and background story:** [world.md](./world.md). Characters: [characters.md](./characters.md).
 
 ## 8. Controls and Interface
 
@@ -291,175 +287,128 @@ The world should be readable at a glance and small enough that children can navi
 
 - Keep the number of buttons and actions low.
 - Make the primary interaction consistent throughout the game.
-- Use large, easy-to-select targets if touch is supported.
-- Simple two-button inputs and short holds are acceptable (e.g. LB+RB, hold-Start for the grown-up menu); avoid rapid or memory-heavy button sequences.
+- Simple two-button inputs and short holds are acceptable; avoid rapid or memory-heavy sequences.
 - Offer a clear way to pause and reach settings.
 
-### Proposed interaction model
+### Interaction model
 
-Movement plus one primary interaction action. Seed selection and other choices should use a simple visual menu.
-
-For the PC prototype, offer two selectable control schemes: gamepad and fully mouse-controlled play. Parent-child PC co-play uses two separate gamepads. Design the all-mouse interactions around direct pointing and clicking so they can later map naturally to touchscreen input without changing the underlying activity. The gamepad scheme should use a small, consistent set of buttons and feel familiar to players of farming games on Nintendo Switch, simplified for this game's smaller scope.
-
-Prioritize iPad and Android tablets for touchscreen adaptation. Touch co-play uses turn-taking, while all tasks remain playable solo.
+Movement plus one primary interaction action; simple visual menus for seeds, orders, and shops. **PC only:** two selectable schemes — gamepad, and keyboard + mouse.
 
 **Exact PC mappings — decided (v0.18; full tables in [controls.md](./controls.md) §2 and §4):**
 
-- **Gamepad:** left stick/D-pad move · A interact · B cancel · X or LB+RB cycle tool belt · Start pause · (Y inventory, RS care menu, Start-hold grown-up menu in later phases).
-- **Keyboard + mouse, Don't Starve Together-style:** WASD/arrow keys *or* left-click-to-move · **left-click a target = walk to it, then act** · Space = quick action on the nearest interactable · right-click = cancel · mouse wheel = cycle the tool belt · Esc = pause. Deliberately not carried over from DST: combat keys, camera rotation, Ctrl/Alt/Shift modifiers, number hotbar, map.
-- **Seat rule:** keyboard + mouse is **locked to one player**; the other seat must use a gamepad. **If no gamepad is connected, co-op cannot start** — the game runs single-player.
-
-**Still TBD:** tablet layout, and how flexible tasks support solo, two-gamepad, and touch turn-taking play (Phase-003+).
+- **Gamepad:** left stick/D-pad move · A interact · B cancel · X or LB+RB cycle tool belt · Start pause · (Y inventory, RS care menu in later phases).
+- **Keyboard + mouse, Don't Starve Together-style:** WASD/arrows *or* left-click-to-move · left-click a target = walk to it, then act · Space = quick action · right-click = cancel · mouse wheel = tool belt · Esc = pause.
+- **Seat rule:** keyboard + mouse is locked to one player; the other seat must use a gamepad. No gamepad → no co-op.
 
 ## 9. Art Direction
 
 - Fully 2D presentation; no pixel-art style.
-- Colorful, cartoony European children's-book and comics-inspired illustration, with clear inked outlines, expressive faces, lively poses, and readable scenery.
-- Friendly and expressive, but not chibi; avoid exaggerated chibi proportions.
-- Keep shapes and scenes clear rather than realistic or visually busy.
-- **Palette direction:** A hybrid of lively, saturated, high-contrast garden colors and more earthy, subdued environmental tones. Use bright accents to make plants, characters, and interactive objects pop against a slightly moodier world.
-- **Camera direction:** An angled top-down / three-quarter view that shows the ground plane clearly while using overlap and simple depth cues to make the world easy to read.
-- Use clear silhouettes and strong contrast between interactive objects and backgrounds.
-- Make crops and characters expressive enough to communicate state without text.
-- Build a consistent visual language for things children can interact with.
+- Colorful, cartoony European comics-inspired illustration, with clear inked outlines, expressive faces, lively poses, and readable scenery. Characters are drawn with **teen and adult proportions** (Kit is 17), friendly and expressive, not chibi.
+- **Kid-friendly consequences:** a yellowing crop reads clearly as "needs water" (drooping, yellow-brown leaves) without looking rotten; an animal loss is shown only as a small, gentle gravestone illustration in a message card.
+- **Palette:** lively, saturated garden colors over earthy, subdued environmental tones.
+- **Camera:** angled top-down / three-quarter view.
+- Clear silhouettes; strong contrast between interactive objects and backgrounds.
 
-Develop an original visual identity. Use broad color and camera-direction references only; do not copy any particular game's distinctive character designs, assets, settings, compositions, or exact visual style. Original character design needs further research before it is defined.
+Develop an original visual identity. Do not copy any particular game's characters, assets, settings, or exact visual style.
 
-**Palette refinement, camera implementation, animation complexity, production pipeline, and original character research:** TBD.
+**Palette refinement, camera implementation, animation complexity, and character research:** TBD.
 
 ## 10. Story, Dialogue, Audio, and Text
 
-- Include a background story that gives the world and its characters context; it need not interrupt the core activities.
-- Use simple, child-friendly dialogue with short sentences and familiar vocabulary.
-- Use an interactive, presenter-like storytelling approach: characters can address the player, ask a clear question, leave a pause for the child to answer or act, and respond to what the player does.
-- Use repetition, visual clues, and small mysteries or problems to help children follow along.
-- The story should support the game's focus on responsibility and everyday social learning, while inviting parent-child conversation rather than prescribing a single moral answer.
-- This guided, interactive story woven through a cozy life-and-garden game is a key point of difference.
+- A background story gives the world context without interrupting farming.
+- Simple, friendly dialogue with short sentences; text is always paired with icons.
+- Presenter-like storytelling: characters address the player, ask a question, and respond to what the player did.
+- The story supports responsibility, learning, and everyday social skills.
+- Gentle music and sound; no startling sounds; independent volume controls.
+- Important feedback never relies on sound alone.
 
-- Use gentle music and sound effects to reinforce actions and progress.
-- Avoid startling sounds and provide independent volume controls where practical.
-- Make important feedback understandable without relying on sound alone.
-- Keep essential instructions short and pair them with visuals.
-- Consider optional spoken prompts if they improve accessibility and fit the project scope.
+The premise and cast are in [world.md](./world.md). Voice, localisation, and music style: TBD.
 
-The proposed premise and cast are documented in [world.md](./world.md). Dialogue presentation, voice, localization, music style, and text-reading support remain TBD.
+## 11. Accessibility and Kid-Friendly UX
 
-## 11. Accessibility and Child-Friendly UX
-
-Design and testing should consider:
-
-- Players who are not yet fluent readers.
-- Large text and clear icons.
+- Large text and clear icons; short sentences.
 - Forgiving interaction and movement.
-- Adjustable sound and music.
-- Visual feedback for actions that also have audio feedback.
-- A calm experience without time pressure or punitive reminders.
-- Caregiver-friendly access to settings and information.
-
-Specific accessibility requirements should be refined alongside platform and playtest decisions.
+- Visible warnings before every loss.
+- Adjustable sound and music; visual feedback for audio cues.
+- Easy mode and an optional break reminder.
+- Settings that a grown-up can find and understand.
 
 ## 12. Safety, Privacy, and Caregiver Considerations
 
-- Avoid collecting personal information unless there is a clear, necessary reason.
-- Do not include open chat or user-generated public content in the initial scope.
-- Make purchases, online features, and data practices explicit to caregivers if they are ever introduced.
-- Establish an appropriate child-privacy and age-rating review before release.
-
-Online features and monetization are not currently in scope.
+- No personal data collection; no open chat or user-generated public content.
+- No real-money purchases; in-game money only.
+- Establish an appropriate child-privacy and age-rating review before release (depends on §16 Q9).
 
 ## 13. Technical Direction
 
-The prototype targets PC first. The longer-term goal is multiplatform support, including touchscreen devices.
-
-**Engine and implementation approach:** TBD. Evaluate candidates for 2D workflow, PC prototyping, future touch input, and eventual multiplatform deployment.
-
-The first technical prototype should answer the basic interaction questions—movement, planting, watering, growth feedback, and saving—before substantial content production begins.
-
-Potential engine candidates can be evaluated against the chosen platform, the team's experience, accessibility needs, and the desired art workflow.
+- **Platform:** **PC only** (Windows first; macOS/Linux exports considered later). No mobile or tablet.
+- **Engine:** Godot 4.x with **C#** (docs/PHASE.md §6). Renderer: **Compatibility (`gl_compatibility`)** — the lightest 2D-friendly renderer with the widest PC hardware support. Assembly name: **`MyFarmingGame`**.
+- The first technical prototype answers movement, planting, watering, growth/neglect feedback, and saving before content production begins.
 
 ### Development approach
 
-- **Project type:** Passion project with no predetermined overall content or feature cap.
+- **Project type:** Passion project with no predetermined content cap.
 - **Core team:** Two people, with AI assistance.
-- **Art and audio resources:** Free royalty-free assets may be used. Check and record each asset's license, attribution requirements, and suitability for the intended distribution before use.
-
-The project can grow over time, but work should still be prioritized in small, testable milestones so the core experience remains playable and coherent.
+- **Art and audio:** Free royalty-free assets allowed; licenses recorded.
 
 ## 14. Prototype and Validation Plan
 
 ### First prototype
 
-Build one small playable scene with:
-
-- A controllable character.
-- One garden bed, basic seeds, and the flower seeds supplied for the first task.
-- Planting and watering interactions.
-- A visible growth or progress response.
-- The NPC's picture-bubble want and clear request to plant and water three flowers.
-- The butterfly net as the task reward, unlocking a simple butterfly-finding interaction.
-- A garden shelf that receives harvests automatically.
-
-Use placeholder art if needed. The prototype is for validating the activity and controls, not for demonstrating final visual quality.
+One small playable scene with: a controllable character; garden beds and basic seeds; planting and watering; visible growth while watered and visible yellowing/loss when dry; Marlow's request to plant and water three flowers; the butterfly net reward; a garden shelf.
 
 ### Playtesting questions
 
-- Can a child start playing with little or no spoken explanation?
+- Can a new player start with little or no explanation?
 - Can they tell what objects can be interacted with?
-- Do they understand how to plant, water, and finish the activity?
-- Are controls comfortable for the target input device?
-- Do they enjoy the activity enough to repeat or explore?
-- Can they understand the NPC's visible want, the task, and the promised reward before accepting?
+- Do they understand that crops need water, and read the yellow stage as a warning?
+- Does losing a crop feel fair and teach something, rather than feel punishing?
+- Are controls comfortable for gamepad and keyboard + mouse?
+- Do they understand the NPC's want, the task, and the reward before accepting?
 - Does earning the butterfly net feel like a meaningful new way to play?
-- Can the child understand the character's feelings or needs from dialogue, visuals, or voice?
-- Does the outcome of a social choice feel understandable and fair, without feeling punitive?
-- Does the child water plants because they want to, rather than because they think they must?
-- When a plant grows without being watered, does the child still feel ownership and understand what happened?
-- After a break, can the child read the plant's state as positive progress without needing an adult to explain it?
-- Do caregivers find setup and settings understandable?
+- (Later phases) Do orders feel like an invitation rather than a to-do list? Does automation feel like a reward?
 
-Playtests with children should be conducted with appropriate adult supervision and consent.
+Playtests with children are conducted with appropriate adult supervision and consent.
 
-## 15. Initial Prototype Scope
+## 15. Product Scope
 
-These are not ruled out for the passion project; they are deferred from the initial prototype so the core experience can be tested first:
+**In product scope (delivered across phases — docs/PHASE.md):** neighbour orders and money; market stall and shipping box with seasonal/demand pricing; four animal species (chicken, sheep, cow, beehive) with care meters and quality products; fish pond; buildings; land expansion; kitchen/workshop processing; blueprints and crafting; automation (sprinklers, feeders, pond auto-feeders, helpers); foraging and fishing; travelling merchants; festivals and contests; relationships, recipes; difficulty modes; sticker/achievement book.
 
-- Large maps or many locations.
-- Complex crafting, economy systems, or sellable stockpiles.
-- Detailed real-time calendars (seasons affect crops and animals in simple, visible ways).
-- Combat or dangerous failure.
-- Online multiplayer and public social systems.
-- Long, reading-heavy dialogue or exposition.
-
-**In product-prototype scope:** Collectathon inventory slots, four care animals (chicken, sheep, cow, beehive), gentle care meter with no death penalty, seasonal crop and animal behavior, optional sticker book, and Dora/Blues Clues-style picture dialogue with Mr. Marlow. (These are delivered across phases — Phase-001 is the interaction prototype only; see docs/PHASE.md.)
+**Not planned:** mobile/tablet versions; online multiplayer; combat; sickness/vet systems; debt or loans; real-money purchases.
 
 ## 16. Open Questions for Brainstorming
 
-1. **RESOLVED (2026-11-18, v0.16):** growth timing and closed-game policy decided — see §4 plant growth model. Defaults: **Medium ≈30–45 s per growth stage**, **no growth while the game is closed**; Fast/Slow presets and an optional positive-only “Gentle catch-up” are selectable on the options screen before starting a new game. *Former question: how short should in-session growth stages be, and should plants receive bounded growth while the game is closed?*
-2. Which tasks or dialogue events should change an NPC's relationship, and by how much?
-3. Which special events, places, dialogue, or unique items should high relationships unlock?
-4. How should a parent and child share tasks while collaborating with two gamepads or taking turns on a tablet?
-5. **RESOLVED for PC (2026-11-18, v0.18):** mappings locked in [controls.md](./controls.md) §2/§4 — gamepad table as written, plus a **Don't Starve Together-style keyboard + mouse scheme** (WASD or click-to-move, left-click = walk-to-then-act, Space = quick action, right-click = cancel, wheel = belt, Esc = pause) and the **seat rule** (keyboard + mouse belongs to one player; a second player needs a gamepad, otherwise co-op does not start). *Still open:* the **tablet layout** half of this question — Phase-003.
-6. What research and visual exploration are needed to create original characters that fit the non-chibi European cartoon-comics direction?
-7. Which open story and setting questions in [world.md](./world.md) should be decided next?
-8. What grown-up gesture or question best protects the challenge-layer menu so a child cannot accidentally flip layers during play?
+1. **RESOLVED (v0.16, amended v0.19):** growth timing — Medium ≈30–45 s per watered stage, paused while closed.
+2. Which orders and dialogue events change an NPC's relationship, and by how much?
+3. Which recipes, blueprints, and special events should high relationships unlock?
+4. How should two co-op players share the farm (shared purse? shared orders)?
+5. **RESOLVED for PC (v0.18):** control mappings in controls.md. (Tablet half dropped — PC only.)
+6. What research is needed to design original teen/adult characters in the European comics direction?
+7. Which open story questions in [world.md](./world.md) should be decided next?
+8. ~~Grown-up gesture to protect the challenge-layer menu~~ — **closed (v0.19):** layers retired; difficulty mode lives in normal Settings.
+9. **⚠️ NEW — target age band.** What exact age band and rating are we aiming for now that the protagonist is 17 and the game has money and loss? (Affects text density, Easy-mode tuning, tutorial, rating.)
+10. **⚠️ NEW — mode switching.** Should switching *up* to Realistic mid-game be allowed, or only switching down? (Current proposal: both, any time.)
+11. **⚠️ NEW — growth time base.** Keep play-time stages, or move to Harvest Moon-style in-game-day growth now that the farm is an economy?
+12. **⚠️ NEW — Butterfly Garden fit.** Does the gentle butterfly-net first beat still fit a 17-year-old protagonist, or should the first request be a first order (e.g. "six eggs")?
 
 ## Related documents
 
 | Document | Relationship |
 |---|---|
 | [README.md](../README.md) | Centralized hub; mirrors GDD version numbers in its header. |
-| [world.md](./world.md) | Expands the GDD's setting, story, and places; the GDD remains authoritative for gameplay. |
-| [characters.md](./characters.md) | Main character, parent, Mr. Marlow NPC, and future cast — aligned with GDD design pillars. |
-| [places.md](./places.md) | The eight places on Bramblewick Lane, mapped to GDD requirements. |
-| [crops.md](./crops.md) | Crop list, growth model, and Butterfly Garden flowers referenced by GDD tasks. |
-| [animals.md](./animals.md) | Gentle care animals supporting GDD pillar 8 (gentle animal care). |
-| [items.md](./items.md) | Starting loadout, earned items, and NPC-held items referenced throughout the GDD. |
-| [inventory.md](./inventory.md) | Collectathon slots implementing GDD pillar 7 (collectathon inventory). |
-| [mechanics.md](./mechanics.md) | Core verbs and systems aligned with GDD scope and audience. |
-| [controls.md](./controls.md) | Input mappings; GDD open question Q5 covers gamepad/mouse mappings. |
-| [events.md](./events.md) | Core/daily/seasonal events driving the GDD's want → task → reward loop. |
-| [progression.md](./progression.md) | Stickers, optional requests, and tools supporting GDD pillar 9 (progressive challenge). |
-| [challenge-layers.md](./challenge-layers.md) | Defines optional challenge layers, parent-controlled toggles, and the five-stage growth map. |
+| [world.md](./world.md) | Setting, story, and places; the GDD remains authoritative for gameplay. |
+| [characters.md](./characters.md) | Kit (17), Ada, Mr. Marlow, and future cast. |
+| [places.md](./places.md) | The eight places on Bramblewick Lane plus Kit's growing farm. |
+| [crops.md](./crops.md) | Crop list, watering-based growth, yellowing and loss. |
+| [animals.md](./animals.md) | Animals and fish pond, care meters, loss rule, quality products. |
+| [items.md](./items.md) | Tools, products, processed goods, automation items. |
+| [inventory.md](./inventory.md) | Picture-based auto-stacking inventory, wallet, storage chest. |
+| [mechanics.md](./mechanics.md) | Verbs and systems: farming, orders, selling, crafting, automation. |
+| [controls.md](./controls.md) | PC input mappings. |
+| [events.md](./events.md) | Daily, seasonal, order, contest, and merchant events. |
+| [progression.md](./progression.md) | Farm growth tiers: money → buildings → automation → land. |
+| [buildings.md](./buildings.md) | Everything Kit can build: cost, footprint, unlock tier, education angle. |
+| [challenge-layers.md](./challenge-layers.md) | Difficulty modes (Easy / Normal / Realistic) — replaces the challenge layers. |
 
 ## 17. Change Log
 
@@ -481,3 +430,4 @@ These are not ruled out for the passion project; they are deferred from the init
 - **0.16 — 2026-11-18:** **Milestone 0 decision 1 (growth timing):** §4 plant growth model moved from proposal to decision. Growth runs on accumulated play time, live during play, never on an in-game day and never while closed. Presets set (Fast ≈15–20 s / **Medium ≈30–45 s** / Slow ≈60–90 s per stage) with **Medium** as default; growth-while-closed set to **Paused** by default with an optional positive-only “Gentle catch-up” (max +1 stage, never past bloom). Both are options-screen choices made **before starting a new game**, per genre comparison (Stardew Valley / Harvest Moon / Ooblets grow only during play; Animal Crossing is the real-clock exception). Open question §16.1 resolved; §6 growth question closed, clock question narrowed.
 - **0.17 — 2026-11-18:** **Milestone 0 decision 2 (in-game clock):** added §4 "In-day clock and day phases" — the game *does* have a clock, shown in the HUD as a stepped dial: **8 day phases × 3 in-game hours**, jumping one 3-hour step at a time (≈3 min of play per step, ≈24-minute in-game day), running only while playing, resetting to Dawn on sleep. Phase table maps every phase to its light, its NPC presence, and its events (morning greeting → small hours). Explicitly excluded from driving growth, care, or penalties. §6 clock question closed; this answers GDD §6/README "decide whether there is any in-game clock" (Milestone 0 item 2).
 - **0.18 — 2026-11-18:** **Milestone 0 decision 3 (control mappings):** §8 records the decided PC mappings — gamepad table unchanged, keyboard + mouse redefined as a **Don't Starve Together-style** scheme (dual movement, one-click walk-to-then-act, Space quick action), plus the **seat rule** that keyboard + mouse is locked to one player and co-op needs a gamepad for the second seat. DST's combat/camera/modifier/hotbar keys explicitly rejected. §16 Q5 resolved for PC; tablet layout left open for Phase-003. Full tables live in controls.md v0.6.
+- **0.19 — 2026-11-19:** **Direction reset (owner decisions).** (1) **Rewards:** neighbour **orders** for farm output are the main income — varied, matched to what Kit can produce, optional, growing into repeat and bigger orders. (2) **Kit is 17**; audience is kid-friendly and educational but no longer pre-elementary — **exact age band flagged as open (§16 Q9)**; parent-as-difficulty-dial retired. (3) **Pillars rewritten** around *realistic but kid-friendly* and *educational*; **neglect has consequences** — crops yellow then are lost; neglected animals/fish are gone immediately, shown only as a short message with a gravestone picture; no sickness or vet; nothing changes while closed. Growth now **requires watering** (Milestone 0 growth decision amended). (4) **Harvest Moon-style growth:** money is the early limit, land size the final one; fixed 2–3 bed and 4-animal caps removed. Gentle Core + challenge layers + five stages **collapsed into three difficulty modes: Easy / Normal / Realistic**. (5) **Automation** (sprinklers, feeders, pond feeders, helpers) is the key selling point, unlocked by crafting or buying; the old "defer the garden helper" note reversed. (6) **PC only** — tablet/touch plans removed; renderer Compatibility, assembly `MyFarmingGame`. Added **§4 Ways to earn and acquire** (market/shipping box with seasonal and demand pricing, board and contests, foraging/fishing, travelling merchants, processing, shop blueprints/automation, friendship recipes, quality products — all optional, no debt) and the **fish pond**. Added **Buildings** (greenhouse, hydroponics, barn, coop, silo, windmill, farm shop… — new [buildings.md](./buildings.md)) and **After the farm is running** (decorations and farm charm, collections, trophies, lane restoration, showcase, mastery, prestige items). New open questions Q9–Q12.
