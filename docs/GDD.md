@@ -1,13 +1,13 @@
 # Game Design Document
 
 > **Status:** Brainstorming draft — **direction reset 2026-11-19** (see v0.19–v0.20 change log)
-> **Version:** 0.21
+> **Version:** 0.22
 > **Last updated:** 2026-11-19
 > **Purpose:** A living document for shaping the game together. Confirmed owner decisions are marked **decided**; everything else is a proposal, not a commitment.
 
 ## 1. High Concept
 
-A fully 2D, **realistic but kid-friendly, educational** farming-life game for PC. The player is **Kit, a 17-year-old** who has come from the city to look after the family's land on Bramblewick Lane. Kit grows crops, raises animals, stocks a fish pond, fills **orders from the neighbours**, and slowly grows a small, tangled plot into a working farm — the way a *Harvest Moon* farm grows: the challenge rises naturally as the farm gets bigger. **Automation** (sprinklers, feeders, helpers), unlocked later by crafting or buying it, is the game's key selling point: the moment the farm starts running itself is the payoff for everything before it.
+A fully 2D, **realistic but kid-friendly, educational** farming-life game for PC. The player is **Kit, a 17-year-old** who has come from the city to look after the family's land on Bramblewick Lane. Kit grows crops, raises animals, stocks a fish pond, fills **orders from the neighbours**, and slowly grows a small, tangled plot into a working farm — the way a *Harvest Moon* farm grows: the challenge rises naturally as the farm gets bigger. **Automation** (sprinklers, feeders, helpers), unlocked later by crafting or buying it, is the game's **key selling point**, followed by **decoration** (owner decision 2026-11-19): first the farm runs itself, then Kit makes it beautiful.
 
 Farming, community, and exploration are parts of one warm world. Neglect has real but gentle consequences — crops turn yellow and are lost, neglected animals are gone — always shown without anything graphic. There is **one difficulty: realistic but kid-friendly**. The presentation uses illustrated, non-pixel-art graphics.
 
@@ -36,7 +36,7 @@ The game takes inspiration from the welcoming farming and community feel of *Sta
 5. **Automation is the payoff:** Sprinklers, feeders, and helpers are unlocked by crafting or buying them at the right point in progression, turning chores into a farm that runs itself.
 6. **Many ways to earn, none mandatory:** Neighbour orders are the main income; market sales, contests, foraging and fishing, trading, crafting, and friendship rewards are alternatives. The player chooses how much money to chase — there is no pressure and no debt (§4 *Ways to earn and acquire*).
 7. **Small, satisfying activities:** Short actions produce visible, cheerful results.
-8. **Creative ownership:** Players lay out and decorate their farm without needing to optimise it.
+8. **Decoration — the second selling point** (decided 2026-11-19): once automation frees up time, players lay out and decorate the farm (buy, craft, or win decorations; place anywhere), raising **farm charm** that brings visitors and wins contests (progression.md §6.1). Never required to optimise.
 9. **Warm illustrated world:** Expressive characters, clear shapes, and inviting environments.
 10. **Practice everyday social skills:** Through ordinary interactions — greeting, keeping a promise, delivering what was asked, negotiating a trade — players explore communication, reliability, and caring for shared spaces.
 
@@ -211,7 +211,7 @@ One rule for everything that lives on the farm: **3 days in a row without care �
 
 **What the clock drives:** lighting, NPC presence, shop hours, order-board refresh, shipping-box payout, time-of-day events. **Day rollover** (sleep or 02:00 bedtime) drives crop growth, watering/feeding counts, and the 3-days rule. Missed time-of-day events recur.
 
-### Automation (decided 2026-11-19 — key selling point)
+### Automation (decided 2026-11-19 — key selling point #1; decoration is #2)
 
 - **What:** **Sprinklers** (water an area of beds), **feeders** (keep animals' food meter topped up), **pond auto-feeders**, and **helpers** (a farmhand or creature who harvests, collects, or delivers).
 - **How it is unlocked:** by **crafting** it from a blueprint or **buying** it, once the player reaches the right point in progression (progression.md §3). Blueprints come from the shop, friendships, and contests.
@@ -465,3 +465,4 @@ Playtests with children are conducted with appropriate adult supervision and con
 - **0.19 — 2026-11-19:** **Direction reset (owner decisions).** (1) **Rewards:** neighbour **orders** for farm output are the main income — varied, matched to what Kit can produce, optional, growing into repeat and bigger orders. (2) **Kit is 17**; audience is kid-friendly and educational but no longer pre-elementary — **exact age band flagged as open (§16 Q9)**; parent-as-difficulty-dial retired. (3) **Pillars rewritten** around *realistic but kid-friendly* and *educational*; **neglect has consequences** — crops yellow then are lost; neglected animals/fish are gone immediately, shown only as a short message with a gravestone picture; no sickness or vet; nothing changes while closed. Growth now **requires watering** (Milestone 0 growth decision amended). (4) **Harvest Moon-style growth:** money is the early limit, land size the final one; fixed 2–3 bed and 4-animal caps removed. Gentle Core + challenge layers + five stages **collapsed into three difficulty modes: Easy / Normal / Realistic**. (5) **Automation** (sprinklers, feeders, pond feeders, helpers) is the key selling point, unlocked by crafting or buying; the old "defer the garden helper" note reversed. (6) **PC only** — tablet/touch plans removed; renderer Compatibility, assembly `MyFarmingGame`. Added **§4 Ways to earn and acquire** (market/shipping box with seasonal and demand pricing, board and contests, foraging/fishing, travelling merchants, processing, shop blueprints/automation, friendship recipes, quality products — all optional, no debt) and the **fish pond**. Added **Buildings** (greenhouse, hydroponics, barn, coop, silo, windmill, farm shop… — new [buildings.md](./buildings.md)) and **After the farm is running** (decorations and farm charm, collections, trophies, lane restoration, showcase, mastery, prestige items). New open questions Q9–Q12.
 - **0.20 — 2026-11-19:** **Owner picks from the design review.** **One difficulty mode** (realistic but kid-friendly) replaces Easy/Normal/Realistic. **Age band 6+** with design requirements (icon-first, short text, read-aloud, small numbers) and rating target. **Land all unlocked but overgrown**, cleared at the player's pace; animal limits = **housing capacity**. **Day-based growth** (min 1 day) replaces the Milestone 0 play-time model; one neglect rule — **3 days in a row without water/food → gone**, 2 warning days. **First beat = first order** (berries, then carrots); Butterfly Garden optional and later. Added **learning goals** (10), **co-op** rules (shared farm, merging split screen), **save versioning**, Phase-001 as a **vertical slice** (orders + chickens), 02:00 bedtime proposal, economy.md and onboarding.md links. Open: day length (Q13), season length (Q14), order premium (Q15).
 - **0.21 — 2026-11-19:** Owner requests confirmed in the docs: **subscription orders** (standing daily deliveries at a set time, reminder, cancel any time, missed day = just unpaid) in §4 *Neighbour orders*; **hired helpers alongside machines** in §4 *Automation* — paid farmhands (daily wage, day off if unpaid, never debt) and befriended original garden sprites.
+- **0.22 — 2026-11-19:** **Selling points ordered (owner):** automation first, **decoration second** — high concept and pillar 8 updated (decoration + farm charm).

@@ -2,14 +2,14 @@
 
 > **Working title:** TBD
 > **Status:** 🟡 Design draft (direction reset 2026-11-19) · 🟡 Godot project initialised in `src/` (4.7, C#, Compatibility renderer, assembly `MyFarmingGame`) — no gameplay code yet
-> **Design version:** GDD v0.20 · World v0.12 (both 2026-11-19)
+> **Design version:** GDD v0.22 · World v0.12 (both 2026-11-19)
 > **Last README update:** 2026-11-19 (🔄 owner picks: one mode, ages 6+, day-based growth, land owned but overgrown, first order as the opening, Phase-001 vertical slice · 🆕 `docs/economy.md` + price sheet, `docs/onboarding.md`)
 
 ![](docs/assets/game-screenshoot-small.jpeg)
 
 A fully 2D, **realistic but kid-friendly, educational** farming game for **PC**. You play **Kit, a 17-year-old** who has come from the city to look after the family's tangled land on Bramblewick Lane. Grow crops, raise animals, stock a fish pond, and fill **orders from the neighbours** — eggs, fruit, pies, seasonal baskets, bulk orders — to earn money and grow the plot into a working farm.
 
-Like *Harvest Moon*, crops take days to grow and the challenge rises as the farm grows. All the land is Kit's from day one, but overgrown: money is the first limit, clearing the next, and in the end only land is. Neglect has real but gentle consequences — **3 days in a row without water or food** and a crop or animal is gone (crops turn yellow first; an animal loss is only a short message with a gravestone picture; no sickness, no vet, nothing graphic). Then comes the payoff and the key selling point: **automation**. Craft or buy sprinklers, feeders, and helpers, and watch the farm run itself — leaving time for decorations, collections, contests, and restoring the lane.
+Like *Harvest Moon*, crops take days to grow and the challenge rises as the farm grows. All the land is Kit's from day one, but overgrown: money is the first limit, clearing the next, and in the end only land is. Neglect has real but gentle consequences — **3 days in a row without water or food** and a crop or animal is gone (crops turn yellow first; an animal loss is only a short message with a gravestone picture; no sickness, no vet, nothing graphic). Then come the two selling points. First **automation**: craft or buy sprinklers and feeders, hire helpers, and watch the farm run itself. Then **decoration**: with time freed up, make the farm beautiful, raise its charm, and draw visitors — plus collections, contests, and restoring the lane.
 
 Every way to earn is optional: orders, market sales, contests, foraging and fishing, trading, crafting. The player decides how much money to chase. There is **one difficulty: realistic but kid-friendly** — real sell prices, half-price buying. For **ages 6 and up**.
 
@@ -44,7 +44,7 @@ The differentiator is twofold: an interactive, presenter-like story (characters 
 5. **Automation is the payoff** — sprinklers, feeders, helpers, unlocked by crafting or buying.
 6. **Many ways to earn, none mandatory** — orders are the main income; everything else is optional; no debt.
 7. **Small, satisfying activities** — short actions, visible results.
-8. **Creative ownership** — lay out and decorate the farm.
+8. **Decoration — the second selling point** — buy, craft, or win decorations and raise your farm's charm.
 9. **Warm illustrated world** — non-pixel-art European comics style.
 10. **Practice everyday social skills** — greeting, keeping promises, delivering what was asked, trading fairly.
 
