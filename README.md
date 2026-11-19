@@ -7,7 +7,7 @@
 
 ![](docs/assets/game-screenshoot-small.jpeg)
 
-A gentle, fully 2.5D life-and-garden game for young children — mainly pre-elementary through first grade, played with a parent — that grows with the child (older children up to fifth grade are accommodated through the optional challenge layers). The player cares for a small garden, tends friendly farm animals, explores a quiet lane, and helps neighbours with everyday tasks — farming, animal care, exploration, and everyday social learning as parts of one cozy world.
+A gentle, fully 2D life-and-garden game for young children — mainly pre-elementary through first grade, played with a parent — that grows with the child (older children up to fifth grade are accommodated through the optional challenge layers). The player cares for a small garden, tends friendly farm animals, explores a quiet lane, and helps neighbours with everyday tasks — farming, animal care, exploration, and everyday social learning as parts of one cozy world.
 
 Inspired by the welcoming feel of games like *Stardew Valley*, but designed specifically for children: no crop death, no animal death, no shame, no time pressure, no reading required to act. Collect picture-based items, care for animals through gentle responsibility loops, and watch the garden change with the seasons.
 
@@ -130,7 +130,7 @@ Explicitly deferred from the prototype: large maps, crafting/economy depth beyon
 **Prototype platform:** PC. **Longer-term goal:** multiplatform, iPad and Android tablets prioritised for touch.
 
 **Engine:** **Godot 4.x with C#** (chosen). Selected against:
-- 2.5D workflow and art pipeline (illustrated, non-pixel assets) ✓
+- 2D workflow and art pipeline (illustrated, non-pixel assets) ✓
 - Speed of PC prototyping ✓
 - Future touch input without rewriting activities ✓
 - Eventual multiplatform deployment ✓
