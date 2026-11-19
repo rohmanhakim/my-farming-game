@@ -1,20 +1,15 @@
 # Events
 
-> **Status:** Brainstorming draft
-> **Version:** 0.7
-> **Last updated:** 2026-11-18
-> **Purpose:** Events available during one playthrough, adjusted to the scope of the game described in the GDD. Driven by calendar, season, and day/night — never by time pressure or punishment. All names are tentative and can be changed. Every element here is a proposal pending playtesting.
+> **Status:** Brainstorming draft — **updated for the direction reset 2026-11-19**
+> **Version:** 0.8
+> **Last updated:** 2026-11-19
+> **Purpose:** Events during a playthrough, driven by calendar, season, day phase, and the farm's growth. All names tentative; every element is a proposal pending playtesting.
 
 ---
 
 ## 1. Scope and design intent
 
-Events are gentle milestones, not obligations. There are no deadlines, no missed-event penalties, and no complex calendars the child must read. Events recur or are restated kindly if the child is not present for them.
-
-The game has two modes:
-
-- **Gentle Core (always on):** Core events (Butterfly Garden task), daily/ambient events, and seasonal animal events. No deadlines, no penalties.
-- **Challenge Layers (opt-in, parent-controlled):** Seasonal festivals, NPC relationship meters, market-day events, and Lantern Hill ceremony. Only active when a parent turns on the corresponding layer.
+Events are invitations, not obligations. Missed events recur or are restated kindly. The only events with consequences are **neglect warnings and losses** (crops, animals, fish), which are always signalled first and never happen while the game is closed.
 
 ---
 
@@ -22,101 +17,90 @@ The game has two modes:
 
 | Event | Trigger | What happens | Reward / outcome | Scope |
 |---|---|---|---|---|
-| **Butterfly Garden task** | Player accepts Mr. Marlow's first request. | Plant and water three Meadow Bell / Honey Cup / Lace Flower seeds. | Butterfly net; unlocks find & catch verb. | Prototype |
-| **Task restatement** | Player speaks to Marlow with an unfinished task. | Marlow kindly restates the request: "Hmm, we didn't finish that last time. Would you like to try it now?" | No penalty; task remains available. | Prototype |
-| **Show butterfly to Marlow** | Player has a caught butterfly and speaks to Marlow. | Marlow reacts with delight and notes it in the ledger. | Relationship warmth; a page fills in the ledger (world-only, decided — world.md §7.4). | Prototype |
-| **Release butterfly in garden** | Player releases a caught butterfly in the front garden. | Butterfly flutters around the garden; adds life to the space. | Visual joy; no item gain. | Prototype |
-
----
+| **Butterfly Garden task** | Kit accepts Marlow's first request | Plant and water three task flowers | Butterfly net; unlocks find & catch | Prototype |
+| **Task restatement** | Talk to Marlow with an unfinished task | Kind restatement; replacement seeds if the flowers were lost | Task stays available | Prototype |
+| **Show butterfly to Marlow** | Kit has a caught butterfly | Marlow reacts; ledger page fills | Relationship warmth | Prototype |
+| **Release butterfly** | Release in the garden | Butterfly flutters around | Visual joy | Prototype |
+| **Order board opens** | After the Butterfly Garden task | Marlow introduces the board and the first small order | Start of the farm economy | Phase-002 |
 
 ## 3. Daily / ambient events
 
-**Time-of-day triggers below are read as day phases, not clock times** (Milestone 0 decision 2, GDD §4 / mechanics.md §2): *morning* = Dawn or Morning · *afternoon* = Afternoon · *day* = phases 1–5 · *evening* = Evening or Dusk · *night* = phases 6–8. The clock jumps in 3-hour steps while playing and stops when the game is closed, so an event that misses its phase simply recurs or is restated kindly.
+Time-of-day triggers are day phases (mechanics.md §2).
 
 | Event | Trigger | What happens | Scope |
 |---|---|---|---|
-| **Morning greeting** | Player starts a new day / enters the lane in the morning. | Neighbours and Marlow greet the child; lane is bright. | Prototype |
-| **Evening settling** | Day transitions to night. | Lane darkens; fireflies appear in season; Marlow may be indoors. | Prototype |
-| **Watering sparkle** | Player waters a plant. | Immediate sparkle, sound, or visiting insect feedback. | Prototype |
-| **Butterfly visits** | Butterfly Garden flowers are grown (day, spring/summer). | Butterflies appear around the blooms. | Prototype |
-| **Fireflies appear** | Night falls (summer season). | Fireflies glow over the brook and garden. | Prototype / later |
-| **Animal needs care** | Animal care meter drops to half. | Picture icon (corn, comb, flower, hay) appears above the animal. Child can feed (grain or hay), brush, or plant flowers. | Prototype |
-| **Animal product ready** | Egg, wool, honey, or milk is ready to collect. | Egg glows in nest; wool looks fluffy; honey drips from hive; milk bottle full by the cow. | Prototype |
-| **Animal naps** | Animal care meter is empty. | Animal rests under a tree / in coop. Mr. Marlow gently suggests feeding. | Prototype |
-| **Neighbour trace appears** | A new character is about to be introduced. | A picture-only clue appears at that character's place (laundry on the line, footprints in the mud, a half-painted birdhouse, a seed packet on the gate, an unlit lantern on the hill). No text to read. | Prototype |
-| **Distant wave** | Player walks near a place where a future neighbour lives. | A figure waves from a distance, then returns to their task. The lane feels inhabited before any introduction. | Prototype |
-
----
+| **New orders** | Dawn | Board refreshes with orders matched to what Kit can produce | Phase-002 |
+| **Sprinklers run** | Dawn | Sprinkled beds are watered (splash animation) | Phase-004 |
+| **Shipping payout** | Sleep | Money for goods left in the shipping box | Phase-002 |
+| **Watering feedback** | Water a bed | Soil darkens, sparkle and sound | Prototype |
+| **Crop dry** | Soil dries | Cracked-soil look; growth pauses | Prototype |
+| **Crop yellow (warning)** | Dry past grace (by mode) | Leaves droop and yellow | Prototype |
+| **Crop lost** | Yellow past grace | Plant disappears; bed empty; small note "*Dry too long. Water every day, or try a sprinkler.*" | Prototype |
+| **Butterfly visits** | Grown flowers, day, Spring/Summer | Butterflies appear | Prototype |
+| **Fireflies** | Night, Summer | Fireflies over brook and garden | Later |
+| **Animal needs care** | Meter reaches warning threshold | Need icon above the animal/pond | Phase-002 |
+| **Product ready** | Egg, milk, wool, honey, fish ready | Glow / fluffy / drip / jumping fish | Phase-002 |
+| **Animal lost** | Meter empty | Message card with gravestone picture (empty hive for bees), name, tip | Phase-002 |
+| **Neighbour trace** | A character is about to be introduced | Picture clue at their place | Phase-002+ |
 
 ## 4. Character arrival events
 
-A character's arrival is its own gentle event — one picture-and-voice greeting, then an invitation the child can accept or decline. Nothing is missed forever; a declined invitation simply waits.
-
-| Arrival event | Trigger | What happens | Introduces | Scope |
-|---|---|---|---|---|
-| **First meeting: Mr. Marlow** | Day one, player reaches the seed shed gate. | Marlow greets the child, offers a seed packet, and names the first task (Butterfly Garden). | Mr. Marlow | Prototype |
-| **First meeting: The allotment neighbour** | Player grows their first flower at the shared beds. | A brief wave from the beds; neighbour offers a shared planting tip. Picture-only greeting. | The allotment neighbour | Stage 2 |
-| **First meeting: The brook keeper** | Player catches their first creature near the brook. | Keeper appears at the water's edge, smiles, and gestures toward a hidden spot. Picture-only greeting. | The brook keeper | Stage 2 |
-| **First meeting: A child of the lane** | Player completes two neighbour tasks and visits the brook. | A peer waves from the lane, then walks alongside the child for a short stretch. No task, just friendship. | A child of the lane | Stage 3 |
-| **First meeting: The Hill Visitor** | High warmth with Marlow + winter season, Lantern Hill ceremony layer on. | Visitor arrives at the hill with a story and a seasonal gift. | The Hill Visitor | Stage 4 (challenge layer) |
-
-Each arrival is preceded by a **trace event** (laundry, footprints, birdhouse, seed packet, unlit lantern) so the child senses the neighbour exists before the formal introduction.
-
----
-
-## 5. Seasonal events (tentative, later unlocks)
-
-| Event | Trigger | What happens | Scope |
+| Arrival | Trigger | Introduces | Tier |
 |---|---|---|---|
-| **Spring bloom day** | Start of spring season. | More flowers bloom; butterflies return in numbers. | Later |
-| **Summer evening gathering** | A summer evening at Lantern Hill (deferred). | Neighbours gather; fireflies and lantern light. | Later |
-| **Autumn harvest moment** | Start of autumn season. | Leaves fall; harvest-themed decorations available. | Later |
-| **Winter lantern lighting** | Winter, high relationship with Marlow (candidate). | The old lantern on Lantern Hill is lit; seasonal visitor attends. | Later — high-relationship event candidate per GDD §3 |
-| **Chicken needs winter feed** | Winter season. | Chicken eats more grain; corn icon appears more often. | Prototype |
-| **Sheep wool thickens** | Autumn season. | Sheep's wool is extra thick; brushing yields more wool. | Prototype |
-| **Beehive sleeps** | Winter season. | Beehive glows dim; no honey production until spring. | Prototype |
+| **Mr. Marlow** | Day one at the seed shed gate | Mr. Marlow | T1 |
+| **The allotment neighbour** | First crop sold or delivered | Allotment neighbour (first veg order) | T2 |
+| **The baker** | First eggs collected | Baker (egg and flour orders) | T2 |
+| **The brook keeper** | First visit to the brook | Brook keeper (gives fishing rod) | T3 |
+| **A friend of Kit's age** | Two neighbour tasks + brook visit | Friend (friendship, festivals) | T3 |
+| **Travelling merchant** | First land expansion | Merchant (trades, rarities) | T3 |
+| **The Hill Visitor** | Lane restoration reaches Lantern Hill, winter | Hill Visitor | T5 |
 
----
+Each arrival is preceded by a trace (laundry, birdhouse, footprints, seed packet, unlit lantern).
 
-## 6. Relationship milestones (subtle, optional)
+## 5. Seasonal events, festivals, and contests
 
-| Milestone | Trigger | What happens | Scope |
+| Event | Season | What happens | Scope |
 |---|---|---|---|
-| **First task complete** | Butterfly Garden flowers grown and shown to Marlow. | Marlow gives the butterfly net. | Prototype |
-| **Ledger page fills** | Repeated kind interactions and completed tasks. | A pressed flower or sketch appears behind a ledger page. | Later — warmth-driven pages; the ledger itself ships in Phase-001 Task 1.6 (world.md §7.4) |
+| **Spring Bloom Festival** | Spring | Flower contest; prettiest-farm judging (farm charm) | Phase-005 |
+| **Summer Fair** | Summer | Biggest fish, best jam contests | Phase-005 |
+| **Harvest Festival** | Autumn | Biggest pumpkin, best eggs/wool/cheese; bulk catering orders | Phase-005 |
+| **Winter Lantern Night** | Winter | Part of lane restoration: relighting the Lantern Hill lantern | Phase-005 |
+| **Chicken winter feed** | Winter | Hens eat more, lay no eggs | Phase-002 |
+| **Wool thickens** | Autumn | Brushing yields more/better wool | Phase-002 |
+| **Beehive sleeps** | Winter | No honey; no loss while asleep | Phase-002 |
+| **Merchant visit** | Set days | Merchant at the lane; trades change by season | Phase-004 |
 
-## 7. Stage-Gated Events (challenge layers only)
+Contests are optional; entries are judged on quality, never on reflexes.
 
-These events only appear when a parent turns on the corresponding challenge layer. They are additive — Gentle Core events continue to work exactly as before.
+## 6. Relationship and progression milestones
 
-| Stage | Event | Trigger | What happens | Active when |
-|---|---|---|---|---|
-| **Stage 3** | Market day | Child visits the market stand | Sell harvests for Garden Coins; buy seed packets | Garden Coins layer is on |
-| **Stage 3** | Crafting fair | Child uses the crafting table | Make compost, scarecrow, or bird feeder | Crafting layer is on |
-| **Stage 4** | Spring Bloom Festival | Start of spring | Neighbours gather; more flowers bloom; butterflies return | Stage 4 — all layers on |
-| **Stage 4** | Autumn Harvest Moment | Start of autumn | Leaves fall; harvest decorations available; optional goals | Stage 4 — all layers on |
-| **Stage 4** | Lantern Hill ceremony | Winter, high relationship with Marlow | Old lantern is lit; seasonal visitor attends | All layers + relationship meter |
-| **Stage 5** | Festival prep | Seasonal change | Multi-week preparation for seasonal festival | Full economy layer is on |
-
-Missing a festival or market day simply means waiting for it to return next season. No penalty.
+| Milestone | Trigger | What happens |
+|---|---|---|
+| **First order delivered** | First order | Neighbour thanks Kit; first sticker |
+| **Repeat order** | Several orders for one neighbour | Neighbour offers a weekly order |
+| **Bigger order** | Relationship grows | Bulk or catering order offered |
+| **Recipe gift** | High relationship | Neighbour shares a recipe or blueprint |
+| **Ledger page fills** | Completed tasks | Pressed flower or sketch in Marlow's ledger |
+| **Tier reached** | Farm growth tier (progression.md §3) | Short celebration; new catalogue items |
+| **Lane restoration step** | Community project finished | The lane visibly changes (footbridge, meadow, stile, lantern) |
 
 ---
 
-## 8. Related documents
+## 7. Related documents
 
 | Document | Relationship |
 |---|---|
 | [README.md](../README.md) | Centralized hub for the project. |
-| [GDD.md](./GDD.md) | Want → task → reward loop and relationship meter shape the event design. |
-| [world.md](./world.md) | Butterfly Garden task and Lantern Hill events originate from the Bramblewick Lane premise. |
-| [characters.md](./characters.md) | Mr. Marlow gives tasks and reacts to events; relationship warmth grows through events. |
-| [mechanics.md](./mechanics.md) | Core verbs trigger events (plant, water, catch, feed, brush, collect). |
-| [crops.md](./crops.md) | Butterfly Garden flowers are grown for the first core event. |
-| [animals.md](./animals.md) | Animal care events (needs care, product ready, naps, seasonal behavior) are listed here. |
-| [progression.md](./progression.md) | Stickers and seasonal mysteries reward event-related milestones. |
-| [challenge-layers.md](./challenge-layers.md) | Defines optional challenge layers and parent-controlled toggles. |
+| [GDD.md](./GDD.md) | Orders, neglect, and ways to earn. |
+| [world.md](./world.md) | Butterfly Garden and Lantern Hill. |
+| [characters.md](./characters.md) | Characters and introductions. |
+| [mechanics.md](./mechanics.md) | Verbs that trigger events. |
+| [crops.md](./crops.md) | Crop neglect events. |
+| [animals.md](./animals.md) | Care, product, and loss events. |
+| [progression.md](./progression.md) | Tiers, contests, restoration. |
+| [PHASE.md](./PHASE.md) | Phases named in the Scope column. |
 
-## 9. Change log
+## 8. Change log
 
 - **0.1 — 2026-11-18:** Initial draft. Butterfly Garden core event, daily/ambient day/night events, seasonal events (later), and relationship milestones. No deadlines or penalties.
 - **0.2 — 2026-11-18:** Added animal care events (needs care, product ready, naps) and seasonal animal events (chicken winter feed, sheep wool thickens, beehive sleeps). All events recur or are restated kindly — no penalties for missing them.
@@ -125,3 +109,4 @@ Missing a festival or market day simply means waiting for it to return next seas
 - **0.5 — 2026-11-18:** Day/night and seasons confirmed always-on (Gentle Core): stage-gated festivals now activate at Stage 4 with all layers on instead of a Time Awareness layer. Trace list completed to all five traces (added seed packet, lantern). Care and product events include the cow and milk.
 - **0.6 — 2026-11-18:** Milestone 0 decision 2 (in-game clock): time-of-day triggers in §3 now explicitly map to the eight named day phases in mechanics.md §2 (stepped 3-hour clock); missed-phase events still recur or restate kindly.
 - **0.7 — 2026-11-18:** Ledger rows updated to the world.md §7.4 decision: ledger is **both** relationship UI and collectible, placed **world-only** at the seed-shed table, shipping in Phase-001 Task 1.6; the warmth-driven page rule stays a later event.
+- **0.8 — 2026-11-19:** **Direction reset (GDD v0.19).** Gentle Core / stage-gated split removed; scope column now names phases. Added order, sprinkler, shipping-payout, crop dry/yellow/lost, and animal-lost (gravestone card) events; nap event removed. Arrivals tied to farm tiers, with the baker and travelling merchant added and "a child of the lane" reframed as a friend of Kit's age. Festivals and contests made core; Lantern Hill ceremony folded into lane restoration. New relationship milestones (repeat/bigger orders, recipe gifts, tier reached, restoration steps).

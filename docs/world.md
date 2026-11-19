@@ -1,25 +1,25 @@
 # World, Setting, and Background Story
 
 > **Status:** Brainstorming draft — story and setting proposal referenced by the GDD
-> **Version:** 0.10
-> **Last updated:** 2026-11-18
+> **Version:** 0.11
+> **Last updated:** 2026-11-19
 > **Purpose:** A working document for the background-story premise, the place, the lore, and the characters who carry it. It expands the story and setting direction in [GDD.md](./GDD.md); the GDD remains authoritative for gameplay, audience, and project decisions. World details here are proposals until validated through playtesting.
 
 ---
 
 ## 1. Premise in one paragraph
 
-The player is a child from **a city far away** who has recently come to **Bramblewick Lane** because **their family asked them to help take care of the family's land** — the house, the front garden, and the beds that have grown tangled while nobody was tending them. The lane itself is a short, quiet lane of small garden homes built into grassy hillsides: friendly but a little faded, with a butterfly meadow that has gone quiet and nobody quite remembering when the last lantern on Lantern Hill was lit.
+The player is **Kit, a 17-year-old** from **a city far away** who has recently come to **Bramblewick Lane** because **the family asked Kit to take care of the family's land** — the house, the front garden, and the fields behind it that have grown tangled while nobody was tending them — and, if Kit can, to turn it into a farm that pays its way. The lane itself is a short, quiet lane of small garden homes built into grassy hillsides: friendly but a little faded, with a butterfly meadow that has gone quiet and nobody quite remembering when the last lantern on Lantern Hill was lit.
 
-**The house is a family heirloom** — kept in the family for generations, stood empty for a while, now the child's to look after. **The parents' jobs keep them in the city**, and they asked the child to take care of the house themselves.
+**The house is a family heirloom** — kept in the family for generations, stood empty for a while, now Kit's to look after. **The parents' jobs keep them in the city**, and they asked Kit to take care of the house and land.
 
-**The ask is an invitation, not a duty** (guardrail): the family trusted the child with the house and land; nothing can be neglected into failure, and the tangled garden is the opening invitation rather than a mess anyone is blamed for. The *trust* belongs to the child — no adult in the story does the child's doing (Marlow's rule applies to everyone). **Ada — the parents' old friend — has been taking care of the house while the child was raised in the city, and helps him when he arrives** ([characters.md](./characters.md) §7). The house is never empty, and the child's responsibilities are never done for him.
+**The ask is trust, not a test:** the family trusted Kit with the house and land. Crops and animals can now be lost to neglect (GDD §4), but the farm itself can never be lost, and the tangled garden is the opening invitation rather than a mess anyone is blamed for. The *trust* belongs to Kit — no adult in the story does Kit's doing (Marlow's rule applies to everyone). **Ada — the parents' old friend — has been taking care of the house while Kit was raised in the city, and helps him when he arrives** ([characters.md](./characters.md) §7). The house is never empty, and Kit's responsibilities are never done for him.
 
 At the end of the lane lives **Mr. Marlow**, an old gardener who has kept the lane's seed shed for longer than anyone can remember. He knows the name of every plant, every bird, and every story on the lane — but his knees no longer let him kneel, and his hands are too stiff for small seeds.
 
-So he does what any wise friend would do: he waits at his gate with a seed packet, a question, and a bit of advice, and lets the child do the doing.
+So he does what any wise friend would do: he waits at his gate with a seed packet, a question, and a bit of advice, and lets Kit do the doing.
 
-The story is not about saving the world. It is about a child and an old neighbour putting a small, ordinary, beautiful place back together, one kind act at a time.
+The story is not about saving the world. It is about a young farmer and an old neighbour putting a small, ordinary, beautiful place back together — one crop, one order, one kind act at a time.
 
 ---
 
@@ -29,15 +29,15 @@ The premise exists to serve the GDD, not the other way around. Every element bel
 
 | GDD requirement | How the premise serves it |
 |---|---|
-| Reciprocal request anchor (want → task → reward) | Mr. Marlow holds seeds, tools, and knowledge the child wants; the child has small, capable hands he does not. The exchange is *mutually needed*, not a chore assignment. |
+| Reciprocal request anchor (want → task → reward) | Mr. Marlow holds seeds, tools, and knowledge Kit wants; Kit has young, capable hands he does not. The exchange is *mutually needed*, not a chore assignment. |
 | NPC remembers unfinished tasks | He is a permanent neighbour at the end of the lane, never leaves, and is always reachable. |
 | Relationship meter | The seed shed's ledger and the lane's own memory respond visibly to how the player has treated people and place. |
 | Rewards that unlock new verbs/places | The lane is designed as a series of gentle locks: gate, brook (early exploration reward), stile, hill. |
 | Presenter-like interactive storytelling | Mr. Marlow *is* the narrator. He addresses the player, pauses, notices what actually happened, and reacts. No disembodied voice needed. |
-| Not a parent/child dynamic | He has no authority over the child's day, no punishment, no disappointment. He is a neighbour who can be visited or not. |
-| Small, readable world | One lane, eight places, no map. |
+| Not a parent/child dynamic | He has no authority over Kit's day, no punishment, no disappointment. He is a neighbour who can be visited or not. |
+| Small, readable world | One lane, eight places, no map. **Kit's farm grows** into the fields behind the house; the lane does not. |
 | First beat: The Butterfly Garden | The missing butterflies are the first mystery and the first task. |
-| A world that feels inhabited, not lonely | Trace objects (laundry, footprints, birdhouse, seed packet, unlit lantern) appear at places before their character is met. The child senses neighbours exist without reading a single line of dialogue. |
+| A world that feels inhabited, not lonely | Trace objects (laundry, footprints, birdhouse, seed packet, unlit lantern) appear at places before their character is met. The player senses neighbours exist before reading a single line of dialogue. |
 
 ---
 
@@ -45,7 +45,7 @@ The premise exists to serve the GDD, not the other way around. Every element bel
 
 ### 3.1 Bramblewick Lane
 
-A curved lane, roughly the length of a short walk, running from the player's home up toward a hill. It is bordered by hedgerows, dry-stone walls, and the occasional wooden gate. Everything is within sight; the lane is the whole world for now.
+A curved lane, roughly the length of a short walk, running from the player's home up toward a hill. It is bordered by hedgerows, dry-stone walls, and the occasional wooden gate. Everything is within sight; the lane is the whole shared world. Behind the house lie the family's old fields — overgrown, fenced, and Kit's to reclaim one by one (progression.md §4).
 
 ```
         Lantern Hill (oak + old lantern post, lookout)
@@ -61,7 +61,10 @@ A curved lane, roughly the length of a short walk, running from the player's hom
         --- Bramblewick Lane ---
                   |
      Player's home (round bright door)
-       + front garden (2-3 beds)
+       + front garden (starting plot, 2-3 beds)
+                  |
+     Fields behind the house (bought/cleared
+       one by one: Kit's growing farm)
 ```
 
 ### 3.2 Places
@@ -70,12 +73,12 @@ A curved lane, roughly the length of a short walk, running from the player's hom
 |---|---|---|
 | **The player's home** | A small cottage or hillside home with a brightly painted door and a front garden that starts bare or overgrown | Tutorial space, creative-ownership space, the visual "nothing is here yet" hook |
 | **Bramblewick Lane** | The curved path itself, with hedgerows, walls, a stile, a gate | The GDD's "small shared or public-feeling space"; a soft world border |
-| **Mr. Marlow's cottage + seed shed** | A leaning shed of jars, packets, labels, and a big hand-illustrated ledger | Task hub, reward source, non-currency economy |
+| **Mr. Marlow's cottage + seed shed** | A leaning shed of jars, packets, labels, and a big hand-illustrated ledger | Task hub, seed shop, and the lane's **order board** |
 | **The allotment** | A few shared beds tended by other (future) characters | Future NPC home without expanding the map |
 | **The brook and footbridge** | A small crossing with flat stones and reeds | Early exploration reward; home for later requests |
-| **The market stand** | A roadside table where harvests can be sold and seeds or decorations bought | Optional place for the Garden Coins challenge layer; parent-unlocked |
-| **The stile** | A wooden stile at the lane's upper end, leading toward Lantern Hill | Gentle world gate; locked until later |
-| **Lantern Hill** | A hill at the lane's end with a broad oak and an old, unlit lantern post | Long-arc payoff destination; matches the GDD's deferred "ladder to a lookout" reward |
+| **The market stand** | A roadside table where harvests can be sold and seeds or decorations bought | Where Kit sells produce; Kit's own stall from farm tier T2 (buildings.md) |
+| **The stile** | A wooden stile at the lane's upper end, leading toward Lantern Hill | Gentle world gate; reopened during lane restoration |
+| **Lantern Hill** | A hill at the lane's end with a broad oak and an old, unlit lantern post | Long-arc destination; relit as the last step of lane restoration (progression.md §6.4) |
 
 ### 3.3 Visual character
 
@@ -89,17 +92,17 @@ Before any neighbour is met, the lane shows that others live here. Trace objects
 
 - **Laundry on a line** by the brook → hints at the brook keeper
 - **A half-painted birdhouse** leaning on an allotment bed → hints at the allotment neighbour
-- **Small footprints** in the mud near the stile → hints at a child of the lane
+- **Small footprints** in the mud near the stile → hints at a friend of Kit's age
 - **A seed packet** left on the player's gate → hints at Mr. Marlow (already met)
 - **An unlit lantern** left on the hill → hints at the seasonal visitor
 
-These traces answer "who lives here?" without a single word of dialogue. The world feels inhabited from day one, so the child never feels alone — but they still meet only one neighbour at a time (never more than two per stage), so they are never overwhelmed.
+These traces answer "who lives here?" without a single word of dialogue. The world feels inhabited from day one, so Kit never feels alone — but meets only one neighbour at a time (never more than two per farm tier).
 
 ---
 
 ## 4. Lore
 
-The lore is deliberately shallow and mostly *felt* rather than told. Children do not need history; they need a place that seems to have one.
+The lore is deliberately shallow and mostly *felt* rather than told. Players do not need history; they need a place that seems to have one.
 
 ### 4.1 The lane remembers
 
@@ -107,43 +110,43 @@ Bramblewick Lane is old in the way hedgerows are old — nobody planted it on pu
 
 > **The lane remembers what people do to it, and it answers kindly.**
 
-This is not magic with rules the child must learn. It is a *justification for visible feedback*: gardens that look cared for, neighbours who light up, paths that seem brighter. It lets consequences be environmental and understandable rather than scored (per GDD §3).
+This is not magic with rules the player must learn. It is a *justification for visible feedback*: gardens that look cared for, neighbours who light up, paths that seem brighter. It lets consequences be environmental and understandable rather than scored (per GDD §3).
 
 **How the device is used (decision — §7.2): A as the base, C as the intent, B capped at two lines.**
 
 - **A — base: pure ambience, never acknowledged.** The lane's memory appears only as *behaviour* — trace objects, light, coincidence, the lane looking brighter where care was given. No character names it, no UI explains it, no lore screen defines it. It is felt, not told.
-- **C — intent: left to the child and parent.** Because nothing is stated, a coincidence on screen becomes a conversation between child and parent on the sofa (GDD §10: invite conversation, don't prescribe an answer). Pre-readers already think animistically; for them it needs no explanation to be true.
+- **C — intent: left to the player.** Because nothing is stated, a coincidence on screen becomes something to wonder about or talk over with a co-op partner — an invitation, not a prescribed answer.
 - **B — capped at two lines.** Mr. Marlow may allude to it **at most twice per playthrough**, always as an open-ended observation and immediately changed subject — e.g. *"Huh. This lane has a way of remembering things, doesn't it?"* Never an explanation, never a rule, never a condition for anything.
-- **The one hard rule (soft-magic discipline): the lane's memory may create wonder, but never resolve a problem.** It cannot plant, water, catch, or give for the child; it cannot be failed, triggered, or optimised. Every reward still passes through the child's own hands (consistent with §4.4: Marlow names the goal, the child discovers the method).
+- **The one hard rule (soft-magic discipline): the lane's memory may create wonder, but never resolve a problem.** It cannot plant, water, catch, or give for Kit; it cannot be failed, triggered, or optimised. Every reward still passes through Kit's own hands (consistent with §4.4: Marlow names the goal, Kit discovers the method).
 
 ### 4.2 The seed shed ledger
 
 Mr. Marlow keeps a **ledger** — a big, hand-illustrated book of seed packets, plant sketches, and notes in a looping hand. It records two things:
 
-1. **What has been promised.** If the child accepts a task and leaves it unfinished, it stays in the ledger. This is the in-world reason the NPC can kindly restate it later — no menu, no quest log, no shame, just a line in a book he opens when they next meet.
+1. **What has been promised.** If Kit accepts a task and leaves it unfinished, it stays in the ledger. This is the in-world reason the NPC can kindly restate it later — no menu, no quest log, no shame, just a line in a book he opens when they next meet.
 2. **What has grown.** Completed tasks leave a sketch, a pressed flower, or a seed packet behind the page.
 
 The ledger is the relationship UI **and** a collectible object — **decided (§7.4): it is "both", placed world-only.**
 
 - **Where:** it lives open on the seed-shed table and is opened by interacting there (close-up view). It is **not** in the pause menu, so it cannot collide with the Collection Book or the sticker book — three book-shaped icons in one row is exactly the distinguishability risk §7.4 was about.
-- **What it shows:** pictures only — sketches, pressed flowers, the seed packet from the first task. No text, no numbers, no hearts. A child who cannot read yet can still see a page filling up.
+- **What it shows:** pictures only — sketches, pressed flowers, the seed packet from the first task. No text, no numbers, no hearts. Anyone can see a page filling up at a glance.
 - **Behaviour is the real meter:** how Marlow greets you, what he recalls, what he has kept aside — the ledger confirms it, it does not replace it. (Numeric relationship meter stays deferred; see Phase-001.)
-- **Validation to run anyway:** a Human playtest must confirm a child *chooses* to open it and understands what the pictures mean; if children never visit the shed, reconsider a pause-menu tab (option ii) later.
+- **Validation to run anyway:** a Human playtest must confirm a player *chooses* to open it and understands what the pictures mean; if players never visit the shed, reconsider a pause-menu tab (option ii) later.
 - **Prototype scope:** the ledger ships in Phase-001 Task 1.6 as a prop + picture-only close-up + a `Ledger.Note()` API; warmth-driven pages (repeated kind interactions) remain a later rule.
 
 ### 4.3 What went quiet
 
 Years ago — nobody says how many — the lane began to slow down. Not dramatically. The butterflies stopped coming to the meadow first. Then the lantern on the hill was not lit one autumn and never relit. Then people simply stopped climbing the hill.
 
-Nobody is sad about it exactly. Everyone is simply *used to it*. Mr. Marlow is the only one who remembers that it used to be otherwise, and his memory of *years and stories* is imperfect — which is the point, and the only place he is ever wrong (§7.3: **a+** — flavour may be wrong, instructions never). **He names the goal; the child discovers the method.**
+Nobody is sad about it exactly. Everyone is simply *used to it*. Mr. Marlow is the only one who remembers that it used to be otherwise, and his memory of *years and stories* is imperfect — which is the point, and the only place he is ever wrong (§7.3: **a+** — flavour may be wrong, instructions never). **He names the goal; Kit discovers the method.**
 
 This is the engine of the whole story: a gentle, unsolved, entirely non-threatening mystery, revealed in small pieces through ordinary acts of care.
 
-### 4.4 Why the child
+### 4.4 Why Kit
 
-The child is the one person on the lane who keeps noticing things. They ask "why?" They look under the stile. They are not braver than anyone else — they are just smaller, quicker, and less used to the way things already are.
+Kit is the one person on the lane who keeps noticing things. Kit asks "why?" and looks under the stile — not braver than anyone else, just younger, quicker, and less used to the way things already are.
 
-This is the thematic core: **the wise neighbour has knowledge but limited physical reach; the young player has curiosity and reach, but is still learning.** Every task in the game joins those two strengths.
+This is the thematic core: **the wise neighbour has knowledge but limited physical reach; the young farmer has energy and reach, but is still learning.** Every task in the game joins those two strengths.
 
 ### 4.5 What is deliberately left vague
 
@@ -168,30 +171,30 @@ This is the thematic core: **the wise neighbour has knowledge but limited physic
 
 **Rules for writing him:**
 
-- **He never has authority over the child.** No scolding, no disappointment, no "you should have." He reacts to what happened, not to what was expected.
-- **He never does the task for the child.** He names the goal, supplies the seed or tool, and is genuinely surprised by the method.
+- **He never has authority over Kit.** No scolding, no disappointment, no "you should have." He reacts to what happened, not to what was expected.
+- **He never does the task for Kit.** He names the goal, supplies the seed or tool, and is genuinely surprised by the method.
 - **Five layers of what he knows (decided, §7.3):** **What** (goal/reward) — always says it · **Where/who** — always points, never fetches · **How** (the method) — never says it first; only on request or after the hint ladder · **Why** (the lane's memory) — never, capped at two allusions (§4.1) · **Doing it** — never.
 - **He offers, never instructs.** Everything about what happens next is an invitation ("Would you like to…, or shall we…?"); declining is always fine and nothing is lost.
-- **He speaks to the pair.** In co-play his invitations are phrased for the sofa, so parent and child decide out loud (GDD §10).
+- **He speaks to the pair.** In co-play his invitations are phrased for both players, so they decide out loud together.
 - **He may be wrong only about flavour** — years, stories, which flower is which — and the world corrects him **in the same beat, on screen**, and he laughs it off: *"No — Lace Flower! Ha, these old eyes. Your eyes are better than mine."* Actionable knowledge is never wrong. (Hint ladder timings: [characters.md](./characters.md) §8.)
-- **He always needs the child for something physical.** He cannot kneel, reach, or carry. Every request has an honest in-story reason.
+- **He always needs Kit for something physical.** He cannot kneel, reach, or carry. Every request has an honest in-story reason.
 - **He remembers, kindly.** Unfinished tasks are restated with no penalty: "Hmm, we didn't finish that last time. Would you like to try it now?"
-- **He gives, he doesn't award.** Rewards are things he set aside *for* the child — "I kept this packet for you" — never points handed down.
-- **He is not a substitute parent.** He does not manage meals, bedtime, or behaviour. If a player never visits him, the game still works.
+- **He gives, he doesn't award.** Rewards are things he set aside *for* Kit — "I kept this packet for you" — never points handed down.
+- **He is not a substitute parent.** He does not manage Kit's day. If a player never visits him, the game still works.
 
 **Visual silhouette (to research):** Explore an original gardener's smock or wool waistcoat, a soft hat with a tucked seed packet or feather, a walking stick, and practical gardening details. Avoid recognizable character designs or signature props from existing works.
 
-### 5.2 The child — the player character
+### 5.2 Kit — the player character
 
 | | |
 |---|---|
 | **Role** | The one who notices, reaches, kneels, and does |
-| **Identity** | A recent arrival from a city far away, here to help take care of the family's land — **decided**; see §7 |
+| **Identity** | A 17-year-old recent arrival from a city far away, here to take care of the family's land — **decided**; see §7 and characters.md §6 |
 | **Defining trait** | Curiosity, not exceptionalism. Not "chosen," just paying attention. |
-| **Naming** | Short, single-syllable, word-shape readable for pre-readers: **Kit, Wren, Tolly, Moss, Nell, Junie** |
+| **Naming** | **Kit** (locked; characters.md §6) |
 | **Customization** | Name, appearance, and door colour are the obvious personalization levers (GDD pillar 4) |
 
-The child is never blamed, never behind, and never compared to anyone. There is no "the other children on the lane" to measure against.
+Kit is never shamed or compared to anyone.
 
 ### 5.3 The lane itself as a character
 
@@ -203,7 +206,8 @@ Kept here so the setting grows *inward* rather than outward — new faces on the
 
 - **The allotment neighbour** — a quieter character with a different kind of task (sharing, taking turns).
 - **The brook keeper** — someone or something concerned with the water and the reeds.
-- **A child of the lane** — a peer, for tasks that are about friendship rather than help.
+- **A friend of Kit's age** — a teen peer, for friendship, festivals, and contests.
+- **The baker** and **the travelling merchant** — order and trade partners (characters.md §10).
 - **A seasonal visitor** — arrives only for the hill gathering; candidate for the high-relationship event in GDD §3.
 
 ---
@@ -214,17 +218,19 @@ The Butterfly Garden task is Chapter One of this premise, not a tutorial bolted 
 
 | Beat | In-world version |
 |---|---|
-| Player's want | The child sees a picture of butterflies in Marlow's ledger, or finds an old sketch of the meadow full of them, and wants to see that. |
-| NPC's request | Marlow remembers the flower patch that used to draw them. He has the seed packets; the child has the knees. |
+| Player's want | Kit sees a picture of butterflies in Marlow's ledger, or finds an old sketch of the meadow full of them, and wants to see it again. |
+| NPC's request | Marlow remembers the flower patch that used to draw them. He has the seed packets; Kit has the knees. |
 | Player's choice | Accept, decline, or wander off. The ledger holds the line; he asks again, gently. |
 | Reward | The butterfly net — "I kept this in the shed for a long time." |
 | Loop back | Butterflies return to the front garden; the meadow question opens. |
 
-Each later reward should follow the same shape: **Marlow has been holding something, the child's act of care is the reason it is finally given.**
+Each later reward should follow the same shape: **Marlow has been holding something, Kit's act of care is the reason it is finally given.** Soon after, Marlow opens the order board and the farm economy begins.
 
 ---
 
 ## 7. Open sub-questions inside this document
+
+> **2026-11-19 note (direction reset, GDD v0.19):** the decisions below stand, with three updates: (a) the player is now **Kit, 17** — wording about a young child, pre-readers, the sofa, or the parent as co-player is historical; (b) the §7.5 rationale "left a 4–6-year-old alone in the house" no longer applies, but **Ada stays** as the family friend and co-op character; (c) §7.7 *"lighting it is never promised"* is **superseded**: relighting the lantern is now the optional final step of **lane restoration** (progression.md §6.4) — still never required.
 
 1. **RESOLVED (2026-11-18, v0.5) — newcomer, and the reason is the family land.** The child comes from **a city far away** and has recently arrived because **the family asked them to take care of the family's land on Bramblewick Lane** (house + front garden + tangled beds). The family moved together; the parent/caregiver lives in the same home ([characters.md](./characters.md) §7) — the *trust* is the child's alone.
    - **Why this framing:** it makes the tangled garden diegetic (nobody was tending it), gives every first meeting a natural introduction ("You must be the new one on the lane"), and hands the child an age-appropriate honour rather than a chore.
@@ -261,13 +267,13 @@ Each later reward should follow the same shape: **Marlow has been holding someth
 
 ## 8. Guardrails
 
-- No antagonist, no threat, no deadline, no decay caused by the player.
+- No antagonist, no threat, no hard deadline. The only decay is from the player's own neglect of crops and animals — always warned first and shown kindly (GDD §4).
 - No disappointment from the wise friend, ever.
-- No lore the child must read or memorise to proceed.
-- No expansion by map-size: grow the cast before the geography.
+- No lore the player must read or memorise to proceed.
+- No expansion of the lane: grow the cast before the geography. **Kit's farm** may grow into the fields behind the house (progression.md §4).
 - Original designs throughout — the direction is a *homage to a mood*, never a reproduction of anyone's characters, assets, or compositions (GDD §9).
 - Every element here is a proposal. Marked items must be validated through playtesting before they are treated as decisions.
-- The brook is an **early exploration reward** (discovered through play, not parent-gated). New *optional* places — the market stand and Lantern Hill — are parent-unlocked: the parent decides when the child is ready to explore them.
+- The brook is an **early exploration reward**. The market stand opens at farm tier T2; the stile and Lantern Hill reopen through lane restoration. Nothing is parent-gated.
 
 ---
 
@@ -282,7 +288,8 @@ Each later reward should follow the same shape: **Marlow has been holding someth
 | [crops.md](./crops.md) | Butterfly Garden flowers (Meadow Bell, Honey Cup, Lace Flower) are the first story task. |
 | [events.md](./events.md) | Butterfly Garden task and Lantern Hill events originate from this premise. |
 | [progression.md](./progression.md) | Relationship milestones reference the ledger and high-relationship events proposed here. |
-| [challenge-layers.md](./challenge-layers.md) | Defines optional challenge layers and parent-controlled toggles. |
+| [challenge-layers.md](./challenge-layers.md) | Difficulty modes (Easy / Normal / Realistic). |
+| [buildings.md](./buildings.md) | What Kit can build on the farm. |
 
 ## 9. Change log
 
@@ -296,3 +303,4 @@ Each later reward should follow the same shape: **Marlow has been holding someth
 - **0.8 — 2026-11-18:** **§7.4 resolved — the ledger is "both", placed world-only (option i).** §4.2 flipped from *proposal* to *decided*: in-world book on the seed-shed table, picture-only pages that are the relationship meter, behaviour-first (numeric meter still deferred), absent from the pause menu to avoid a three-book icon row (also rejecting option iii, merging with the Collection Book). Placed in Phase-001 **Task 1.6** with a `Ledger.Note()` API for Tasks 1.7/1.8 — closing the gap where events.md called "ledger page fills" Prototype scope but no task owned it. Validation: Human playtest must show a child opens it voluntarily.
 - **0.9 — 2026-11-18:** **§7.5 resolved (Q5, three calls):** the home is a **family heirloom** whose parents' jobs keep them in the city, with the player asked to take care of the house themselves; art rule **overgrown but never derelict** (no decay, no rubbish, no loneliness — "alive and waiting"); Marlow **knows the whole family but has never met the player** (city-born), so every first meeting is a genuine introduction and every choice is the child's. §1 premise rewritten accordingly; characters.md background rows and places.md home row updated. **⚠️ Open sub-thread recorded:** who is in the house day-to-day — "by himself" vs characters.md §7's co-resident parent; three reconciliation options pending (parent commutes · caregiver at the house · child resident with adults on the lane).
 - **0.10 — 2026-11-18:** **§7 sub-thread and §7.7 both resolved — §7 is now fully closed (all 7 items).** *Presence:* **Ada is the parents' old friend** who kept the heirloom house while the child was raised in the city and helps him on arrival; parents stay busy in the city, the house is never empty, and no adult ever does the child's doing (Marlow's rule extended to her — characters.md §7 retitled "Adult character", ⚠️ flag cleared). *Payoff:* Lantern Hill = **horizon now (A)**, with **(C) the local payoff — the butterflies come back — as the direction** when a later phase needs an ending; committing to a lantern ceremony (B) rejected as scope poison. §1 premise updated to name Ada.
+- **0.11 — 2026-11-19:** **Direction reset (GDD v0.19).** Premise now names **Kit, 17**, and adds the goal of turning the land into a working farm; the "nothing can be neglected into failure" line replaced (crops/animals can be lost; the farm never can). Map gains the **fields behind the house** (the farm grows, the lane does not). Seed shed hosts the **order board**; market stand is Kit's stall from T2; stile and Lantern Hill reopen through **lane restoration** (§7.7 "never promised" superseded, still optional). Pre-reader/sofa/parent-co-player wording replaced; future cast updated (friend of Kit's age, baker, merchant). §7 gets a reset note; §8 guardrails updated for neglect, farm growth, and no parent gating.

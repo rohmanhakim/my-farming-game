@@ -1,92 +1,90 @@
 # Crops
 
-> **Status:** Brainstorming draft
-> **Version:** 0.4
-> **Last updated:** 2026-11-18
-> **Purpose:** Crops available in the game, adjusted to the scope of the game described in the GDD. All names are tentative and can be changed. Every element here is a proposal pending playtesting.
+> **Status:** Brainstorming draft — **updated for the direction reset 2026-11-19**
+> **Version:** 0.5
+> **Last updated:** 2026-11-19
+> **Purpose:** Crops in the game, their seasons, uses, and the watering/neglect rule. All names are tentative; every element is a proposal pending playtesting.
 
 ---
 
 ## 1. Scope and design intent
 
-The crop list is intentionally tiny. There is no economy, no sell pressure, and no crop death. Plants exist to give the child visible, cheerful progress and to supply the Butterfly Garden task and seasonal decoration.
+Crops are the heart of the farm economy: they fill orders, sell at the market, feed animals, and become jam, bread, and pies.
 
-- **No withering:** Plants never die, even in winter or if unwatered.
-- **Blooms persist after their season:** A grown plant keeps blooming into later seasons — it only needs its own season to *sprout*. A flower grown in spring still draws butterflies in summer (mirroring how similar games treat seasonal butterflies).
-- **No inventory backlog:** Harvests go straight to the garden shelf.
-- **Season-aware:** Each crop grows in one or more seasons. Out-of-season planting simply does not sprout — no penalty.
-
----
-
-## 2. Growth model (summary)
-
-- Plants advance through visible growth stages in-session, on **accumulated play time** (no in-game-day requirement).
-- **Stage timing (GDD §4 decision, Milestone 0):** default **Medium ≈ 30–45 s per stage** — seed → sprout → bloom in ≈ 2 minutes of play. **Fast ≈ 15–20 s** and **Slow ≈ 60–90 s** presets exist for the options screen.
-- Watering is optional and speeds growth with sparkle/sound feedback.
-- Plants grow without watering; watering never feels obligatory.
-- **Growth while the game is closed:** **paused by default** — nothing grows while the game is off. The optional **Gentle catch-up** setting adds at most one stage when the game is next opened and never pushes a plant past bloom (positive-only; no penalty either way).
-- Both settings are chosen on the options screen **before starting a new game** and are not changed mid-game.
-- Initial garden size: two or three beds.
+- **Crops need water** (GDD §4). Dry soil pauses growth; a crop left dry **turns yellow**, then is **gone** (bed empty again). Watering a yellow crop recovers it.
+- **Season-aware:** each crop sprouts only in its season(s). Out-of-season seeds don't sprout — no loss. A grown crop is harvestable after its season ends (kept from v0.3). The **greenhouse** grows anything year-round (buildings.md).
+- **Harvested goods don't spoil** (no added complexity).
+- **No fixed bed limit** — beds are bought; money is the early limit, land the final one.
 
 ---
 
-## 3. Starting loadout seeds
+## 2. Growth and neglect model (summary)
 
-The player begins with a seed box holding two or three basic seeds (Sun Sprout, Clover Vine, Moon Petal, Carrot Patch — two or three of these). These are available from the start and grow in the starting season.
-
-| Tentative name | Season | Growth speed | Use | Notes |
-|---|---|---|---|---|
-| **Sun Sprout** | Spring / Summer | Fast | Decoration, shelf | Bright yellow bloom; good first plant. |
-| **Clover Vine** | Spring / Autumn | Medium | Decoration, shelf, bee food | Trailing green vine; soft texture. Plant near the beehive to feed the bees. |
-| **Moon Petal** | Summer / Autumn | Medium | Decoration, shelf, gift | Pale bloom; glows faintly at night. |
-| **Carrot Patch** | Spring / Summer | Fast | Shelf, decoration | Familiar first vegetable; kids recognize it instantly. |
+- Growth runs on **accumulated play time while the soil is moist** (GDD §4). Default **Medium ≈ 30–45 s per stage**; Fast/Slow presets on the new-game screen. Nothing grows or dries while the game is closed.
+- **Watering** moistens the soil for about one in-game day; sprinklers water automatically each morning.
+- **Neglect stages:** moist (growing) → dry (paused, cracked-soil look) → **yellow** (drooping, yellow-brown leaves — the warning) → **gone**. Grace times per mode in challenge-layers.md §3.
+- **Quality:** compost and consistent watering raise crop quality (1–3 stars).
+- **Starting garden:** 2–3 beds in the front garden — a starting point, not a cap.
 
 ---
+
+## 3. Starting seeds
+
+| Tentative name | Season | Growth | Uses |
+|---|---|---|---|
+| **Sun Sprout** | Spring / Summer | Fast | Sell, decoration, flower orders |
+| **Clover Vine** | Spring / Autumn | Medium | Bee food, animal feed |
+| **Moon Petal** | Summer / Autumn | Medium | Gift, sell; glows at night |
+| **Carrot Patch** | Spring / Summer | Fast | Orders, sell, animal treat |
 
 ## 4. Butterfly Garden flowers
 
-These are the three flowers for Mr. Marlow's first task. They are supplied by the NPC when the task is accepted and do not come from the starting seed box.
+Supplied by Mr. Marlow for the first task (replacement seeds given kindly if they are lost).
 
-| Tentative name | Season | Role | Notes |
-|---|---|---|---|
-| **Meadow Bell** | Spring | Butterfly Garden task | Attracts butterflies when grown. Supplied by Marlow. |
-| **Honey Cup** | Spring | Butterfly Garden task | Attracts butterflies when grown. Supplied by Marlow. |
-| **Lace Flower** | Spring | Butterfly Garden task | Attracts butterflies when grown. Supplied by Marlow. |
+| Name | Season | Notes |
+|---|---|---|
+| **Meadow Bell** | Spring | Attracts butterflies |
+| **Honey Cup** | Spring | Attracts butterflies; bee favourite |
+| **Lace Flower** | Spring | Attracts butterflies |
 
----
+## 5. Farm crops (bought at the seed shed or from merchants)
 
-## 5. Seasonal crops (tentative, later unlocks)
-
-Additional crops may be unlocked later through play. All are tentative names.
-
-| Tentative name | Season | Growth speed | Use | Unlock |
+| Tentative name | Season | Growth | Main uses | Unlock |
 |---|---|---|---|---|
-| **Berry Spray** | Summer | Slow | Shelf, decoration, bee food | Later reward or task. Plant near the beehive to feed the bees. |
-| **Tomato Vine** | Summer | Medium | Shelf, decoration | Supports the trellis/stick tool unlock. |
-| **Pumpkin Head** | Autumn | Slow | Shelf, decoration | Later reward or task. |
-| **Frost Leaf** | Winter | Medium | Shelf, decoration | Indoor/winter crop candidate. |
-| **Herb Pot** | Winter | Medium | Shelf, gift | Indoor windowsill crop; keeps gardening alive in cold months. |
-| **Rain Drop** | Spring / Autumn | Medium | Shelf, gift | Later reward or task. |
+| **Wheat** | Summer / Autumn | Medium | Flour → bread; animal feed (silo) | T2 |
+| **Hay grass** | Spring–Autumn | Fast | Animal feed (silo) | T2 |
+| **Tomato Vine** | Summer | Medium | Orders, sauces; needs trellis | T2 |
+| **Berry Spray** | Summer | Slow | Jam, pie, bee food | T2 |
+| **Pumpkin Head** | Autumn | Slow | Pie, contests (biggest pumpkin) | T3 |
+| **Herb Pot** | All (indoor / greenhouse) | Medium | Orders (Marlow), cooking | T2 |
+| **Frost Leaf** | Winter | Medium | Winter orders | T3 |
+| **Rain Drop** | Spring / Autumn | Medium | Sell, gift | T3 |
 
-Winter has few or no outdoor crops, consistent with the lane resting. Indoor or shelf-based winter activities remain available.
+## 6. Orchard trees
 
----
+Planted once, harvested every season for years (buildings.md *Orchard*). Trees are never lost to neglect once mature (realistic: established trees survive dry spells) but give no fruit that season if never watered.
 
-## 6. Crop uses
+| Tree | Fruit season | Uses |
+|---|---|---|
+| **Apple** | Autumn | Pies, jam, juice |
+| **Pear** | Autumn | Jam, sell |
+| **Cherry** | Summer | Jam, pie |
+| **Plum** | Summer | Jam |
+
+## 7. Rare crops (collection)
+
+Golden pumpkin, giant variants, merchant-only seeds — see progression.md §6.2.
+
+## 8. Crop uses
 
 | Use | Description |
 |---|---|
-| **Decoration** | Placed in the front garden for creative ownership. |
-| **Shelf** | Sent automatically to the garden shelf; viewable but not managed. |
-| **Gift** | Shown or given to an NPC as part of a social task (optional). |
-
----
-
-## 7. Unlock conditions
-
-- **Starting seeds:** Available at start of game.
-- **Butterfly Garden flowers:** Supplied by Mr. Marlow when the player accepts the first task.
-- **Later seasonal crops:** Unlocked through tasks, relationship milestones, or exploration (deferred from prototype).
+| **Orders** | Delivered to neighbours (main income). |
+| **Sell** | Market stall, shipping box, farm shop (seasonal & demand pricing). |
+| **Process** | Kitchen/mill: jam, bread, pie, sauce. |
+| **Feed** | Hay and wheat stored in the silo for auto-feeders. |
+| **Decoration / gift** | Flowers in borders; gifts to neighbours. |
+| **Garden shelf** | Phase-001 display of harvests (becomes the inventory in later phases). |
 
 ---
 
@@ -95,16 +93,19 @@ Winter has few or no outdoor crops, consistent with the lane resting. Indoor or 
 | Document | Relationship |
 |---|---|
 | [README.md](../README.md) | Centralized hub for the project. |
-| [GDD.md](./GDD.md) | No-withering, no-economy, small-garden guardrails come from the GDD scope. |
-| [mechanics.md](./mechanics.md) | Plant, water, and harvest verbs drive the crop growth model. |
-| [items.md](./items.md) | Grown crops route to the garden shelf as items. |
-| [inventory.md](./inventory.md) | Harvested crops fill collectathon inventory slots. |
-| [world.md](./world.md) | Butterfly Garden flowers are the first story task on Bramblewick Lane. |
-| [events.md](./events.md) | Spring bloom day and seasonal crop events are listed here. |
+| [GDD.md](./GDD.md) | Growth model, neglect rule, ways to earn. |
+| [mechanics.md](./mechanics.md) | Plant, water, harvest, process verbs. |
+| [buildings.md](./buildings.md) | Beds, greenhouse, hydroponics, orchard, sprinklers, silo. |
+| [items.md](./items.md) | Harvested and processed goods. |
+| [inventory.md](./inventory.md) | Harvested crop slots. |
+| [challenge-layers.md](./challenge-layers.md) | Neglect grace times per mode. |
+| [world.md](./world.md) | Butterfly Garden flowers are the first story task. |
+| [events.md](./events.md) | Seasonal crop and contest events. |
 
-## 8. Change log
+## 9. Change log
 
 - **0.1 — 2026-11-18:** Initial draft. Small seasonal crop list with no withering, no economy, and automatic shelf routing. Butterfly Garden flowers supplied by NPC task.
 - **0.2 — 2026-11-18:** Added Carrot Patch to starting seeds; added Tomato Vine, Herb Pot. Clover Vine and Berry Spray noted as bee food. Winter indoor crops (Frost Leaf, Herb Pot) keep gardening alive in cold months.
 - **0.3 — 2026-11-18:** Reconciled tables with change log 0.2 (Carrot Patch, Tomato Vine, Herb Pot now appear in the tables; bee-food notes added to Clover Vine and Berry Spray). Added the season-persistence rule: grown plants keep blooming after their season, so butterfly visits in spring and summer are consistent.
 - **0.4 — 2026-11-18:** Growth model §2 updated to the Milestone 0 decision (GDD §4, v0.16): stage timing default **Medium ≈30–45 s** (Fast/Slow presets for the options screen), growth paused while the game is closed by default, optional positive-only Gentle catch-up (+1 stage max, never past bloom), both set before starting a new game. Replaced the old “closed-game growth is TBD” line.
+- **0.5 — 2026-11-19:** **Direction reset (GDD v0.19).** No-withering rule replaced: crops **need water**, dry soil pauses growth, neglected crops **turn yellow then are gone** (grace per mode). Economy uses added (orders, selling, processing, feed). 2–3-bed limit is now only the starting garden. Added farm crops (wheat, hay grass), **orchard trees**, crop quality, greenhouse year-round growing, rare crops as a collection, and unlock tiers.

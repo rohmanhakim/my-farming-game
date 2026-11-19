@@ -1,131 +1,143 @@
-# Progressive Challenge & Sticker System
+# Progression: Farm Growth, Automation, and Long-Term Goals
 
-> **Status:** Design draft
-> **Version:** 0.3
-> **Last updated:** 2026-11-18
-> **Purpose:** Optional challenge layers that grow with the child's skill. Nothing is ever locked behind stickers or requests.
+> **Status:** Design draft — **restructured 2026-11-19**
+> **Version:** 0.4
+> **Last updated:** 2026-11-19
+> **Purpose:** How the farm grows from a tangled plot to a full, automated farm (*Harvest Moon*-style), what limits it at each point, and what there is to chase once it runs well. Replaces the old parent-controlled layers and five-stage age map. Everything after the core farm loop is **optional**.
+
+---
 
 ## 1. Design Philosophy
 
-Challenge is opt-in. The core loop (plant, water, harvest, care for animals) always remains available and never gets harder. Stickers and optional goals reward mastery and discovery without punishing kids who play at their own pace. A child who never earns a single sticker can still play forever.
+- **Challenge rises naturally as the farm grows.** More beds mean more watering; more animals mean more feeding; bigger orders mean more planning. Nothing is toggled by a parent and nothing is gated by age.
+- **Early limit: money. Final limit: land.** At first Kit can only build what Kit can afford. Later, money is plentiful and the question becomes *what fits*.
+- **Automation is the turning point** (GDD pillar 5): it arrives when the farm has become too big to tend by hand, so it feels earned and relieving.
+- **Nothing is mandatory.** Orders, contests, collections, and decorations are invitations. A player can keep a small, hand-tended farm forever.
+- Difficulty modes (challenge-layers.md) only change how steep the curve feels.
 
-Challenge layers are managed by the parent or caregiver through a grown-up menu. The parent and child decide together when to turn a layer on — and can turn it off at any time with one click. Nothing unlocks automatically based on age or playtime.
+## 2. Achievement / Sticker Book
 
-## 2. Sticker Book
+A picture gallery in the pause menu. Stickers are cosmetic achievements — nothing is locked behind them.
 
-A picture gallery in the pause menu. Stickers are earned for gentle milestones:
-
-| Sticker | How earned | Challenge level |
+| Sticker | How earned | Theme |
 |---|---|---|
-| **First Harvest** | Harvest 1 plant | Tutorial |
-| **Green Thumb** | Water 10 plants | Gentle habit |
-| **Egg Collector** | Collect 7 eggs from the chicken | Regular care |
-| **Winter Keeper** | Feed the chicken in winter months | Seasonal awareness |
-| **Honey Maker** | Plant 3 flowers near beehive, collect honey | Discovery |
-| **Garden Artist** | Place 5 decorations in the front garden | Creative, not skill-based |
-| **Sheep Friend** | Brush the sheep 5 times | Animal care |
-| **First Hello** | Meet Mr. Marlow for the first time | Tutorial |
-| **New Friend** | Meet a second neighbour on the lane | Gentle habit |
-| **Collection Book** | Fill a friendship page for any neighbour | Discovery |
+| **First Hello** | Meet Mr. Marlow | Tutorial |
+| **First Harvest** | Harvest 1 crop | Tutorial |
+| **First Order** | Deliver a first neighbour order | Economy |
+| **Green Thumb** | Water 100 crops | Habit |
+| **Egg Collector** | Collect 50 eggs | Animal care |
+| **Gold Star** | Get a 3-star animal product | Quality care |
+| **Pond Keeper** | Harvest 20 fish from your pond | Fish pond |
+| **Off the Clock** | Place your first sprinkler | Automation |
+| **Busy Hands** | Hire your first helper | Automation |
+| **Jam Session** | Make 10 jars of jam | Processing |
+| **Blue Ribbon** | Win a festival contest | Contests |
+| **New Friend** | Meet a second neighbour | Social |
+| **Every Corner** | Own all farm land | Land |
+| **Lane Restored** | Finish restoring the lane (§6.4) | Endgame |
 
-Stickers are cosmetic. No content, tool, or area is locked behind them.
+## 3. Farm Growth Tiers
 
-## 3. Parent-Controlled Challenge Layers
+Tiers are reached by **what the farm is**, not by time played or age. They gate the building catalogue (buildings.md) and order sizes.
 
-The parent or caregiver toggles these layers on or off in a grown-up menu. Layers are additive — turning one on never removes Gentle Core features. Nothing unlocks automatically based on age or playtime.
+| Tier | Reached when | Typical limit | What opens | Order size |
+|---|---|---|---|---|
+| **T1 — Small plot** | Start of game | **Money** (a few coins, 2–3 beds) | Seeds, more beds, compost bin, watering can, butterfly net (first task), the order board | 1–3 items |
+| **T2 — Growing farm** | First 10 orders delivered *or* first coop built | **Money** | Coop, beehive, workshop, kitchen (processing), market stall, first blueprints, brush, fishing rod | 3–6 items, mixed |
+| **T3 — Working farm** | First land expansion bought | **Money + time** (hand-tending gets busy) | Barn, silo, fish pond, orchard, travelling merchant visits, festivals & contests | Baskets, weekly repeats |
+| **T4 — Automated farm** | First sprinkler or auto-feeder placed | **Land** begins to bite | Sprinklers (all grades), auto-feeders, pond auto-feeder, windmill/pump, greenhouse, helpers | Bulk orders, catering |
+| **T5 — Full land** | All land fields owned | **Land only** | Hydroponics, farm shop, lane restoration, endgame goals (§6) | Standing orders, festival catering |
 
-| Layer | What it adds | Default | Suggested stage |
-|---|---|---|---|
-| **Words vs. Pictures** | NPC dialogue shows simple sentences with voice-over; picture-only mode stays available | Pictures only | Preschool |
-| **Garden Coins** | Earn coins at market stand; buy seed packets and decorations | Off | 2nd–3rd grade |
-| **Tool Upgrades** | Larger watering can, hoe, scythe, trellis | Off | 2nd–3rd grade |
-| **Crafting** | Compost, scarecrow, bird feeder recipes (picture-based) | Off | 2nd–3rd grade |
-| **Multi-step Requests** | Neighbour asks for 2+ items or seasonal discoveries | Off | K–1st grade |
-| **Session Timer** | Gentle break reminder after set play time | On (default) | All stages |
+**Tools across tiers:** watering can (start) → bigger can, hoe, scythe (T2) → brush, fishing rod (T2) → upgraded tools (T3+). Tool upgrades cost money and materials; old tools never disappear.
 
-Day/night and seasons are **always on** (Gentle Core — see mechanics.md §2–§3), so there is no Time Awareness layer.
+## 4. Land Expansion
 
-### Stage Map
+- The farm starts as the **front garden** of the heirloom house (~12 tiles).
+- More land comes as **fields behind the house** (world.md §3.1): each is bought from the family's old deeds via Marlow, or cleared (stones, stumps, weeds) with tools. Proposed: **5 fields** beyond the starting plot, each larger and pricier than the last.
+- Owning every field = **T5 Full land**: the farm can no longer grow outward, only *better* (greenhouse, hydroponics, processing, layout).
+- The lane itself never grows (world.md §8): the farm expands, the shared world stays small.
 
-| Stage | Age | Typical active layers | Parent's role |
-|---|---|---|---|
-| **Stage 1 — My First Garden** | Preschool (3–5) | None (Gentle Core only) | Reads dialogue, presses buttons, narrates |
-| **Stage 2 — Garden Helpers** | K–1st (5–7) | Multi-step Requests | Suggests optional goals, reads hard words |
-| **Stage 3 — Farm Manager in Training** | 2nd–3rd (7–9) | Garden Coins, Tool Upgrades, Crafting | Runs shop menus, explains prices, helps plan |
-| **Stage 4 — Bramblewick Farmer** | 4th–5th (9–11) | All layers + festivals, relationship meters | Co-op neighbour, advisor |
-| **Stage 5 — Standard Sim** | 5th grade+ (11+) | Full economy, crafting, expanded world | Optional co-op partner or checks in |
+## 5. Neighbour Orders as Progression
 
-#### Character introduction by stage
-
-| Stage | Characters present on the lane | How each is introduced |
+| Stage | Example | What it practises |
 |---|---|---|
-| **Stage 1 — My First Garden** | Mr. Marlow only | Day one at the seed shed gate; first task is the Butterfly Garden. |
-| **Stage 2 — Garden Helpers** | Mr. Marlow + the allotment neighbour + the brook keeper | Trace appears first (birdhouse / laundry), then a picture-only greeting after a voluntary milestone (first flower / first catch). |
-| **Stage 3 — Farm Manager in Training** | Plus a child of the lane | After two neighbour tasks and a brook visit; a peer who waves and walks alongside, no task required. |
-| **Stage 4 — Bramblewick Farmer** | Plus the Hill Visitor (seasonal) | High warmth with Marlow + winter season; Lantern Hill ceremony challenge layer must be on. |
+| Single item | "Six eggs, please." | Producing to a request |
+| Mixed | "Two carrots, a jar of honey." | Planning several products |
+| Processed | "An apple pie for Sunday." | Processing chains |
+| Seasonal basket | "A winter basket: herbs, cheese, jam." | Seasons, storage, greenhouse |
+| Bulk | "Forty eggs for the festival." | Scaling up, automation |
+| Repeat / standing | "A basket every week." | Reliable supply, relationships |
 
-No character is ever required to progress. Gentle Core works with Mr. Marlow alone.
+Orders always match what Kit can produce right now (GDD §4) and never carry a deadline penalty.
 
-### One-Click Reset
+## 6. After the Farm Is Running — Long-Term Goals (all optional)
 
-A parent setting returns every layer to Gentle Core instantly. The simple garden is always available, no matter how many layers were previously turned on.
+When the land is full and automation runs the chores, there is still plenty to chase. None of it is required.
 
-### Parent Gate
+### 6.1 Decoration and farm charm
 
-The grown-up menu is placed deep inside the pause menu so the child cannot accidentally flip layers during play.
+- **Decorations:** fences, paths, flower borders, lanterns, statues, benches, scarecrows, seasonal ornaments, signposts, a painted door for the house.
+- **Get them by:** buying (shops, travelling merchants), crafting (workshop blueprints), or **winning** them (contests, friendship gifts, collections).
+- **Place anywhere** on the farm; move freely.
+- **Farm charm:** a visible charm rating (shown as a row of flowers, not a number) that rises with decorations, tidy paths, flower variety, and well-kept animals.
+  - **Why it matters:** higher charm brings **more visitors to the farm shop and market stall**, unlocks **special neighbour visits and photo moments**, and counts in the **"Prettiest Farm" festival contest**.
+  - **Trade-off:** decorations use land that could grow crops — beauty versus production is a choice, not a rule.
 
-## 4. Neighbour Requests (Optional Multi-Step)
+### 6.2 Collections
 
-Mr. Marlow's requests can grow in steps as the child shows interest:
+| Collection | Examples |
+|---|---|
+| **Rare crops** | Golden pumpkin, giant variants, seeds only from merchants or contests |
+| **Fish** | Every pond and brook species, including rare seasonal fish |
+| **Animal breeds** | Speckled hens, black sheep, highland cow, rare bee strains — bought from merchants or won |
+| **Recipes** | Every jam, pie, bread, cheese, and preserve |
+| **Forage finds** | Wild herbs, mushrooms, shells, fossils from exploring |
 
-| Type | Example | Skills practiced |
+Collections fill the **Collection Book** (inventory.md §6) and can be shown in the showcase (§6.5).
+
+### 6.3 Festival and contest trophies
+
+Seasonal festivals hold contests — biggest pumpkin, best eggs, finest wool, best jam, prettiest farm, biggest fish. Ribbons and trophies are displayed on the farm; some contests award unique decorations or rare seeds.
+
+### 6.4 Restoring the lane
+
+The lane's long-arc story (world.md §4.3): using money and produce to restore shared places — repair the footbridge, replant the butterfly meadow, rebuild the stile, re-light the lantern on Lantern Hill. Each restoration is a community project with its own order list and a visible change to the world.
+
+### 6.5 Showcase / farm museum
+
+A small showcase building (or a room in the house) that displays collections, trophies, rare items, and recipes. Visitors comment on it; a full showcase is its own achievement.
+
+### 6.6 Mastery goals
+
+Per-activity mastery tracks (farming, animal care, fishing, cooking, building) with simple milestones ("grow every crop", "raise a 3-star product of every animal"). Each mastery level unlocks a cosmetic reward or rare blueprint.
+
+### 6.7 Prestige rare items (optional)
+
+Very rare items for players who want them: golden watering can, prize-winning breeds, a weathervane for the windmill, legendary fish. Purely cosmetic or slightly better — never needed for anything else.
+
+## 7. Character Introduction by Farm Tier
+
+| Tier | Characters | Introduction |
 |---|---|---|
-| **Single step** | "Plant these 3 flowers." | Planting, watering |
-| **Two steps** | "Bring me 2 carrots and 1 egg." | Harvesting + animal care + delivery |
-| **Seasonal** | "It's winter. Find something that grows indoors." | Season knowledge |
-| **Discovery** | "The beehive is quiet. What do bees like?" | Observation |
+| T1 | Mr. Marlow, Ada | Day one; Marlow's first task is the Butterfly Garden, then the order board. |
+| T2 | The allotment neighbour, the baker | Trace first, then a first order. |
+| T3 | The brook keeper, a friend of Kit's age, the travelling merchant | After exploring the brook; merchant on visiting days. |
+| T4–T5 | The Hill Visitor (seasonal) | During lane restoration and the winter festival. |
 
-Marlow never gets upset if the child declines or doesn't finish. He says: *"No worries! I'll be here whenever you're ready."*
+No character is ever required to progress.
 
-## 5. Optional Tools
-
-Unlocked through play, never required to progress:
-
-| Tool | Unlock condition | What it adds |
-|---|---|---|
-| **Watering can** | Start | Basic watering |
-| **Butterfly net** | Butterfly Garden task | Catch/release creatures |
-| **Brush** | After caring for the sheep | Brush sheep for wool |
-| **Basket** | After first egg collection | Carry multiple eggs at once |
-| **Trellis/stick** | After growing tomato | Support climbing plants |
-| **Compost bin** | Mid-game | Turn old plants into rich soil |
-
-Each new tool appears in the tool belt as a new icon slot. Old tools never disappear.
-
-## 6. Seasonal Mysteries
+## 8. Seasonal Mysteries
 
 Optional observation goals that recur every year:
 
 | Season | Mystery | Reward |
 |---|---|---|
 | **Spring** | "Where did the butterflies go?" | Butterfly net (if not yet earned) |
-| **Summer** | "The beehive is glowing at night." | Honey jar |
-| **Autumn** | "The sheep's wool is extra thick." | Wool bundle (more than usual) |
+| **Summer** | "The beehive is glowing at night." | Rare bee strain |
+| **Autumn** | "The sheep's wool is extra thick." | Quality wool bundle |
 | **Winter** | "Marlow's lantern is dark." | Garden lantern (tool) — distinct from the unlit lantern on Lantern Hill |
 
-Missing a mystery simply means waiting for it to return next season. No penalty.
-
-## 7. Parent Role Evolution
-
-| Child's stage | Parent's role |
-|---|---|
-| **Beginning** | Reads dialogue aloud, presses buttons, narrates what's happening |
-| **Growing confidence** | Asks: *"What do you think the chicken needs?"* Lets child choose |
-| **Seeking challenge** | Suggests optional goals: *"Can you collect 5 eggs before spring?"* Child can say no |
-| **Managing settings** | Opens the grown-up menu; toggles challenge layers on or off with the child; sets session timer |
-| **Approving stage-up** | Confirms when the child is ready for the next stage |
-| **Co-op neighbour** | Plays a second character on the lane alongside the child |
-| **One-click reset** | Returns all layers to Gentle Core instantly whenever needed |
+Missing a mystery means waiting for it to return next year.
 
 ---
 
@@ -134,19 +146,21 @@ Missing a mystery simply means waiting for it to return next season. No penalty.
 | Document | Relationship |
 |---|---|
 | [README.md](../README.md) | Centralized hub for the project. |
-| [GDD.md](./GDD.md) | Pillar 9 (progressive challenge) defines the opt-in, never-locked approach. |
-| [mechanics.md](./mechanics.md) | Optional tools (brush, basket, trellis, compost bin) appear in the tool belt. |
-| [inventory.md](./inventory.md) | The sticker book lives in the pause menu alongside the collection book. |
-| [animals.md](./animals.md) | Egg Collector, Winter Keeper, Honey Maker, and Sheep Friend stickers involve animal care. |
-| [crops.md](./crops.md) | Green Thumb and Garden Artist stickers involve planting and decorating. |
-| [events.md](./events.md) | Seasonal mysteries recur each season as observation goals. |
-| [world.md](./world.md) | Lantern Hill winter lantern lighting is a winter mystery candidate. |
-| [challenge-layers.md](./challenge-layers.md) | Defines optional challenge layers, parent-controlled toggles, and the five-stage growth map. |
+| [GDD.md](./GDD.md) | Pillars 4–6 (grow your farm, automation, many ways to earn). |
+| [buildings.md](./buildings.md) | Building catalogue gated by these tiers. |
+| [challenge-layers.md](./challenge-layers.md) | Difficulty modes that tune the curve. |
+| [mechanics.md](./mechanics.md) | Build, craft, sell, decorate verbs. |
+| [inventory.md](./inventory.md) | Sticker book and Collection Book. |
+| [animals.md](./animals.md) | Breeds, quality products, fish. |
+| [crops.md](./crops.md) | Rare crops and orchards. |
+| [events.md](./events.md) | Festivals, contests, merchant visits, lane restoration. |
+| [world.md](./world.md) | Lane restoration and Lantern Hill. |
 
 ---
 
-## 8. Change log
+## 9. Change log
 
 - **0.1 — 2026-11-18:** Initial draft. Sticker Book, parent-controlled challenge layers, five-stage growth map, neighbour requests, optional tools, seasonal mysteries, parent role evolution.
 - **0.2 — 2026-11-18:** Added friendship stickers (First Hello, New Friend, Collection Book) and a character introduction table mapping which neighbours are present at each stage.
 - **0.3 — 2026-11-18:** Removed the Time Awareness layer (always on, Gentle Core); Session Timer clarified on by default. Brush unlock corrected to the sheep; winter mystery reward renamed to the Garden lantern (a different item from Lantern Hill's unlit lantern); normalised "neighbor" to "neighbour".
+- **0.4 — 2026-11-19:** **Restructured for the direction reset (GDD v0.19).** Parent-controlled layers, the five-stage age map, and the parent-role table removed. Added **farm growth tiers T1–T5** (money → land as the limit), **land expansion** (fields behind the house), **orders as progression**, and a new **§6 After the farm is running** with optional long-term goals: decoration and **farm charm**, collections (rare crops, fish, breeds, recipes, forage), festival trophies, **lane restoration**, a showcase/museum, mastery tracks, and prestige rare items. Stickers updated for orders, automation, fish pond, contests, and land. Character introductions now tied to farm tiers.
