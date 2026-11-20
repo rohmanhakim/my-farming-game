@@ -1,7 +1,7 @@
 # Game Design Document
 
 > **Status:** Brainstorming draft — **direction reset 2026-11-19** (see v0.19–v0.20 change log)
-> **Version:** 0.35
+> **Version:** 0.36
 > **Last updated:** 2026-11-20
 > **Purpose:** A living document for shaping the game together. Confirmed owner decisions are marked **decided**; everything else is a proposal, not a commitment.
 
@@ -299,8 +299,10 @@ Short sessions are satisfying; long sessions are possible. There is no required 
 
 ## 7. World and Characters
 
-- One lane (Bramblewick Lane) with its eight places, plus **Kit's farm**, which grows by clearing and buying **adjacent fields behind the house**. *The farm grows; the lane does not* — the "grow the cast before the geography" rule still applies to the lane (world.md §3.1).
-- A small cast introduced one at a time, each with their own orders and tastes.
+- **Bramblewick Vale** (owner decision 2026-11-20, replaces "one lane, eight places"): a small valley with **Kit's farm** at the bottom, the lane leading up to **Bramblewick Green** (the village hub: Marlow's seed shed, bakery, general store, village hall, smithy, clinic, carpenter, library, inn, market stand, allotments), and three outer areas — **Brookside & Mill Pond**, **Hazel Wood**, **Lantern Hill & Old Quarry**. About 7,400 tiles (≈ 33 screens); the farthest spot is ≈ 36 s from the front door. Areas open at farm tiers and through lane restoration; the valley itself is fixed. Kit's farm grows by clearing and building on its own fields. Sizes, layout, unlocks, and the to-scale map: [places.md](./places.md).
+- A **picture map** in the pause menu shows the valley, Kit's position, and where today's orders go (places.md §5).
+- **Nobody gets sick:** the village clinic is a place for healthy-food orders and lessons, not treatment (pillar 2 unchanged).
+- A cast introduced one at a time — at most three new characters per farm tier (characters.md) — each with their own orders and tastes.
 
 **Setting and background story:** [world.md](./world.md). Characters: [characters.md](./characters.md).
 
@@ -432,7 +434,7 @@ Playtests with children are conducted with appropriate adult supervision and con
 | [README.md](../README.md) | Centralized hub; mirrors GDD version numbers in its header. |
 | [world.md](./world.md) | Setting, story, and places; the GDD remains authoritative for gameplay. |
 | [characters.md](./characters.md) | Kit (17), Ada, Mr. Marlow, and future cast. |
-| [places.md](./places.md) | The eight places on Bramblewick Lane plus Kit's growing farm. |
+| [places.md](./places.md) | Bramblewick Vale: areas, sizes, farm layout, unlocks, and the to-scale map. |
 | [crops.md](./crops.md) | Crop list, watering-based growth, yellowing and loss. |
 | [animals.md](./animals.md) | Animals and fish pond, care meters, loss rule, quality products. |
 | [items.md](./items.md) | Tools, products, processed goods, automation items. |
@@ -484,3 +486,4 @@ Playtests with children are conducted with appropriate adult supervision and con
 - **0.33 — 2026-11-20:** Owner: **Harvest Moon pace, 60 real seconds per in-game hour** (was 45 s). Day 04:30 → 21:30 = 17 real minutes; 15-minute readout tick = 15 s; 3-hour phase = 3 min. Menus (e.g. the bag) stop the clock.
 - **0.34 — 2026-11-20:** Owner rule: time stops for menus, conversations and shop screens, but keeps running indoors.
 - **0.35 — 2026-11-20:** Owner changed the rule: **time stops indoors** too (kid tolerance), on top of menus, conversations and shop screens.
+- **0.36 — 2026-11-20:** **World map redesigned as Bramblewick Vale (owner decision).** §7 now describes a hub-and-spokes valley (Kit's farm, Bramblewick Green village, Brookside & Mill Pond, Hazel Wood, Lantern Hill & Old Quarry) instead of one lane with eight places; adds the pause-menu picture map, up to three new characters per tier, and a clinic without sickness. Details in places.md v0.10.

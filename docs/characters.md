@@ -1,21 +1,21 @@
 # Characters
 
 > **Status:** Finalized for prototype (design v0.5) — **updated for the direction reset 2026-11-19**
-> **Version:** 0.12
-> **Last updated:** 2026-11-19
+> **Version:** 0.13
+> **Last updated:** 2026-11-20
 > **Purpose:** The final cast for the prototype, plus clearly-marked future cast. Names below are locked for the prototype unless playtesting proves otherwise. Backgrounds are brief and adjustable.
 
 ---
 
 ## 1. Scope and design intent
 
-The cast is small by design: grow the cast before the geography. All characters are friendly, never scold Kit, and never do Kit's tasks for them. Mr. Marlow is the only NPC in the prototype; future characters live on the same lane without expanding the map.
+The cast grows with the farm: new faces arrive a few at a time as the farm reaches each tier. All characters are friendly, never scold Kit, and never do Kit's tasks for them. Mr. Marlow is the only NPC in the prototype; future characters live in **Bramblewick Vale**, most of them around the village green (places.md §2.1). The valley is fixed, so it fills with people rather than new places.
 
 ---
 
 ## 2. Introduction rhythm: one neighbour at a time
 
-**Rule:** The player never meets more than one new talkable character *at a time*, and no more than two new characters per farm tier (progression.md §3) — the point is to avoid overwhelming the player, not to enforce a hard count of one. Day one has exactly one neighbour: Mr. Marlow. Tier 2, for example, introduces at most the allotment neighbour and the baker. A new character is introduced only after the player completes a visible, voluntary action — for example, selling the first crop, collecting the first egg, or visiting the brook.
+**Rule:** The player never meets more than one new talkable character *at a time*, and no more than **three** new characters per farm tier (progression.md §3; raised from two on 2026-11-20 for the bigger village). The travelling merchant is a visitor and does not count — the point is to avoid overwhelming the player, not to enforce a hard count of one. Day one has exactly one neighbour: Mr. Marlow. Tier 2, for example, introduces at most the allotment neighbour, the baker, and the shopkeeper. A new character is introduced only after the player completes a visible, voluntary action — for example, selling the first crop, collecting the first egg, or visiting the brook.
 
 The character's arrival is itself a small event, not a dialogue dump:
 - The player sees a **trace** first (laundry on a line, footprints in the mud, a half-painted birdhouse) before they ever meet the person.
@@ -37,6 +37,12 @@ The character's arrival is itself a small event, not a dialogue dump:
 | Small footprints leading toward the stile | Bramblewick Lane | A friend of Kit's age |
 | A seed packet left on the player's gate | Player's home front garden | Mr. Marlow (already met) |
 | A lantern left unlit on the hill | Lantern Hill | The seasonal visitor |
+| A delivery crate outside the shop door | General store | The shopkeeper |
+| A horseshoe hung on the smithy door; a hammer's ring | Smithy | The smith |
+| Herb pots on the clinic windowsill | Clinic | The village nurse |
+| Sawdust and a half-built bench in the yard | Carpenter's yard | The carpenter |
+| A stack of picture books on the bench by the green | Library | The librarian |
+| Fresh lanterns being hung over the inn door | Inn | The innkeeper |
 
 Traces are picture-only: no text to read, no lore to memorise. They answer "who lives here?" without a single word of dialogue. The world feels full of neighbours before the player ever reads a conversation.
 
@@ -107,7 +113,7 @@ Ada has no authority over Kit's day. Co-play is real-time collaboration on one P
 | **Role** | Neighbour, keeper of the seed shed, narrator-voice of the game. |
 | **Archetype** | A wise, retired gardener: a distinctive hat, patience, a gift kept in a drawer, questions instead of instructions. |
 | **Age feel** | Elderly, unhurried, a little deaf in one ear, bad knees, excellent memory for plants and poor one for years. |
-| **Home** | The cottage and seed shed at the end of the lane; always there, always reachable. |
+| **Home** | The cottage and seed shed on the lane, between Kit's gate and the village green; always there, always reachable. |
 | **Voice** | Short sentences, warm, curious, mildly funny. "Ah. Now that's a thing worth looking at." |
 | **Background (adjustable)** | Mr. Marlow has kept the lane's seed shed for longer than anyone can remember. He knows every plant and story on the lane, but his knees no longer let him kneel and his hands are too stiff for small seeds, so he waits at his gate with a seed packet and lets Kit do the doing. He also keeps the lane's **order board** at the seed shed and sells seeds, and he likes herbs and honey in his own orders. |
 
@@ -166,15 +172,22 @@ The ~15 s window is deliberate: **in co-play the second player speaks first** ("
 
 ## 10. Future cast (not in prototype)
 
-Kept here so the setting grows inward rather than outward — new faces on the same lane, no new map.
+The valley is fixed (places.md §1); it fills with people. Homes are in places.md §2.
 
 | Tentative name | Role | Task theme | Introduction trigger |
 |---|---|---|---|
 | **The allotment neighbour** | A quieter character tending shared beds. | Sharing; vegetable orders. | First crop sold or delivered (T2). |
-| **The baker** *(new)* | Runs the lane's small bakery. | Egg, flour, and fruit orders; bread and pie recipes. | First eggs collected (T2). |
-| **The brook keeper** | Concerned with the water and reeds. | Caring for the brook; fishing (gives the rod). | First brook visit (T3). |
+| **The baker** | Runs the village bakery. | Egg, flour, and fruit orders; bread and pie recipes. | First eggs collected (T2). |
+| **The brook keeper** | Concerned with the water and reeds; lives on the far bank. | Caring for the brook; fishing (gives the rod). | First visit to the far bank once the footbridge is repaired (T3). |
 | **A friend of Kit's age** | A teen peer on the lane (replaces "a child of the lane"). | Friendship, festivals, contests. | Two neighbour tasks + brook visit (T3). |
 | **The travelling merchant** *(new)* | Visits on set days. | Trades, rare seeds and breeds. | Field A cleared (T3). |
+| **The shopkeeper** *(2026-11-20)* | Runs the general store. | Kitchen ingredients, bag upgrades, decorations; small household orders. | First kitchen recipe needs an ingredient Kit can't grow (T2). |
+| **The smith** *(2026-11-20)* | Works the village smithy. | Tool upgrades; stone and wood orders from clearing. | First debris Kit's tools can't clear (T3). |
+| **The village nurse** *(2026-11-20)* | Runs the clinic; nobody gets sick. | Healthy-food orders (fruit, herbal tea, honey, soup); picture lessons on eating well. | First healthy-food order on the board (T4). |
+| **The carpenter** *(2026-11-20)* | Runs the carpenter's yard. | House upgrades; builds the big late buildings (greenhouse, windmill, farm shop). | First T4 building wanted (T4). |
+| **The librarian** *(2026-11-20)* | Keeps the library and schoolroom. | Picture books that add Collection Book pages; questions about crops and animals. | Ten forage or fish finds in the Collection Book (T4). |
+| **The innkeeper** *(2026-11-20)* | Runs the inn where visitors stay. | Catering orders; hosts the merchant, the Hill Visitor, and festival guests. | Lane restoration reaches the stile (T5). |
+| **The farmhands** *(2026-11-20)* | Villagers in the three cottages. | Hired for a daily wage (GDD §4); not counted in the per-tier limit. | First farmhand cottage built (T4). |
 | **The Hill Visitor (seasonal)** | Arrives only for a season or gathering; candidate for the Lantern Hill event. | Seasonal stories, hill-top payoff. | Lane restoration reaches Lantern Hill, winter (T5). |
 
 > **Note:** Future-cast names remain tentative; only their roles, task themes, and introduction triggers are locked. No future character is required for the core farm loop.
@@ -188,7 +201,7 @@ The table below is the canonical data shape for every character. It is engine-ag
 
 | Field | Type | Kit (player) | Ada (co-play / family friend) | Mr. Marlow (prototype NPC) | Future cast |
 |---|---|---|---|---|---|
-| `id` | string | `player` | `ada` | `marlow` | `allotment_neighbour`, `baker`, `brook_keeper`, `friend`, `merchant`, `hill_visitor` |
+| `id` | string | `player` | `ada` | `marlow` | `allotment_neighbour`, `baker`, `shopkeeper`, `brook_keeper`, `friend`, `smith`, `merchant`, `nurse`, `carpenter`, `librarian`, `innkeeper`, `farmhand_*`, `hill_visitor` |
 | `name` | string | "Kit" | "Ada" | "Mr. Marlow" | tentative — see section 10 |
 | `role` | string | "Main character / player" | "Family friend, co-play partner" | "Neighbour, seed-shed keeper, narrator" | varies (section 10) |
 | `isPlayer` | boolean | true | false | false | false |
@@ -196,7 +209,7 @@ The table below is the canonical data shape for every character. It is engine-ag
 | `silhouette` | string | 17-year-old, work clothes | adult, garden clothes | soft hat, smock, walking stick | varies |
 | `sensorySignature` | string | — | — | rustling seed packet | varies |
 | `uniqueKnowledge` | string | — | — | every plant + Butterfly Garden story | varies |
-| `traceObject` | string | — | — | seed packet on the player's gate | laundry / birdhouse / footprints / lantern |
+| `traceObject` | string | — | — | seed packet on the player's gate | see section 3 |
 | `introductionTrigger` | string | start of game | start of game | day one, seed shed gate | varies (section 10) |
 | `gift` | string | — | — | butterfly net | varies |
 | `collectionBookEntry` | boolean | false | false | true (portrait + spoken name + memory) | true |
@@ -267,3 +280,4 @@ Implementation notes:
 - **0.10 — 2026-11-19:** **Direction reset (GDD v0.19).** **Kit is 17** (new Age row; teen proportions; identity and background now include growing the land into a working farm). Ada's "difficulty dial"/grown-up-menu role and the "parent in the room" note retired — Ada is any second player or a solo-play NPC. Introductions paced by **farm tiers** instead of age stages; future cast gains **the baker** and **the travelling merchant**, and "a child of the lane" becomes **a friend of Kit's age**. Marlow now also keeps the order board and has his own order tastes; hint ladder's parent-speaks-first window generalised to the second player. Pre-reader wording removed; registry `stageIntroduced` → `tierIntroduced`.
 - **0.11 — 2026-11-19:** Owner picks: Marlow's first gift is now the **first order** (berries, then carrots) — the butterfly net moves to the optional Butterfly Garden request; merchant arrives when Field A is cleared; single difficulty mode.
 - **0.12 — 2026-11-19:** **Kit is a boy** (owner decision); name and appearance stay customizable.
+- **0.13 — 2026-11-20:** **Bramblewick Vale (owner decisions).** The cast now lives in a village (places.md v0.10). Six new villagers added to §10 with tiers, triggers, and §3 traces: shopkeeper (T2), smith (T3), village nurse (T4, clinic without sickness), carpenter (T4, late buildings), librarian (T4), innkeeper (T5), plus farmhands (not counted). §2 limit raised from **two to three** new characters per tier (merchant is a visitor and does not count). Brook keeper now met on the far bank after the footbridge repair. "Grow the cast before the geography" wording replaced. Registry ids extended.

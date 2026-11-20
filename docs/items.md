@@ -1,8 +1,8 @@
 # Items
 
 > **Status:** Brainstorming draft — **updated for the direction reset 2026-11-19**
-> **Version:** 0.5
-> **Last updated:** 2026-11-19
+> **Version:** 0.6
+> **Last updated:** 2026-11-20
 > **Purpose:** Items the player can obtain: tools, produce, processed goods, building and automation items, decorations, and rare items. All names are tentative; every element is a proposal pending playtesting.
 
 ---
@@ -35,7 +35,7 @@ Items are readable at a glance and stored in picture-based, auto-stacking slots 
 | **Fishing rod** | Brook keeper / shop, T2 | Fish at the brook and pond. |
 | **Basket** | After first eggs | Carry many eggs. |
 | **Trellis/stick** | After first tomato | Support climbing plants. |
-| **Upgraded tools** | Workshop / shop, T3+ | Bigger can, faster hoe, golden variants (prestige). |
+| **Upgraded tools** | Village smithy, T3+ | Bigger can, faster hoe, golden variants (prestige). |
 | **Garden lantern** | Winter mystery | Light for night walks; distinct from Lantern Hill's unlit lantern. |
 
 ## 4. Produce (harvested / collected)
@@ -114,3 +114,4 @@ Rare seeds, rare breeds, legendary fish, contest ribbons and trophies, fossils/s
 - **0.3 — 2026-11-18:** Added missing earned tools (Brush, Basket, Trellis/stick, Compost bin), added Carrot Patch and the new seasonal crops (Tomato Vine, Herb Pot), clarified the two lanterns as different items, added milk to the Garden Coins sources, and fixed the duplicate §8 numbering.
 - **0.4 — 2026-11-19:** **Direction reset (GDD v0.19).** Opt-in/Gentle-Core split removed: money, seed packets, tool upgrades, and crafting outputs are core. Added purse, hoe/scythe/fishing rod, quality stacks, **processed goods** (jam, bread, cheese, pie, smoked fish, flour, fish food, compost), **blueprints, materials, and automation items** (sprinklers, feeders, helper contracts, feed), decorations for farm charm, rare/collectible items, and the order board. Compost bin moved to buildings.md.
 - **0.5 — 2026-11-19:** Purse fixed at 500 coins (single mode, economy.md); old family hoe in the starting loadout; Butterfly Garden marked optional.
+- **0.6 — 2026-11-20:** Upgraded tools now come from the village smithy (places.md v0.10).

@@ -1,8 +1,8 @@
 # Progression: Farm Growth, Automation, and Long-Term Goals
 
 > **Status:** Design draft — **restructured 2026-11-19**
-> **Version:** 0.8
-> **Last updated:** 2026-11-19
+> **Version:** 0.9
+> **Last updated:** 2026-11-20
 > **Purpose:** How the farm grows from a tangled plot to a full, automated farm (*Harvest Moon*-style), what limits it at each point, and what there is to chase once it runs well. Replaces the old parent-controlled layers and five-stage age map. Everything after the core farm loop is **optional**.
 
 ---
@@ -48,7 +48,9 @@ Tiers are reached by **what the farm is**, not by time played or age. They gate 
 | **T4 — Automated farm** | First sprinkler or auto-feeder placed | **Land** begins to bite | Sprinklers (all grades), auto-feeders, pond auto-feeder, windmill/pump, greenhouse, helpers | Bulk orders, catering |
 | **T5 — Full land** | All five back fields cleared | **Land only** | Hydroponics, farm shop, lane restoration, endgame goals (§6) | Standing orders, festival catering |
 
-**Tools across tiers:** watering can (start) → bigger can, hoe, scythe (T2) → brush, fishing rod (T2) → upgraded tools (T3+). Tool upgrades cost money and materials; old tools never disappear.
+**Where the valley opens** (places.md §2): **T1** the farm, the lane, the village green, the brook's near bank · **T2** Hazel Wood (Kit's first axe clears the fallen log), bakery, general store, village hall · **T3** footbridge → far bank and Mill Pond (restoration step 1), smithy, friend's cottage · **T4** watermill (step 2), clinic, carpenter's yard, library, farmhand cottages · **T5** stile → Lantern Hill and the Old Quarry (step 3), inn.
+
+**Tools across tiers:** watering can (start) → bigger can, hoe, scythe (T2) → brush, fishing rod (T2) → upgraded tools (T3+, at the village smithy). Tool upgrades cost money and materials; old tools never disappear.
 
 ## 4. Land: All Yours, but Overgrown
 
@@ -66,7 +68,7 @@ Tiers are reached by **what the farm is**, not by time played or age. They gate 
 - **No stamina, no deadline.** Clearing is just time: each swing takes a moment, and a field takes a few in-game days of steady work. Players can clear a corner, a field, or nothing — the farm works at any size.
 - Better tools (money) open the harder fields, so **money still gates land early**; clearing time gates it in the middle; **total land** is the final limit.
 - Cleared materials (wood, stone, fibre) feed the workshop, so clearing pays for itself.
-- The lane itself never grows (world.md §8).
+- The valley around the farm is fixed (places.md §1); only what Kit clears and builds on the farm changes.
 
 ## 5. Neighbour Orders as Progression
 
@@ -113,7 +115,15 @@ Seasonal festivals hold contests — biggest pumpkin, best eggs, finest wool, be
 
 ### 6.4 Restoring the lane
 
-The lane's long-arc story (world.md §4.3): using money and produce to restore shared places — repair the footbridge, replant the butterfly meadow, rebuild the stile, re-light the lantern on Lantern Hill. Each restoration is a community project with its own order list and a visible change to the world.
+The lane's long-arc story (world.md §4.3), now spread across the late game as a **ladder of three community projects** (2026-11-20, Bramblewick Vale). Each is planned at the village hall, has its own order list at Marlow's board (money and produce, plus materials from clearing), and visibly changes the valley by opening an area (places.md §2):
+
+| Step | Tier | Project | Opens |
+|---|---|---|---|
+| 1 | T3 | **Repair the footbridge** | The brook's far bank: butterfly meadow (replant it as part of the step), the brook keeper's cottage, Mill Pond |
+| 2 | T4 | **Restore the old watermill** | The mill turns and grinds flour (a new processing chain for the baker's orders) |
+| 3 | T5 | **Rebuild the stile, then relight the lantern** | Lantern Hill, the lookout, and the Old Quarry; relighting happens at Winter Lantern Night |
+
+All three are optional; the farm never depends on them.
 
 ### 6.5 Showcase / farm museum
 
@@ -132,9 +142,10 @@ Very rare items for players who want them: golden watering can, prize-winning br
 | Tier | Characters | Introduction |
 |---|---|---|
 | T1 | Mr. Marlow, Ada | Day one; Marlow gives the first order (wild berries), then a carrot order and the order board. The Butterfly Garden is an optional later request. |
-| T2 | The allotment neighbour, the baker | Trace first, then a first order. |
-| T3 | The brook keeper, a friend of Kit's age, the travelling merchant | After exploring the brook; merchant after Field A is cleared, then on visiting days. |
-| T4–T5 | The Hill Visitor (seasonal) | During lane restoration and the winter festival. |
+| T2 | The allotment neighbour, the baker, the shopkeeper | Trace first, then a first order. |
+| T3 | The brook keeper, a friend of Kit's age, the smith (+ the travelling merchant, a visitor) | Brook keeper on the far bank after the footbridge repair; merchant after Field A is cleared, then on visiting days. |
+| T4 | The carpenter, the village nurse, the librarian | Trace first, then a first order (characters.md §10). Farmhands are hired, not counted. |
+| T5 | The innkeeper, the Hill Visitor (seasonal) | During lane restoration and the winter festival. |
 
 No character is ever required to progress.
 
@@ -181,3 +192,4 @@ Missing a mystery means waiting for it to return next year.
 - **0.6 — 2026-11-19:** Subscription (daily) orders added to §5; Busy Hands sticker covers farmhands and garden sprites.
 - **0.7 — 2026-11-19:** T1/T3 rows updated for the free starting coop and barn (buy animals first, more buildings later).
 - **0.8 — 2026-11-19:** T1 notes the starting 5 hens and 1 cow.
+- **0.9 — 2026-11-20:** **Bramblewick Vale (places.md v0.10).** Added "Where the valley opens" per tier under §3; tool upgrades at the village smithy; §4 "lane never grows" replaced by "the valley is fixed". **§6.4 lane restoration is now a three-step ladder** — footbridge (T3), watermill (T4), stile and lantern (T5) — each opening an area. §7 character table updated for the new villagers (up to three per tier).

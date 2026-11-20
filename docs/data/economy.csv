@@ -60,8 +60,8 @@ Kitchen upgrade,Buildings,1,5000.00,buy,25000,
 Market stall,Buildings,1,300.00,buy,1500,
 Small barn (5 stalls),Buildings,1,15000.00,buy,75000,
 Big barn upgrade (10 stalls),Buildings,1,15000.00,buy,75000,
-Small fish pond (10 fish),Buildings,1,2000.00,buy,10000,
-Large fish pond (25 fish),Buildings,1,6000.00,buy,30000,
+Pond water tile (wide; ~2 fish per 3 tiles),Buildings,1 tile,50.00,buy,250,Must touch existing water; natural 4x4 pond in Field E is free
+Water channel tile (1 wide; no fish),Buildings,1 tile,10.00,buy,50,Carries water; plank bridge free at paths
 Storage silo,Buildings,1,5000.00,buy,25000,
 Windmill / water pump,Buildings,1,3000.00,buy,15000,
 Greenhouse,Buildings,1,4000.00,buy,20000,

@@ -1,8 +1,8 @@
 # World, Setting, and Background Story
 
 > **Status:** Brainstorming draft — story and setting proposal referenced by the GDD
-> **Version:** 0.12
-> **Last updated:** 2026-11-19
+> **Version:** 0.13
+> **Last updated:** 2026-11-20
 > **Purpose:** A working document for the background-story premise, the place, the lore, and the characters who carry it. It expands the story and setting direction in [GDD.md](./GDD.md); the GDD remains authoritative for gameplay, audience, and project decisions. World details here are proposals until validated through playtesting.
 
 ---
@@ -32,10 +32,10 @@ The premise exists to serve the GDD, not the other way around. Every element bel
 | Reciprocal request anchor (want → task → reward) | Mr. Marlow holds seeds, tools, and knowledge Kit wants; Kit has young, capable hands he does not. The exchange is *mutually needed*, not a chore assignment. |
 | NPC remembers unfinished tasks | He is a permanent neighbour at the end of the lane, never leaves, and is always reachable. |
 | Relationship meter | The seed shed's ledger and the lane's own memory respond visibly to how the player has treated people and place. |
-| Rewards that unlock new verbs/places | The lane is designed as a series of gentle locks: gate, brook (early exploration reward), stile, hill. |
+| Rewards that unlock new verbs/places | The valley is designed as a series of gentle locks: brook (early exploration reward), fallen log into the wood, footbridge, watermill, stile, hill. |
 | Presenter-like interactive storytelling | Mr. Marlow *is* the narrator. He addresses the player, pauses, notices what actually happened, and reacts. No disembodied voice needed. |
 | Not a parent/child dynamic | He has no authority over Kit's day, no punishment, no disappointment. He is a neighbour who can be visited or not. |
-| Small, readable world | One lane, eight places, no map. **Kit's farm grows** into the fields behind the house; the lane does not. |
+| Small, readable world | One valley: a village hub and four areas around it, never more than two exits from the farm, with a picture map in the pause menu (places.md §5). The valley is fixed; **Kit's farm** is what Kit builds up. |
 | First beat: the first order | Marlow buys wild berries, then carrots — Kit's first coins and the order board. The missing butterflies stay as the lane's quiet mystery and an optional request. |
 | A world that feels inhabited, not lonely | Trace objects (laundry, footprints, birdhouse, seed packet, unlit lantern) appear at places before their character is met. The player senses neighbours exist before reading a single line of dialogue. |
 
@@ -43,42 +43,38 @@ The premise exists to serve the GDD, not the other way around. Every element bel
 
 ## 3. The setting
 
-### 3.1 Bramblewick Lane
+### 3.1 Bramblewick Vale
 
-A curved lane, roughly the length of a short walk, running from the player's home up toward a hill. It is bordered by hedgerows, dry-stone walls, and the occasional wooden gate. Everything is within sight; the lane is the whole shared world. Behind the house lie the family's old fields — **all Kit's from the start**, but overgrown; Kit clears them at their own pace (progression.md §4).
+**Redesigned 2026-11-20 (owner decision):** the single lane is now the road into a small valley. Bramblewick Lane runs north from Kit's gate to **Bramblewick Green**, a village of cottages around a green; from the green, paths lead west to the brook, east into a hazel wood, and north over the stile to Lantern Hill. Kit's farm sits at the bottom of the valley — **all Kit's land from the start**, but overgrown; Kit clears it at their own pace (progression.md §4). Sizes, layout, and the to-scale map are in [places.md](./places.md).
 
 ```
-        Lantern Hill (oak + old lantern post, lookout)
-                  |
-              [stile]  <- locked until later
-                  |
-      Brook ----[footbridge]---- 
-                  |
-   [ allotment beds / neighbours ]
-                  |
-  Mr. Marlow's cottage + seed shed
-                  |
-        --- Bramblewick Lane ---
-                  |
-     Player's home (round bright door)
-       + front garden (starting plot, 2-3 beds)
-                  |
-     Fields A–E behind the house (all Kit's,
-       overgrown, cleared over time)
+                Lantern Hill & Old Quarry
+            (oak, unlit lantern, lookout, quarry)
+                          |
+                       [stile]   <- relit last (T5)
+                          |
+  Brookside &   --[footbridge]--  BRAMBLEWICK GREEN  ----[fallen log]---- Hazel Wood
+  Mill Pond        (T3)          (village: bakery, store,       (T2)     (forage loop,
+  (meadow, brook                  hall, smithy, clinic, inn,              mushroom ring,
+   keeper, watermill)             library, market stand,                  hollow tree)
+                                  allotments, duck pond)
+                          |
+                 Bramblewick Lane (Marlow's cottage + seed shed, berry bushes)
+                          |
+                  Kit's farm (home, front garden, Fields A–E;
+                  Field E runs along the brook)
 ```
 
 ### 3.2 Places
 
 | Place | What it is | Why it exists |
 |---|---|---|
-| **The player's home** | A small cottage or hillside home with a brightly painted door and a front garden that starts bare or overgrown | Tutorial space, creative-ownership space, the visual "nothing is here yet" hook |
-| **Bramblewick Lane** | The curved path itself, with hedgerows, walls, a stile, a gate | The GDD's "small shared or public-feeling space"; a soft world border |
-| **Mr. Marlow's cottage + seed shed** | A leaning shed of jars, packets, labels, and a big hand-illustrated ledger | Task hub, seed shop, and the lane's **order board** |
-| **The allotment** | A few shared beds tended by other (future) characters | Future NPC home without expanding the map |
-| **The brook and footbridge** | A small crossing with flat stones and reeds | Early exploration reward; home for later requests |
-| **The market stand** | A roadside table where harvests can be sold and seeds or decorations bought | Where Kit sells produce; Kit's own stall from farm tier T2 (buildings.md) |
-| **The stile** | A wooden stile at the lane's upper end, leading toward Lantern Hill | Gentle world gate; reopened during lane restoration |
-| **Lantern Hill** | A hill at the lane's end with a broad oak and an old, unlit lantern post | Long-arc destination; relit as the last step of lane restoration (progression.md §6.4) |
+| **The player's home + Kit's farm** | The family heirloom cottage with a brightly painted door, a wild front garden, and five overgrown fields | Tutorial space, creative-ownership space, the visual "nothing is here yet" hook; the part of the world Kit builds |
+| **Bramblewick Lane** | The short lane from the farm gate to the green, with hedgerows, dry-stone walls, berry bushes, and Mr. Marlow's cottage + seed shed | Task hub, seed shop, and the valley's **order board**; the first order |
+| **Bramblewick Green** | A village of cottages around a green with a well, duck pond, and playground: bakery, general store, village hall, smithy, clinic, carpenter's yard, library, inn, allotments, and the market stand | The shared space of the valley; home to most neighbours; festivals |
+| **Brookside & Mill Pond** | The brook, the footbridge, the butterfly meadow, the brook keeper's cottage, Mill Pond, and the old watermill | Early exploration reward (near bank); fishing and foraging; the butterfly mystery; two restoration steps |
+| **Hazel Wood** | A small wood with one loop path, a mushroom ring, and a hollow tree | Foraging and wonder; nobody lives here |
+| **Lantern Hill & Old Quarry** | A hill with a broad oak, an old unlit lantern post, a lookout over the valley, and a shallow old quarry | Long-arc destination; relit as the last step of lane restoration (progression.md §6.4) |
 
 ### 3.3 Visual character
 
@@ -96,7 +92,7 @@ Before any neighbour is met, the lane shows that others live here. Trace objects
 - **A seed packet** left on the player's gate → hints at Mr. Marlow (already met)
 - **An unlit lantern** left on the hill → hints at the seasonal visitor
 
-These traces answer "who lives here?" without a single word of dialogue. The world feels inhabited from day one, so Kit never feels alone — but meets only one neighbour at a time (never more than two per farm tier).
+These traces answer "who lives here?" without a single word of dialogue. The world feels inhabited from day one, so Kit never feels alone — but meets only one neighbour at a time (never more than three per farm tier, characters.md §1).
 
 ---
 
@@ -150,7 +146,7 @@ This is the thematic core: **the wise neighbour has knowledge but limited physic
 
 ### 4.5 What is deliberately left vague
 
-- No origin myth, no map beyond the lane, no named history dates.
+- No origin myth, nothing beyond the valley, no named history dates.
 - No explanation for *why* things went quiet until much later, if ever. It should resolve as "the lane is awake again," not as an answer to a question.
 - No threat, no antagonist, no deadline. The lane did not decline because of anyone's failure.
 - No rules about who (or what) the lane's memory is. Whether it is metaphor, weather, or something more is **deliberately left open and will stay open — decided (§7.2)**; it is used as an unnamed literary device only (§4.1).
@@ -202,13 +198,14 @@ The hedge, the brook, the oak, and the unlit lantern behave like a slow, quiet c
 
 ### 5.4 Future cast (not in the prototype)
 
-Kept here so the setting grows *inward* rather than outward — new faces on the same lane, no new map:
+The valley is fixed (places.md §1); it fills with people rather than new places. Full list and tiers in characters.md §10:
 
 - **The allotment neighbour** — a quieter character with a different kind of task (sharing, taking turns).
 - **The brook keeper** — someone or something concerned with the water and the reeds.
 - **A friend of Kit's age** — a teen peer, for friendship, festivals, and contests.
 - **The baker** and **the travelling merchant** — order and trade partners (characters.md §10).
 - **A seasonal visitor** — arrives only for the hill gathering; candidate for the high-relationship event in GDD §3.
+- **The village** (2026-11-20) — the shopkeeper, the smith, the village nurse, the carpenter, the librarian, the innkeeper, and the villagers who become farmhands.
 
 ---
 
@@ -272,10 +269,10 @@ Each later reward should follow the same shape: **Marlow has been holding someth
 - No antagonist, no threat, no hard deadline. The only decay is from the player's own neglect of crops and animals — always warned first and shown kindly (GDD §4).
 - No disappointment from the wise friend, ever.
 - No lore the player must read or memorise to proceed.
-- No expansion of the lane: grow the cast before the geography. **Kit's farm** may grow into the fields behind the house (progression.md §4).
+- **The valley is fixed:** five areas plus Kit's farm (places.md). New areas open by care and restoration, never by a timer; no further areas are added. Kit's farm grows by clearing and building on its own land (progression.md §4).
 - Original designs throughout — the direction is a *homage to a mood*, never a reproduction of anyone's characters, assets, or compositions (GDD §9).
 - Every element here is a proposal. Marked items must be validated through playtesting before they are treated as decisions.
-- The brook is an **early exploration reward**. The market stand opens at farm tier T2; the stile and Lantern Hill reopen through lane restoration. Nothing is parent-gated.
+- The brook's near bank is an **early exploration reward**. Hazel Wood opens at T2; the footbridge (T3), watermill (T4), and stile and Lantern Hill (T5) reopen through lane restoration. Nothing is parent-gated.
 
 ---
 
@@ -286,7 +283,7 @@ Each later reward should follow the same shape: **Marlow has been holding someth
 | [README.md](../README.md) | Centralized hub for the project. |
 | [GDD.md](./GDD.md) | Authoritative for gameplay, audience, and project decisions; this document expands its setting direction. |
 | [characters.md](./characters.md) | Mr. Marlow, the main character, and the parent/caregiver role carry the story in this document. |
-| [places.md](./places.md) | The eight places of Bramblewick Lane described here. |
+| [places.md](./places.md) | The valley's areas, sizes, layout, unlocks, and the to-scale map. |
 | [crops.md](./crops.md) | Starter carrots for the first order; Butterfly Garden flowers for the optional request. |
 | [events.md](./events.md) | Butterfly Garden task and Lantern Hill events originate from this premise. |
 | [progression.md](./progression.md) | Relationship milestones reference the ledger and high-relationship events proposed here. |
@@ -307,3 +304,4 @@ Each later reward should follow the same shape: **Marlow has been holding someth
 - **0.10 — 2026-11-18:** **§7 sub-thread and §7.7 both resolved — §7 is now fully closed (all 7 items).** *Presence:* **Ada is the parents' old friend** who kept the heirloom house while the child was raised in the city and helps him on arrival; parents stay busy in the city, the house is never empty, and no adult ever does the child's doing (Marlow's rule extended to her — characters.md §7 retitled "Adult character", ⚠️ flag cleared). *Payoff:* Lantern Hill = **horizon now (A)**, with **(C) the local payoff — the butterflies come back — as the direction** when a later phase needs an ending; committing to a lantern ceremony (B) rejected as scope poison. §1 premise updated to name Ada.
 - **0.11 — 2026-11-19:** **Direction reset (GDD v0.19).** Premise now names **Kit, 17**, and adds the goal of turning the land into a working farm; the "nothing can be neglected into failure" line replaced (crops/animals can be lost; the farm never can). Map gains the **fields behind the house** (the farm grows, the lane does not). Seed shed hosts the **order board**; market stand is Kit's stall from T2; stile and Lantern Hill reopen through **lane restoration** (§7.7 "never promised" superseded, still optional). Pre-reader/sofa/parent-co-player wording replaced; future cast updated (friend of Kit's age, baker, merchant). §7 gets a reset note; §8 guardrails updated for neglect, farm growth, and no parent gating.
 - **0.12 — 2026-11-19:** Owner picks: first beat is now the **first order**; Butterfly Garden kept as an optional Spring request (§2, §6); back fields all owned from the start, cleared at Kit's pace.
+- **0.13 — 2026-11-20:** **World map redesigned as Bramblewick Vale (owner decision).** §3.1 now describes a valley: the lane leads to **Bramblewick Green** (village hub), with Brookside & Mill Pond, Hazel Wood, and Lantern Hill & Old Quarry around it; new map sketch. §3.2 place table regrouped into the six areas. Design-intent rows, §4.5, §5.4 (new villagers), and §8 guardrails updated: "no expansion of the lane" replaced by "the valley is fixed"; restoration steps now open the footbridge (T3), watermill (T4), and stile/hill (T5). Sizes and layout live in places.md v0.10.

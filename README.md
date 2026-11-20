@@ -114,9 +114,9 @@ Full plan: [`docs/PHASE.md`](./docs/PHASE.md).
 | Document | What it covers |
 |---|---|
 | [Game Design Document (`docs/GDD.md`)](./docs/GDD.md) | Authoritative source: audience, pillars, core loop, orders, ways to earn, neglect, growth, clock, automation, open questions. |
-| [World, Setting & Background Story (`docs/world.md`)](./docs/world.md) | Bramblewick Lane, Kit's arrival, Mr. Marlow, the ledger, the lane's quiet mystery and its restoration. |
+| [World, Setting & Background Story (`docs/world.md`)](./docs/world.md) | Bramblewick Vale and its lane, Kit's arrival, Mr. Marlow, the ledger, the lane's quiet mystery and its restoration. |
 | [Characters (`docs/characters.md`)](./docs/characters.md) | Kit (17), Ada, Mr. Marlow, future cast (baker, merchant, friend of Kit's age…). |
-| [Places (`docs/places.md`)](./docs/places.md) | The eight places on the lane plus Kit's growing farm. |
+| [Places (`docs/places.md`)](./docs/places.md) | Bramblewick Vale: Kit's farm, the village green, the brook, the wood and Lantern Hill — sizes, layout, unlocks, and the to-scale map. |
 | [Crops (`docs/crops.md`)](./docs/crops.md) | Crops, orchard trees, watering-based growth, yellow → gone rule. |
 | [Animals & Fish Pond (`docs/animals.md`)](./docs/animals.md) | Chicken, sheep, cow, beehive, fish pond; care meters, loss rule, quality products. |
 | [Buildings (`docs/buildings.md`)](./docs/buildings.md) | Farm map (992 tiles) and everything Kit can build, with cost, footprint, capacity, unlock, education angle. |

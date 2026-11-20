@@ -1,7 +1,7 @@
 # Controls
 
 > **Status:** Brainstorming draft
-> **Version:** 0.10
+> **Version:** 0.11
 > **Last updated:** 2026-11-20
 > **Purpose:** Control schemes (gamepad and keyboard + mouse) for this kind of game, adjusted to the scope of the game described in the GDD. **PC first, consoles (Switch, PlayStation) later; no touch/mobile.** Tables use XBOX button names, but any modern controller works by position (see §2 *Any controller*). All mappings are tentative (see GDD open question Q5) and subject to playtesting.
 
@@ -71,7 +71,7 @@ Two ways to do everything, available at the same time, exactly as DST does it: *
 | Cycle tool belt | **Mouse wheel** or dedicated on-screen belt buttons |
 | Pause / calendar & settings | **ESC** key or on-screen pause button |
 
-**Deliberately not carried over from DST:** combat keys (F), camera rotation (Q/E — our camera is fixed), all Ctrl/Alt/Shift modifiers (control goals forbid memory-heavy combos), number hotbar (tool belt is cycled instead; revisit if the belt grows long), map key (one lane, no map).
+**Deliberately not carried over from DST:** combat keys (F), camera rotation (Q/E — our camera is fixed), all Ctrl/Alt/Shift modifiers (control goals forbid memory-heavy combos), number hotbar (tool belt is cycled instead; revisit if the belt grows long), map key (the valley map is a page in the pause menu — places.md §5 — so it needs no key of its own).
 
 **Seat rule:** see §3 — keyboard + mouse belongs to **one** player only; a second player requires a gamepad, otherwise co-op does not start.
 
@@ -125,3 +125,4 @@ Two ways to do everything, available at the same time, exactly as DST does it: *
 - **0.8 — 2026-11-19:** Co-op camera decided: **dynamic split screen** that merges when players are close; shared house/farm/map. Difficulty setting removed from the pause menu (single mode); read-aloud and nudges toggles added.
 - **0.9 — 2026-11-20:** Platform is now **PC first, consoles (Switch, PlayStation) later**. §2 adds *Movement feel* (8-way walking, 4-way facing, built in Task 1.2) and *Any controller* (position-based buttons for Xbox/PlayStation/Switch Pro, gamepad-complete actions, abstract button prompts, open Switch confirm-button question).
 - **0.10 — 2026-11-20:** HUD clock readout ticks every 15 in-game minutes (owner, GDD v0.32); the dial marker still jumps per 3-hour phase.
+- **0.11 — 2026-11-20:** The map-key note now points to the pause-menu picture map of Bramblewick Vale (places.md v0.10); no new binding.

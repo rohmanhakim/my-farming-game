@@ -78,7 +78,7 @@ At the start of the session, the AI should re-verify these quickly (list the fil
 
 - Implement exactly the task's **Scope** against its **Acceptance criteria**. No drive-by refactors, no extra systems — log those as suggestions for later instead.
 - Follow existing conventions in the repo (folder structure, naming, scene layout, coding style) as established by previous tasks. If none exist yet, establish them in the first task and record the choice in that task's *Deviations from scope or plan* note.
-- Respect `docs/PHASE.md` §7 **guardrails** at all times: no antagonist/threat/hard deadline; losses only from player neglect, warned first, never while closed, shown kindly (no on-screen death); no disappointment from Mr. Marlow; no debt; the lane never grows (only Kit's farm does); original designs only.
+- Respect `docs/PHASE.md` §7 **guardrails** at all times: no antagonist/threat/hard deadline; losses only from player neglect, warned first, never while closed, shown kindly (no on-screen death); no disappointment from Mr. Marlow; no debt; the valley is fixed at five areas plus Kit's farm (places.md), opened by care and restoration; original designs only.
 - Verify as you go: the project builds, the game runs headless/scripted where possible, no errors in the Godot output log.
 
 ### 4.4 Testing policy — software vs. human
@@ -196,3 +196,4 @@ Bring **every** document in line with the implementation as it now exists. For e
 - **0.2 — 2026-11-19:** Synced with the owner's direction reset (GDD v0.19): project snapshot rewritten (Kit 17, realistic-but-kid-friendly, orders, automation, three modes), **PC only**, Compatibility renderer and `MyFarmingGame` assembly recorded, guardrail summary updated to the new PHASE.md §7, `.import` sidecars now committed (only `.godot/` ignored), `buildings.md` added to the domain-doc lists, human-test examples de-aged.
 - **0.3 — 2026-11-19:** Snapshot synced with GDD v0.20 (single mode, 6+, day-based growth); `economy.md` and `onboarding.md` added to the domain-doc lists.
 - **0.4 — 2026-11-20:** Platform snapshot changed to **PC first, consoles later** (owner decision): Switch and PlayStation after the PC release; gamepad-complete controls and abstract button prompts required.
+- **0.5 — 2026-11-20:** Guardrail summary in §4.3 synced with PHASE.md v0.6: "the lane never grows" replaced by "the valley is fixed" (Bramblewick Vale, places.md v0.10).

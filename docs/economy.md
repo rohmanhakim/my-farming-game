@@ -1,8 +1,8 @@
 # Economy & Balance Sheet
 
 > **Status:** First draft for owner review — new document
-> **Version:** 0.7
-> **Last updated:** 2026-11-19
+> **Version:** 0.8
+> **Last updated:** 2026-11-20
 > **Purpose:** Prices, income, and costs, plus a balance check showing how long each goal takes. Owner rule (2026-11-19): **what Kit sells ≈ real-world price; what Kit buys ≈ half the real price** (the kid-friendly part). The full price list is the spreadsheet **[`data/economy.csv`](./data/economy.csv)** (79 items; opens in Excel/Sheets). All prices are approximate US retail and must be checked before they are final.
 
 ---
@@ -75,7 +75,7 @@
 | Cow | 4 milk cans/day (≈ 20 L, realistic) |
 | Sheep | 1 fleece bundle every 3 days |
 | Beehive | 1 honey jar every 3 days, Spring–Autumn |
-| Small pond (10 fish) | ≈ 2 fish/day once stocked |
+| 4 × 4 pond (10 fish) | ≈ 2 fish/day once stocked |
 | Crops | Growth days in crops.md §3–§5 |
 
 ## 5. Balance check
@@ -104,7 +104,8 @@
 | Beehive | 20 (3 seasons) | 2,000 | ≈ 100 days |
 | 1 cow in the starting barn | 225 | 10,000 | ≈ 44 days |
 | Extra small barn + 5 cows | 1,125 | 125,000 | ≈ 111 days |
-| Small pond + 10 fish | 70 | 10,050 | ≈ 144 days |
+| Natural pond (free, 4 × 4) + 10 fish | 70 | 50 | < 1 day (after clearing its corner of Field E) |
+| New 4 × 4 pond (16 water tiles) + 10 fish | 70 | 4,050 + channel | ≈ 58 days |
 
 ### 5.3 Rough timeline (30-day seasons, 15-minute days — GDD §4)
 
@@ -148,3 +149,4 @@
 - **0.5 — 2026-11-19:** Owner kept the generous start: full-yield starting cow and 500 starting coins.
 - **0.6 — 2026-11-19:** Feed is ordered from home before 18:00, delivered next Dawn, no fee.
 - **0.7 — 2026-11-19:** Timeline based on decided 30-day seasons and 15-minute days.
+- **0.8 — 2026-11-20:** Fish ponds are now **water tiles** (buildings.md §3.1, owner decision): **250 coins per wide tile** (a 4 × 4 pond = 4,000, down from 10,000; owner agreed the old price was above half-real) and **50 per channel tile**; the natural 4 × 4 pond in Field E is free. Pond payback rows updated (new 4 × 4 pond ≈ 58 days, close to hens and cows). `data/economy.csv` small/large pond rows replaced by water and channel tiles.

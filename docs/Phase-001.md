@@ -1,7 +1,7 @@
 # Phase-001 — First Playable (Vertical Slice)
 
 > **Status:** In progress — Tasks 1.1–1.2 done; Task 1.3 built, pending human playtest (2026-11-20)  
-> **Version:** 0.24  
+> **Version:** 0.25  
 > **Last updated:** 2026-11-20  
 > **Milestone:** 1 — First playable  
 > **Purpose:** Break Milestone 1 down into session tasks. Each task produces one scoped, playtested artifact that can be created and validated in a single session with AI assistance.
@@ -11,6 +11,8 @@
 **Goal (re-scoped 2026-11-19):** a **vertical slice of the money loop** — produce → order → money → invest — in one connected area. Owner decision: narrow the first playable to include orders and chickens.
 
 **Scene:** Kit's front garden → the lane (berry bushes) → Mr. Marlow's seed shed (order board, shop).
+
+**Where this sits on the map (places.md v0.10, Bramblewick Vale, 2026-11-20):** the slice covers the farm's front garden with the old coop and barn, and the lane up to Mr. Marlow's cottage and seed shed. The village green, the brook, the wood, and the hill are built in later phases; the slice needs no area transitions. Unchanged scope.
 
 **Loop in this milestone:**
 1. Kit clears weeds, plants starter carrots, and waters them daily.
@@ -532,3 +534,4 @@ Phase-002 (planned — docs/PHASE.md §3): market stall and shipping box with se
 - **0.22 — 2026-11-20:** Owner reset the Task 1.3 day: **wake-up 04:30, forced bedtime 21:30** (steps counted from 04:30; day 12 min 45 s). Scope, acceptance, tests and Notes updated.
 - **0.23 — 2026-11-20:** Task 1.3: HUD time now ticks every 15 in-game minutes (owner); `TimeChanged` signal and 5 new tests; Notes updated.
 - **0.24 — 2026-11-20:** Task 1.3 clock speed set to **Harvest Moon pace** (60 s per in-game hour; day 17 min) by the owner.
+- **0.25 — 2026-11-20:** §1 notes where the slice sits on the new Bramblewick Vale map (places.md v0.10): farm front garden + the lane to Marlow's shed; no scope change.

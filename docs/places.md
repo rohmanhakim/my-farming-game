@@ -1,45 +1,141 @@
 # Places
 
-> **Status:** Brainstorming draft
-> **Version:** 0.9
-> **Last updated:** 2026-11-19
-> **Purpose:** Places available in the game that the player can explore, adjusted to the scope of the game described in the GDD. One lane, eight places, no map — plus Kit's farm, which grows into the fields behind the house. All names are tentative and can be changed. Every element here is a proposal pending playtesting.
+> **Status:** Brainstorming draft — **world map redesigned 2026-11-20 (Bramblewick Vale)**
+> **Version:** 0.10
+> **Last updated:** 2026-11-20
+> **Purpose:** The places the player can explore. The lane is now the road into **Bramblewick Vale**, a small valley of **five areas plus Kit's farm** (owner decision 2026-11-20, replaces "one lane, eight places, no map"). Sizes, layout, unlocks, and navigation rules live here; the story of each place lives in [world.md](./world.md). All names are tentative and every element is a proposal pending playtesting.
 
 ---
 
 ## 1. Scope and design intent
 
-The lane is readable at a glance and small enough to navigate without a map. Places are gentle locks rather than open-world gates: the stile and Lantern Hill reopen through optional **lane restoration** (progression.md §6.4). The brook is an early exploration reward; the market stand becomes Kit's stall at farm tier T2. **The farm is the part that grows:** the fields behind the house are all Kit's from the start but overgrown, and are cleared at the player's pace (progression.md §4); the lane itself never expands.
+- **Hub and four spokes.** Bramblewick Green (the village, reached up the lane) is the hub in the middle of the valley. Kit's farm is to the south; Brookside & Mill Pond to the west; Hazel Wood to the east; Lantern Hill & Old Quarry to the north.
+- **Big enough to explore, small enough for a 6-year-old.** Every area is at most two exits from the farm, and the farthest spot is about 36 seconds' walk from the front door (§4).
+- **Gentle locks, never parent gates.** Areas open at existing farm tiers (progression.md §3) or through lane restoration (progression.md §6.4). Each closed path shows a picture of what opens it.
+- **The valley is fixed.** Five areas plus the farm; no more areas are added by later content. The farm's land does not change size either (buildings.md §2). Growth inside the valley comes from people, restoration, and what Kit builds.
+- Each area is its own level scene, swapped by `Main` through edge exits with a short fade (project-structure.md, scene architecture).
+
+**Map:** [`assets/map/bramblewick-vale.svg`](./assets/map/bramblewick-vale.svg) — drawn to scale, 1 grid square = 10 × 10 tiles.
+
+![Bramblewick Vale](./assets/map/bramblewick-vale.svg)
 
 ---
 
-## 2. Place table
+## 2. Areas
 
-| Place | What it is | Why it exists | Interactive objects | Unlock state | Time / season variants |
+Scale: **1 tile = 64 px ≈ 1 m** (the Task 1.2 ground checker). The camera shows about **20 × 11 tiles** at 1280 × 720 (one "screen").
+
+| Area | Size (tiles) | Tiles | ≈ Screens | Opens | What it's for |
 |---|---|---|---|---|---|
-| **The player's home** | A **family heirloom** cottage with a brightly painted door and a wild front garden (starting plot, 2–3 beds) — **overgrown but never derelict**: loved, alive, waiting. | Tutorial space, creative-ownership space, the visual "nothing is here yet" hook. | Garden beds, decoration spots, sleep/rest point, seed box, storage chest, shipping box, kitchen (house upgrade); seed packet left on the gate (trace for Mr. Marlow); boxes and a small cart at the gate (the arrival). | Available from start. | Door/window light shows day vs night; garden looks different per season; Marlow's gate greeting in the morning. |
-| **Bramblewick Lane** | The curved path itself, with hedgerows, dry-stone walls, a stile, and a gate. | The GDD's "small shared or public-feeling space"; a soft world border. | Path edges, hedgerows, gate; small footprints in the mud near the stile (trace for a friend of Kit's age). | Available from start. | Lighting changes day/night; ambient creatures appear by season; a distant wave from a future neighbour in the afternoon. |
-| **Mr. Marlow's cottage + seed shed** | A leaning shed of jars, packets, labels, and a big hand-illustrated ledger. | Task hub, seed shop, **order board**. | Marlow, seed packets for sale, order board, ledger, gift drawer, building catalogue. | Available from start. | Marlow present at the gate in the morning and late afternoon; shed lit at night; kindly restates unfinished tasks if visited. |
-| **The allotment beds** | A few shared beds tended by other (future) characters. | Future NPC home without expanding the map. | Shared planting beds; half-painted birdhouse leaning on a bed (trace for the allotment neighbour). | Available from start. | Seasonal planting visuals; the allotment neighbour tends the beds on sunny afternoons after introduction (T2). |
-| **The brook and footbridge** | A small crossing with flat stones and reeds. | Early exploration reward; home for later requests. | Footbridge, reeds, frog, **fishing spots**, forage (berries, herbs); laundry on a line by the water (trace for the brook keeper). | Earned early through exploration (early exploration reward). | Frog visible by day; fireflies over water at night in season; the brook keeper appears at the water's edge on warm afternoons after introduction (T3); footbridge repair is a lane-restoration step. |
-| **The market stand** | A roadside table where Kit sells produce (seasonal and demand pricing) and the **travelling merchant** sets up on visit days. | Alternative income to orders; Kit's own stall from T2. | Market table, price board, merchant's cart. | Visible from start; Kit's stall from T2 (buildings.md). | Busiest at Midday; items and prices change by season. |
-| **The stile** | A wooden stile at the lane's upper end, leading toward Lantern Hill. | Gentle world gate; locked until later. | Stile latch. | Reopened through lane restoration (progression.md §6.4). | n/a |
-| **Lantern Hill** | A hill at the lane's end with a broad oak and an old, unlit lantern post. | Long-arc payoff destination; matches the GDD's deferred "ladder to a lookout" reward. | Oak tree, unlit lantern post (trace for the seasonal visitor), lookout view. | Optional last step of lane restoration. | Day view vs night view; relit lantern at Winter Lantern Night; the Hill Visitor arrives (T5). |
+| **Bramblewick Green** (village + lane) | 64 × 44 | 2,816 | 12.5 | Day 1 | The hub: orders, seeds, selling, shops, festivals, most neighbours |
+| **Kit's farm** | 50 × 32 | 1,600 | 7 | Day 1 | Farming, animals, building, automation |
+| **Brookside & Mill Pond** | 34 × 36 | 1,224 | 5.5 | Near bank Day 1 · far bank T3 · watermill T4 | Fishing, foraging, catching fish for the farm pond, the butterfly mystery |
+| **Hazel Wood** | 32 × 30 | 960 | 4 | T2 | Foraging (mushrooms, nuts, herbs), wood, Collection Book finds |
+| **Lantern Hill & Old Quarry** | 30 × 27 | 810 | 3.5 | T5 | The story's finale (relight the lantern), stone and fossils, the lookout, Winter Lantern Night |
+| **Whole valley** | | **7,410** | **≈ 33** | | |
+
+### 2.1 Bramblewick Green (village and lane)
+
+The lane runs north from Kit's farm gate past Mr. Marlow's cottage, then opens onto the village green. Every building faces **one ring path** around the green, so walking the ring passes every door. Exits: north (stile → Lantern Hill), west (→ footbridge, Brookside), east (→ Hazel Wood), south (the lane → Kit's farm).
+
+| Place | Who | What Kit does there | Opens |
+|---|---|---|---|
+| **Mr. Marlow's cottage + seed shed** (on the lane) | Mr. Marlow | Seeds and saplings, the **order board**, the ledger, the early building catalogue | Day 1 |
+| **Berry bushes along the lane** | — | The first order (wild berries) | Day 1 |
+| **Market stand** | Travelling merchant on visit days | Selling produce (seasonal and demand pricing); Kit's own stall | Visible Day 1; Kit's stall T2 |
+| **Allotments** | The allotment neighbour | Shared beds; vegetable orders | Visible Day 1; neighbour T2 |
+| **Bakery** | The baker | Egg, flour, and fruit orders; bread and pie recipes | T2 |
+| **General store** *(new)* | The shopkeeper | Kitchen ingredients (sugar, salt, jars), bag upgrades, decorations. Seeds stay at Marlow's; feed is still ordered by phone (economy.md §2) | T2 |
+| **Village hall** *(new)* | Everyone | Festivals and contests (Spring Bloom, Harvest), winter events, the meeting place for each lane restoration project | T2 (first festival) |
+| **Smithy** *(new)* | The smith | Tool upgrades, paid with coins and the stone and wood from clearing | T3 |
+| **Friend's family cottage** *(new)* | The friend of Kit's age and their parents | Friendship, festivals, contests | T3 |
+| **Clinic** *(new)* | The village nurse | Orders for healthy food (fruit, herbal tea, honey, soup) and picture lessons on eating well. **Nobody gets sick** — the GDD's "no sickness, no vet" rule stands | T4 |
+| **Carpenter's yard** *(new)* | The carpenter | House upgrades and the big late buildings (greenhouse, windmill, farm shop); Marlow keeps the early catalogue | T4 |
+| **Library & schoolroom** *(new)* | The librarian | Picture books about crops, animals, weather, and the brook; each book read adds a Collection Book page | T4 |
+| **Cottages (×3)** *(new)* | Villagers who become farmhands | Where farmhands live (GDD §4: "people from the lane") | T4 |
+| **Inn** *(new)* | The innkeeper | Rooms where the travelling merchant, the Hill Visitor, and festival guests stay; its kitchen gives catering orders | T5 |
+| **Duck pond, playground, well** | — | Small things to look at and play with; ducks to feed | Day 1 |
+
+Before a building's person is met, it shows a picture "closed" sign and a **trace** of its owner (world.md §3.4).
+
+### 2.2 Brookside & Mill Pond
+
+| Place | What it is | Opens |
+|---|---|---|
+| **Near bank** | East side of the brook: berries, reeds, a frog, the first fishing spots; laundry on a line (trace for the brook keeper). Stepping stones lead down to the farm's west corner | Day 1 (early exploration reward) |
+| **Footbridge** | The crossing from the village's west exit | Repaired as the **first lane restoration project** (T3) |
+| **Butterfly meadow** | Wildflowers on the far bank; the butterfly mystery and the Butterfly Garden request | T3 |
+| **Brook keeper's cottage** | Home of the brook keeper | T3 |
+| **Mill Pond + old watermill** | A wider pool upstream with rarer fish; the watermill turns again as the **second restoration project** and grinds flour | Pond T3 · watermill T4 |
+
+### 2.3 Hazel Wood
+
+One loop path through the trees, with a mushroom ring in the middle and a hollow tree on the far side. Foraging (mushrooms, hazelnuts, herbs), fallen branches for wood, birds. Nobody lives here. **Opens at T2:** a fallen log blocks the entrance with an axe picture on it; Kit's first axe (a T2 tool) clears it.
+
+### 2.4 Lantern Hill & Old Quarry
+
+Reached through the **stile** at the village's north exit. A winding path climbs to the broad oak, the old unlit lantern post (trace for the seasonal visitor), and a **lookout** that shows the whole valley. On the hill's west side, a shallow, safe **old quarry** gives stone, rare stones, and fossils for the Collection Book (no mine, no caves). **Opens at T5** as the last restoration project: rebuild the stile, then relight the lantern.
 
 ---
 
-### 2.1 Kit's farm (grows over time)
+## 3. Kit's farm (50 × 32)
 
-| Area | What it is | Unlock |
-|---|---|---|
-| **Front garden** | Starting plot, 8 × 6 = 48 tiles (3 beds clear) + the **old coop** with 5 hens | Start |
-| **Fields A–E behind the house** | Overgrown family fields (120–320 tiles each, buildings.md §2); the **old barn** (with 1 cow) stands at the edge of Field A; hold buildings, beds, orchard, fish pond (buildings.md) | **Owned from the start**, overgrown; cleared at the player's pace (progression.md §4); all five cleared = T5 Full land |
+The farm keeps exactly the land in buildings.md §2 — front garden plus Fields A–E, **992 tiles** — packed tightly around the house:
 
-## 3. Visual character (from world.md §3.3)
+```
+              gate (lane to the village)
+   +--------------------------------------------------+
+   |  Field D   |  front garden + coop  |   Field C   |
+   |  16 x 12   |  house (centre)       |   16 x 12   |
+   |------------+-----cross path--------+-------------|
+   |  Field E          |  Field A   |  Field B        |
+   |  20 x 16          |  12 x 10   |  12 x 10        |
+   |  natural pond 4x4 |  old barn  |  animal yard    |
+   +--------------------------------------------------+
+   ^ brook along the west edge
+```
+
+- **Top row:** Field D (west), the house with the front garden and old coop facing the gate (centre), Field C (east).
+- **Bottom row:** Field E along the brook (west) with the **natural pond**, Field A directly **behind the house** with the **old barn** at its back edge, Field B (east).
+- **One cross-shaped path** (2 tiles wide) joins every field to the front door. Most beds are within 25 tiles (≈ 10 s) of the door; the farthest corner of Field E is ≈ 40 tiles (≈ 16 s).
+- **Animal yard:** a 12 × 6 strip beside the old barn, free from the start, fits a second barn (6 × 5) and a big coop (6 × 4) side by side.
+- Fields are fixed in size and place; **what goes inside them is flexible** — once cleared, any tile can hold beds or buildings, and buildings move freely (buildings.md §5).
+- **Water:** the natural pond in Field E is fed by the brook; new water must connect to it (buildings.md §3.1).
+
+---
+
+## 4. Walking times
+
+Kit walks **2.5 tiles/s** (Task 1.2); one in-game hour is **60 real seconds** and time stops indoors and in menus (GDD §4, Task 1.3). So 1 tile ≈ 0.4 s ≈ 0.4 in-game minutes.
+
+| From the front door to | Tiles | Real time | In-game time |
+|---|---|---|---|
+| Marlow's seed shed | ≈ 20 | 8 s | 8 min |
+| The green (centre) | ≈ 39 | 16 s | 16 min |
+| Quarry | ≈ 74 | 30 s | 30 min |
+| Mill Pond or the hollow tree (farthest) | ≈ 90 | 36 s | 36 min |
+
+A round trip to the farthest spot costs about **1.2 in-game hours** of Kit's 04:30–21:30 day. If that feels long in playtest, the outer areas can shrink without moving anything else.
+
+---
+
+## 5. Navigation rules (ages 6+)
+
+- **Home is always down.** The farm is at the bottom of the valley; walking down from anywhere leads home. Every area is at most two exits from the farm.
+- **Picture signs.** Every exit and shop has a picture sign (fish, mushroom, lantern, loaf, red cross) in the same place on screen; no reading needed.
+- **One loop per area.** No mazes, dead ends, or dark caves; side paths return to the main path.
+- **Picture map in the pause menu.** A painted map of the valley with Kit's face and icons for where today's orders go; closed areas show as gentle fog. No separate map button (controls.md).
+- **Same controls everywhere.** Leaving an area is walking off its edge; nothing new to press on any gamepad.
+- **Nothing far is required.** Orders only ask for things from areas already open; the farm alone is enough to play the whole game.
+
+---
+
+## 6. Visual character (from world.md §3.3)
 
 - **Hobbiton-adjacent, not Hobbiton:** Grass-grown roofs, bright doors, stone walls, picket fences, laundry lines, wheelbarrows, terracotta pots, hand-painted signs. Avoid hobbit proportions, pipe-weed, and direct copies.
 - **Earthy base, bright accents:** Subdued greens, browns, and stonework; saturated flowers, doors, seed packets, and characters pop against it.
-- **Everything is small and made by hand:** Nothing industrial, nothing looming. The largest object is the oak on Lantern Hill.
+- **Everything is small and made by hand:** Nothing industrial, nothing looming. The village is a cluster of cottages around a green, not a town; the largest object is still the oak on Lantern Hill.
+- **Time and season variants:** door and window light show day vs night; gardens, the meadow, and the wood change by season; fireflies over the brook on summer nights; the lantern relit on Winter Lantern Night.
 
 ---
 
@@ -48,16 +144,17 @@ The lane is readable at a glance and small enough to navigate without a map. Pla
 | Document | Relationship |
 |---|---|
 | [README.md](../README.md) | Centralized hub for the project. |
-| [GDD.md](./GDD.md) | Scope and audience; places serve the gentle-lock world design. |
-| [world.md](./world.md) | Premise and setting; the lane map and place purposes originate here (§3). All eight places are kept in sync between the two documents. |
-| [characters.md](./characters.md) | Mr. Marlow lives at the cottage + seed shed; Kit and Ada live at the player's home. |
-| [crops.md](./crops.md) | Garden beds at the player's home hold crops; seasonal planting visuals appear by place. |
-| [animals.md](./animals.md) | Animals live at specific places on the lane (coop, beehive, etc.). |
-| [events.md](./events.md) | Daily and seasonal events occur at places on the lane. |
-| [buildings.md](./buildings.md) | What can be built on the farm's fields. |
-| [progression.md](./progression.md) | Clearing land and lane restoration. |
+| [GDD.md](./GDD.md) | Scope and audience; §7 summarises the valley. |
+| [world.md](./world.md) | Premise, setting, and lore of each place (§3). Area names are kept in sync between the two documents. |
+| [characters.md](./characters.md) | Who lives where. |
+| [buildings.md](./buildings.md) | The farm's land, buildings, and water tiles. |
+| [progression.md](./progression.md) | Farm tiers that open areas; the lane restoration ladder. |
+| [events.md](./events.md) | Arrivals, festivals, and restoration events, and where they happen. |
+| [animals.md](./animals.md) | Animals on the farm; fish in the brook, Mill Pond, and the farm pond. |
 
-## 4. Change log
+---
+
+## 7. Change log
 
 - **0.1 — 2026-11-18:** Initial draft. Six places aligned with world.md, plus day/night and season variant notes. Stile and Lantern Hill marked as locked/deferred long-arc content.
 - **0.2 — 2026-11-18:** Added the Market Stand as a parent-unlocked place for the Garden Coins challenge layer. Noted that new places are parent-unlocked.
@@ -68,3 +165,4 @@ The lane is readable at a glance and small enough to navigate without a map. Pla
 - **0.7 — 2026-11-19:** Back fields are owned from the start and cleared, not bought (owner decision); sizes in buildings.md §2.
 - **0.8 — 2026-11-19:** Old coop (front garden) and old barn (edge of Field A) noted as starting buildings.
 - **0.9 — 2026-11-19:** Starting animals noted (5 hens in the coop, 1 cow in the barn).
+- **0.10 — 2026-11-20:** **World map redesigned as Bramblewick Vale (owner decision).** "One lane, eight places, no map" replaced by a hub-and-spokes valley: Bramblewick Green (village + lane, 64 × 44, the biggest area) with a bakery, general store, village hall, smithy, clinic (no sickness), carpenter, library, inn, cottages, duck pond and playground; Brookside & Mill Pond (west), Hazel Wood (east), Lantern Hill & Old Quarry (north). Area sizes, unlock tiers, walking times (60 s per in-game hour), navigation rules for ages 6+, and a pause-menu picture map added. Kit's farm repacked to 50 × 32 around the house (same 992 tiles) with an animal yard. To-scale map in `assets/map/bramblewick-vale.svg`. Market stand moved to the green.

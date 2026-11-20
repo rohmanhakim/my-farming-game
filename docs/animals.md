@@ -1,15 +1,15 @@
 # Animals & Fish Pond
 
 > **Status:** Design draft — **updated for the direction reset 2026-11-19**
-> **Version:** 0.5
-> **Last updated:** 2026-11-19
+> **Version:** 0.6
+> **Last updated:** 2026-11-20
 > **Purpose:** Farm animals, the fish pond, and the lane's wild creatures. Care is real responsibility: well-cared animals give better products; neglected animals are gone. Kid-friendly presentation — no sickness, no vet, no on-screen death.
 
 ---
 
 ## 1. Scope and Design Intent
 
-- **Four farm species** (chicken, sheep, cow, beehive) plus **pond fish**. **The limit is the housing** (owner decision 2026-11-19): a barn with 5 stalls holds 5 cows/sheep, a small coop holds 5 hens, a small pond holds 10 fish (buildings.md §3). More animals need bigger buildings, which need money and cleared land.
+- **Four farm species** (chicken, sheep, cow, beehive) plus **pond fish**. **The limit is the housing** (owner decision 2026-11-19): a barn with 5 stalls holds 5 cows/sheep, a small coop holds 5 hens, a 4 × 4 pond holds 10 fish (buildings.md §3.1). More animals need bigger buildings, which need money and cleared land.
 - **One care need per species**, shown as a picture icon. Simple to learn, real enough to matter.
 - **Realistic consequence, kid-friendly presentation** (GDD pillar 2): if an animal goes **3 days in a row without food**, it is **gone right away**. A short message card appears with a **picture of a small gravestone** and the animal's name. Nothing is shown dying; there is no sickness or vet system.
 - **Nothing happens while the game is closed.** Days only pass during play.
@@ -71,15 +71,15 @@ Animals need **food once per in-game day** (the same daily rhythm as watering cr
 
 ## 6. Fish Pond
 
-- **Build:** a fish pond structure (buildings.md; footprint 4, bigger ponds 6/9) from T3.
-- **Stock:** buy fingerlings from the travelling merchant or the shop, or release fish caught at the brook.
-- **Capacity:** small pond 10 fish, large pond 25 fish (buildings.md).
-- **Feed:** fish food (bought, or crafted from crops) — once a day for the whole pond.
+- **Build:** the farm's pond is made of **water tiles** (buildings.md §3.1). The natural 4 × 4 pond in Field E is free once cleared (T3); Kit grows it, or digs new ponds linked to it by channels, tile by tile. Touching water merges into one pond.
+- **Stock:** buy fingerlings from the travelling merchant or the shop, or release fish caught at the brook or Mill Pond.
+- **Capacity:** about 2 fish per 3 tiles of water at least 2 tiles wide (4 × 4 = 10, 6 × 6 = 24, 8 × 8 = 42); 1-wide channels hold no fish.
+- **Feed:** fish food (bought, or crafted from crops) — once a day for the whole connected pond.
 - **Harvest:** when fish are grown, collect them with a net or fishing rod; the pond restocks from remaining fish over time.
 - **Use:** sell, deliver in orders (a fishmonger neighbour, festival catering), or process (smoked fish, fish pie).
-- **Output:** ≈ 2 fish per day from a full small pond (economy.md §4).
+- **Output:** ≈ 2 fish per day from a full 4 × 4 pond (economy.md §4).
 - **Automation:** a **pond auto-feeder** feeds it daily; a helper can harvest.
-- **Limits:** money for the pond and stock early; cleared land (16 or 36 tiles) later.
+- **Limits:** money for water tiles and stock early; cleared land later (every water tile uses a farm tile).
 - **Education:** water ecosystems, how fish farms work, feeding regularly.
 
 ---
@@ -140,3 +140,4 @@ Butterflies and fireflies are always released — never kept or sold.
 - **0.3 — 2026-11-18:** Added the **cow** (fourth care animal, produces milk) and a new §6 covering ambient/collectible creatures (butterflies, firefly, frog), making change log 0.1 truthful. Seasonal behavior aligned with similar farming games: chicken lays spring–autumn and rests in winter; beehive active spring through autumn. Exclusions reworded for the initial four.
 - **0.4 — 2026-11-19:** **Direction reset (GDD v0.19).** Nap state removed: an animal whose meter empties is **gone right away**, shown only as a short message card with a **gravestone picture** (empty hive for bees); no sickness or vet. 4-animal cap removed — numbers limited by money and housing/land. Sheep now also eat hay. Added **quality products (1–3 stars)**, **§6 Fish Pond** (stock, feed, harvest; pond auto-feeder; money then land limit), brook fishing, breeds as a collection, and automation (auto-feeders, helpers) as the long-term answer to neglect. Products now sold and used in orders and processing.
 - **0.5 — 2026-11-19:** **Owner decisions:** animal numbers capped by **housing capacity** (5-stall barn = 5 animals; coop 5/10 hens; pond 10/25 fish). Meter-drain-by-mode replaced by the single-mode **daily feeding rule: 3 unfed days in a row → gone** (warnings on days 1–2), matching the crops' 3-dry-days rule. Pond capacity, output, and land footprint added; economy.md linked.
+- **0.6 — 2026-11-20:** §6 Fish Pond rewritten for **water tiles** (buildings.md §3.1): free natural pond in Field E, ponds grow tile by tile and merge, ≈ 2 fish per 3 wide tiles, one feed per connected pond; fish can also come from Mill Pond (places.md v0.10).

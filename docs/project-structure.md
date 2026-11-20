@@ -1,7 +1,7 @@
 # Project Structure
 
 > **Status:** Proposal for team agreement — input to Phase-001 Task 1.1 ("Team agrees on project folder structure and naming conventions")
-> **Version:** 0.11
+> **Version:** 0.12
 > **Last updated:** 2026-11-20
 > **Purpose:** The repository layout, Godot folder structure, naming rules, input/autoload registries, asset pipeline, and verification commands that every development session follows when adding code or assets under `src/`. It is a *technical* contract only — it never overrides a gameplay decision.
 
@@ -51,7 +51,7 @@ my-farming-game/
 │   ├── PHASE.md           # roadmap
 │   ├── Phase-001.md       # current phase task list
 │   ├── project-structure.md   # THIS document
-│   └── assets/            # README screenshots only — NOT game assets
+│   └── assets/            # README screenshots and design images (map/bramblewick-vale.svg) — NOT game assets
 ├── src/                   # the Godot project root; res:// == src/
 ├── .agents/skills/        # installed AI skills (gitignored, restorable)
 ├── skills-lock.json       # pinned skill versions (committed)
@@ -457,3 +457,4 @@ Restore after cloning: `npx skills experimental_install` · Update: `npx skills 
 - **0.9 — 2026-11-20:** Bedtime references corrected to midnight (GDD v0.30); debug F4 jumps to 23:50.
 - **0.10 — 2026-11-20:** Clock references updated to the 04:30 wake-up and 21:30 bedtime (GDD v0.31); debug F4 jumps to 21:20.
 - **0.11 — 2026-11-20:** `GameClock`/`ClockDial` descriptions: readout ticks every 15 in-game minutes (`TimeChanged` signal).
+- **0.12 — 2026-11-20:** `docs/assets/` now also holds design images: `map/bramblewick-vale.svg` (the to-scale valley map, places.md v0.10).

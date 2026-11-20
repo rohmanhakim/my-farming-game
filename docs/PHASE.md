@@ -1,7 +1,7 @@
 # PHASE.md — Development Roadmap: Prototype to Production
 
 > **Status:** Planning draft — **re-planned for the direction reset 2026-11-19**
-> **Version:** 0.5  
+> **Version:** 0.6  
 > **Last updated:** 2026-11-20  
 > **Purpose:** High-level overview of development from the first playable prototype to a final, production-ready game. Each phase document expands this roadmap — `docs/Phase-001.md` exists today; Phase-002 through Release are **planned** documents to be written when their phase is scheduled.
 
@@ -12,7 +12,7 @@ A fully 2D, **realistic but kid-friendly, educational** farming game for **PC**.
 ## 2. Guiding Principles (apply to all phases)
 
 - **One mode:** realistic but kid-friendly; challenge comes from the farm growing (challenge-layers.md).
-- **The farm grows, the lane doesn't:** all of Kit's land (992 tiles) is owned from the start but overgrown and cleared over time; the shared lane stays small. Grow the cast before the geography.
+- **A fixed valley, a growing farm:** the world is Bramblewick Vale — Kit's farm plus five areas around a village hub (places.md). All of Kit's land (992 tiles) is owned from the start but overgrown and cleared over time. Each village building and outer area is built in the phase whose features need it, not before.
 - **Consequences, kindly shown:** crops yellow then are lost; neglected animals and fish are gone (gravestone message card). No sickness, vet, gore, or on-screen death. Nothing changes while the game is closed.
 - **Optional economy:** orders and every other way to earn are optional; no debt, no deadline penalties.
 - **Automation is the payoff:** unlocked by crafting or buying, once the farm is big enough to need it.
@@ -59,7 +59,7 @@ Each `docs/Phase-00N.md` breaks its milestone into **session tasks**. One task =
 - No disappointment or scolding from Mr. Marlow, ever.
 - No debt, loans, or real-money purchases.
 - No lore the player must read or memorise to proceed.
-- The lane does not grow; only Kit's farm does. Grow the cast before the geography.
+- The valley is fixed: five areas plus Kit's farm (places.md). New areas open by care and restoration, never by a timer, and no further areas are added. Kit's farm grows only by clearing and building on its own land.
 - Original designs throughout — homage to a mood, never reproduction of existing characters/assets.
 
 ---
@@ -71,3 +71,4 @@ Each `docs/Phase-00N.md` breaks its milestone into **session tasks**. One task =
 - **0.3 — 2026-11-19:** **Re-planned for the direction reset (GDD v0.19).** Vision rewritten (Kit 17, realistic but kid-friendly, educational, orders, automation, three difficulty modes). Audience column and age-stage sequencing removed; phases now follow farm growth (economy → land & buildings → automation → long-term goals), flagged as a proposal. **PC only** — tablet/multiplatform rows removed. Phase-001 now includes crop neglect (yellow → gone) at Normal timing. Renderer/assembly recorded in §6. Guardrails rewritten: "no decay caused by the player" and "no currency/no punishment" replaced by warned, kindly-shown, neglect-only losses; no debt; lane fixed but farm may grow.
 - **0.4 — 2026-11-19:** Owner picks: **single difficulty mode**; audience 6+; land owned from the start and cleared; **Phase-001 re-scoped to a vertical slice** (orders + chickens) and Phase-002–004 rows rebalanced (co-op split screen in 003; Butterfly Garden optional in 004).
 - **0.5 — 2026-11-20:** Platform changed from "PC only" to **PC first, consoles later** (Switch, PlayStation after the PC release; owner decision). Vision bullet and Release row updated.
+- **0.6 — 2026-11-20:** World map redesigned as **Bramblewick Vale** (owner decision, places.md v0.10): the "lane does not grow" principle and guardrail replaced by "the valley is fixed — five areas plus Kit's farm"; village buildings and outer areas arrive in the phase whose features need them.

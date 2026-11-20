@@ -1,8 +1,8 @@
 # Events
 
 > **Status:** Brainstorming draft — **updated for the direction reset 2026-11-19**
-> **Version:** 0.10
-> **Last updated:** 2026-11-19
+> **Version:** 0.11
+> **Last updated:** 2026-11-20
 > **Purpose:** Events during a playthrough, driven by calendar, season, day phase, and the farm's growth. All names tentative; every element is a proposal pending playtesting.
 
 ---
@@ -52,20 +52,26 @@ Time-of-day triggers are day phases (mechanics.md §2).
 | **Mr. Marlow** | Day one at the seed shed gate | Mr. Marlow | T1 |
 | **The allotment neighbour** | First crop sold or delivered | Allotment neighbour (first veg order) | T2 |
 | **The baker** | First eggs collected | Baker (egg and flour orders) | T2 |
-| **The brook keeper** | First visit to the brook | Brook keeper (gives fishing rod) | T3 |
+| **The shopkeeper** | First kitchen recipe needs an ingredient Kit can't grow | Shopkeeper (general store) | T2 |
+| **The brook keeper** | First visit to the far bank once the footbridge is repaired | Brook keeper (gives fishing rod) | T3 |
+| **The smith** | First debris Kit's tools can't clear | Smith (tool upgrades) | T3 |
 | **A friend of Kit's age** | Two neighbour tasks + brook visit | Friend (friendship, festivals) | T3 |
 | **Travelling merchant** | Field A cleared | Merchant (trades, rarities) | T3 |
+| **The carpenter** | First T4 building wanted | Carpenter (late buildings, house upgrades) | T4 |
+| **The village nurse** | First healthy-food order on the board | Nurse (clinic; healthy-food orders) | T4 |
+| **The librarian** | Ten forage or fish finds in the Collection Book | Librarian (picture books) | T4 |
+| **The innkeeper** | Lane restoration reaches the stile | Innkeeper (catering orders) | T5 |
 | **The Hill Visitor** | Lane restoration reaches Lantern Hill, winter | Hill Visitor | T5 |
 
-Each arrival is preceded by a trace (laundry, birdhouse, footprints, seed packet, unlit lantern).
+Each arrival is preceded by a trace (characters.md §3). At most three new characters per tier; the merchant is a visitor and does not count. Where everyone lives: places.md §2.
 
 ## 5. Seasonal events, festivals, and contests
 
 | Event | Season | What happens | Scope |
 |---|---|---|---|
-| **Spring Bloom Festival** | Spring | Flower contest; prettiest-farm judging (farm charm) | Phase-005 |
-| **Summer Fair** | Summer | Biggest fish, best jam contests | Phase-005 |
-| **Harvest Festival** | Autumn | Biggest pumpkin, best eggs/wool/cheese; bulk catering orders | Phase-005 |
+| **Spring Bloom Festival** | Spring | Flower contest on the green; prettiest-farm judging (farm charm) | Phase-005 |
+| **Summer Fair** | Summer | Biggest fish, best jam contests, on the green and at the village hall | Phase-005 |
+| **Harvest Festival** | Autumn | Biggest pumpkin, best eggs/wool/cheese in the village hall; bulk catering orders (inn) | Phase-005 |
 | **Winter Lantern Night** | Winter | Part of lane restoration: relighting the Lantern Hill lantern | Phase-005 |
 | **Chicken winter feed** | Winter | Hens eat more, lay no eggs | Phase-002 |
 | **Wool thickens** | Autumn | Brushing yields more/better wool | Phase-002 |
@@ -86,7 +92,8 @@ Contests are optional; entries are judged on quality, never on reflexes.
 | **Recipe gift** | High relationship | Neighbour shares a recipe or blueprint |
 | **Ledger page fills** | Completed tasks | Pressed flower or sketch in Marlow's ledger |
 | **Tier reached** | Farm growth tier (progression.md §3) | Short celebration; new catalogue items |
-| **Lane restoration step** | Community project finished | The lane visibly changes (footbridge, meadow, stile, lantern) |
+| **Lane restoration step** | Community project finished (planned at the village hall) | The valley visibly changes and an area opens: footbridge → far bank (T3), watermill (T4), stile → Lantern Hill, relit lantern (T5) |
+| **Area opens** | Fallen log cleared, or a restoration step | Short fade to the newly opened area; the pause-menu map clears its fog (places.md §5) |
 
 ---
 
@@ -116,3 +123,4 @@ Contests are optional; entries are judged on quality, never on reflexes.
 - **0.8 — 2026-11-19:** **Direction reset (GDD v0.19).** Gentle Core / stage-gated split removed; scope column now names phases. Added order, sprinkler, shipping-payout, crop dry/yellow/lost, and animal-lost (gravestone card) events; nap event removed. Arrivals tied to farm tiers, with the baker and travelling merchant added and "a child of the lane" reframed as a friend of Kit's age. Festivals and contests made core; Lantern Hill ceremony folded into lane restoration. New relationship milestones (repeat/bigger orders, recipe gifts, tier reached, restoration steps).
 - **0.9 — 2026-11-19:** Owner picks: first core events are now the **first orders** (berries, carrots, Phase-001); Butterfly Garden optional and later; crop yellow/lost triggers set to 2/3 dry days (single mode); merchant arrives when Field A is cleared.
 - **0.10 — 2026-11-19:** Added subscription-offered and daily subscription-reminder events.
+- **0.11 — 2026-11-20:** **Bramblewick Vale (places.md v0.10).** Arrivals added for the new villagers (shopkeeper T2, smith T3, carpenter/nurse/librarian T4, innkeeper T5); brook keeper now met on the far bank after the footbridge repair; festivals placed on the green, at the village hall, and at the inn; restoration steps now open areas; new "Area opens" event clears the pause-map fog.
