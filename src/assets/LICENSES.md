@@ -1,0 +1,10 @@
+# Asset licenses
+
+Every asset in `src/assets/` that the game ships or loads is listed here (project-structure.md §9).
+
+| Asset(s) | Source | Author | License | Added |
+|---|---|---|---|---|
+| `placeholder/kenney/ph_grass.png`, `ph_garden_bed.png`, `ph_crop_sprout.png`, `ph_coop.png`, `ph_tool_hoe.png`, `ph_tool_watering_can.png`, `ph_tool_feed_scoop.png`, `ph_tool_seed_bag.png`, `ph_coin.png` | Tiny Town 1.1 (`kenney_tiny-town.zip`, tiles 0000, 0013, 0017, 0104, 0129, 0131, 0130, 0106, 0093) via https://opengameart.org/content/tiny-town | Kenney (www.kenney.nl) | CC0 1.0 — `placeholder/kenney/LICENSE_tiny_town.txt` | 2026-11-19 |
+| `placeholder/kenney/ph_player.png`, `ph_npc_marlow.png` | Tiny Dungeon 1.0 (`kenney_tinydungeon.zip`, tiles 0085, 0098) via https://opengameart.org/content/tiny-dungeon | Kenney (www.kenney.nl) | CC0 1.0 — `placeholder/kenney/LICENSE_tiny_dungeon.txt` | 2026-11-19 |
+
+All placeholder art is **temporary** and will be replaced by original final art (pixel-free, comics style — PHASE.md §7). Crediting Kenney is optional under CC0 but we do it anyway.

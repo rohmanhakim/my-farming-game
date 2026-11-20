@@ -1,9 +1,9 @@
 # Fields & Sunshine
 
 > **Working title:** Fields & Sunshine (chosen 2026-11-19; trademark check pending)
-> **Status:** 🟡 Design draft (direction reset 2026-11-19) · 🟡 Godot project initialised in `src/` (4.7, C#, Compatibility renderer, assembly `MyFarmingGame`) — no gameplay code yet
+> **Status:** 🟡 Design draft (direction reset 2026-11-19) · 🟡 Godot project initialised in `src/` (4.7, C#, Compatibility renderer, assembly `MyFarmingGame`) · 🟢 Task 1.1 foundation runs (Godot 4.7.2 .NET, placeholder art, headless tests) — no gameplay code yet
 > **Design version:** GDD v0.22 · World v0.12 (both 2026-11-19)
-> **Last README update:** 2026-11-20 (📐 session standard: scene architecture & process modes agreed → `project-structure.md` v0.4; folder layout unchanged)
+> **Last README update:** 2026-11-20 (🆕 Phase-001 Task 1.1 done: bootable `Main.tscn` built to the scene-architecture standard, CC0 Kenney placeholders, `tools/verify.sh` · 📐 session standard: scene architecture & process modes agreed → `project-structure.md` v0.4; folder layout unchanged)
 
 ![](docs/assets/game-screenshoot-small.jpeg)
 
@@ -71,11 +71,11 @@ The [Game Design Document](./docs/GDD.md) is the **single source of truth** for 
 - [x] **Owner picks (2026-11-19):** one mode, ages 6+, day-based growth, land owned but overgrown, housing caps, first order, co-op split screen, economy sheet, short onboarding, Phase-001 vertical slice
 - [x] Godot project config: Compatibility renderer, `MyFarmingGame` assembly, `.import` files committed, only `.godot/` ignored
 - [ ] **Owner decisions open:** day length, season length, order premium (GDD §16 Q13–Q15); art/audio brief inputs
-- [ ] Repository scaffolding (Phase-001 Task 1.1)
+- [x] Repository scaffolding (Phase-001 Task 1.1, 2026-11-19) — run checks with `tools/verify.sh`
 - [ ] First playable prototype
 - [ ] First playtest
 
-No game code yet. The current milestone is **Phase-001, the first playable vertical slice** (`docs/Phase-001.md`).
+Only the Task 1.1 foundation exists (main scene, player placeholder, input map, tests) — no gameplay yet. The current milestone is **Phase-001, the first playable vertical slice** (`docs/Phase-001.md`).
 
 ## Roadmap
 

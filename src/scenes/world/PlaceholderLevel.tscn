@@ -1,0 +1,14 @@
+[gd_scene format=3]
+
+[node name="PlaceholderLevel" type="Node2D"]
+
+[node name="Background" type="ColorRect" parent="."]
+z_index = -10
+offset_left = -1280.0
+offset_top = -1280.0
+offset_right = 1280.0
+offset_bottom = 1280.0
+mouse_filter = 2
+color = Color(0.48, 0.7, 0.36, 1)
+
+[node name="PlayerSpawn" type="Marker2D" parent="."]
