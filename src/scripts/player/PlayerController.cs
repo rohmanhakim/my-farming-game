@@ -1,5 +1,6 @@
 using System;
 using Godot;
+using MyFarmingGame.Core;
 
 namespace MyFarmingGame.Player;
 
@@ -17,6 +18,9 @@ public enum Facing { Down, Up, Left, Right }
 ///   toward the cursor. Any stick/key movement cancels the click target.
 /// * <see cref="WalkTo"/> is the "walk to it, then act" hook for later tasks: they pass a callback
 ///   that runs on arrival (for example "use the active tool on this tile").
+/// * Interactables (Task 1.3, <see cref="IInteractable"/>): <c>interact</c> (A / Space) uses the
+///   nearest one in reach; left-clicking one walks to it, then uses it.
+/// * <see cref="Frozen"/> stops all movement and input (prompts, sleeping).
 /// </summary>
 public partial class PlayerController : CharacterBody2D
 {
@@ -40,6 +44,26 @@ public partial class PlayerController : CharacterBody2D
 
     public Facing Facing { get; private set; } = Facing.Down;
 
+    /// <summary>Group the player joins (interactables use it to notice Kit).</summary>
+    public const string Group = "player";
+
+    private bool _frozen;
+
+    /// <summary>When true Kit ignores all input and stands still (menus, sleeping).</summary>
+    public bool Frozen
+    {
+        get => _frozen;
+        set
+        {
+            _frozen = value;
+            if (value)
+            {
+                CancelWalkTo();
+                Velocity = Vector2.Zero;
+            }
+        }
+    }
+
     /// <summary>True while walking toward a clicked point or a <see cref="WalkTo"/> target.</summary>
     public bool HasMoveTarget => _target.HasValue;
 
@@ -58,25 +82,86 @@ public partial class PlayerController : CharacterBody2D
     public override void _Ready()
     {
         _anim = GetNodeOrNull<AnimationPlayer>("AnimationPlayer");
+        AddToGroup(Group);
         PlayAnimation();
     }
 
     public override void _UnhandledInput(InputEvent e)
     {
-        // Mouse only: Space and gamepad A also trigger "interact", but they act in place (later tasks).
+        if (_frozen)
+        {
+            if (e is InputEventMouseButton { ButtonIndex: MouseButton.Left, Pressed: false })
+                _mouseHeld = false;
+            return;
+        }
         if (e is InputEventMouseButton mb && mb.ButtonIndex == MouseButton.Left)
         {
             _mouseHeld = mb.Pressed;
             if (mb.Pressed)
             {
-                // Ground click. Object clicks (walk to it, then act) arrive in later tasks: they check
-                // what is under the cursor first and call WalkTo with a callback.
                 // Use the click's own position (not the polled cursor) so the target is exactly
                 // where the click happened, also for injected events.
-                WalkTo(GetViewport().GetCanvasTransform().AffineInverse() * mb.Position);
+                Vector2 world = GetViewport().GetCanvasTransform().AffineInverse() * mb.Position;
+                var clicked = InteractableAt(world);
+                if (clicked != null)
+                {
+                    // Object click: walk to it, then use it. No hold-to-follow.
+                    _mouseHeld = false;
+                    WalkTo(clicked.ApproachPoint, () => { if (clicked.CanInteract) clicked.Interact(this); });
+                }
+                else
+                {
+                    WalkTo(world); // ground click
+                }
+                GetViewport().SetInputAsHandled();
+            }
+            return;
+        }
+        // Space / gamepad A (the mouse part of "interact" is handled above).
+        if (e.IsActionPressed("interact") && !e.IsEcho())
+        {
+            var near = NearestInReach();
+            if (near != null)
+            {
+                CancelWalkTo();
+                near.Interact(this);
                 GetViewport().SetInputAsHandled();
             }
         }
+    }
+
+    /// <summary>The interactable whose click area is under <paramref name="worldPoint"/>, if any.</summary>
+    public IInteractable InteractableAt(Vector2 worldPoint)
+    {
+        var query = new PhysicsPointQueryParameters2D
+        {
+            Position = worldPoint,
+            CollideWithAreas = true,
+            CollideWithBodies = false,
+            CollisionMask = IInteractable.ClickLayer,
+        };
+        foreach (var hit in GetWorld2D().DirectSpaceState.IntersectPoint(query, 8))
+        {
+            for (Node n = hit["collider"].As<Node>(); n != null; n = n.GetParent())
+                if (n is IInteractable it)
+                    return it;
+        }
+        return null;
+    }
+
+    /// <summary>The closest usable interactable Kit can reach from here, if any.</summary>
+    public IInteractable NearestInReach()
+    {
+        IInteractable best = null;
+        float bestDist = float.MaxValue;
+        foreach (Node n in GetTree().GetNodesInGroup(IInteractable.Group))
+        {
+            if (n is not IInteractable it || !it.CanInteract || !it.IsInReach(this))
+                continue;
+            float d = GlobalPosition.DistanceSquaredTo(it.ApproachPoint);
+            if (d < bestDist) { bestDist = d; best = it; }
+        }
+        return best;
     }
 
     /// <summary>Walks toward <paramref name="target"/>; runs <paramref name="onArrived"/> on arrival.
@@ -106,6 +191,11 @@ public partial class PlayerController : CharacterBody2D
     public void Step(float delta)
     {
         Vector2 input = InputOverride ?? Input.GetVector("move_left", "move_right", "move_up", "move_down", InputDeadzone);
+        if (_frozen)
+        {
+            input = Vector2.Zero;
+            Velocity = Vector2.Zero;
+        }
 
         if (input != Vector2.Zero)
             CancelWalkTo();

@@ -1,9 +1,9 @@
 # Fields & Sunshine
 
 > **Working title:** Fields & Sunshine (chosen 2026-11-19; trademark check pending)
-> **Status:** 🟡 Design draft (direction reset 2026-11-19) · 🟡 Godot project initialised in `src/` (4.7, C#, Compatibility renderer, assembly `MyFarmingGame`) · 🟢 Task 1.1 foundation runs (Godot 4.7.2 .NET, placeholder art, headless tests) · 🟢 Task 1.2 player movement done (owner playtested)
+> **Status:** 🟡 Design draft (direction reset 2026-11-19) · 🟡 Godot project initialised in `src/` (4.7, C#, Compatibility renderer, assembly `MyFarmingGame`) · 🟢 Task 1.1 foundation runs (Godot 4.7.2 .NET, placeholder art, headless tests) · 🟢 Task 1.2 player movement done (owner playtested) · 🟡 Task 1.3 day clock & sleep built (pending playtest)
 > **Design version:** GDD v0.28 (2026-11-20) · World v0.12 (2026-11-19)
-> **Last README update:** 2026-11-20 (🆕 Task 1.2: Kit walks in 8 directions and faces 4, keyboard / any gamepad / click-to-move, smooth follow camera · 🎮 platform: **PC first, consoles (Switch, PlayStation) later** · 🆕 Phase-001 Task 1.1 done: bootable `Main.tscn` built to the scene-architecture standard, CC0 Kenney placeholders, `tools/verify.sh` · 📐 session standard: scene architecture & process modes agreed → `project-structure.md` v0.4; folder layout unchanged)
+> **Last README update:** 2026-11-20 (🆕 Task 1.3: HUD clock with sun/moon dial and a 15-minute readout, Spring day counter, bed with "Go to sleep?", 04:30 wake-up, automatic 21:30 bedtime, 17-minute days (Harvest Moon pace) · 🆕 Task 1.2: Kit walks in 8 directions and faces 4, keyboard / any gamepad / click-to-move, smooth follow camera · 🎮 platform: **PC first, consoles (Switch, PlayStation) later** · 🆕 Phase-001 Task 1.1 done: bootable `Main.tscn` built to the scene-architecture standard, CC0 Kenney placeholders, `tools/verify.sh` · 📐 session standard: scene architecture & process modes agreed → `project-structure.md` v0.4; folder layout unchanged)
 
 ![](docs/assets/game-screenshoot-small.jpeg)
 
@@ -75,7 +75,7 @@ The [Game Design Document](./docs/GDD.md) is the **single source of truth** for 
 - [ ] First playable prototype
 - [ ] First playtest
 
-The Task 1.1 foundation (main scene, input map, tests) and Task 1.2 player movement exist (Kit walks with keyboard, any gamepad, or click-to-move; the camera follows) — no farming gameplay yet. The current milestone is **Phase-001, the first playable vertical slice** (`docs/Phase-001.md`).
+The Task 1.1 foundation (main scene, input map, tests) and Task 1.2 player movement exist (Kit walks with keyboard, any gamepad, or click-to-move; the camera follows), plus Task 1.3's day clock (HUD dial, 17-minute days from 04:30, sleep at the bed or automatically at 21:30) — no farming gameplay yet. The current milestone is **Phase-001, the first playable vertical slice** (`docs/Phase-001.md`).
 
 ## Roadmap
 

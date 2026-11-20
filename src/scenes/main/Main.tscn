@@ -1,16 +1,24 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://scripts/main/Main.cs" id="1_main"]
 [ext_resource type="PackedScene" path="res://scenes/world/PlaceholderLevel.tscn" id="2_level"]
 [ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="3_player"]
 [ext_resource type="PackedScene" path="res://scenes/ui/UI.tscn" id="4_ui"]
 [ext_resource type="Script" path="res://scripts/main/CameraFollow.cs" id="5_camera"]
+[ext_resource type="Script" path="res://scripts/main/SleepSequence.cs" id="6_sleep"]
+[ext_resource type="PackedScene" path="res://scenes/ui/DayTransition.tscn" id="7_daytrans"]
 
 [node name="Main" type="Node"]
 process_mode = 3
 script = ExtResource("1_main")
 
 [node name="Systems" type="Node" parent="."]
+
+[node name="SleepSequence" type="Node" parent="Systems"]
+script = ExtResource("6_sleep")
+PlayerPath = NodePath("../../World/Entities/Player")
+CameraPath = NodePath("../../World/Entities/Camera2D")
+TransitionPath = NodePath("../../Transition/DayTransition")
 
 [node name="World" type="Node2D" parent="."]
 process_mode = 1
@@ -45,6 +53,8 @@ process_mode = 2
 
 [node name="Transition" type="CanvasLayer" parent="."]
 process_mode = 3
+
+[node name="DayTransition" parent="Transition" instance=ExtResource("7_daytrans")]
 
 [node name="Debug" type="CanvasLayer" parent="."]
 process_mode = 3

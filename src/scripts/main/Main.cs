@@ -5,7 +5,7 @@ namespace MyFarmingGame;
 
 /// <summary>
 /// Root coordinator (project-structure.md §4). Owns the layer stack, player, camera (follows the
-/// player from Task 1.2), audio and,
+/// player from Task 1.2), the night's sleep sequence (Systems/SleepSequence, Task 1.3), audio and,
 /// from a later task, level swapping (load_level contract). Process modes are set in Main.tscn.
 /// </summary>
 public partial class Main : Node
@@ -19,7 +19,10 @@ public partial class Main : Node
         PlacePlayerAtSpawn();
         GetNode<CameraFollow>("World/Entities/Camera2D").SnapToTarget();
         if (OS.IsDebugBuild())
+        {
             GetTree().CreateTimer(1.0).Timeout += PrintStartupState;
+            GetNode("Debug").AddChild(new Debugging.ClockDebugKeys { Name = "ClockDebugKeys" });
+        }
     }
 
     /// <summary>Debug builds only: one line in Output to diagnose "blank screen" reports.</summary>

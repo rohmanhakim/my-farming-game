@@ -1,7 +1,7 @@
 # Project Structure
 
 > **Status:** Proposal for team agreement — input to Phase-001 Task 1.1 ("Team agrees on project folder structure and naming conventions")
-> **Version:** 0.6
+> **Version:** 0.11
 > **Last updated:** 2026-11-20
 > **Purpose:** The repository layout, Godot folder structure, naming rules, input/autoload registries, asset pipeline, and verification commands that every development session follows when adding code or assets under `src/`. It is a *technical* contract only — it never overrides a gameplay decision.
 
@@ -82,13 +82,17 @@ src/
 │   ├── player/
 │   │   └── Player.tscn        # Task 1.1/1.2 — PlayerController root, NamedSprite, AnimationPlayer (idle_/walk_ × down/up/left/right), CollisionShape2D
 │   ├── world/                 # things the player walks up to in the garden/lane
-│   │   ├── PlaceholderLevel.tscn  # Task 1.1 — temporary level: Background (checkerboard shader, Task 1.2) + PlayerSpawn
+│   │   ├── PlaceholderLevel.tscn  # Task 1.1 — temporary level: Background (checkerboard shader, Task 1.2) + PlayerSpawn + Bed (Task 1.3)
+│   │   ├── Bed.tscn           # Task 1.3 — StaticBody2D + NamedSprite "bed", ClickArea (layer 8), ReachArea, WakeSpot, button Prompt
 │   │   ├── GardenBed.tscn     # Task 1.4
 │   │   ├── Marlow.tscn        # Task 1.6
 │   │   ├── Ledger.tscn        # Task 1.6
 │   │   └── Butterfly.tscn     # Task 1.8
 │   └── ui/                    # everything drawn on the UI CanvasLayer
-│       ├── UI.tscn            # Task 1.1 — HUD root; ToolBelt/GardenShelf/etc. instance in here
+│       ├── UI.tscn            # Task 1.1 — HUD root; ClockDial + SleepPrompt (1.3), ToolBelt etc. instance in here
+│       ├── ClockDial.tscn     # Task 1.3 — HUD clock: 8-phase dial, sun/moon marker per phase, 15-minute readout "07:45", season icon + "Day N"
+│       ├── SleepPrompt.tscn   # Task 1.3 — "Go to sleep?" Sleep / Not yet (gamepad focus)
+│       ├── DayTransition.tscn # Task 1.3 — sleep fade + "Day N" card; instanced into Main/Transition
 │       ├── ToolBelt.tscn      # Task 1.3
 │       ├── GardenShelf.tscn   # Task 1.5
 │       ├── PictureBubble.tscn # Task 1.6
@@ -97,7 +101,7 @@ src/
 │
 ├── scripts/                   # every .cs, grouped by the layer it belongs to
 │   ├── autoloads/             # cross-scene singletons — ONLY the ones in §8
-│   │   ├── GameClock.cs       # Task 1.3
+│   │   ├── GameClock.cs       # Task 1.3 — clock (15-min readout, 3-h phases), calendar, 04:30 wake-up + 21:30 bedtime, DayEnded/DayStarted
 │   │   ├── ToolBelt.cs, Inventory.cs, Wallet.cs   # Task 1.4
 │   │   ├── OrderManager.cs    # Task 1.7
 │   │   ├── SaveGame.cs        # Task 1.10
@@ -106,23 +110,28 @@ src/
 │   ├── player/
 │   │   └── PlayerController.cs   # Task 1.2 — 8-way walk, 4-way Facing, click-to-move, WalkTo(target, onArrived)
 │   ├── world/
+│   │   ├── Bed.cs             # Task 1.3 — IInteractable: interact/click → GameClock.AskToSleep(); WakePoint
 │   │   ├── GardenBed.cs       # Task 1.4
 │   │   ├── Marlow.cs          # Task 1.6
 │   │   ├── Ledger.cs          # Task 1.6
 │   │   └── Butterfly.cs       # Task 1.8
 │   ├── ui/
-│   │   ├── ToolBeltView.cs    # Task 1.3 (view code; state lives in the autoload)
+│   │   ├── ClockDialView.cs, SleepPromptView.cs, DayTransitionView.cs   # Task 1.3 (views; state lives in GameClock)
+│   │   ├── ButtonPrompt.cs    # Task 1.3 — per-action button glyph: key cap, or Xbox / PlayStation / Nintendo face button
+│   │   ├── ToolBeltView.cs    # Task 1.4 (view code; state lives in the autoload)
 │   │   ├── GardenShelfView.cs # Task 1.5
 │   │   ├── DialogueBubbleView.cs  # Task 1.6
 │   │   ├── PauseMenuView.cs   # Task 1.10
 │   │   └── DayNightView.cs    # Task 1.11
 │   ├── main/
 │   │   ├── Main.cs            # Task 1.1 — root coordinator: layer numbers, player spawn (load_level later)
-│   │   └── CameraFollow.cs    # Task 1.2 — script on World/Entities/Camera2D: follows the player with smoothing
+│   │   ├── CameraFollow.cs    # Task 1.2 — script on World/Entities/Camera2D: follows the player with smoothing
+│   │   └── SleepSequence.cs   # Task 1.3 — Main/Systems: freezes Kit, fades, rolls the day, wakes Kit at the bed
 │   └── core/                  # small shared helpers, constants, settings readers
 │       ├── UILayers.cs        # Task 1.1 — CanvasLayer constants (§4 standard)
 │       ├── SpriteLibrary.cs   # Task 1.1 — sprite lookup by name: final art → ph_ placeholder → coloured square
 │       ├── NamedSprite.cs     # Task 1.1 — Sprite2D that takes its texture from SpriteLibrary at a fixed DisplaySize
+│       ├── IInteractable.cs   # Task 1.3 — "interact / click to use" contract, group `interactables`, click layer 8
 │       └── GrowthTiming.cs    # Task 1.4 — named Fast/Medium/Slow preset reader (no options UI)
 │
 ├── assets/                    # ALL game art/audio/fonts, imported by Godot
@@ -138,13 +147,15 @@ src/
 │   ├── fonts/
 │   ├── tiles/                 # TileSet sources for garden/lane (Task 1.4+)
 │   ├── placeholder/           # Task 1.1 — TEMPORARY art only (README inside)
-│   │   └── kenney/            # ph_<sprite name>.png from Kenney CC0 packs + their License.txt
+│   │   ├── kenney/            # ph_<sprite name>.png from Kenney CC0 packs + their License.txt
+│   │   └── handmade/          # Task 1.3 — ph_ icons drawn for this project (bed, clock_sun/moon, icon_sleep, season_spring)
 │   └── LICENSES.md            # every third-party asset (placeholders included): source + license (§9)
 │
 ├── data/                      # data files loaded at runtime: .tres / .json
 │   └── growth_timing.tres     # Fast / Medium / Slow presets (Task 1.4)
 ├── shaders/                   # .gdshader files — snake_case.gdshader (§6)
 ├── debug/                     # debug-only scenes/scripts (overlay, inspectors) — excluded from export
+│   └── ClockDebugKeys.cs      # Task 1.3 — debug builds only (Main adds it): F2 next step, F3 20× speed, F4 → 21:20
 ├── tests/                     # headless, repeatable, leave no state behind (§11)
 │   ├── TestRunner.tscn
 │   └── TestRunner.cs
@@ -238,7 +249,7 @@ Quick lookup so a session knows where its artifact belongs. Scope still comes fr
 |---|---|
 | 1.1 Project Foundation | `scenes/main/Main.tscn`, `scenes/player/Player.tscn`, `scenes/ui/UI.tscn`, placeholder art (§9) |
 | 1.2 Player Movement | `scripts/player/PlayerController.cs`, InputMap `move_*`, `interact`, `cancel` (§7) |
-| 1.3 Day Clock & Sleep | `scripts/autoloads/GameClock.cs`, `scenes/ui/ClockDial.tscn`, `scripts/ui/ClockDialView.cs`, bed interactable |
+| 1.3 Day Clock & Sleep | `scripts/autoloads/GameClock.cs`, `scenes/ui/ClockDial.tscn` + `SleepPrompt.tscn` + `DayTransition.tscn`, `scripts/ui/{ClockDialView,SleepPromptView,DayTransitionView,ButtonPrompt}.cs`, `scenes/world/Bed.tscn` + `scripts/world/Bed.cs`, `scripts/core/IInteractable.cs`, `scripts/main/SleepSequence.cs`, `debug/ClockDebugKeys.cs` ✅ built |
 | 1.4 Tool Belt, Bag & Wallet | `scripts/autoloads/ToolBelt.cs` + `Inventory.cs` + `Wallet.cs`, `scenes/ui/ToolBelt.tscn`, `scenes/ui/Bag.tscn`, actions `cycle_tool_*`, `open_inventory` |
 | 1.5 Clearing, Planting & Growth | `scenes/world/FarmGrid.tscn`, `scripts/world/FarmGrid.cs`, `scripts/world/CropTile.cs`, `data/crops.tres` |
 | 1.6 Marlow & First Order | `scenes/world/Marlow.tscn` + `Ledger.tscn` + `BerryBush.tscn`, `scripts/world/*.cs`, `scenes/ui/PictureBubble.tscn` |
@@ -292,6 +303,8 @@ Defined once in `project.godot → [input]`, bound for **both** gamepad and keyb
 
 **Task 1.2:** `move_*` deadzones lowered from 0.5 to **0.2** so a half-tilted stick walks slowly instead of not at all; `PlayerController` reads them with `Input.GetVector(..., 0.2)`. Ground left-clicks are handled in `PlayerController._UnhandledInput` (UI eats its own clicks first). Gamepad bindings use Godot's SDL button indices, which are **position-based**, so the same map works for Xbox, PlayStation and Switch Pro controllers (controls.md §2 *Any controller*). UI must show button prompts per action, never a hard-coded letter.
 
+**Task 1.3:** `interact` is now read: **Space / gamepad A** (bottom face button on every pad) uses the nearest `IInteractable` in reach; a **left-click on an interactable's click area** (physics layer 8) walks Kit there, then uses it — any other left-click is a ground click. In the "Go to sleep?" prompt, Godot's built-in `ui_*` actions drive the buttons (D-pad/stick/arrows move focus, A/Space/Enter confirm, B/Esc/right-click close via `ui_cancel` + `cancel`). Button prompts come from `scripts/ui/ButtonPrompt.cs` (key cap, or Xbox letters / PlayStation shapes / Nintendo letters, picked from the last device used). Debug-only F2/F3/F4 clock keys are raw keys in `src/debug/` on purpose (developer tools, not game controls).
+
 Rules: D-pad stays reserved for movement (`controls.md` §2); no action may require reading; every new action is added to this table in the same session.
 
 ---
@@ -300,7 +313,7 @@ Rules: D-pad stays reserved for movement (`controls.md` §2); no action may requ
 
 | Autoload | File | Added in | Responsibility | Must not break |
 |---|---|---|---|---|
-| `GameClock` | `scripts/autoloads/GameClock.cs` | Task 1.3 | stepped clock (8 phases), day/season, sleep and 02:00 bedtime, `DayEnded`/`DayStarted` signals | day rollover drives growth and hunger counts — fire exactly once |
+| `GameClock` ✅ | `scripts/autoloads/GameClock.cs` | Task 1.3 | stepped clock (8 phases), day/season, 04:30 wake-up, sleep and 21:30 bedtime, `DayEnded`/`DayStarted` signals | day rollover drives growth and hunger counts — fire exactly once |
 | `ToolBelt` | `scripts/autoloads/ToolBelt.cs` | Task 1.4 | active tool + slots | other systems read the active tool through it |
 | `Inventory` | `scripts/autoloads/Inventory.cs` | Task 1.4 | auto-stacking items | — |
 | `Wallet` | `scripts/autoloads/Wallet.cs` | Task 1.4 | coins; never below 0 | — |
@@ -319,8 +332,8 @@ Adding an autoload is a structural decision that must be recorded here plus in t
 - **Placeholders first, always.** Prefer in-scene `ColorRect` / `PlaceholderTexture2D` over image files. When an image file *is* the placeholder, its file name starts with `ph_` and it is marked temporary — final art swaps in with **no code changes** (same node paths, same region sizes where practical).
 - **Licensing:** every asset that is not `ph_` gets a row in `src/assets/LICENSES.md` (name, source, license, date). Royalty-free only; record it at the moment the file lands, not later.
 - **Art style guardrail:** non-pixel-art, European comics-style look; original designs only (docs/PHASE.md §7). Never copy existing characters/assets.
-- **Placeholder folder (decided in Task 1.1):** image placeholders live in `src/assets/placeholder/<source>/ph_<sprite name>.png` (today: `kenney/`, Kenney CC0 Tiny Town + Tiny Dungeon). They are licensed in `LICENSES.md` too, because they are third-party files.
-- **Load art by name, never by path:** scenes use a `NamedSprite` node (`SpriteName`, `DisplaySize`); code calls `SpriteLibrary.Get("<name>")`. Lookup order: `assets/art/{characters,world,ui,items,vfx}/<name>.png` → `assets/placeholder/kenney/ph_<name>.png` → coloured square. Dropping final art in with the same name replaces the placeholder with no code or scene change.
+- **Placeholder folder (decided in Task 1.1):** image placeholders live in `src/assets/placeholder/<source>/ph_<sprite name>.png` (today: `kenney/`, Kenney CC0 Tiny Town + Tiny Dungeon; and since Task 1.3 `handmade/`, simple icons drawn for this project). They are licensed in `LICENSES.md` too, because they are third-party files.
+- **Load art by name, never by path:** scenes use a `NamedSprite` node (`SpriteName`, `DisplaySize`); code calls `SpriteLibrary.Get("<name>")`. Lookup order: `assets/art/{characters,world,ui,items,vfx}/<name>.png` → `assets/placeholder/{kenney,handmade}/ph_<name>.png` → coloured square. Dropping final art in with the same name replaces the placeholder with no code or scene change.
 
 ---
 
@@ -439,3 +452,8 @@ Restore after cloning: `npx skills experimental_install` · Update: `npx skills 
 - **0.4 — 2026-11-20:** **Scene-architecture standard agreed (owner decision).** A feature-first `source/{core,data,gameplay,levels,shaders,ui,debug}` proposal was reviewed and **rejected in favour of keeping the type-first `src/` layout**; only its new folders were absorbed. New §4 subsections: `Main ↔ Level` ownership tree (Systems / World{Level, Entities, Effects} / Audio + HUD 10 / Pause 20 / Transition 30 / Debug 40 CanvasLayers), named layer constants `scripts/core/UILayers.cs`, an explicit **process-mode table including autoloads** (records the pause gotcha: autoloads default to `Always` and would keep the clock ticking while paused), and the `load_level` contract (defer → free level only → instance → spawn from marker → `LevelChanged`). Added `src/shaders/` + `src/debug/` to the §4 tree, structural rule 10, a §6 naming row for `.gdshader`, and a §8 pointer to the process-mode table. `aspect="expand"` deliberately unchanged.
 - **0.5 — 2026-11-20:** Task 1.1 implemented (incl. the scene-architecture tree and `UILayers.cs`): §2 toolchain verified (Godot 4.7.2 .NET, SDK 11 with RollForward), §4 adds `assets/placeholder/`, `SpriteLibrary`/`NamedSprite`, main scene configured, `.cs.uid` sidecars; §7 bindings recorded; §9 placeholder folder and load-by-name rule; §11 commands verified + `tools/verify.sh`; §14 items 1–2 resolved.
 - **0.6 — 2026-11-20:** Task 1.2: §4 tree adds `scripts/main/CameraFollow.cs` and describes `Player.tscn`/`PlayerController.cs`; §7 records the 0.2 move deadzone, where ground clicks are handled, and position-based gamepad buttons (any controller, abstract prompts). §10 wording: PC first, consoles later. Also: `src/shaders/placeholder_checker.gdshader` (temporary checkerboard ground for `PlaceholderLevel`, replaced by tiles in Task 1.5).
+- **0.7 — 2026-11-20:** Task 1.3: `GameClock` autoload registered (Pausable). §4 tree adds `Bed.tscn`/`Bed.cs`, `ClockDial`/`SleepPrompt`/`DayTransition` scenes and views, `ButtonPrompt.cs`, `IInteractable.cs`, `SleepSequence.cs` (Main/Systems), `debug/ClockDebugKeys.cs`, and the `assets/placeholder/handmade/` folder (§9 lookup order now searches it). §5 Task 1.3 row lists the real files; the stale "ToolBeltView — Task 1.3" label corrected to 1.4. §7 records how `interact` (Space / A / click on an interactable) and the prompt's `ui_*` navigation work, and the debug-only raw keys.
+- **0.8 — 2026-11-20:** Bedtime references updated to 01:00 (owner decision, GDD v0.29); debug F4 now jumps to 00:50.
+- **0.9 — 2026-11-20:** Bedtime references corrected to midnight (GDD v0.30); debug F4 jumps to 23:50.
+- **0.10 — 2026-11-20:** Clock references updated to the 04:30 wake-up and 21:30 bedtime (GDD v0.31); debug F4 jumps to 21:20.
+- **0.11 — 2026-11-20:** `GameClock`/`ClockDial` descriptions: readout ticks every 15 in-game minutes (`TimeChanged` signal).

@@ -1,8 +1,8 @@
 # Mechanics
 
 > **Status:** Brainstorming draft — **updated for the direction reset 2026-11-19**
-> **Version:** 0.12
-> **Last updated:** 2026-11-19
+> **Version:** 0.19
+> **Last updated:** 2026-11-20
 > **Purpose:** Player verbs and systems. Every element is a proposal pending playtesting. The GDD remains authoritative for gameplay, audience, and project decisions.
 
 ---
@@ -22,22 +22,23 @@ The game is a realistic but kid-friendly, educational farm sim for PC (GDD §1�
 
 ## 2. Day and night cycle
 
-**Clock model (Milestone 0 decision 2, GDD §4):** 8 phases × 3 in-game hours; the clock jumps one 3-hour step at a time (≈ 2 min 15 s of play per step; the playable day 06:00 → 02:00 lasts ≈ 15 real minutes). Runs only while playing; stops in the pause menu and while closed; resets to Dawn on sleep.
+**Clock model (Milestone 0 decision 2, GDD §4):** 8 phases × 3 in-game hours; the phase changes one 3-hour step at a time (3 min of play per step, 60 s per in-game hour — Harvest Moon pace) and the HUD time ticks every 15 in-game minutes (15 s; the playable day 04:30 → 21:30 lasts 17 real minutes; wake-up 04:30, forced bedtime 21:30). Runs only while playing; stops in the pause menu and while closed; resets to Dawn on sleep.
 
 | # | Phase | Clock | What is true |
 |---|---|---|---|
-| 1 | Dawn | 06:00–09:00 | New orders on the board; sprinklers run |
-| 2 | Morning | 09:00–12:00 | Marlow at the gate; seed shed open |
-| 3 | Midday | 12:00–15:00 | Neighbours out; market busiest |
-| 4 | Afternoon | 15:00–18:00 | Brook keeper; travelling merchant on visit days |
-| 5 | Evening | 18:00–21:00 | Shops close; shipping box collected at day's end |
-| 6 | Dusk | 21:00–00:00 | Fireflies in season |
-| 7 | Night | 00:00–03:00 | Seed shed lit; Moon Petal glows |
-| 8 | Small hours | 03:00–06:00 | Quiet |
+| 1 | Dawn | 04:30–07:30 | New orders on the board; sprinklers run |
+| 2 | Morning | 07:30–10:30 | Marlow at the gate; seed shed open |
+| 3 | Midday | 10:30–13:30 | Neighbours out; market busiest |
+| 4 | Afternoon | 13:30–16:30 | Brook keeper; travelling merchant on visit days |
+| 5 | Evening | 16:30–19:30 | Shops close; shipping box collected at day's end |
+| 6 | Dusk | 19:30–22:30 | Fireflies in season |
+| 7 | Night | 22:30–01:30 | Seed shed lit; Moon Petal glows |
+| 8 | Small hours | 01:30–04:30 | Quiet |
 
-- **HUD clock:** a corner dial with sun/moon marker plus a digital readout.
+- **Time stops** while a menu, conversation or shop screen is open, and **also indoors** (owner 2026-11-20, kid tolerance, GDD §4).
+- **HUD clock:** a corner dial with sun/moon marker (per phase) plus a digital readout ticking every 15 in-game minutes.
 - **Sleep/rest:** ends the day, pays out the shipping box, resets the clock to Dawn. No penalty for when you sleep.
-- The clock drives light, presence, shop hours, order refresh, and shipping payout. Day rollover (sleep or the 02:00 bedtime) advances crop growth and the watering/feeding counts (§6, animals.md §3).
+- The clock drives light, presence, shop hours, order refresh, and shipping payout. Day rollover (sleep or the 21:30 bedtime) advances crop growth and the watering/feeding counts (§6, animals.md §3).
 
 ---
 
@@ -181,3 +182,10 @@ Optional long-term systems — decoration and farm charm, collections, contests,
 - **0.10 — 2026-11-19:** Added **subscribe/cancel** (standing daily orders with reminder) and **hire/dismiss** verbs; helpers now explicitly hired farmhands (daily wage) or befriended garden sprites.
 - **0.11 — 2026-11-19:** Added **Order feed** (phone the feed seller from home, 18:00 cut-off, Dawn delivery to feed bins); Buy no longer lists land.
 - **0.12 — 2026-11-19:** Clock step ≈ 2 min 15 s (≈ 15-minute playable day); seasons 30 days.
+- **0.13 — 2026-11-20:** Forced bedtime moved to **01:00** (owner decision, GDD v0.29).
+- **0.14 — 2026-11-20:** Forced bedtime corrected to **midnight (00:00)** (owner, GDD v0.30).
+- **0.15 — 2026-11-20:** Day reset by the owner: wake-up 04:30, forced bedtime 21:30; phase table times shifted to steps starting at 04:30 (GDD v0.31).
+- **0.16 — 2026-11-20:** HUD time ticks every 15 in-game minutes (owner, GDD v0.32).
+- **0.17 — 2026-11-20:** Harvest Moon pace: 60 real seconds per in-game hour (owner, GDD v0.33).
+- **0.18 — 2026-11-20:** When time stops: menus, conversations, shop screens; never just for being indoors (owner, GDD v0.34).
+- **0.19 — 2026-11-20:** Time also stops indoors (owner, GDD v0.35).

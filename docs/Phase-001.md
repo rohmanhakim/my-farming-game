@@ -1,7 +1,7 @@
 # Phase-001 — First Playable (Vertical Slice)
 
-> **Status:** In progress — Task 1.1 done (2026-11-20)  
-> **Version:** 0.18  
+> **Status:** In progress — Tasks 1.1–1.2 done; Task 1.3 built, pending human playtest (2026-11-20)  
+> **Version:** 0.24  
 > **Last updated:** 2026-11-20  
 > **Milestone:** 1 — First playable  
 > **Purpose:** Break Milestone 1 down into session tasks. Each task produces one scoped, playtested artifact that can be created and validated in a single session with AI assistance.
@@ -109,26 +109,26 @@ Each task includes **Team Preparation**, **Tests** (Software / Human), and a **N
 
 ### Task 1.3 — Day Clock, Calendar & Sleep
 
-**Artifact:** The in-game day: stepped clock, HUD dial, sleep, and the 02:00 bedtime. Moved early because growth and feeding are now day-based.
+**Artifact:** The in-game day: stepped clock, HUD dial, sleep, and the 21:30 bedtime. Moved early because growth and feeding are now day-based.
 
 **Scope:**
-- `GameClock` autoload: 8 phases × 3 in-game hours, stepped (GDD §4); step length as a named constant (≈ 2 min 15 s per 3-hour step → ≈ 15-minute playable day, GDD §4)
+- `GameClock` autoload: 8 phases × 3 in-game hours, stepped (GDD §4); step length as a named constant (3 min per 3-hour step = 60 s per in-game hour, Harvest Moon pace → 17-minute playable day 04:30 → 21:30, GDD §4 v0.33)
 - Day counter + season (Spring only in this phase; season length constant = 30 days)
-- HUD clock dial (sun/moon marker + digital readout)
-- Sleep at Kit's bed → day rollover, clock to 06:00; **automatic bedtime at 02:00** (Kit goes home, no penalty)
+- HUD clock dial (sun/moon marker + digital readout; readout ticks every 15 in-game minutes — owner 2026-11-20)
+- Sleep at Kit's bed → day rollover, clock to the **04:30** wake-up; **automatic bedtime at 21:30** (Kit goes home, no penalty; owner reset 2026-11-20, was 06:00 / 02:00)
 - `DayEnded` / `DayStarted` signals other systems subscribe to
 - Clock stops in the pause menu and never advances while the game is closed
 
 **Acceptance criteria:**
 - Clock steps through all 8 phases; HUD dial matches
-- Sleeping or reaching 02:00 starts the next day at 06:00
+- Sleeping or reaching 21:30 starts the next day at 04:30
 - Signals fire exactly once per rollover
 
 **Team Preparation:**
 - Clock dial placeholder icons; bed placeholder
 
 **Tests:**
-- **Software:** time-scaled run steps through phases; sleep and 02:00 both roll the day once; pause stops time; restart does not advance time
+- **Software:** time-scaled run steps through phases; sleep and 21:30 both roll the day once; pause stops time; restart does not advance time
 - **Human:** player understands the dial and the bed without explanation
 
 **AI assistance:** Prompt for "Godot 4.x C# stepped day clock autoload with day rollover signals."
@@ -136,11 +136,11 @@ Each task includes **Team Preparation**, **Tests** (Software / Human), and a **N
 **Dependencies:** Task 1.2.
 
 **Notes & learnings:**
-- **Outcome / status:** _TBD_
-- **What worked well:** _TBD_
-- **Problems & fixes:** _TBD_
-- **Deviations from scope or plan:** _TBD — actual step length_
-- **Handoff to Task 1.4:** _TBD — signal names and how to subscribe_
+- **Outcome / status:** 2026-11-20 — **Done — pending human playtest.** Software tests: PASS — `tools/verify.sh`: `dotnet build` 0 warnings/0 errors, import + 120-frame boot clean (no errors in the log), `TestRunner` **187/187** (75 new: readout ticks every 15 in-game minutes = 15 s and not before; 04:30 → 18:00 = 810 s; design constants; fresh clock = Spring Day 1 04:30; time-scaled run 04:30→07:30→…→19:30 with one `StepChanged` per step in order; 21:30 bedtime fires once, starts sleep, time frozen while asleep; `DayEnded`/`DayStarted` exactly once per rollover for both bed and bedtime, even when `BeginSleep`/`CompleteRollover`/`Wake` are called twice; bed prompt stops the clock and "not yet" restarts it; 100 s hitch counts as 0.25 s; held clock stands still; calendar 30 → Spring 30, 31 → Summer 1, 121 → Spring 1 year 2; restarted clock starts fresh; autoload registered and Pausable; dial follows the clock and draws all 8 phases with sun by day / moon by night; tree pause stops the clock and unpause resumes it; in the real Main scene: bed prompt only when near, Space and gamepad A open "Go to sleep?", Kit freezes, B / "Not yet" closes it, clicking the bed walks Kit there and asks, "Sleep" → Day 2 04:30 with the HUD updated, 21:30 far from home → Kit wakes beside the bed on Day 3 at 04:30 with the camera snapped; button-prompt glyphs per pad family). A `--write-movie` frame check confirmed the dial, the bed prompt and the question panel draw (temporary capture scene deleted afterwards). · Human playtest: **PENDING**.
+- **What worked well:** Keeping the clock's rules separate from visuals: `GameClock.Tick(delta)` is public and tests make private clocks (`new GameClock()` added with `SetProcess(false)`) so a full day runs in seven calls with no waiting. Time runs continuously underneath and only the *display* is stepped, which keeps the bedtime and 45 s per in-game hour exact. One sleep flow for both bed and bedtime (`BeginSleep` → `CompleteRollover` → `Wake`) with guards makes "exactly once" a property of the clock, not of the callers. Named handler methods plus `-=` in `_ExitTree` for every subscription to the autoload, because tests instance `Main.tscn` several times. A throwaway GDScript scene + `--write-movie` is a quick way to look at a UI state for one frame without adding test code.
+- **Problems & fixes:** (1) `DisplayServer.KeyboardGetKeycodeFromPhysical` logs `ERROR: Not supported by this display server` in headless runs → `ButtonPrompt.KeyLabel` uses the physical keycode when `DisplayServer.GetName() == "headless"`. (2) The "Sleep" button ignores presses for 200 ms after opening so the A/Space press that opened the question cannot answer it; at first "Not yet"/B had the same guard and a fast headless test closed nothing → only "Sleep" is guarded now ("Not yet" never loses anything). (3) The bedtime is not a step boundary: steps are counted from the 04:30 wake-up (04:30, 07:30 … 19:30), so the dial stays on "19:30" (Dusk) until 21:30 arrives 1 min 30 s of real time later. `ShownTime` therefore formats hours *and* minutes (`GameClock.FormatTime`). (4) **Night (22:30–01:30) and Small hours (01:30–04:30) are never played** because bedtime comes first; the dial keeps their wedges and tests draw them via `ClockDialView.Display`. Night-only content (seed shed lit, Moon Petal) needs a new time — raised with the owner. (5) A huge frame delta (window dragged, breakpoint) would skip time → each frame counts at most 0.25 s (`GameClock.MaxFrameSeconds`). (6) A test lambda that checked every `SleepStarted` reason failed once a later bed sleep fired the same signal → record reasons in a list and check the first.
+- **Deviations from scope or plan:** (a) **Step length 180 s** (3 min, 60 s per in-game hour — Harvest Moon pace, owner 2026-11-20 after trying 135 s; `GameClock.RealSecondsPerStep`), playable day 04:30 → 21:30 = 17 in-game hours = 17 real minutes (GDD §4 v0.33); season length 30 (`SeasonLengthDays`). Seasons roll over generally (day 31 = Summer 1) though Phase-001 only has Spring content and a spring icon; nothing reads the season yet. (b) **"Go to sleep?" question** (Sleep / Not yet) when using the bed, so a stray A press can't end the day by accident; it follows controls.md §6 ("clear visual button") and the rule that the clock stops while any menu is open. **Owner decision 2026-11-20: keep the question.** (c) **Interaction groundwork** (needed to reach the bed, per the Task 1.2 handoff): `scripts/core/IInteractable.cs` (group `interactables`, click areas on physics layer 8) and `PlayerController` now reads `interact` — Space / A uses the nearest interactable in reach; a left-click on one walks Kit there, then uses it; any other click is still a ground click. `PlayerController.Frozen` stops Kit during the question and the night. (d) **Button prompts** per action (`scripts/ui/ButtonPrompt.cs`): keyboard key cap, or the gamepad's bottom face button drawn as Xbox "A", PlayStation cross, or Nintendo "B", chosen from the last device used and the pad's name. (e) **Placeholder art drawn for this task** (the two Kenney packs in use have no bed, sun or moon): `assets/placeholder/handmade/ph_bed.png`, `ph_clock_sun.png`, `ph_clock_moon.png`, `ph_icon_sleep.png`, `ph_season_spring.png`; `SpriteLibrary` now searches `placeholder/{kenney,handmade}`. Final art drops in by name. (f) The bed stands in `PlaceholderLevel` at (-320, -224); "Kit goes home" at 21:30 means Kit wakes at the bed's `WakeSpot` (fade, no walking). Task 1.5's real level should move the bed into Kit's house. (g) Night card: 0.8 s fade to a night colour with the sleep icon, 1.2 s season icon + "Day N", 0.8 s fade in (`DayTransitionView` exports). (h) HUD clock in the top-right corner: 8-wedge dial (dawn rises on the left, noon at the top, night at the bottom; current wedge bright, others dimmed; marker jumps per phase), a readout that **ticks every 15 in-game minutes** ("07:45", owner 2026-11-20; `GameClock.ReadoutMinutes`, signal `TimeChanged(int minuteOfDay)`), spring icon + "Day N". (i) **Debug builds only:** F2 = next step, F3 = 20× clock speed, F4 = jump to 21:20 (`src/debug/ClockDebugKeys.cs`, added by `Main`); raw keys on purpose, developer tools only. (j) **Owner decisions 2026-11-20 (after the build):** day reset to **wake-up 04:30, forced bedtime 21:30** (after trying 01:00 and midnight) and marked decided (GDD v0.31; `GameClock.DayStartMinute` / `BedtimeMinute`; the GDD/mechanics phase tables now start at 04:30); Small hours stays a dial-only phase; keep the "Go to sleep?" question.
+- **Handoff to Task 1.4:** Clock: autoload `GameClock` (`res://scripts/autoloads/GameClock.cs`, namespace `MyFarmingGame.Autoloads`), use `GameClock.Instance`. Day logic belongs on **`DayEnded(int day)`** (fires once while the screen is dark, before the day number changes: growth, watering/hunger counts, shipping) and **`DayStarted(int day)`** (new day at 04:30: deliveries, orders). Also `TimeChanged(int minuteOfDay)` (every 15 in-game minutes), `StepChanged(int phase)`, `BedtimeReached`, `SleepAsked`, `SleepAskCancelled`, `SleepStarted(int reason)`, `WokeUp`. Subscribe from C#: `GameClock.Instance.DayEnded += OnDayEnded;` with a **named method**, and `-=` it in `_ExitTree`. Read `Day`, `DayOfSeason`, `Season`, `Year`, `Phase`, `ShownTime`, `MinutesIntoDay`, `IsRunning`. A menu (the Bag) must stop time: `GameClock.Instance.Hold("bag")` / `Release("bag")`, and set `PlayerController.Frozen`. Save/load (Task 1.10) saves `Day` + `MinutesIntoDay` and restores with `SetTime(day, minutes)`; new game = `ResetForNewGame()`. Interaction: anything Kit can use implements `IInteractable`, joins group `interactables`, has an `Area2D` on layer 8 for clicks (see `Bed.tscn`); `interact` currently does nothing when no interactable is in reach — Task 1.4/1.5 adds "use the active tool on the tile in front of `Facing`" as the fallback in `PlayerController._UnhandledInput`. Use `ButtonPrompt` (with `Action = "..."`) for any on-screen button hint; never hard-code a letter. Tests: `TestRunner` uses private clocks for rule checks and the autoload for in-game checks; call `GameClock.Instance.ResetForNewGame()` before and after.
 
 ---
 
@@ -526,3 +526,9 @@ Phase-002 (planned — docs/PHASE.md §3): market stall and shipping box with se
 - **0.16 — 2026-11-20:** **Task 1.1 done** (built to the v0.15 scene-architecture standard) — Notes & learnings filled (Godot 4.7.2 .NET, RollForward for .NET 11, Kenney CC0 placeholders in `src/assets/placeholder/`, InputMap registry bound early, verified headless commands, `tools/verify.sh`); status header moved from Planning draft to In progress.
 - **0.17 — 2026-11-20:** **Task 1.2 built — pending human playtest.** Notes & learnings filled: 8-way walking with 4-way facing (owner decision), 160 px/s, click-to-move with `WalkTo` hook, CameraFollow with smoothing, placeholder idle/walk clips, move deadzone 0.2, headless mouse/test gotchas, any-controller gamepad note (PC first, consoles later). Gotcha added: editor game embedding shows a blank grey screen on macOS + Compatibility; run unembedded. Placeholder checkerboard ground added after owner feedback.
 - **0.18 — 2026-11-20:** **Task 1.2 Done** — owner playtested and approved movement, speed and camera.
+- **0.19 — 2026-11-20:** **Task 1.3 built — pending human playtest.** Notes & learnings filled: 135 s steps (15-minute day), continuous time under a stepped display, 02:00 bedtime 1.5 min into the Night step, Small hours unreachable (raised with the owner), "Go to sleep?" question, interaction groundwork (`IInteractable`, Space / A / click), per-pad button prompts, handmade placeholder icons, debug clock keys, headless keyboard-layout gotcha.
+- **0.20 — 2026-11-20:** Owner decisions on Task 1.3: forced bedtime **moved from 02:00 to 01:00** (scope, acceptance, tests and Notes updated; day now 14 min 15 s), Small hours accepted as dial-only, "Go to sleep?" question kept.
+- **0.21 — 2026-11-20:** Owner corrected the forced bedtime to **midnight (00:00)**; Task 1.3 scope, acceptance, tests and Notes updated (day now 13 min 30 s; Night is dial-only too).
+- **0.22 — 2026-11-20:** Owner reset the Task 1.3 day: **wake-up 04:30, forced bedtime 21:30** (steps counted from 04:30; day 12 min 45 s). Scope, acceptance, tests and Notes updated.
+- **0.23 — 2026-11-20:** Task 1.3: HUD time now ticks every 15 in-game minutes (owner); `TimeChanged` signal and 5 new tests; Notes updated.
+- **0.24 — 2026-11-20:** Task 1.3 clock speed set to **Harvest Moon pace** (60 s per in-game hour; day 17 min) by the owner.

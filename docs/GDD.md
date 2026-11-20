@@ -1,7 +1,7 @@
 # Game Design Document
 
 > **Status:** Brainstorming draft — **direction reset 2026-11-19** (see v0.19–v0.20 change log)
-> **Version:** 0.28
+> **Version:** 0.35
 > **Last updated:** 2026-11-20
 > **Purpose:** A living document for shaping the game together. Confirmed owner decisions are marked **decided**; everything else is a proposal, not a commitment.
 
@@ -188,30 +188,32 @@ One rule for everything that lives on the farm: **3 days in a row without care �
 
 ### In-day clock and day phases (decision — Milestone 0, 2026-11-18)
 
-**The game has a clock, shown in the HUD, but it moves in coarse steps — never minute by minute.**
+**The game has a clock, shown in the HUD. Its readout ticks every 15 in-game minutes (owner 2026-11-20); the day phases below move in 3-hour steps.**
 
 - **8 day phases, 3 in-game hours each** (24 hours = 8 × 3).
-- **Stepped, not continuous:** the clock jumps **one 3-hour step at a time**.
-- **Day length (decided 2026-11-19): ≈ 15 real minutes** for the playable day, 06:00 → 02:00 bedtime (20 in-game hours). That is **45 real seconds per in-game hour**, so one 3-hour step ≈ **2 min 15 s**. (Harvest Moon ≈ 18 min, Stardew Valley ≈ 14 min.)
+- **Readout every 15 in-game minutes** (15 real seconds per tick); the **phase** (light, presence, dial marker) changes one 3-hour step at a time.
+- **Day length (decided 2026-11-19, reset 2026-11-20): 17 real minutes** for the playable day, 04:30 wake-up → 21:30 bedtime (17 in-game hours). The 3-hour steps are counted from the wake-up: 04:30, 07:30, 10:30, 13:30, 16:30, 19:30. That is **60 real seconds per in-game hour — Harvest Moon pace** (owner 2026-11-20), so one 3-hour step = **3 min** and 04:30 → 18:00 takes 13 min 30 s. ~5 real minutes of chores (watering, feeding) ≈ 5 in-game hours, done by ≈ 09:30. (Stardew Valley ≈ 42 s per in-game hour.)
 - **Runs only while playing:** stops in the pause menu and while the game is closed.
-- **Sleep/rest** ends the day: the calendar day increments and the clock resets to **Dawn (06:00)**.
-- **Bedtime at 02:00 (proposal):** if Kit is still up at 02:00, Kit heads home and sleeps automatically — no penalty. Without this, a player who never sleeps would freeze the calendar now that growth is day-based.
+- **When time stops (decided 2026-11-20, owner):** time stops while any menu or screen is open — pause menu, bag, the "Go to sleep?" question, a conversation, a shop screen. Time **also stops indoors** (houses, seed shed, barn, coop) so younger players can take their time (owner 2026-11-20, kid tolerance; replaces the earlier "keeps running indoors"). Known trade-off: indoor work (shopping, chatting, processing) costs no time, so shop hours and timed orders only bite outdoors.
+- **Sleep/rest** ends the day: the calendar day increments and the clock resets to **Dawn (04:30, owner 2026-11-20)**.
+- **Forced bedtime at 21:30 (decided 2026-11-20, owner):** if Kit is still up at 21:30, Kit heads home and sleeps automatically — no penalty. Without this, a player who never sleeps would freeze the calendar now that growth is day-based.
+- **Night (22:30–01:30) and Small hours (01:30–04:30)** are never played: bedtime comes two hours into Dusk. They exist only as wedges on the HUD dial. Night-only content in the table below (seed shed lit, Moon Petal glow) needs a new home — open question.
 - **Seasons (decided 2026-11-19): 30 days each, like *Harvest Moon*** — 4 seasons, a **120-day year**.
 
 | # | Phase | Clock | Light | What is true in this phase |
 |---|---|---|---|---|
-| 1 | **Dawn** | 06:00–09:00 | First light, soft pink | Morning greeting; new orders appear on the board |
-| 2 | **Morning** | 09:00–12:00 | Bright, clear | Mr. Marlow at the gate; seed shed open; butterflies visit flowers |
-| 3 | **Midday** | 12:00–15:00 | Highest, brightest | Neighbours out and about; market stall busiest |
-| 4 | **Afternoon** | 15:00–18:00 | Long light | Brook keeper on warm afternoons; travelling merchant on visiting days |
-| 5 | **Evening** | 18:00–21:00 | Gold → amber | Shops close; shipping box collected at the end of the day |
-| 6 | **Dusk** | 21:00–00:00 | Lane darkens | Fireflies in season; Marlow may be indoors |
-| 7 | **Night** | 00:00–03:00 | Dark, quiet palette | Seed shed lit; Moon Petal glows |
-| 8 | **Small hours** | 03:00–06:00 | Deepest dark | Quiet only |
+| 1 | **Dawn** | 04:30–07:30 | First light, soft pink | Morning greeting; new orders appear on the board |
+| 2 | **Morning** | 07:30–10:30 | Bright, clear | Mr. Marlow at the gate; seed shed open; butterflies visit flowers |
+| 3 | **Midday** | 10:30–13:30 | Highest, brightest | Neighbours out and about; market stall busiest |
+| 4 | **Afternoon** | 13:30–16:30 | Long light | Brook keeper on warm afternoons; travelling merchant on visiting days |
+| 5 | **Evening** | 16:30–19:30 | Gold → amber | Shops close; shipping box collected at the end of the day |
+| 6 | **Dusk** | 19:30–22:30 | Lane darkens | Fireflies in season; Marlow may be indoors |
+| 7 | **Night** | 22:30–01:30 | Dark, quiet palette | Seed shed lit; Moon Petal glows |
+| 8 | **Small hours** | 01:30–04:30 | Deepest dark | Quiet only |
 
-**HUD clock:** a small dial with a sun/moon marker that jumps one step at a time, plus a digital readout ("09:00").
+**HUD clock:** a small dial with a sun/moon marker that jumps one phase at a time, plus a digital readout that ticks every 15 minutes ("07:45").
 
-**What the clock drives:** lighting, NPC presence, shop hours, order-board refresh, shipping-box payout, time-of-day events. **Day rollover** (sleep or 02:00 bedtime) drives crop growth, watering/feeding counts, and the 3-days rule. Missed time-of-day events recur.
+**What the clock drives:** lighting, NPC presence, shop hours, order-board refresh, shipping-box payout, time-of-day events. **Day rollover** (sleep or 21:30 bedtime) drives crop growth, watering/feeding counts, and the 3-days rule. Missed time-of-day events recur.
 
 ### Automation (decided 2026-11-19 — key selling point #1; decoration is #2)
 
@@ -249,7 +251,7 @@ Short sessions are satisfying; long sessions are possible. There is no required 
 > **Scope note:** Phase-001 is now a **vertical slice of the money loop** (docs/Phase-001.md).
 
 - Move around the front garden, the lane, and Marlow's seed shed.
-- Day clock, sleep, and the 02:00 bedtime.
+- Day clock, sleep, and the 21:30 bedtime.
 - Clear weeds and stones; till; plant; water daily; see crops grow over days, yellow after 2 dry days, gone after 3.
 - Forage wild berries; Marlow's first order (berries) and second order (carrots); coins.
 - Order board with simple repeat orders matched to what Kit can produce.
@@ -419,7 +421,7 @@ Playtests with children are conducted with appropriate adult supervision and con
 10. **CLOSED (v0.20):** no difficulty modes, so no mode switching.
 11. **RESOLVED (v0.20):** day-based growth, Harvest Moon-style (§4).
 12. **RESOLVED (v0.20):** the first beat is a first order; the Butterfly Garden is optional and later (§3).
-13. **RESOLVED (v0.26):** day length ≈ 15 real minutes (06:00 → 02:00).
+13. **RESOLVED (v0.26, reset v0.29–v0.33):** day length 17 real minutes (04:30 → 21:30, 60 s per in-game hour).
 14. **RESOLVED (v0.26):** 30-day seasons, 120-day year (Harvest Moon).
 15. **⚠️ OPEN — order premium.** Should orders pay ×1.25 the market price? (economy.md §6, recommended.)
 
@@ -475,3 +477,10 @@ Playtests with children are conducted with appropriate adult supervision and con
 - **0.26 — 2026-11-19:** **Day length ≈ 15 real minutes** (06:00 → 02:00; 45 s per in-game hour; one 3-hour step ≈ 2 min 15 s) and **30-day seasons / 120-day year** like Harvest Moon (owner decisions). Q13–Q14 resolved. **Kit is a boy** (characters.md).
 - **0.27 — 2026-11-19:** Working title set to **Fields & Sunshine**; art primary references (Pioneers of Olive Town, Harvest Moon: Home Sweet Home) and ≈ 5-head proportions linked from §9.
 - **0.28 — 2026-11-20:** **Platform: PC first, consoles later** (owner decision): Nintendo Switch and PlayStation planned after the PC release; still no mobile/tablet. §2, §8, §13 and Q5 updated; gamepad scheme must cover every action (any modern controller).
+- **0.29 — 2026-11-20:** **Forced bedtime decided and moved to 01:00** (owner, during the Task 1.3 playtest review; was "02:00 (proposal)"). Playable day 06:00 → 01:00 = 19 in-game hours = 14 min 15 s at the unchanged 45 s per in-game hour. Small hours noted as dial-only.
+- **0.30 — 2026-11-20:** Owner corrected the forced bedtime to **midnight (00:00)** (replaces v0.29's 01:00). Playable day = 18 in-game hours = 6 steps = 13 min 30 s at the unchanged 45 s per in-game hour. Night and Small hours are now dial-only; Night-only content (seed shed lit, Moon Petal) flagged as needing a new time.
+- **0.31 — 2026-11-20:** Owner reset the day: **wake-up 04:30, forced bedtime 21:30** (replaces v0.30's midnight). Phase clock times shifted so the 3-hour steps start at the wake-up (Dawn 04:30–07:30 … Small hours 01:30–04:30). Playable day 17 in-game hours = 12 min 45 s at 45 s per in-game hour. Night/Small hours still dial-only; Night-only content still needs a new time.
+- **0.32 — 2026-11-20:** Owner: the HUD time **ticks every 15 in-game minutes** (was 3-hour jumps only); phases stay 3-hour steps. Reference: 04:30 → 18:00 = 10 min 7.5 s of play.
+- **0.33 — 2026-11-20:** Owner: **Harvest Moon pace, 60 real seconds per in-game hour** (was 45 s). Day 04:30 → 21:30 = 17 real minutes; 15-minute readout tick = 15 s; 3-hour phase = 3 min. Menus (e.g. the bag) stop the clock.
+- **0.34 — 2026-11-20:** Owner rule: time stops for menus, conversations and shop screens, but keeps running indoors.
+- **0.35 — 2026-11-20:** Owner changed the rule: **time stops indoors** too (kid tolerance), on top of menus, conversations and shop screens.

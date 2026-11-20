@@ -1,8 +1,8 @@
 # Crops
 
 > **Status:** Brainstorming draft
-> **Version:** 0.6
-> **Last updated:** 2026-11-19
+> **Version:** 0.9
+> **Last updated:** 2026-11-20
 > **Purpose:** Crops in the game, their seasons, growth days, uses, and the watering/neglect rule. All names are tentative; every element is a proposal pending playtesting. Prices live in [economy.md](./economy.md).
 
 ---
@@ -21,7 +21,7 @@ Crops are the heart of the farm economy: they fill orders, sell at the market, f
 
 ## 2. Growth and neglect model
 
-- **A crop grows one day each night it was watered** that day (or rained on). Sleeping — or the automatic 02:00 bedtime — ends the day (GDD §4).
+- **A crop grows one day each night it was watered** that day (or rained on). Sleeping — or the automatic 21:30 bedtime — ends the day (GDD §4).
 - **Dry day:** no growth; cracked-soil look.
 - **2 dry days in a row:** leaves droop and turn yellow — the warning.
 - **3 dry days in a row:** the crop is gone; the tile stays tilled; a short note gives a tip ("Water every day, or try a sprinkler").
@@ -113,3 +113,6 @@ Golden pumpkin, giant variants, merchant-only seeds — progression.md §6.2.
 - **0.4 — 2026-11-18:** Growth model §2 updated to the Milestone 0 decision (GDD §4, v0.16): stage timing default **Medium ≈30–45 s** (Fast/Slow presets for the options screen), growth paused while the game is closed by default, optional positive-only Gentle catch-up (+1 stage max, never past bloom), both set before starting a new game. Replaced the old “closed-game growth is TBD” line.
 - **0.5 — 2026-11-19:** **Direction reset (GDD v0.19).** No-withering rule replaced: crops **need water**, dry soil pauses growth, neglected crops **turn yellow then are gone** (grace per mode). Economy uses added (orders, selling, processing, feed). 2–3-bed limit is now only the starting garden. Added farm crops (wheat, hay grass), **orchard trees**, crop quality, greenhouse year-round growing, rare crops as a collection, and unlock tiers.
 - **0.6 — 2026-11-19:** **Day-based growth (owner decision):** play-time stages (≈30–45 s, Fast/Medium/Slow, Gentle catch-up) replaced by **days to harvest, minimum 1 day**, growing one day per watered night, Harvest Moon-style. Neglect fixed to **2 dry days → yellow, 3 → gone** (single mode). Added **rain** (waters outdoor crops), regrow intervals, sapling maturing rule, and days for every crop. Butterfly Garden flowers moved to an optional later request. "Carrot Patch / Herb Pot / Tomato Vine / Berry Spray" shortened to Carrot / Herbs / Tomato / Berries.
+- **0.7 — 2026-11-20:** Bedtime reference updated to 01:00 (GDD v0.29).
+- **0.8 — 2026-11-20:** Bedtime reference corrected to midnight (GDD v0.30).
+- **0.9 — 2026-11-20:** Bedtime reference updated to 21:30 (GDD v0.31).

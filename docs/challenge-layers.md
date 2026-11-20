@@ -1,8 +1,8 @@
 # Difficulty — One Mode: Realistic but Kid-Friendly
 
 > **Status:** Design draft — **single mode decided 2026-11-19**
-> **Version:** 0.4
-> **Last updated:** 2026-11-19
+> **Version:** 0.7
+> **Last updated:** 2026-11-20
 > **Purpose:** Defines the game's one difficulty setting and its rules. Earlier versions held parent-controlled challenge layers (v0.1–0.2) and then three modes (v0.3); both are retired. The file name is kept so existing links still work.
 
 ## 1. Decision
@@ -28,7 +28,7 @@
 | **Sell prices** | ≈ real-world retail | economy.md |
 | **Buy prices** | ≈ half of real-world retail | economy.md — the kid-friendly half |
 | **Money floor** | 0 | No debt, no loans. |
-| **While the game is closed** | Nothing changes | Days only pass during play (sleep or the 02:00 bedtime). |
+| **While the game is closed** | Nothing changes | Days only pass during play (sleep or the 21:30 bedtime). |
 
 Days are in-game days (GDD §4 clock). The crop and animal rules use the same "3 days in a row" count on purpose, so it is one rule for players to learn.
 
@@ -59,3 +59,6 @@ The old layers' content is all core now: money, tool upgrades, crafting, multi-s
 - **0.2 — 2026-11-18:** Removed the Time Awareness layer (day/night and seasons are always on, Gentle Core). Session Timer clarified as on by default. Fixed "pase menu" typo, numbered the change log, added the README row, and normalised "neighbor" to "neighbour".
 - **0.3 — 2026-11-19:** **Restructured into three difficulty modes (Easy / Normal / Realistic)** per the owner's direction reset (GDD v0.19). Gentle Core, the six layers, the five-stage age map, the parent gate, and the one-click reset are retired; coins, upgrades, crafting, and multi-step requests become core systems; the session timer becomes an optional break reminder. Added the reasoning for three modes (§2), a provisional tuning table for neglect, money, and prices (§3), mode-switching rules (§4), and a mapping from each old layer to its new home (§5). File name kept for link stability.
 - **0.4 — 2026-11-19:** **Single mode decided (owner):** "realistic but kid-friendly". Easy/Normal/Realistic and mode switching removed. One rules table: daily watering and feeding, **yellow after 2 dry days, gone after 3** (crops), **gone after 3 unfed days** (animals), sell at ≈ real price, buy at ≈ half real price, no debt, nothing while closed.
+- **0.5 — 2026-11-20:** Bedtime reference updated to 01:00 (GDD v0.29).
+- **0.6 — 2026-11-20:** Bedtime reference corrected to midnight (GDD v0.30).
+- **0.7 — 2026-11-20:** Bedtime reference updated to 21:30 (GDD v0.31).

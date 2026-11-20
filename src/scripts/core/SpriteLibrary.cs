@@ -9,13 +9,17 @@ namespace MyFarmingGame.Core;
 ///
 /// Lookup order for a name:
 ///   1. Final art:   res://assets/art/{subfolder}/{name}.png  (see <see cref="ArtFolders"/>)
-///   2. Placeholder: res://assets/placeholder/kenney/ph_{name}.png
+///   2. Placeholder: res://assets/placeholder/{kenney,handmade}/ph_{name}.png
 ///   3. Fallback:    a flat coloured square (so a missing sprite is obvious but never crashes)
 /// </summary>
 public static class SpriteLibrary
 {
     public const string ArtRoot = "res://assets/art";
-    public const string PlaceholderRoot = "res://assets/placeholder/kenney";
+    public const string PlaceholderRoot = "res://assets/placeholder";
+
+    /// <summary>Placeholder folders under <see cref="PlaceholderRoot"/>, searched in order
+    /// (kenney = Kenney CC0 tiles, handmade = simple icons drawn for this project).</summary>
+    public static readonly string[] PlaceholderFolders = { "kenney", "handmade" };
 
     /// <summary>Folders under assets/art/ searched for final art (project-structure.md §4).</summary>
     public static readonly string[] ArtFolders = { "characters", "world", "ui", "items", "vfx" };
@@ -25,6 +29,7 @@ public static class SpriteLibrary
     {
         "player", "npc_marlow", "grass", "garden_bed", "crop_sprout", "hen", "coop",
         "tool_hands", "tool_hoe", "tool_watering_can", "tool_seed_bag", "tool_feed_scoop", "coin",
+        "bed", "clock_sun", "clock_moon", "icon_sleep", "season_spring",
     };
 
     /// <summary>Colour used when neither final art nor a placeholder image exists.</summary>
@@ -65,8 +70,11 @@ public static class SpriteLibrary
             string p = $"{ArtRoot}/{folder}/{name}.png";
             if (ResourceLoader.Exists(p)) { source = Source.FinalArt; return p; }
         }
-        string ph = $"{PlaceholderRoot}/ph_{name}.png";
-        if (ResourceLoader.Exists(ph)) { source = Source.Placeholder; return ph; }
+        foreach (var folder in PlaceholderFolders)
+        {
+            string ph = $"{PlaceholderRoot}/{folder}/ph_{name}.png";
+            if (ResourceLoader.Exists(ph)) { source = Source.Placeholder; return ph; }
+        }
         source = Source.Fallback;
         return null;
     }
