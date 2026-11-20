@@ -1,7 +1,7 @@
 # Places
 
 > **Status:** Brainstorming draft — **world map redesigned 2026-11-20 (Bramblewick Vale)**
-> **Version:** 0.10
+> **Version:** 0.12
 > **Last updated:** 2026-11-20
 > **Purpose:** The places the player can explore. The lane is now the road into **Bramblewick Vale**, a small valley of **five areas plus Kit's farm** (owner decision 2026-11-20, replaces "one lane, eight places, no map"). Sizes, layout, unlocks, and navigation rules live here; the story of each place lives in [world.md](./world.md). All names are tentative and every element is a proposal pending playtesting.
 
@@ -50,9 +50,9 @@ The lane runs north from Kit's farm gate past Mr. Marlow's cottage, then opens o
 | **Smithy** *(new)* | The smith | Tool upgrades, paid with coins and the stone and wood from clearing | T3 |
 | **Friend's family cottage** *(new)* | The friend of Kit's age and their parents | Friendship, festivals, contests | T3 |
 | **Clinic** *(new)* | The village nurse | Orders for healthy food (fruit, herbal tea, honey, soup) and picture lessons on eating well. **Nobody gets sick** — the GDD's "no sickness, no vet" rule stands | T4 |
-| **Carpenter's yard** *(new)* | The carpenter | House upgrades and the big late buildings (greenhouse, windmill, farm shop); Marlow keeps the early catalogue | T4 |
+| **Carpenter's yard** *(new)* | The carpenter | House upgrades and the big late buildings (greenhouse, farm shop); Marlow keeps the early catalogue | T4 |
 | **Library & schoolroom** *(new)* | The librarian | Picture books about crops, animals, weather, and the brook; each book read adds a Collection Book page | T4 |
-| **Cottages (×3)** *(new)* | Villagers who become farmhands | Where farmhands live (GDD §4: "people from the lane") | T4 |
+| **Cottages (×3)** *(new)* | Villagers who become farmhands | Where farmhands live; they walk to Kit's farm each morning and home each evening (GDD §4) | T2 |
 | **Inn** *(new)* | The innkeeper | Rooms where the travelling merchant, the Hill Visitor, and festival guests stay; its kitchen gives catering orders | T5 |
 | **Duck pond, playground, well** | — | Small things to look at and play with; ducks to feed | Day 1 |
 
@@ -166,3 +166,5 @@ A round trip to the farthest spot costs about **1.2 in-game hours** of Kit's 04:
 - **0.8 — 2026-11-19:** Old coop (front garden) and old barn (edge of Field A) noted as starting buildings.
 - **0.9 — 2026-11-19:** Starting animals noted (5 hens in the coop, 1 cow in the barn).
 - **0.10 — 2026-11-20:** **World map redesigned as Bramblewick Vale (owner decision).** "One lane, eight places, no map" replaced by a hub-and-spokes valley: Bramblewick Green (village + lane, 64 × 44, the biggest area) with a bakery, general store, village hall, smithy, clinic (no sickness), carpenter, library, inn, cottages, duck pond and playground; Brookside & Mill Pond (west), Hazel Wood (east), Lantern Hill & Old Quarry (north). Area sizes, unlock tiers, walking times (60 s per in-game hour), navigation rules for ages 6+, and a pause-menu picture map added. Kit's farm repacked to 50 × 32 around the house (same 992 tiles) with an animal yard. To-scale map in `assets/map/bramblewick-vale.svg`. Market stand moved to the green.
+- **0.11 — 2026-11-20:** **Farmhands first, machines later (owner decision 2026-11-20):** the villagers' cottages open at T2; farmhands walk to the farm and back each day.
+- **0.12 — 2026-11-20:** **Windmill / water pump removed (owner decision 2026-11-20):** the carpenter no longer sells it.

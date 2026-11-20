@@ -1,7 +1,7 @@
 # Items
 
 > **Status:** Brainstorming draft — **updated for the direction reset 2026-11-19**
-> **Version:** 0.6
+> **Version:** 0.8
 > **Last updated:** 2026-11-20
 > **Purpose:** Items the player can obtain: tools, produce, processed goods, building and automation items, decorations, and rare items. All names are tentative; every element is a proposal pending playtesting.
 
@@ -51,7 +51,7 @@ Starting crops, farm crops, orchard fruit, rare crops (crops.md); eggs, milk, wo
 | **Cheese** | Milk | Kitchen |
 | **Pie** | Fruit or pumpkin + flour + egg | Kitchen |
 | **Smoked fish** | Fish | Kitchen |
-| **Flour** | Wheat | Windmill |
+| **Flour** | Wheat | Village watermill (T4) |
 | **Fish food** | Crops | Workshop |
 | **Compost** | Crop scraps | Compost bin |
 
@@ -65,7 +65,7 @@ Recipes are bought, given by friends, or won (GDD §4).
 | **Wood, stone, fibre** | Clearing land, foraging, shop | Building and crafting materials |
 | **Sprinkler** (basic/quality/deluxe) | Craft or buy | Auto-watering |
 | **Auto-feeder / pond auto-feeder** | Craft or buy | Auto-feeding |
-| **Helper contract** | Helper post | Hire a helper |
+| **Help wanted card** | Order board (T2) | Hire a farmhand for one day (500 coins) |
 | **Animal feed** (grain, hay) | Grow → silo, or buy | Feeding |
 
 ## 7. Decorations
@@ -115,3 +115,5 @@ Rare seeds, rare breeds, legendary fish, contest ribbons and trophies, fossils/s
 - **0.4 — 2026-11-19:** **Direction reset (GDD v0.19).** Opt-in/Gentle-Core split removed: money, seed packets, tool upgrades, and crafting outputs are core. Added purse, hoe/scythe/fishing rod, quality stacks, **processed goods** (jam, bread, cheese, pie, smoked fish, flour, fish food, compost), **blueprints, materials, and automation items** (sprinklers, feeders, helper contracts, feed), decorations for farm charm, rare/collectible items, and the order board. Compost bin moved to buildings.md.
 - **0.5 — 2026-11-19:** Purse fixed at 500 coins (single mode, economy.md); old family hoe in the starting loadout; Butterfly Garden marked optional.
 - **0.6 — 2026-11-20:** Upgraded tools now come from the village smithy (places.md v0.10).
+- **0.7 — 2026-11-20:** **Farmhands first, machines later (owner decision 2026-11-20):** "Helper contract / helper post" replaced by a one-day "help wanted" card on the order board.
+- **0.8 — 2026-11-20:** **Windmill / water pump removed (owner decision 2026-11-20):** flour is milled at the village watermill.

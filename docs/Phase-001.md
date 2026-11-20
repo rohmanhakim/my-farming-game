@@ -1,7 +1,7 @@
 # Phase-001 — First Playable (Vertical Slice)
 
 > **Status:** In progress — Tasks 1.1–1.2 done; Task 1.3 built, pending human playtest (2026-11-20)  
-> **Version:** 0.25  
+> **Version:** 0.26  
 > **Last updated:** 2026-11-20  
 > **Milestone:** 1 — First playable  
 > **Purpose:** Break Milestone 1 down into session tasks. Each task produces one scoped, playtested artifact that can be created and validated in a single session with AI assistance.
@@ -294,7 +294,7 @@ Each task includes **Team Preparation**, **Tests** (Software / Human), and a **N
 
 **Scope:**
 - Shop UI at the seed shed: carrot and flower seed packets, laying hen (125, only while the coop has room)
-- **Phone at home** (feed seller's number left by Kit's parents on a note): chicken feed (1 per portion), hay (15 per portion); orders before 18:00 are delivered to the coop/barn feed bins at the next Dawn (after 18:00 → the day after); no fee
+- **Phone at home** (feed seller's number left by Kit's parents on a note): chicken feed (1 per portion), hay (25 per cow portion); orders before 18:00 are delivered to the coop/barn feed bins at the next Dawn (after 18:00 → the day after); no fee
 - The **old coop** (4 × 3, 5 hens) and **old barn** (6 × 5, 5 stalls, 1 cow) are pre-placed at game start with ≈ 7 days of feed; buying cows and extra buildings is Phase-002
 - Prices read from `data/economy.csv` (or a `.tres` generated from it)
 - Coop capacity 5 hens; buying more is blocked with a friendly "coop is full" icon
@@ -535,3 +535,4 @@ Phase-002 (planned — docs/PHASE.md §3): market stall and shipping box with se
 - **0.23 — 2026-11-20:** Task 1.3: HUD time now ticks every 15 in-game minutes (owner); `TimeChanged` signal and 5 new tests; Notes updated.
 - **0.24 — 2026-11-20:** Task 1.3 clock speed set to **Harvest Moon pace** (60 s per in-game hour; day 17 min) by the owner.
 - **0.25 — 2026-11-20:** §1 notes where the slice sits on the new Bramblewick Vale map (places.md v0.10): farm front garden + the lane to Marlow's shed; no scope change.
+- **0.26 — 2026-11-20:** Feed price in the phone-order note updated to the Australian-based economy (economy.md v0.9): hay 25 per cow portion.

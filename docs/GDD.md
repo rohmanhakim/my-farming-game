@@ -1,7 +1,7 @@
 # Game Design Document
 
 > **Status:** Brainstorming draft — **direction reset 2026-11-19** (see v0.19–v0.20 change log)
-> **Version:** 0.36
+> **Version:** 0.39
 > **Last updated:** 2026-11-20
 > **Purpose:** A living document for shaping the game together. Confirmed owner decisions are marked **decided**; everything else is a proposal, not a commitment.
 
@@ -221,14 +221,14 @@ One rule for everything that lives on the farm: **3 days in a row without care �
 - **How it is unlocked:** by **crafting** it from a blueprint or **buying** it, once the player reaches the right point in progression (progression.md §3). Blueprints come from the shop, friendships, and contests.
 - **Why it matters:** automation is the answer to neglect at scale and the moment the farm "comes alive". It is gated by money and progression, then by land (each sprinkler, feeder, or helper still needs space and upkeep materials).
 - **Hired helpers (owner request 2026-11-19), alongside machines:** two kinds, both optional:
-  - **Farmhands** — people from the lane hired at the farmhand cottage for a **daily wage**. Each covers one job (water, feed, harvest, collect, deliver subscription orders, clear land) in one area. If the wallet can't pay, they take the day off — never debt.
+  - **Farmhands** — villagers hired **by the day** from **T2** (a "help wanted" card on the order board), like *Harvest Moon*: they arrive in the morning and go home in the evening, so there is **no farmhand building**. **500 coins/day** (economy.md). Each covers one job (water, feed, harvest, collect, deliver subscription orders, clear land) in one area. If the wallet can't pay, they take the day off — never debt.
   - **Garden sprites** — small original helper creatures (inspired by the *idea* of Harvest Moon's harvest sprites, not their design) befriended through gifts and friendship; they work for free but only a few jobs per day and like to be thanked.
-  - Machines (sprinklers, feeders) are cheap and fixed in place; helpers cost more or need friendship but move around and do many kinds of work — a real trade-off.
+  - **Farmhands first, machines later** (owner decision 2026-11-20) — like a real farm: people cost nothing upfront but a wage every day; machines are an investment that is cheaper over time (auto-feeders need the silo; sprinklers include hidden pipes and need no water source). Early on Kit hires; machines take over once money allows (sprinklers pay back against a farmhand in ≈ 3 weeks, feeders in ≈ 2 months, economy.md §6). **Machines are set-and-forget:** sprinklers just need their coverage area; auto-feeders draw from the silo or their own hopper, which phone orders fill directly, so Kit tops up about once a month. Machines only water and feed; harvesting, collecting, and delivering still need people or sprites.
 - Automation never removes the manual verbs; players can always water and feed by hand.
 
 ### Buildings (decided direction 2026-11-19)
 
-**The farm starts with an old coop holding 5 hens and an old barn (5 stalls) holding 1 cow, plus about a week of feed** — family buildings and animals (owner decision 2026-11-19, like *Harvest Moon*). Kit buys more animals and feed as the farm grows. More and bigger buildings come later. Kit can build more coops, barns, a fish pond, beehives/apiary, an orchard, a workshop, a kitchen, a storage silo, compost bins, sprinklers/irrigation, a windmill/water pump, a **greenhouse** (any crop, any season), a **hydroponics** bay (faster, water-efficient, needs power), a market stall, helper posts, and a farm shop. Each has a cost, a land footprint, an unlock tier, and an education angle — full catalogue in [buildings.md](./buildings.md). Money gates them early; cleared land, then total land (992 tiles), gates them late. Capacity comes from the building (a 5-stall barn holds 5 animals).
+**The farm starts with an old coop holding 5 hens and an old barn (5 stalls) holding 1 cow, plus about a week of feed** — family buildings and animals (owner decision 2026-11-19, like *Harvest Moon*). Kit buys more animals and feed as the farm grows. More and bigger buildings come later. Kit can build more coops, barns, a fish pond, beehives/apiary, an orchard, a workshop, a kitchen, a storage silo, compost bins, sprinklers/irrigation, a **greenhouse** (any crop, any season), a **hydroponics** bay (faster, water-efficient), a market stall, and a farm shop. Each has a cost, a land footprint, an unlock tier, and an education angle — full catalogue in [buildings.md](./buildings.md). Money gates them early; cleared land, then total land (992 tiles), gates them late. Capacity comes from the building (a 5-stall barn holds 5 animals).
 
 ### After the farm is running (all optional)
 
@@ -487,3 +487,6 @@ Playtests with children are conducted with appropriate adult supervision and con
 - **0.34 — 2026-11-20:** Owner rule: time stops for menus, conversations and shop screens, but keeps running indoors.
 - **0.35 — 2026-11-20:** Owner changed the rule: **time stops indoors** too (kid tolerance), on top of menus, conversations and shop screens.
 - **0.36 — 2026-11-20:** **World map redesigned as Bramblewick Vale (owner decision).** §7 now describes a hub-and-spokes valley (Kit's farm, Bramblewick Green village, Brookside & Mill Pond, Hazel Wood, Lantern Hill & Old Quarry) instead of one lane with eight places; adds the pause-menu picture map, up to three new characters per tier, and a clinic without sickness. Details in places.md v0.10.
+- **0.37 — 2026-11-20:** **Farmhands first, machines later (owner decision 2026-11-20):** farmhands are hired by the day from T2 at 500 coins/day and come and go like *Harvest Moon*; the farmhand cottage is removed. Machines become the later investment.
+- **0.38 — 2026-11-20:** **Machines simplified (owner decision 2026-11-20):** sprinklers need no water source; auto-feeders run for weeks from the silo or a pond hopper filled by phone orders.
+- **0.39 — 2026-11-20:** **Windmill / water pump removed (owner decision 2026-11-20):** not needed for water (sprinklers have hidden pipes) and flour comes from the village watermill; hydroponics needs no power.

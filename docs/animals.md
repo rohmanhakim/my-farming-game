@@ -1,7 +1,7 @@
 # Animals & Fish Pond
 
 > **Status:** Design draft — **updated for the direction reset 2026-11-19**
-> **Version:** 0.6
+> **Version:** 0.7
 > **Last updated:** 2026-11-20
 > **Purpose:** Farm animals, the fish pond, and the lane's wild creatures. Care is real responsibility: well-cared animals give better products; neglected animals are gone. Kid-friendly presentation — no sickness, no vet, no on-screen death.
 
@@ -78,7 +78,7 @@ Animals need **food once per in-game day** (the same daily rhythm as watering cr
 - **Harvest:** when fish are grown, collect them with a net or fishing rod; the pond restocks from remaining fish over time.
 - **Use:** sell, deliver in orders (a fishmonger neighbour, festival catering), or process (smoked fish, fish pie).
 - **Output:** ≈ 2 fish per day from a full 4 × 4 pond (economy.md §4).
-- **Automation:** a **pond auto-feeder** feeds it daily; a helper can harvest.
+- **Automation:** a **pond auto-feeder** feeds it daily from its own hopper (≈ 30 days of fish food, filled straight from phone orders); a helper can harvest.
 - **Limits:** money for water tiles and stock early; cleared land later (every water tile uses a farm tile).
 - **Education:** water ecosystems, how fish farms work, feeding regularly.
 
@@ -141,3 +141,4 @@ Butterflies and fireflies are always released — never kept or sold.
 - **0.4 — 2026-11-19:** **Direction reset (GDD v0.19).** Nap state removed: an animal whose meter empties is **gone right away**, shown only as a short message card with a **gravestone picture** (empty hive for bees); no sickness or vet. 4-animal cap removed — numbers limited by money and housing/land. Sheep now also eat hay. Added **quality products (1–3 stars)**, **§6 Fish Pond** (stock, feed, harvest; pond auto-feeder; money then land limit), brook fishing, breeds as a collection, and automation (auto-feeders, helpers) as the long-term answer to neglect. Products now sold and used in orders and processing.
 - **0.5 — 2026-11-19:** **Owner decisions:** animal numbers capped by **housing capacity** (5-stall barn = 5 animals; coop 5/10 hens; pond 10/25 fish). Meter-drain-by-mode replaced by the single-mode **daily feeding rule: 3 unfed days in a row → gone** (warnings on days 1–2), matching the crops' 3-dry-days rule. Pond capacity, output, and land footprint added; economy.md linked.
 - **0.6 — 2026-11-20:** §6 Fish Pond rewritten for **water tiles** (buildings.md §3.1): free natural pond in Field E, ponds grow tile by tile and merge, ≈ 2 fish per 3 wide tiles, one feed per connected pond; fish can also come from Mill Pond (places.md v0.10).
+- **0.7 — 2026-11-20:** Pond auto-feeder has its own 30-day hopper filled by phone orders (owner decision: machines are set-and-forget).

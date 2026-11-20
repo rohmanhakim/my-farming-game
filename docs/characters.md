@@ -1,7 +1,7 @@
 # Characters
 
 > **Status:** Finalized for prototype (design v0.5) — **updated for the direction reset 2026-11-19**
-> **Version:** 0.13
+> **Version:** 0.15
 > **Last updated:** 2026-11-20
 > **Purpose:** The final cast for the prototype, plus clearly-marked future cast. Names below are locked for the prototype unless playtesting proves otherwise. Backgrounds are brief and adjustable.
 
@@ -184,10 +184,10 @@ The valley is fixed (places.md §1); it fills with people. Homes are in places.m
 | **The shopkeeper** *(2026-11-20)* | Runs the general store. | Kitchen ingredients, bag upgrades, decorations; small household orders. | First kitchen recipe needs an ingredient Kit can't grow (T2). |
 | **The smith** *(2026-11-20)* | Works the village smithy. | Tool upgrades; stone and wood orders from clearing. | First debris Kit's tools can't clear (T3). |
 | **The village nurse** *(2026-11-20)* | Runs the clinic; nobody gets sick. | Healthy-food orders (fruit, herbal tea, honey, soup); picture lessons on eating well. | First healthy-food order on the board (T4). |
-| **The carpenter** *(2026-11-20)* | Runs the carpenter's yard. | House upgrades; builds the big late buildings (greenhouse, windmill, farm shop). | First T4 building wanted (T4). |
+| **The carpenter** *(2026-11-20)* | Runs the carpenter's yard. | House upgrades; builds the big late buildings (greenhouse, farm shop). | First T4 building wanted (T4). |
 | **The librarian** *(2026-11-20)* | Keeps the library and schoolroom. | Picture books that add Collection Book pages; questions about crops and animals. | Ten forage or fish finds in the Collection Book (T4). |
 | **The innkeeper** *(2026-11-20)* | Runs the inn where visitors stay. | Catering orders; hosts the merchant, the Hill Visitor, and festival guests. | Lane restoration reaches the stile (T5). |
-| **The farmhands** *(2026-11-20)* | Villagers in the three cottages. | Hired for a daily wage (GDD §4); not counted in the per-tier limit. | First farmhand cottage built (T4). |
+| **The farmhands** *(2026-11-20)* | Villagers in the three cottages. | Hired by the day (500 coins, GDD §4): arrive in the morning, go home in the evening; not counted in the per-tier limit. | "Help wanted" card on the order board (T2). |
 | **The Hill Visitor (seasonal)** | Arrives only for a season or gathering; candidate for the Lantern Hill event. | Seasonal stories, hill-top payoff. | Lane restoration reaches Lantern Hill, winter (T5). |
 
 > **Note:** Future-cast names remain tentative; only their roles, task themes, and introduction triggers are locked. No future character is required for the core farm loop.
@@ -281,3 +281,5 @@ Implementation notes:
 - **0.11 — 2026-11-19:** Owner picks: Marlow's first gift is now the **first order** (berries, then carrots) — the butterfly net moves to the optional Butterfly Garden request; merchant arrives when Field A is cleared; single difficulty mode.
 - **0.12 — 2026-11-19:** **Kit is a boy** (owner decision); name and appearance stay customizable.
 - **0.13 — 2026-11-20:** **Bramblewick Vale (owner decisions).** The cast now lives in a village (places.md v0.10). Six new villagers added to §10 with tiers, triggers, and §3 traces: shopkeeper (T2), smith (T3), village nurse (T4, clinic without sickness), carpenter (T4, late buildings), librarian (T4), innkeeper (T5), plus farmhands (not counted). §2 limit raised from **two to three** new characters per tier (merchant is a visitor and does not count). Brook keeper now met on the far bank after the footbridge repair. "Grow the cast before the geography" wording replaced. Registry ids extended.
+- **0.14 — 2026-11-20:** **Farmhands first, machines later (owner decision 2026-11-20):** farmhands hired by the day from the order board at T2; no farmhand cottage.
+- **0.15 — 2026-11-20:** **Windmill / water pump removed (owner decision 2026-11-20):** the carpenter no longer builds it.

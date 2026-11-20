@@ -1,7 +1,7 @@
 # Mechanics
 
 > **Status:** Brainstorming draft — **updated for the direction reset 2026-11-19**
-> **Version:** 0.19
+> **Version:** 0.22
 > **Last updated:** 2026-11-20
 > **Purpose:** Player verbs and systems. Every element is a proposal pending playtesting. The GDD remains authoritative for gameplay, audience, and project decisions.
 
@@ -105,11 +105,10 @@ Seasons decide what sprouts, which fish and creatures appear, festival dates, an
 
 | Automation | Replaces | Unlock | Notes |
 |---|---|---|---|
-| **Sprinklers** (basic / quality / deluxe) | Watering | Blueprint (craft) or buy; T4 (basic earlier via a reward) | Needs a water source in range (well, pond, pump). |
-| **Auto-feeder** | Feeding coop/barn animals | Craft or buy; T4 | Draws feed from the silo. |
+| **Sprinklers** (basic / quality / deluxe) | Watering | Blueprint (craft) or buy; T4 (basic earlier via a reward) | No water source needed (hidden pipes); shows its coverage before placing. |
+| **Auto-feeder** | Feeding coop/barn animals | Craft or buy; T4 | Draws feed from the silo; phone orders and harvests fill the silo; low-feed warning. |
 | **Pond auto-feeder** | Feeding fish | Craft or buy; T4 | Draws fish food from storage. |
-| **Helpers** — hired farmhands (daily wage) or befriended garden sprites (free, few jobs/day) | Watering, feeding, harvesting, collecting, brushing, clearing, delivering subscription orders, stall-keeping | Farmhand cottage (hire) or friendship (sprites); T4 | Each covers an area; friendly characters or creatures. |
-| **Windmill / water pump** | Water reach, milling, power | T4 | Powers hydroponics. |
+| **Helpers** — hired farmhands (daily wage) or befriended garden sprites (free, few jobs/day) | Watering, feeding, harvesting, collecting, brushing, clearing, delivering subscription orders, stall-keeping | Farmhands: "help wanted" card on the order board, by the day, T2. Sprites: friendship, T4 | Each covers an area; friendly characters or creatures. |
 
 Automation never removes manual verbs. It is unlocked by **crafting or buying** at a point in progression, and every unit uses land.
 
@@ -189,3 +188,6 @@ Optional long-term systems — decoration and farm charm, collections, contests,
 - **0.17 — 2026-11-20:** Harvest Moon pace: 60 real seconds per in-game hour (owner, GDD v0.33).
 - **0.18 — 2026-11-20:** When time stops: menus, conversations, shop screens; never just for being indoors (owner, GDD v0.34).
 - **0.19 — 2026-11-20:** Time also stops indoors (owner, GDD v0.35).
+- **0.20 — 2026-11-20:** **Farmhands first, machines later (owner decision 2026-11-20):** farmhands hired by the day from the order board at T2 (no cottage); sprites stay T4.
+- **0.21 — 2026-11-20:** **Machines simplified (owner decision 2026-11-20):** sprinklers need no water source; silo filled by phone orders and harvests; windmill no longer extends water reach.
+- **0.22 — 2026-11-20:** **Windmill / water pump removed (owner decision 2026-11-20):** row dropped; flour is milled at the village watermill.

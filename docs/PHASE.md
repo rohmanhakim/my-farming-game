@@ -1,7 +1,7 @@
 # PHASE.md — Development Roadmap: Prototype to Production
 
 > **Status:** Planning draft — **re-planned for the direction reset 2026-11-19**
-> **Version:** 0.6  
+> **Version:** 0.7  
 > **Last updated:** 2026-11-20  
 > **Purpose:** High-level overview of development from the first playable prototype to a final, production-ready game. Each phase document expands this roadmap — `docs/Phase-001.md` exists today; Phase-002 through Release are **planned** documents to be written when their phase is scheduled.
 
@@ -26,7 +26,7 @@ A fully 2D, **realistic but kid-friendly, educational** farming game for **PC**.
 | **Phase 001** | `docs/Phase-001.md` | **First playable (vertical slice):** day clock, clearing, day-based growth and neglect, foraging, first orders, order board, seed shop, coop + hens with the loss rule, versioned save, short onboarding | PC |
 | **Phase 002** | `docs/Phase-002.md` (planned) | Economy depth: market stall, shipping box, seasonal/demand pricing, rain, clearing the back fields (scythe/hammer/axe), more neighbours (baker), sheep or beehive, stickers | PC |
 | **Phase 003** | `docs/Phase-003.md` (planned) | Farm growth: barn (cow, sheep), **fish pond**, kitchen processing (jam, bread, cheese, pie), workshop & blueprints, more neighbours, **local co-op with dynamic split screen** | PC |
-| **Phase 004** | `docs/Phase-004.md` (planned) | **Automation**: sprinklers, auto-feeders, pond auto-feeder, helpers, silo, windmill/pump, greenhouse; fishing at the brook, travelling merchant, optional Butterfly Garden request | PC |
+| **Phase 004** | `docs/Phase-004.md` (planned) | **Automation**: sprinklers, auto-feeders, pond auto-feeder, helpers, silo, greenhouse; fishing at the brook, travelling merchant, optional Butterfly Garden request | PC |
 | **Phase 005** | `docs/Phase-005.md` (planned) | Long-term goals: festivals & contests, quality products, farm charm & decorations, collections, hydroponics, farm shop, lane restoration, showcase, mastery | PC |
 | **Release** | `docs/Release.md` (planned) | Production-ready, polished, localised, age-rated PC release | PC (Windows first; macOS/Linux considered); consoles (Switch, PlayStation) after the PC release |
 
@@ -72,3 +72,4 @@ Each `docs/Phase-00N.md` breaks its milestone into **session tasks**. One task =
 - **0.4 — 2026-11-19:** Owner picks: **single difficulty mode**; audience 6+; land owned from the start and cleared; **Phase-001 re-scoped to a vertical slice** (orders + chickens) and Phase-002–004 rows rebalanced (co-op split screen in 003; Butterfly Garden optional in 004).
 - **0.5 — 2026-11-20:** Platform changed from "PC only" to **PC first, consoles later** (Switch, PlayStation after the PC release; owner decision). Vision bullet and Release row updated.
 - **0.6 — 2026-11-20:** World map redesigned as **Bramblewick Vale** (owner decision, places.md v0.10): the "lane does not grow" principle and guardrail replaced by "the valley is fixed — five areas plus Kit's farm"; village buildings and outer areas arrive in the phase whose features need them.
+- **0.7 — 2026-11-20:** Windmill/pump dropped from Phase 004 (owner decision: sprinklers need no water source; flour comes from the village watermill).

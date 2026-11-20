@@ -1,7 +1,7 @@
 # Progression: Farm Growth, Automation, and Long-Term Goals
 
 > **Status:** Design draft — **restructured 2026-11-19**
-> **Version:** 0.9
+> **Version:** 0.11
 > **Last updated:** 2026-11-20
 > **Purpose:** How the farm grows from a tangled plot to a full, automated farm (*Harvest Moon*-style), what limits it at each point, and what there is to chase once it runs well. Replaces the old parent-controlled layers and five-stage age map. Everything after the core farm loop is **optional**.
 
@@ -43,12 +43,12 @@ Tiers are reached by **what the farm is**, not by time played or age. They gate 
 | Tier | Reached when | Typical limit | What opens | Order size |
 |---|---|---|---|---|
 | **T1 — Small plot** | Start of game | **Money** (500 coins, 3 cleared beds) | Seeds, clearing the front garden, compost bin, **5 hens + 1 cow already in the old coop and barn**, feed, the order board (first order on Day 1) | 1–6 items |
-| **T2 — Growing farm** | First 10 orders delivered | **Money** | Big coop, beehive, workshop, kitchen (processing), market stall, first blueprints, scythe/hammer/axe, brush, fishing rod | 3–10 items, mixed |
+| **T2 — Growing farm** | First 10 orders delivered | **Money** | Big coop, beehive, workshop, kitchen (processing), market stall, **farmhands hired by the day**, first blueprints, scythe/hammer/axe, brush, fishing rod | 3–10 items, mixed |
 | **T3 — Working farm** | First back field (Field A) fully cleared | **Money + time** (hand-tending and clearing get busy) | Cows and sheep for the **old starting barn**, extra/bigger barns, silo, fish pond, orchard, travelling merchant visits, festivals & contests | Baskets, weekly repeats |
-| **T4 — Automated farm** | First sprinkler or auto-feeder placed | **Land** begins to bite | Sprinklers (all grades), auto-feeders, pond auto-feeder, windmill/pump, greenhouse, helpers | Bulk orders, catering |
+| **T4 — Automated farm** | First sprinkler or auto-feeder placed | **Land** begins to bite | Sprinklers (all grades), auto-feeders, pond auto-feeder, greenhouse, garden sprites | Bulk orders, catering |
 | **T5 — Full land** | All five back fields cleared | **Land only** | Hydroponics, farm shop, lane restoration, endgame goals (§6) | Standing orders, festival catering |
 
-**Where the valley opens** (places.md §2): **T1** the farm, the lane, the village green, the brook's near bank · **T2** Hazel Wood (Kit's first axe clears the fallen log), bakery, general store, village hall · **T3** footbridge → far bank and Mill Pond (restoration step 1), smithy, friend's cottage · **T4** watermill (step 2), clinic, carpenter's yard, library, farmhand cottages · **T5** stile → Lantern Hill and the Old Quarry (step 3), inn.
+**Where the valley opens** (places.md §2): **T1** the farm, the lane, the village green, the brook's near bank · **T2** Hazel Wood (Kit's first axe clears the fallen log), bakery, general store, village hall, the villagers' cottages (farmhands) · **T3** footbridge → far bank and Mill Pond (restoration step 1), smithy, friend's cottage · **T4** watermill (step 2), clinic, carpenter's yard, library · **T5** stile → Lantern Hill and the Old Quarry (step 3), inn.
 
 **Tools across tiers:** watering can (start) → bigger can, hoe, scythe (T2) → brush, fishing rod (T2) → upgraded tools (T3+, at the village smithy). Tool upgrades cost money and materials; old tools never disappear.
 
@@ -135,7 +135,7 @@ Per-activity mastery tracks (farming, animal care, fishing, cooking, building) w
 
 ### 6.7 Prestige rare items (optional)
 
-Very rare items for players who want them: golden watering can, prize-winning breeds, a weathervane for the windmill, legendary fish. Purely cosmetic or slightly better — never needed for anything else.
+Very rare items for players who want them: golden watering can, prize-winning breeds, a weathervane for the barn, legendary fish. Purely cosmetic or slightly better — never needed for anything else.
 
 ## 7. Character Introduction by Farm Tier
 
@@ -193,3 +193,5 @@ Missing a mystery means waiting for it to return next year.
 - **0.7 — 2026-11-19:** T1/T3 rows updated for the free starting coop and barn (buy animals first, more buildings later).
 - **0.8 — 2026-11-19:** T1 notes the starting 5 hens and 1 cow.
 - **0.9 — 2026-11-20:** **Bramblewick Vale (places.md v0.10).** Added "Where the valley opens" per tier under §3; tool upgrades at the village smithy; §4 "lane never grows" replaced by "the valley is fixed". **§6.4 lane restoration is now a three-step ladder** — footbridge (T3), watermill (T4), stile and lantern (T5) — each opening an area. §7 character table updated for the new villagers (up to three per tier).
+- **0.10 — 2026-11-20:** **Farmhands first, machines later (owner decision 2026-11-20):** farmhands hired by the day from T2 (no cottage); T4 helpers are now garden sprites; the villagers' cottages open at T2.
+- **0.11 — 2026-11-20:** **Windmill / water pump removed (owner decision 2026-11-20):** dropped from T4 unlocks; flour comes from the restored watermill (§6.4); the rare weathervane now sits on the barn.

@@ -1,80 +1,80 @@
-item,category,unit,approx_real_price_usd,player_direction,price_coins,notes
-Carrot,Crop,1 carrot,0.30,sell,3,
-Sun Sprout (flower),Crop,1 stem,1.50,sell,15,cut flower
-Moon Petal (flower),Crop,1 stem,2.00,sell,20,
-Clover Vine,Crop,1 bunch,0.50,sell,5,mostly bee/animal food
-Tomato,Crop,1 tomato,0.60,sell,6,regrows
-Berries,Crop,1 punnet,4.00,sell,40,regrows
-Pumpkin,Crop,1 pumpkin,5.00,sell,50,
-Wheat,Crop,1 sheaf (≈1 kg grain),0.40,sell,4,mostly milled or fed
-Hay grass,Crop,1 bundle (= 2 feed portions),1.00,sell,10,mostly fed
-Herbs,Crop,1 bunch,2.50,sell,25,
-Frost Leaf (winter greens),Crop,1 head,2.00,sell,20,
-Apple,Fruit,1 apple,0.80,sell,8,orchard
-Pear,Fruit,1 pear,1.00,sell,10,orchard
-Cherries,Fruit,1 punnet,5.00,sell,50,orchard
-Wild berries (forage),Forage,1 handful,1.00,sell,10,
-Mushrooms (forage),Forage,1 basket,3.00,sell,30,
-Egg,Animal,1 egg,0.40,sell,4,"quality ★★ ×1.25, ★★★ ×1.5"
-Milk,Animal,1 can (5 L),6.00,sell,60,4 cans per cow per day (a real dairy cow gives ~20 L)
-Wool,Animal,1 fleece bundle,12.00,sell,120,every 3 days per sheep
-Honey,Animal,1 jar (250 g),6.00,sell,60,"every 3 days per hive, Spring–Autumn"
-Pond fish,Animal,1 fish,4.00,sell,40,
-Brook fish (caught),Animal,1 fish,4.00,sell,40,
-Jam,Processed,1 jar,5.00,sell,50,1 punnet of berries or 4 apples/pears/cherries
-Flour,Processed,1 bag (1 kg),1.50,sell,15,2 wheat at the windmill
-Bread,Processed,1 loaf,4.00,sell,40,1 flour + 1 egg
-Cheese,Processed,1 wheel piece (250 g),5.00,sell,50,1 milk can → 2 pieces
-Apple pie,Processed,1 pie,15.00,sell,150,3 apples + 1 flour + 1 egg
-Pumpkin pie,Processed,1 pie,15.00,sell,150,1 pumpkin + 1 flour + 1 egg
-Smoked fish,Processed,1 fillet pack,8.00,sell,80,1 fish
-Carrot seeds,Seeds,packet of 9,3.00,buy,15,3×3 bed block
-Flower seeds,Seeds,packet of 9,3.00,buy,15,
-Tomato seeds,Seeds,packet of 9,4.00,buy,20,
-Berry canes,Seeds,packet of 9,8.00,buy,40,
-Pumpkin seeds,Seeds,packet of 9,4.00,buy,20,
-Wheat seed,Seeds,packet of 9,2.00,buy,10,
-Hay grass seed,Seeds,packet of 9,2.00,buy,10,
-Herb seeds,Seeds,packet of 9,3.00,buy,15,
-Fruit tree sapling,Seeds,1 sapling,30.00,buy,150,
-Fingerlings,Animals,1 young fish,1.00,buy,5,
-Laying hen,Animals,1 hen,25.00,buy,125,
-Sheep,Animals,1 ewe,300.00,buy,1500,
-Dairy cow,Animals,1 cow,2000.00,buy,10000,
-Bee colony + hive,Animals,1 hive,400.00,buy,2000,
-Chicken feed,Feed,1 portion (1 hen-day),0.20,buy,1,grow wheat to make it free
-Hay,Feed,1 portion (1 cow/sheep-day),3.00,buy,15,grow hay grass to make it free
-Fish food,Feed,1 portion (1 pond-day),2.00,buy,10,
-Watering can upgrade,Tools,1 upgrade,30.00,buy,150,
-Hoe,Tools,1,25.00,buy,125,starts owned (old family hoe)
-Scythe,Tools,1,40.00,buy,200,clears weeds and tall grass fast
-Hammer,Tools,1,20.00,buy,100,breaks stones
-Axe,Tools,1,40.00,buy,200,clears stumps and logs
-Brush,Tools,1,10.00,buy,50,
-Fishing rod,Tools,1,40.00,buy,200,
-Compost bin,Buildings,1,60.00,buy,300,
-Small coop (5 hens),Buildings,1,150.00,buy,750,
-Big coop upgrade (10 hens),Buildings,1,250.00,buy,1250,
-Workshop,Buildings,1,3000.00,buy,15000,
-Kitchen upgrade,Buildings,1,5000.00,buy,25000,
-Market stall,Buildings,1,300.00,buy,1500,
-Small barn (5 stalls),Buildings,1,15000.00,buy,75000,
-Big barn upgrade (10 stalls),Buildings,1,15000.00,buy,75000,
+item,category,unit,approx_real_price_aud,player_direction,price_coins,notes
+Carrot,Crop,1 carrot,0.40,sell,4,
+Sun Sprout (flower),Crop,1 stem,2.50,sell,25,cut flower
+Moon Petal (flower),Crop,1 stem,3.00,sell,30,
+Clover Vine,Crop,1 bunch,0.80,sell,8,mostly bee/animal food
+Tomato,Crop,1 tomato,0.90,sell,9,regrows
+Berries,Crop,1 punnet,5.00,sell,50,regrows
+Pumpkin,Crop,1 pumpkin,6.00,sell,60,
+Wheat,Crop,1 sheaf (≈1 kg grain),0.50,sell,5,mostly milled or fed
+Hay grass,Crop,1 bundle (= 2 feed portions),1.50,sell,15,mostly fed; sell price is below the bought-hay value (open question in economy.md §6)
+Herbs,Crop,1 bunch,3.50,sell,35,
+Frost Leaf (winter greens),Crop,1 head,3.00,sell,30,
+Apple,Fruit,1 apple,1.00,sell,10,orchard
+Pear,Fruit,1 pear,1.20,sell,12,orchard
+Cherries,Fruit,1 punnet,8.00,sell,80,orchard
+Wild berries (forage),Forage,1 handful,1.50,sell,15,
+Mushrooms (forage),Forage,1 basket,4.00,sell,40,
+Egg,Animal,1 egg,0.60,sell,6,"quality ★★ ×1.25, ★★★ ×1.5"
+Milk,Animal,1 can (5 L),10.00,sell,100,4 cans per cow per day (a real dairy cow gives ~20 L); AU retail ≈ A$2.10/L
+Wool,Animal,1 fleece bundle,15.00,sell,150,every 3 days per sheep
+Honey,Animal,1 jar (250 g),7.00,sell,70,"every 3 days per hive, Spring–Autumn"
+Pond fish,Animal,1 fish,6.00,sell,60,
+Brook fish (caught),Animal,1 fish,6.00,sell,60,
+Jam,Processed,1 jar,6.00,sell,60,1 punnet of berries or 4 apples/pears/cherries
+Flour,Processed,1 bag (1 kg),1.80,sell,18,2 wheat at the village watermill (T4)
+Bread,Processed,1 loaf,5.00,sell,50,1 flour + 1 egg
+Cheese,Processed,1 wheel piece (250 g),6.00,sell,60,1 milk can → 2 pieces
+Apple pie,Processed,1 pie,18.00,sell,180,3 apples + 1 flour + 1 egg
+Pumpkin pie,Processed,1 pie,18.00,sell,180,1 pumpkin + 1 flour + 1 egg
+Smoked fish,Processed,1 fillet pack,10.00,sell,100,1 fish
+Carrot seeds,Seeds,packet of 9,4.00,buy,20,3×3 bed block
+Flower seeds,Seeds,packet of 9,4.00,buy,20,
+Tomato seeds,Seeds,packet of 9,5.00,buy,25,
+Berry plants,Seeds,9 runners/canes,27.00,buy,135,≈ A$3 per strawberry runner
+Pumpkin seeds,Seeds,packet of 9,5.00,buy,25,
+Wheat seed,Seeds,packet of 9,3.00,buy,15,
+Hay grass seed,Seeds,packet of 9,3.00,buy,15,
+Herb seeds,Seeds,packet of 9,4.00,buy,20,
+Fruit tree sapling,Seeds,1 sapling,40.00,buy,200,bare-root
+Fingerlings,Animals,1 young fish,1.50,buy,8,
+Laying hen,Animals,1 hen,35.00,buy,175,point-of-lay
+Sheep,Animals,1 ewe,220.00,buy,1100,AU breeding ewes ≈ A$160–260 (Nov 2025)
+Dairy cow,Animals,1 cow,3400.00,buy,17000,estimate; AU cull cows alone ≈ A$2000
+Bee colony + hive,Animals,1 hive,350.00,buy,1750,AU 8-frame hive with bees ≈ A$230–300 (2023) + inflation
+Chicken feed,Feed,1 portion (1 hen-day),0.17,buy,1,grow wheat to make it free
+Hay (cow portion),Feed,1 portion (1 cow-day ≈ 16 kg),5.00,buy,25,AU hay ≈ A$220–400/t; grow hay grass to make it free
+Hay (sheep portion),Feed,1 portion (1 sheep-day ≈ 2 kg),0.60,buy,3,grow hay grass to make it free
+Fish food,Feed,1 portion (1 pond-day),0.40,buy,2,
+Watering can upgrade,Tools,1 upgrade,40.00,buy,200,
+Hoe,Tools,1,35.00,buy,175,starts owned (old family hoe)
+Scythe,Tools,1,60.00,buy,300,clears weeds and tall grass fast
+Hammer,Tools,1,30.00,buy,150,breaks stones
+Axe,Tools,1,60.00,buy,300,clears stumps and logs
+Brush,Tools,1,15.00,buy,75,
+Fishing rod,Tools,1,60.00,buy,300,
+Compost bin,Buildings,1,90.00,buy,450,
+Small coop (5 hens),Buildings,1,400.00,buy,2000,
+Big coop upgrade (10 hens),Buildings,1,500.00,buy,2500,
+Workshop,Buildings,1,6000.00,buy,30000,small shed + bench and tools
+Kitchen upgrade,Buildings,1,8000.00,buy,40000,new kitchen equipment (not a full remodel)
+Market stall,Buildings,1,500.00,buy,2500,
+Small barn (5 stalls),Buildings,1,28000.00,buy,140000,enclosed farm shed ≈ A$80/m² + slab ≈ A$85/m² + stalls
+Big barn upgrade (10 stalls),Buildings,1,20000.00,buy,100000,
 Pond water tile (wide; ~2 fish per 3 tiles),Buildings,1 tile,50.00,buy,250,Must touch existing water; natural 4x4 pond in Field E is free
 Water channel tile (1 wide; no fish),Buildings,1 tile,10.00,buy,50,Carries water; plank bridge free at paths
-Storage silo,Buildings,1,5000.00,buy,25000,
-Windmill / water pump,Buildings,1,3000.00,buy,15000,
-Greenhouse,Buildings,1,4000.00,buy,20000,
-Hydroponics bay,Buildings,1,1500.00,buy,7500,
-Farmhand cottage,Buildings,1,10000.00,buy,50000,
-Farm shop,Buildings,1,20000.00,buy,100000,
-Showcase,Buildings,1,6000.00,buy,30000,
-Basic sprinkler,Automation,1,20.00,buy,100,or craft
-Quality sprinkler,Automation,1,60.00,buy,300,or craft
-Deluxe sprinkler,Automation,1,150.00,buy,750,or craft
-Auto-feeder,Automation,1,60.00,buy,300,or craft
-Pond auto-feeder,Automation,1,100.00,buy,500,or craft
-Fence piece,Decoration,1,15.00,buy,75,
-Garden bench,Decoration,1,150.00,buy,750,
-Flower border,Decoration,1 tile,10.00,buy,50,
-Lantern post,Decoration,1,60.00,buy,300,
+Storage silo,Buildings,1,6000.00,buy,30000,
+Greenhouse,Buildings,1,6000.00,buy,30000,
+Greenhouse sprinkler upgrade,Buildings,1,700.00,buy,3500,built-in misting
+Hydroponics bay,Buildings,1,2000.00,buy,10000,
+Farm shop,Buildings,1,40000.00,buy,200000,
+Showcase,Buildings,1,8000.00,buy,40000,
+Basic sprinkler,Automation,1 (incl. hidden pipes),80.00,buy,400,or craft; no water source needed
+Quality sprinkler,Automation,1 (incl. hidden pipes),240.00,buy,1200,or craft; no water source needed
+Deluxe sprinkler,Automation,1 (incl. hidden pipes),500.00,buy,2500,or craft; no water source needed
+Auto-feeder,Automation,1,80.00,buy,400,or craft
+Pond auto-feeder,Automation,1,150.00,buy,750,or craft; built-in 30-day fish-food hopper filled by phone orders
+Fence piece,Decoration,1,20.00,buy,100,
+Garden bench,Decoration,1,200.00,buy,1000,
+Flower border,Decoration,1 tile,12.00,buy,60,
+Lantern post,Decoration,1,80.00,buy,400,
