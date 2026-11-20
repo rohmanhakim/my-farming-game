@@ -1,8 +1,8 @@
 # Game Design Document
 
 > **Status:** Brainstorming draft — **direction reset 2026-11-19** (see v0.19–v0.20 change log)
-> **Version:** 0.40
-> **Last updated:** 2026-11-20
+> **Version:** 0.42
+> **Last updated:** 2026-11-21
 > **Purpose:** A living document for shaping the game together. Confirmed owner decisions are marked **decided**; everything else is a proposal, not a commitment.
 
 ## 1. High Concept
@@ -146,6 +146,7 @@ Track a separate relationship value per NPC, changed by delivered orders, comple
 - **Optional, no pressure:** orders have no deadline penalty; ignoring them costs nothing but the missed money.
 - **Variety:** different neighbours have different tastes (Marlow likes herbs and honey; a baker wants eggs and wheat; a family wants a weekly basket).
 - **Growth:** satisfied neighbours send **repeat orders** and, as the relationship grows, **bigger orders** (bulk, mixed baskets, festival catering).
+- **Variety from the start (owner decision 2026-11-21):** even on a small farm the board mixes **varied sizes** (the same item can be wanted twice in different amounts), occasional **mixed baskets** (2–3 items, a small basket bonus), **daily standing orders** once a neighbour knows Kit, and **quick-bonus orders** that pay a little extra if delivered the same day — a bonus only, never a penalty, so "no deadline penalty" still holds. The **baker, the allotment neighbour and the shopkeeper** start posting on Marlow's board during the first tier, one at a time after Kit's first eggs, first delivered crop order and fifth delivered order (characters.md §10); their village buildings still open at T2.
 - **Subscription orders (owner request 2026-11-19):** a satisfied neighbour can offer a **standing daily order** — e.g. "6 eggs every morning by 10:00" or "a milk can every day". Kit chooses to subscribe; a **reminder** shows on the HUD and the order board each morning until it is delivered; Kit can **cancel any time** with no penalty. A missed day simply isn't paid (no fine, no relationship loss); a helper can take over the daily delivery later.
 - **Where:** the **order board** at the seed shed, plus hand-delivered requests when talking to a neighbour. Delivery is by hand or, later, via a delivery helper.
 
@@ -425,7 +426,7 @@ Playtests with children are conducted with appropriate adult supervision and con
 12. **RESOLVED (v0.20):** the first beat is a first order; the Butterfly Garden is optional and later (§3).
 13. **RESOLVED (v0.26, reset v0.29–v0.33):** day length 17 real minutes (04:30 → 21:30, 60 s per in-game hour).
 14. **RESOLVED (v0.26):** 30-day seasons, 120-day year (Harvest Moon).
-15. **⚠️ OPEN — order premium.** Should orders pay ×1.25 the market price? (economy.md §6, recommended.)
+15. **✅ DECIDED (2026-11-21, owner) — order premium: none.** Normal orders pay the plain sell price; only mixed baskets (×1.1) and same-day quick-bonus orders (+20 %) pay extra (economy.md §3).
 16. **⚠️ OPEN — interior scenes.** Phase-001 enters buildings on the same map (roof fades, §4). Do later buildings need separate interior scenes (a fade to a room map)? Decide in Phase-002 planning; the kitchen upgrade is the first likely case.
 
 ## Related documents
@@ -492,3 +493,5 @@ Playtests with children are conducted with appropriate adult supervision and con
 - **0.38 — 2026-11-20:** **Machines simplified (owner decision 2026-11-20):** sprinklers need no water source; auto-feeders run for weeks from the silo or a pond hopper filled by phone orders.
 - **0.39 — 2026-11-20:** **Windmill / water pump removed (owner decision 2026-11-20):** not needed for water (sprinklers have hidden pipes) and flour comes from the village watermill; hydroponics needs no power.
 - **0.40 — 2026-11-20:** §4 *When time stops* notes that Phase-001 enters buildings on the same map (roof fades, clock stops) with no separate interior scenes (owner); new open question 16 on interior scenes for Phase-002.
+- **0.41 — 2026-11-21:** **Order variety (owner decision 2026-11-21):** §4 *Neighbour orders* adds varied sizes, occasional mixed baskets, daily standing orders and same-day quick bonuses (bonus only, never a penalty) from the first tier, and the baker, allotment neighbour and shopkeeper posting on Marlow's board in T1.
+- **0.42 — 2026-11-21:** **Q15 decided (owner 2026-11-21):** no order premium; only baskets and quick-bonus orders pay extra.

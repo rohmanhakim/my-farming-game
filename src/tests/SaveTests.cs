@@ -72,8 +72,8 @@ public partial class TestRunner
         player.GlobalPosition = new Vector2(1700, 300);
         await Frames(2);
         string before = Snap();
-        int coins = Wallet.Instance.Coins; // 1234 + 56 for the berries
-        Check(before.Contains("\"schemaVersion\"") && coins == 1290 && before.Contains("1290"), "snapshot is JSON with schemaVersion and the state");
+        int coins = Wallet.Instance.Coins; // 1234 + 45 for the berries
+        Check(before.Contains("\"schemaVersion\"") && coins == 1279 && before.Contains("1279"), "snapshot is JSON with schemaVersion and the state");
         Check(save.Save() && FileAccess.FileExists(TestSavePath) && !FileAccess.FileExists(save.TempPath), "save writes the file (temp file renamed away)");
         var onDisk = SaveGame.Read(TestSavePath);
         Check(onDisk != null && onDisk["schemaVersion"].AsInt32() == 1 && onDisk.ContainsKey("farm") && onDisk.ContainsKey("animals"),
@@ -94,7 +94,7 @@ public partial class TestRunner
         grid = level.GetNode<FarmGrid>("FrontGarden");
         hens = AnimalHouse.For(GetTree(), "hen");
         Check(clock.Day == 4 && grid.Get(new Vector2I(0, 0)).DaysGrown == 1 && grid.Get(new Vector2I(5, 3)).DryDays == 1
-              && Wallet.Instance.Coins == 1290 && Inventory.Instance.Count(ItemIds.Carrot, 2) == 2 && ToolBelt.Instance.Active == Tool.WateringCan,
+              && Wallet.Instance.Coins == 1279 && Inventory.Instance.Count(ItemIds.Carrot, 2) == 2 && ToolBelt.Instance.Active == Tool.WateringCan,
             "spot checks: Day 4, crop growth and dry count, coins, ★★ carrots, active tool");
         Check(om.BoardOpen && om.Get(OrderManager.SecondOrderId).State == OrderState.Accepted && hens.Animals.Count(a => a.UnfedDays == 1) == 4
               && hens.Animals[0].ProductReady == 1 && FeedStore.PendingAmount(ItemIds.Hay) == 7 && !level.GetNode<BerryBush>("Bushes/BerryBush2").HasBerries
@@ -114,7 +114,7 @@ public partial class TestRunner
         // Corrupt main file → the backup loads.
         using (var f = FileAccess.Open(TestSavePath, FileAccess.ModeFlags.Write)) f.StoreString("{ this is not json");
         Wallet.Instance.SetCoins(1);
-        Check(save.Load() && save.LastLoadedFrom == save.BackupPath && Wallet.Instance.Coins == 1290, "corrupt main file → the backup loads");
+        Check(save.Load() && save.LastLoadedFrom == save.BackupPath && Wallet.Instance.Coins == 1279, "corrupt main file → the backup loads");
         save.Save();
         Check(SaveGame.Read(TestSavePath) != null, "saving again repairs the main file");
 

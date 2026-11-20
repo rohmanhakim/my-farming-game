@@ -514,6 +514,46 @@ def cart():
     return c
 
 
+def villager(hair, top, extra=None):
+    c = Canvas(32, 32)
+    skin = (230, 186, 150)
+    c.disc(16, 9, 6, hair)
+    c.rect(12, 8, 9, 8, skin)
+    c.set(14, 11, INK); c.set(18, 11, INK)
+    c.line(14, 14, 18, 14, (170, 90, 80))
+    c.rect(10, 16, 13, 12, top)
+    c.rect(7, 17, 3, 7, top); c.rect(23, 17, 3, 7, top)
+    c.rect(12, 28, 3, 3, (80, 60, 50)); c.rect(18, 28, 3, 3, (80, 60, 50))
+    if extra: extra(c)
+    return c
+
+
+def baker_hat(c):
+    c.rect(10, 1, 13, 5, (250, 250, 250)); c.disc(16, 2, 5, (250, 250, 250))
+    c.rect(12, 19, 9, 9, (250, 250, 250))  # apron
+
+
+def allotment_hat(c):
+    c.rect(8, 4, 17, 2, (200, 170, 90)); c.rect(12, 1, 9, 4, (200, 170, 90))
+    c.rect(24, 20, 2, 9, (110, 76, 46)); c.rect(22, 18, 6, 2, (150, 150, 160))  # little fork
+
+
+def shop_tie(c):
+    c.rect(15, 16, 3, 8, (200, 60, 60)); c.rect(10, 16, 13, 2, (240, 240, 240))
+
+
+def icon_daily():
+    c = Canvas(32, 32)
+    c.rect(4, 6, 24, 22, (250, 248, 240))
+    c.rect(4, 6, 24, 6, (200, 70, 60))
+    c.outline(4, 6, 24, 22, INK)
+    c.rect(9, 3, 3, 6, INK); c.rect(20, 3, 3, 6, INK)
+    for d in (0, 1):
+        c.line(10, 19 + d, 14, 23 + d, (60, 150, 70))
+        c.line(14, 23 + d, 22, 15 + d, (60, 150, 70))
+    return c
+
+
 SPRITES = {
     # Task 1.5 — farm level, front garden, buildings
     "soil_weeds": soil_weeds,
@@ -570,6 +610,11 @@ SPRITES = {
     # Task 1.12 — onboarding
     "npc_ada": ada,
     "cart": cart,
+    # Order variety (owner 2026-11-21) — neighbours on the board, daily orders
+    "npc_baker": lambda: villager((60, 40, 30), (230, 200, 160), baker_hat),
+    "npc_allotment": lambda: villager((170, 120, 60), (90, 130, 80), allotment_hat),
+    "npc_shopkeeper": lambda: villager((40, 40, 50), (70, 90, 150), shop_tie),
+    "icon_daily": icon_daily,
 }
 
 

@@ -48,15 +48,29 @@ public partial class Marlow : Prop
         bubble.Show(Portrait, Lines.Idle, null, new[] { BubbleButton.Close() });
     }
 
+    /// <summary>"have/need" pictures for each line of an order.</summary>
+    public static List<BubbleChip> HaveNeedChips(Order o)
+    {
+        var chips = new List<BubbleChip>();
+        foreach (var l in o.Lines)
+            chips.Add(new BubbleChip(ItemIds.SpriteName(l.Item), $"{Inventory.Instance?.CountAll(l.Item) ?? 0}/{l.Count}"));
+        return chips;
+    }
+
     public static bool IsScripted(Order o) => o.Id == OrderManager.FirstOrderId || o.Id == OrderManager.SecondOrderId;
 
     /// <summary>"item × count → coins" pictures for an order.</summary>
-    public static List<BubbleChip> OrderChips(Order o) => new()
+    public static List<BubbleChip> OrderChips(Order o)
     {
-        new BubbleChip(ItemIds.SpriteName(o.ItemId), "×" + o.Count),
-        new BubbleChip("", "→"),
-        new BubbleChip("coin", o.Reward.ToString()),
-    };
+        var chips = new List<BubbleChip>();
+        foreach (var l in o.Lines) chips.Add(new BubbleChip(ItemIds.SpriteName(l.Item), "×" + l.Count));
+        chips.Add(new BubbleChip("", "→"));
+        chips.Add(new BubbleChip("coin", o.Reward.ToString()));
+        int today = GameClock.Instance?.Day ?? 1;
+        if (o.BonusOpen(today)) chips.Add(new BubbleChip("icon_clock", "+" + o.Bonus));
+        if (o.Standing) chips.Add(new BubbleChip("icon_daily", ""));
+        return chips;
+    }
 
     private void Offer(PictureBubbleView bubble, Order o)
     {
@@ -76,8 +90,7 @@ public partial class Marlow : Prop
 
     private void Restate(PictureBubbleView bubble, Order o)
     {
-        int have = Inventory.Instance?.CountAll(o.ItemId) ?? 0;
-        var chips = new List<BubbleChip> { new(ItemIds.SpriteName(o.ItemId), $"{have}/{o.Count}") };
+        var chips = HaveNeedChips(o);
         bubble.Show(Portrait, Lines.Restate(o), chips, new[] { BubbleButton.Close() });
     }
 
@@ -94,9 +107,10 @@ public partial class Marlow : Prop
     {
         var orders = OrderManager.Instance;
         bool firstBoard = !orders.BoardOpen;
+        int before = Wallet.Instance?.Coins ?? 0;
         if (!orders.Deliver(o.Id)) return;
-        Ledger.Note(o.Id, ItemIds.SpriteName(o.ItemId), true);
-        var chips = new List<BubbleChip> { new("coin", "+" + o.Reward) };
+        Ledger.Note(o.Id, ItemIds.SpriteName(o.ItemId), !o.Standing);
+        var chips = new List<BubbleChip> { new("coin", "+" + ((Wallet.Instance?.Coins ?? 0) - before)) };
         var carrots = orders.Get(OrderManager.SecondOrderId);
         string line = Lines.Thanks(o);
         if (firstBoard && orders.BoardOpen)

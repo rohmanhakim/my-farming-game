@@ -145,7 +145,7 @@ public partial class OrderBoardView : Control
 
     private static Button MakeCard(Order o)
     {
-        var card = new Button { CustomMinimumSize = new Vector2(150, 190), FocusMode = FocusModeEnum.All };
+        var card = new Button { CustomMinimumSize = new Vector2(150, 220), FocusMode = FocusModeEnum.All };
         // A card Kit can hand in right now lights up (Task 1.12 "the order card lights up").
         bool ready = OrderManager.Instance?.CanDeliver(o.Id) ?? false;
         card.AddThemeStyleboxOverride("normal", CardStyle(ready ? new Color(1f, 0.93f, 0.55f) : o.State == OrderState.Accepted ? new Color(0.98f, 0.95f, 0.8f) : new Color(1f, 0.99f, 0.95f), false));
@@ -155,15 +155,35 @@ public partial class OrderBoardView : Control
         var col = new VBoxContainer { MouseFilter = MouseFilterEnum.Ignore, Alignment = BoxContainer.AlignmentMode.Center };
         col.SetAnchorsPreset(LayoutPreset.FullRect);
         card.AddChild(col);
-        string badge = (o.Repeat ? "↻ " : "") + (o.State == OrderState.Accepted ? "✓" : "");
-        col.AddChild(Lbl(badge, 22));
-        col.AddChild(Icon(ItemIds.SpriteName(o.ItemId), 64));
-        col.AddChild(Lbl("×" + o.Count, 24));
+        // Top row: who asks, and badges (↻ repeat, daily, ✓ accepted / delivered today).
+        var top = new HBoxContainer { Alignment = BoxContainer.AlignmentMode.Center, MouseFilter = MouseFilterEnum.Ignore };
+        top.AddChild(Icon(Neighbours.Get(o.Giver).Portrait, 32));
+        int today = GameClock.Instance?.Day ?? 1;
+        string badge = (o.Repeat ? "↻" : "") + (o.State == OrderState.Accepted ? (o.Standing && o.DeliveredOnDay == today ? " ✓✓" : " ✓") : "");
+        top.AddChild(Lbl(badge, 20));
+        if (o.Standing) top.AddChild(Icon("icon_daily", 26));
+        col.AddChild(top);
+        // Item lines.
+        foreach (var l in o.Lines)
+        {
+            var line = new HBoxContainer { Alignment = BoxContainer.AlignmentMode.Center, MouseFilter = MouseFilterEnum.Ignore };
+            line.AddChild(Icon(ItemIds.SpriteName(l.Item), o.IsBasket ? 44 : 60));
+            line.AddChild(Lbl("×" + l.Count, 22));
+            col.AddChild(line);
+        }
         var coin = new HBoxContainer { Alignment = BoxContainer.AlignmentMode.Center, MouseFilter = MouseFilterEnum.Ignore };
         coin.AddChild(Icon("coin", 28));
         coin.AddChild(Lbl(o.Reward.ToString(), 22));
         col.AddChild(coin);
-        card.TooltipText = $"{ItemIds.DisplayName(o.ItemId)} ×{o.Count} → {o.Reward} coins";
+        if (o.BonusOpen(today))
+        {
+            var bonus = new HBoxContainer { Alignment = BoxContainer.AlignmentMode.Center, MouseFilter = MouseFilterEnum.Ignore };
+            bonus.AddChild(Icon("icon_clock", 24));
+            bonus.AddChild(Lbl("+" + o.Bonus + " today", 18));
+            col.AddChild(bonus);
+        }
+        card.TooltipText = $"{Neighbours.Get(o.Giver).Name}: " + string.Join(" + ", o.Lines.Select(l => $"{ItemIds.DisplayName(l.Item)} ×{l.Count}"))
+                           + $" → {o.Reward} coins" + (o.Standing ? " every day" : "") + (o.BonusOpen(today) ? $" (+{o.Bonus} if delivered today)" : "");
         return card;
     }
 
@@ -197,11 +217,13 @@ public partial class OrderBoardView : Control
         var bubble = PictureBubbleView.Find(GetTree());
         if (o == null || bubble == null) return;
         Close();
+        string portrait = Neighbours.Get(o.Giver).Portrait;
         var back = new BubbleButton { Text = "Back", IsCancel = true, OnPress = Open };
         var chips = Marlow.OrderChips(o);
+        string cancelText = o.Standing ? "Stop daily order" : "Cancel order";
         if (o.State == OrderState.Offered)
         {
-            bubble.Show(Portrait, "Take this order?", chips, new[]
+            bubble.Show(portrait, o.Standing ? "Bring this every day? Stop any time." : "Take this order?", chips, new[]
             {
                 new BubbleButton { Icon = "icon_check", Text = "Yes", OnPress = () => { orders.Accept(id); Ledger.Note(id, ItemIds.SpriteName(o.ItemId), false); Open(); } },
                 back,
@@ -209,19 +231,20 @@ public partial class OrderBoardView : Control
         }
         else if (orders.CanDeliver(id))
         {
-            bubble.Show(Portrait, "Hand these over?", chips, new[]
+            bubble.Show(portrait, "Hand these over?", chips, new[]
             {
                 new BubbleButton { Icon = ItemIds.SpriteName(o.ItemId), Text = "Give", OnPress = () => Deliver(id) },
-                new BubbleButton { Text = "Cancel order", OnPress = () => { orders.Decline(id); Open(); } },
+                new BubbleButton { Text = cancelText, OnPress = () => { orders.Decline(id); Open(); } },
                 back,
             });
         }
         else
         {
-            int have = Inventory.Instance?.CountAll(o.ItemId) ?? 0;
-            bubble.Show(Portrait, "Still to bring. No hurry.", new List<BubbleChip> { new(ItemIds.SpriteName(o.ItemId), $"{have}/{o.Count}") }, new[]
+            bool doneToday = o.Standing && o.DeliveredOnDay == (GameClock.Instance?.Day ?? 1);
+            bubble.Show(portrait, doneToday ? "Done for today. Thank you!" : "Still to bring. No hurry.",
+                doneToday ? new List<BubbleChip> { new("icon_check", "") } : Marlow.HaveNeedChips(o), new[]
             {
-                new BubbleButton { Text = "Cancel order", OnPress = () => { orders.Decline(id); Open(); } },
+                new BubbleButton { Text = cancelText, OnPress = () => { orders.Decline(id); Open(); } },
                 back,
             });
         }
@@ -231,9 +254,11 @@ public partial class OrderBoardView : Control
     {
         var orders = OrderManager.Instance;
         var o = orders.Get(id);
+        int before = Wallet.Instance?.Coins ?? 0;
         if (!orders.Deliver(id)) { Open(); return; }
-        Ledger.Note(id, ItemIds.SpriteName(o.ItemId), true);
-        PictureBubbleView.Find(GetTree())?.Show(Marlow.Portrait, Marlow.Lines.Thanks(o), new List<BubbleChip> { new("coin", "+" + o.Reward) },
+        int paid = (Wallet.Instance?.Coins ?? 0) - before;
+        Ledger.Note(id, ItemIds.SpriteName(o.ItemId), !o.Standing);
+        PictureBubbleView.Find(GetTree())?.Show(Neighbours.Get(o.Giver).Portrait, Marlow.Lines.Thanks(o), new List<BubbleChip> { new("coin", "+" + paid) },
             new[] { new BubbleButton { Icon = "icon_check", Text = "OK", IsCancel = true, OnPress = Open } });
     }
 

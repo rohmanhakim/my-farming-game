@@ -1,8 +1,8 @@
 # Progression: Farm Growth, Automation, and Long-Term Goals
 
 > **Status:** Design draft — **restructured 2026-11-19**
-> **Version:** 0.11
-> **Last updated:** 2026-11-20
+> **Version:** 0.12
+> **Last updated:** 2026-11-21
 > **Purpose:** How the farm grows from a tangled plot to a full, automated farm (*Harvest Moon*-style), what limits it at each point, and what there is to chase once it runs well. Replaces the old parent-controlled layers and five-stage age map. Everything after the core farm loop is **optional**.
 
 ---
@@ -42,7 +42,7 @@ Tiers are reached by **what the farm is**, not by time played or age. They gate 
 
 | Tier | Reached when | Typical limit | What opens | Order size |
 |---|---|---|---|---|
-| **T1 — Small plot** | Start of game | **Money** (500 coins, 3 cleared beds) | Seeds, clearing the front garden, compost bin, **5 hens + 1 cow already in the old coop and barn**, feed, the order board (first order on Day 1) | 1–6 items |
+| **T1 — Small plot** | Start of game | **Money** (500 coins, 3 cleared beds) | Seeds, clearing the front garden, compost bin, **5 hens + 1 cow already in the old coop and barn**, feed, the order board (first order on Day 1) | 1–6 items in varied sizes; occasional mixed baskets, daily standing orders and quick-bonus orders (owner 2026-11-21) |
 | **T2 — Growing farm** | First 10 orders delivered | **Money** | Big coop, beehive, workshop, kitchen (processing), market stall, **farmhands hired by the day**, first blueprints, scythe/hammer/axe, brush, fishing rod | 3–10 items, mixed |
 | **T3 — Working farm** | First back field (Field A) fully cleared | **Money + time** (hand-tending and clearing get busy) | Cows and sheep for the **old starting barn**, extra/bigger barns, silo, fish pond, orchard, travelling merchant visits, festivals & contests | Baskets, weekly repeats |
 | **T4 — Automated farm** | First sprinkler or auto-feeder placed | **Land** begins to bite | Sprinklers (all grades), auto-feeders, pond auto-feeder, greenhouse, garden sprites | Bulk orders, catering |
@@ -141,8 +141,8 @@ Very rare items for players who want them: golden watering can, prize-winning br
 
 | Tier | Characters | Introduction |
 |---|---|---|
-| T1 | Mr. Marlow, Ada | Day one; Marlow gives the first order (wild berries), then a carrot order and the order board. The Butterfly Garden is an optional later request. |
-| T2 | The allotment neighbour, the baker, the shopkeeper | Trace first, then a first order. |
+| T1 | Mr. Marlow, Ada; then the baker, the allotment neighbour, the shopkeeper (orders on the board) | Day one; Marlow gives the first order (wild berries), then a carrot order and the order board. **Owner 2026-11-21:** the baker (after the first eggs), the allotment neighbour (after the first crop order) and the shopkeeper (after five orders) start pinning orders on the board, one at a time. The Butterfly Garden is an optional later request. |
+| T2 | (the baker, the allotment neighbour, the shopkeeper met in person) | Their bakery, allotments and general store open; trace first where a building is new. |
 | T3 | The brook keeper, a friend of Kit's age, the smith (+ the travelling merchant, a visitor) | Brook keeper on the far bank after the footbridge repair; merchant after Field A is cleared, then on visiting days. |
 | T4 | The carpenter, the village nurse, the librarian | Trace first, then a first order (characters.md §10). Farmhands are hired, not counted. |
 | T5 | The innkeeper, the Hill Visitor (seasonal) | During lane restoration and the winter festival. |
@@ -195,3 +195,4 @@ Missing a mystery means waiting for it to return next year.
 - **0.9 — 2026-11-20:** **Bramblewick Vale (places.md v0.10).** Added "Where the valley opens" per tier under §3; tool upgrades at the village smithy; §4 "lane never grows" replaced by "the valley is fixed". **§6.4 lane restoration is now a three-step ladder** — footbridge (T3), watermill (T4), stile and lantern (T5) — each opening an area. §7 character table updated for the new villagers (up to three per tier).
 - **0.10 — 2026-11-20:** **Farmhands first, machines later (owner decision 2026-11-20):** farmhands hired by the day from T2 (no cottage); T4 helpers are now garden sprites; the villagers' cottages open at T2.
 - **0.11 — 2026-11-20:** **Windmill / water pump removed (owner decision 2026-11-20):** dropped from T4 unlocks; flour comes from the restored watermill (§6.4); the rare weathervane now sits on the barn.
+- **0.12 — 2026-11-21:** **Order variety (owner decision 2026-11-21):** T1 orders vary in size and include occasional baskets, daily standing orders and quick bonuses; the baker, allotment neighbour and shopkeeper post on the board from T1 (§7).

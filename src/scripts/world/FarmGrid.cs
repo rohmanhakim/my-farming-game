@@ -204,6 +204,7 @@ public partial class FarmGrid : Node2D, IToolTarget
         var crop = CropCatalog.Default.Get(t.CropId);
         string item = crop?.HarvestItem ?? t.CropId;
         Inventory.Instance?.Add(item, crop?.HarvestCount ?? 1);
+        OrderManager.Instance?.NoteProduced(item);
         t.ClearCrop();
         EmitSignal(SignalName.CropHarvested, cell, item);
         return TileAction.Harvested;

@@ -42,7 +42,19 @@ public partial class CareNoticeView : Node
         }
         _clock = GameClock.Instance;
         if (_clock != null) _clock.WokeUp += ShowNext;
+        if (OrderManager.Instance != null) OrderManager.Instance.NeighbourIntroduced += OnNeighbour;
     }
+
+    /// <summary>A new neighbour pinned their first order (owner order-variety request 2026-11-21).</summary>
+    private void OnNeighbour(string id)
+    {
+        var n = Neighbours.Get(id);
+        _queue.Enqueue((n.Portrait, n.Hello, new[] { new BubbleChip("icon_order_board", "") }));
+        NeighboursIntroduced++;
+        if (_clock == null || !_clock.IsSleeping) ShowNext();
+    }
+
+    public int NeighboursIntroduced { get; private set; }
 
     public override void _ExitTree()
     {
@@ -52,6 +64,7 @@ public partial class CareNoticeView : Node
             h.HungryWarning -= OnHungry;
         }
         if (_clock != null && IsInstanceValid(_clock)) _clock.WokeUp -= ShowNext;
+        if (OrderManager.Instance != null && IsInstanceValid(OrderManager.Instance)) OrderManager.Instance.NeighbourIntroduced -= OnNeighbour;
     }
 
     public static string LossLine(string name, string kind) => kind == "cow"

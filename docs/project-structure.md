@@ -1,7 +1,7 @@
 # Project Structure
 
 > **Status:** Proposal for team agreement — input to Phase-001 Task 1.1 ("Team agrees on project folder structure and naming conventions")
-> **Version:** 0.22
+> **Version:** 0.23
 > **Last updated:** 2026-11-21
 > **Purpose:** The repository layout, Godot folder structure, naming rules, input/autoload registries, asset pipeline, and verification commands that every development session follows when adding code or assets under `src/`. It is a *technical* contract only — it never overrides a gameplay decision.
 
@@ -136,6 +136,7 @@ src/
 │   │   ├── ButtonPrompt.cs    # Task 1.3 — per-action button glyph: key cap, or Xbox / PlayStation / Nintendo face button
 │   │   ├── ToolBeltView.cs, BagView.cs, WalletView.cs   # Task 1.4 (views + their inputs; state lives in the autoloads)
 │   │   ├── ShopView.cs        # Task 1.8 — ShopEntry cards, Buy, refusal pictures
+│   │   ├── StandingOrdersView.cs  # owner 2026-11-21 — HUD reminder for daily standing orders (✓ when delivered today)
 │   │   ├── NudgeView.cs       # Task 1.12 — top-centre hint chip (scenes/ui/Nudge.tscn)
 │   │   ├── CareNoticeView.cs  # Task 1.9 — hungry warning + gravestone loss cards, shown on waking
 │   │   ├── OrderBoardView.cs  # Task 1.7 — cards; accept / give / cancel through the bubble
@@ -155,8 +156,9 @@ src/
 │       ├── IInteractable.cs   # Task 1.3 — "interact / click to use" contract, group `interactables`, click layer 8
 │       ├── IToolTarget.cs     # Task 1.5 — ground Kit uses the active tool on (group `tool_targets`)
 │       ├── CropDefinition.cs, CropCatalog.cs   # Task 1.5 — crop data resources loaded from data/crops.tres
-│       ├── PriceTable.cs      # Task 1.6 — coins per item id from data/prices.json; OrderPremium 1.25
-│       ├── Order.cs           # Task 1.6 — order data (offered → accepted → paid), save shape
+│       ├── PriceTable.cs      # Task 1.6 — coins per item id from data/prices.json; OrderPremium 1.0 (owner 2026-11-21: no premium)
+│       ├── Order.cs           # Task 1.6 — order data (offered → accepted → paid), save shape; baskets, daily, quick bonus (owner 2026-11-21)
+│       ├── Neighbours.cs      # owner 2026-11-21 — who posts orders (Marlow, baker, allotment neighbour, shopkeeper) and what they like
 │       ├── GameSettings.cs    # Task 1.11 — volume, hints, read aloud, break reminder (user://settings.json via SaveGame)
 │       ├── Production.cs      # Task 1.7 — what the farm can produce now (supply registry for the order generator)
 │       └── FeedStore.cs       # Task 1.8 — phone feed orders waiting for Dawn
@@ -504,3 +506,4 @@ Restore after cloning: `npx skills experimental_install` · Update: `npx skills 
 - **0.20 — 2026-11-21:** Task 1.10 built: SaveGame autoload (Always) and SaveBinder in Main/Systems; file map and autoload registry updated.
 - **0.21 — 2026-11-21:** Task 1.11 built: PauseMenu (Main/Pause), PauseButton, DayNightOverlay (Main/World/Effects), GameSettings; settings file written by SaveGame.
 - **0.22 — 2026-11-21:** Task 1.12 built: Onboarding autoload, OnboardingDirector, NudgeView, Ada, GuideArrow; file map and autoload registry updated.
+- **0.23 — 2026-11-21:** Owner order-variety follow-up: `core/Neighbours.cs`, `ui/StandingOrdersView.cs` (HUD/UI/StandingOrders); `OrderPremium` now 1.0.

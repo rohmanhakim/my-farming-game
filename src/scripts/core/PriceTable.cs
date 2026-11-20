@@ -12,8 +12,10 @@ public static class PriceTable
 {
     public const string Path = "res://data/prices.json";
 
-    /// <summary>Neighbour orders pay this × the sell price (economy.md §3, proposal pending approval).</summary>
-    public const float OrderPremium = 1.25f;
+    /// <summary>Neighbour orders pay this × the sell price. Owner decision 2026-11-21: no premium on
+    /// normal orders (was a ×1.25 proposal); only mixed baskets and quick-bonus orders pay extra
+    /// (<see cref="Order.BasketBonus"/>, <see cref="Order.QuickBonus"/>).</summary>
+    public const float OrderPremium = 1.0f;
 
     private static Dictionary<string, int> _coins;
 

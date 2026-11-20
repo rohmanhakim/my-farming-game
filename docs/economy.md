@@ -1,8 +1,8 @@
 # Economy & Balance Sheet
 
 > **Status:** First draft for owner review — new document
-> **Version:** 0.13
-> **Last updated:** 2026-11-20
+> **Version:** 0.15
+> **Last updated:** 2026-11-21
 > **Purpose:** Prices, income, and costs, plus a balance check showing how long each goal takes. Owner rule (2026-11-19): **what Kit sells ≈ real-world price; what Kit buys ≈ half the real price** (the kid-friendly part). **Real prices are Australian (owner decision 2026-11-20)**: a big-farm country with cheap animals and hay, which keeps hens and sheep worth buying. The full price list is the spreadsheet **[`data/economy.csv`](./data/economy.csv)** (79 items; opens in Excel/Sheets). Most real prices are estimates and must be checked before they are final (§6).
 
 ---
@@ -25,7 +25,7 @@
 | **Quality** | ★ ×1 · ★★ ×1.25 · ★★★ ×1.5 sell price |
 | **Seasonal price** | Out-of-season produce sells at ×1.5 (e.g. greenhouse tomatoes in winter) |
 | **Demand price** | Each item sold beyond 20 per day drops its price 2 % (to at most −30 %); recovers overnight |
-| **Neighbour orders** *(proposal — needs approval)* | Pay **×1.25** the sell price ("farm-fresh, delivered"); bulk orders ×1.1 |
+| **Neighbour orders** *(decided 2026-11-21, owner)* | Pay **the sell price** — **no premium** on normal orders (the ×1.25 proposal was dropped). **Mixed baskets** pay ×1.1 on top of their lines; a **quick-bonus** order adds +20 % if delivered the same day (never less if later); **daily standing orders** pay the order price each delivered day (owner 2026-11-21, built in Phase-001) |
 | **Farmhand wage** | **500 coins/day** per farmhand, hired by the day from T2 (owner decision 2026-11-20). A **game wage**, below half-real (≈ 1,200), so hiring is worth it on a busy field; garden sprites are free |
 | **Subscription orders** | Paid at the order price each delivered day |
 | **Sell-back** | Buildings and tools sell back for half what Kit paid |
@@ -124,7 +124,7 @@ All figures sell the raw product at ★ quality, with bought feed and no order p
 ## 6. Balance risks (for owner review)
 
 1. **The starting cow earns a lot — kept on purpose (owner decision 2026-11-19).** 4 milk cans a day ≈ 375 coins net from Day 1 is a generous start; crops produce nothing for the first few days, so animals carry the early income. Starting money stays 500.
-2. **Animal payback.** Every animal pays back within ≈ 1–4 months (a year is 120 days). **Sheep are the fastest (≈ 23 days)** because Australian sheep and hay are cheap and wool sells well; they may become the obvious first buy. Extra buildings are slower (≈ 4 months), which fits the late game. The ×1.25 order premium is still optional (open).
+2. **Animal payback.** Every animal pays back within ≈ 1–4 months (a year is 120 days). **Sheep are the fastest (≈ 23 days)** because Australian sheep and hay are cheap and wool sells well; they may become the obvious first buy. Extra buildings are slower (≈ 4 months), which fits the late game. Normal orders pay the plain sell price (owner 2026-11-21), so these paybacks hold for orders too; only baskets (×1.1) and same-day quick bonuses (+20 %) pay a little more.
 3. **Flowers and berries out-earn vegetables**, because real cut-flower and berry prices are high. Fine for realism; orders can steer variety by asking for vegetables.
 4. **Processing is very profitable** (a pie sells for about 3.3× its ingredients). That matches real bakeries and rewards the kitchen — keep, but watch it doesn't make raw selling pointless.
 5. **Season and day length are now set** (30 days, ≈ 15 minutes): a Year-1 is ≈ 120 days ≈ 30 hours of play. Re-check the timeline in the first playtest.
@@ -159,3 +159,5 @@ All figures sell the raw product at ★ quality, with bought feed and no order p
 - **0.11 — 2026-11-20:** **Machines simplified (owner decision 2026-11-20):** sprinkler prices include hidden pipes (400 / 1,200 / 2,500; no water source needed); feed orders go straight into the silo / pond-feeder hopper once built; farmhand-vs-sprinkler payback now ≈ 20 days.
 - **0.12 — 2026-11-20:** **Windmill / water pump removed (owner decision 2026-11-20):** row dropped from `data/economy.csv` (79 items); flour is milled at the village watermill.
 - **0.13 — 2026-11-20:** §5.3 heading corrected to 17-minute days (GDD §4, Harvest Moon pace); the timeline counts days, so no figure changes.
+- **0.14 — 2026-11-21:** Order pricing row: mixed baskets ×1.1, same-day quick bonus +20 %, daily standing orders (owner order-variety decision 2026-11-21). The ×1.25 premium is still awaiting the owner's decision.
+- **0.15 — 2026-11-21:** **Order premium decided (owner 2026-11-21): none.** Normal orders pay the sell price; only mixed baskets (×1.1) and same-day quick-bonus orders (+20 %) pay extra. The paybacks in §5 were already computed without a premium, so they stand.

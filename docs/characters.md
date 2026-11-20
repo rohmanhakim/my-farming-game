@@ -1,8 +1,8 @@
 # Characters
 
 > **Status:** Finalized for prototype (design v0.5) — **updated for the direction reset 2026-11-19**
-> **Version:** 0.15
-> **Last updated:** 2026-11-20
+> **Version:** 0.16
+> **Last updated:** 2026-11-21
 > **Purpose:** The final cast for the prototype, plus clearly-marked future cast. Names below are locked for the prototype unless playtesting proves otherwise. Backgrounds are brief and adjustable.
 
 ---
@@ -15,7 +15,7 @@ The cast grows with the farm: new faces arrive a few at a time as the farm reach
 
 ## 2. Introduction rhythm: one neighbour at a time
 
-**Rule:** The player never meets more than one new talkable character *at a time*, and no more than **three** new characters per farm tier (progression.md §3; raised from two on 2026-11-20 for the bigger village). The travelling merchant is a visitor and does not count — the point is to avoid overwhelming the player, not to enforce a hard count of one. Day one has exactly one neighbour: Mr. Marlow. Tier 2, for example, introduces at most the allotment neighbour, the baker, and the shopkeeper. A new character is introduced only after the player completes a visible, voluntary action — for example, selling the first crop, collecting the first egg, or visiting the brook.
+**Rule:** The player never meets more than one new talkable character *at a time*, and no more than **three** new characters per farm tier (progression.md §3; raised from two on 2026-11-20 for the bigger village). The travelling merchant is a visitor and does not count — the point is to avoid overwhelming the player, not to enforce a hard count of one. Day one has exactly one neighbour: Mr. Marlow. **Owner decision 2026-11-21:** the baker, the allotment neighbour and the shopkeeper are introduced during **Tier 1** through orders pinned on Marlow's board (one at a time, each after a visible action of Kit's), which uses Tier 1's three slots; Tier 2 then opens their buildings. A new character is introduced only after the player completes a visible, voluntary action — for example, selling the first crop, collecting the first egg, or visiting the brook.
 
 The character's arrival is itself a small event, not a dialogue dump:
 - The player sees a **trace** first (laundry on a line, footprints in the mud, a half-painted birdhouse) before they ever meet the person.
@@ -176,12 +176,12 @@ The valley is fixed (places.md §1); it fills with people. Homes are in places.m
 
 | Tentative name | Role | Task theme | Introduction trigger |
 |---|---|---|---|
-| **The allotment neighbour** | A quieter character tending shared beds. | Sharing; vegetable orders. | First crop sold or delivered (T2). |
-| **The baker** | Runs the village bakery. | Egg, flour, and fruit orders; bread and pie recipes. | First eggs collected (T2). |
+| **The allotment neighbour** | A quieter character tending shared beds. | Sharing; vegetable orders. | First crop order delivered (**T1, orders on Marlow's board** — owner 2026-11-21; met in person when the allotments open, T2). |
+| **The baker** | Runs the village bakery. | Egg, flour, and fruit orders; bread and pie recipes. | First eggs collected (**T1, orders on Marlow's board** — owner 2026-11-21; the bakery opens at T2). |
 | **The brook keeper** | Concerned with the water and reeds; lives on the far bank. | Caring for the brook; fishing (gives the rod). | First visit to the far bank once the footbridge is repaired (T3). |
 | **A friend of Kit's age** | A teen peer on the lane (replaces "a child of the lane"). | Friendship, festivals, contests. | Two neighbour tasks + brook visit (T3). |
 | **The travelling merchant** *(new)* | Visits on set days. | Trades, rare seeds and breeds. | Field A cleared (T3). |
-| **The shopkeeper** *(2026-11-20)* | Runs the general store. | Kitchen ingredients, bag upgrades, decorations; small household orders. | First kitchen recipe needs an ingredient Kit can't grow (T2). |
+| **The shopkeeper** *(2026-11-20)* | Runs the general store. | Kitchen ingredients, bag upgrades, decorations; small household orders. | Five orders delivered (**T1, orders on Marlow's board** — owner 2026-11-21); the general store opens at T2. |
 | **The smith** *(2026-11-20)* | Works the village smithy. | Tool upgrades; stone and wood orders from clearing. | First debris Kit's tools can't clear (T3). |
 | **The village nurse** *(2026-11-20)* | Runs the clinic; nobody gets sick. | Healthy-food orders (fruit, herbal tea, honey, soup); picture lessons on eating well. | First healthy-food order on the board (T4). |
 | **The carpenter** *(2026-11-20)* | Runs the carpenter's yard. | House upgrades; builds the big late buildings (greenhouse, farm shop). | First T4 building wanted (T4). |
@@ -283,3 +283,4 @@ Implementation notes:
 - **0.13 — 2026-11-20:** **Bramblewick Vale (owner decisions).** The cast now lives in a village (places.md v0.10). Six new villagers added to §10 with tiers, triggers, and §3 traces: shopkeeper (T2), smith (T3), village nurse (T4, clinic without sickness), carpenter (T4, late buildings), librarian (T4), innkeeper (T5), plus farmhands (not counted). §2 limit raised from **two to three** new characters per tier (merchant is a visitor and does not count). Brook keeper now met on the far bank after the footbridge repair. "Grow the cast before the geography" wording replaced. Registry ids extended.
 - **0.14 — 2026-11-20:** **Farmhands first, machines later (owner decision 2026-11-20):** farmhands hired by the day from the order board at T2; no farmhand cottage.
 - **0.15 — 2026-11-20:** **Windmill / water pump removed (owner decision 2026-11-20):** the carpenter no longer builds it.
+- **0.16 — 2026-11-21:** **Order variety (owner decision 2026-11-21):** the baker (first eggs), the allotment neighbour (first crop order delivered) and the shopkeeper (five orders delivered) start posting orders on Marlow's board in T1; their buildings still open at T2.

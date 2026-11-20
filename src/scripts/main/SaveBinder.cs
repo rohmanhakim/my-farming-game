@@ -138,7 +138,18 @@ public partial class SaveBinder : Node
             foreach (var o in om.Orders) list.Add(o.ToDict());
             foreach (var (k, v) in om.Delivered) delivered[k] = v;
         }
-        return new GDict { { "orders", list }, { "boardOpen", om?.BoardOpen ?? false }, { "delivered", delivered }, { "seed", om?.Seed ?? 1 } };
+        var neighbours = new GArray();
+        var milestones = new GArray();
+        if (om != null)
+        {
+            foreach (var n in om.ActiveNeighbours.OrderBy(n => n)) neighbours.Add(n);
+            foreach (var m in om.Milestones.OrderBy(m => m)) milestones.Add(m);
+        }
+        return new GDict
+        {
+            { "orders", list }, { "boardOpen", om?.BoardOpen ?? false }, { "delivered", delivered }, { "seed", om?.Seed ?? 1 },
+            { "neighbours", neighbours }, { "milestones", milestones },
+        };
     }
 
     private void LoadOrders(GDict d)
@@ -146,7 +157,9 @@ public partial class SaveBinder : Node
         var orders = d["orders"].AsGodotArray().Select(v => Order.FromDict(v.AsGodotDictionary())).ToList();
         var delivered = new Dictionary<string, int>();
         foreach (var (k, v) in d["delivered"].AsGodotDictionary()) delivered[k.AsString()] = v.AsInt32();
-        OrderManager.Instance?.Restore(orders, d["boardOpen"].AsBool(), delivered, d["seed"].AsInt32());
+        var neighbours = d.TryGetValue("neighbours", out var nb) ? nb.AsGodotArray().Select(v => v.AsString()).ToList() : new List<string>();
+        var milestones = d.TryGetValue("milestones", out var ms) ? ms.AsGodotArray().Select(v => v.AsString()).ToList() : new List<string>();
+        OrderManager.Instance?.Restore(orders, d["boardOpen"].AsBool(), delivered, d["seed"].AsInt32(), neighbours, milestones);
     }
 
     // ---- feed (bins + deliveries) and animals ------------------------------------------------

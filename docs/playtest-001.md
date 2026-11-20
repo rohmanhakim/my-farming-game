@@ -1,7 +1,7 @@
 # Playtest 001 — First Playable (Phase-001 Task 1.13)
 
 > **Status:** Ready to run — no sessions held yet
-> **Version:** 0.1
+> **Version:** 0.2
 > **Last updated:** 2026-11-21
 > **Purpose:** The checklist for playtesting the Phase-001 vertical slice: how to set up a run, what to try for each task (1.5–1.12), and the observation sheet with the GDD §14 questions. Findings go back into `Phase-001.md` Task 1.13 *Playtest findings*.
 
@@ -21,8 +21,8 @@
 | Task | Try this | Watch for |
 |---|---|---|
 | **1.5 Farm & garden** | Walk around the house, coop, barn and down the path to the barn. Go into the house, coop and barn. In the garden: pull weeds (hands), hoe, plant (seed bag), water (can); A / Space hits the tile with the white square, or click a tile. Water some beds daily, leave one dry for 2 and 3 nights (F4 then sleep). | Does the faded roof read as "inside"? Does the clock stop inside? Does yellow read as "needs water"? Does losing a crop feel fair? |
-| **1.6 Lane, Marlow, berries** | Walk through the gate up the lane. Talk to Marlow (A): say Not now (B), then Yes. Pick 3 bushes. Give him the berries. Open his ledger in the shed. | Does a 6-year-old understand the bubble (berries ×3 → coins 56) before accepting? Is "No hurry" kind? |
-| **1.7 Order board** | After the berries, use the board by the shed. Take an order, cancel one, hand one in. Sleep and look at the board again. | Are the cards readable at a glance? |
+| **1.6 Lane, Marlow, berries** | Walk through the gate up the lane. Talk to Marlow (A): say Not now (B), then Yes. Pick 3 bushes. Give him the berries (45 coins). Open his ledger in the shed. | Does a 6-year-old understand the bubble (berries ×3 → coins 45) before accepting? Is "No hurry" kind? |
+| **1.7 Order board** | After the berries, use the board by the shed (top of the lane, left of the shed door). Take an order, cancel one, hand one in. Sleep and look again: sizes vary, the same item can be wanted twice, some cards are baskets (2–3 items), some show "+N today" (quick bonus). Collect eggs → the baker writes; deliver a carrot order → the allotment neighbour; 5 orders → the shopkeeper. After 4 orders to one neighbour, a daily order (calendar icon) appears: subscribe, deliver once a day (HUD chip gets ✓), stop it any time. | Are the cards readable at a glance? Are baskets, daily orders and the "today" bonus understood? |
 | **1.8 Shop & phone** | Before 07:30 use the shed counter (closed sign). At 08:00+ buy carrot and flower seeds. Try a hen (coop full). Spend down to a few coins and try again. In the bag, press the flower packet, then plant. Use the phone at home before and after 18:00 and check the bins next morning. | Are prices and "not enough coins" understandable? Is the closed sign clear? |
 | **1.9 Hens & cow** | Choose the feed scoop, use the coop bin, then the cow. Next morning collect eggs and milk. Skip feeding for 1, 2 and 3 days. | Are the hearts and need icons noticed? Is the loss card gentle, not frightening? Is the warning noticed? |
 | **1.10 Save/load** | Play a day, quit (pause → Quit), start again. | Everything back as it was? |
@@ -53,3 +53,4 @@ Anything that crashed, froze or looked wrong: ______
 ## 4. Change log
 
 - **0.1 — 2026-11-21:** New document (Task 1.13): session setup (F5, deleting the save, debug keys), what to try for Tasks 1.5–1.12, and the observation sheet with the GDD §14 questions.
+- **0.2 — 2026-11-21:** Order board row updated for the order variety (sizes, baskets, quick bonus, daily orders, new neighbours) and the 45-coin first order (no premium).

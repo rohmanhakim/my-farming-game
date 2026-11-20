@@ -243,6 +243,7 @@ public partial class AnimalHouse : Node2D
         int n = a.ProductReady;
         a.ProductReady = 0;
         Inventory.Instance?.Add(ProductItem, n);
+        OrderManager.Instance?.NoteProduced(ProductItem);
         EmitSignal(SignalName.Collected, ProductItem, n);
         EmitSignal(SignalName.AnimalsChanged);
         return n;

@@ -39,14 +39,14 @@ public partial class TestRunner
             int? csv = CsvPrice(name);
             Check(csv == null || csv == PriceTable.Get(id), $"prices.json matches economy.csv for {id} ({csv})");
         }
-        Check(PriceTable.OrderPremium == 1.25f && PriceTable.OrderReward("berries", 3) == 56, "first order pays 3 × 15 × 1.25 ≈ 56 coins");
+        Check(PriceTable.OrderPremium == 1.0f && PriceTable.OrderReward("berries", 3) == 45, "first order pays 3 × 15 = 45 coins (no premium, owner 2026-11-21)");
 
         // Order flow on a private manager (inventory and wallet are the autoloads).
         var om = new OrderManager();
         AddChild(om);
         var o = om.Get(OrderManager.FirstOrderId);
-        Check(o != null && o.State == OrderState.Offered && o.ItemId == "berries" && o.Count == 3 && o.Reward == 56,
-            "new game: Marlow offers 3 handfuls of wild berries for 56");
+        Check(o != null && o.State == OrderState.Offered && o.ItemId == "berries" && o.Count == 3 && o.Reward == 45,
+            "new game: Marlow offers 3 handfuls of wild berries for 45");
         Check(!om.Deliver(o.Id) && Wallet.Instance.Coins == 500, "can't deliver an order that isn't accepted");
         Check(om.Accept(o.Id) && o.State == OrderState.Accepted, "accept → accepted");
         Check(!om.Deliver(o.Id) && Wallet.Instance.Coins == 500, "can't deliver without the berries");
@@ -58,14 +58,14 @@ public partial class TestRunner
         void OnBoard() => boards++;
         om.OrderPaid += OnPaid;
         om.BoardOpened += OnBoard;
-        Check(om.Deliver(o.Id) && o.State == OrderState.Paid && Wallet.Instance.Coins == 556 && Inventory.Instance.Count(ItemIds.Berries) == 1,
-            "deliver: 3 berries taken, 56 coins paid");
-        Check(!om.Deliver(o.Id) && Wallet.Instance.Coins == 556 && !om.Accept(o.Id) && !om.Decline(o.Id), "a paid order can't pay again or change");
+        Check(om.Deliver(o.Id) && o.State == OrderState.Paid && Wallet.Instance.Coins == 545 && Inventory.Instance.Count(ItemIds.Berries) == 1,
+            "deliver: 3 berries taken, 45 coins paid");
+        Check(!om.Deliver(o.Id) && Wallet.Instance.Coins == 545 && !om.Accept(o.Id) && !om.Decline(o.Id), "a paid order can't pay again or change");
         Check(paid == 1 && boards == 1 && om.BoardOpen, "OrderPaid and BoardOpened fire once; the board is open");
         om.OrderPaid -= OnPaid;
         om.BoardOpened -= OnBoard;
         var back = Order.FromDict(o.ToDict());
-        Check(back.Id == o.Id && back.State == OrderState.Paid && back.Reward == 56 && back.Count == 3 && back.ItemId == "berries",
+        Check(back.Id == o.Id && back.State == OrderState.Paid && back.Reward == 45 && back.Count == 3 && back.ItemId == "berries",
             "Order ToDict/FromDict round-trip");
         om.QueueFree();
 
@@ -140,8 +140,8 @@ public partial class TestRunner
         await Tap(JoyButton.A);
         var o = orders.Get(OrderManager.FirstOrderId);
         Check(bubble.IsOpen && bubble.Portrait == Marlow.Portrait && bubble.Line.Contains("berries"), "gamepad A: Marlow's picture bubble asks for berries");
-        Check(bubble.Chips.Count == 3 && bubble.Chips[0].Sprite == "item_berries" && bubble.Chips[0].Label == "×3" && bubble.Chips[2].Label == "56",
-            "bubble pictures: berries ×3 → coin 56");
+        Check(bubble.Chips.Count == 3 && bubble.Chips[0].Sprite == "item_berries" && bubble.Chips[0].Label == "×3" && bubble.Chips[2].Label == "45",
+            "bubble pictures: berries ×3 → coin 45");
         Check(clock.IsHeld(PictureBubbleView.HoldReason) && player.Frozen && bubble.Buttons[0].HasFocus() || bubble.Buttons[0].IsInsideTree(),
             "talking holds the clock and freezes Kit");
         await Tap(JoyButton.B);
@@ -184,12 +184,12 @@ public partial class TestRunner
         Check(!bubble.IsOpen && o.State == OrderState.Accepted && Inventory.Instance.Count(ItemIds.Berries) == 3, "right-click = 'Not yet': nothing handed over");
         await Tap(JoyButton.A);
         bubble.PressButton(0);
-        Check(o.State == OrderState.Paid && Wallet.Instance.Coins == 556 && Inventory.Instance.Count(ItemIds.Berries) == 0 && orders.BoardOpen,
-            "'Give': berries handed over, 56 coins, the order board opens");
+        Check(o.State == OrderState.Paid && Wallet.Instance.Coins == 545 && Inventory.Instance.Count(ItemIds.Berries) == 0 && orders.BoardOpen,
+            "'Give': berries handed over, 45 coins, the order board opens");
         Check(bubble.IsOpen && bubble.Chips.Any(c => c.Sprite == "icon_order_board") && Ledger.Pages[0].Done, "thank-you bubble shows the board; ledger page done");
         bubble.PressCancel();
         await Tap(JoyButton.A);
-        Check(bubble.IsOpen && Wallet.Instance.Coins == 556, "talking again pays nothing more");
+        Check(bubble.IsOpen && Wallet.Instance.Coins == 545, "talking again pays nothing more");
         bubble.PressCancel();
         await Frames(2);
 
