@@ -127,6 +127,7 @@ public partial class TestRunner
         Check(Production.Supply().TryGetValue(ItemIds.Carrot, out var c) && c >= 3 && Production.Supply()[ItemIds.Berries] == 5
               && !Production.Supply().ContainsKey(ItemIds.Egg),
             "farm supply: carrots from the garden, 5 berry bushes; no eggs before Task 1.9's hens");
+        Check(Production.Supply().ContainsKey(ItemIds.SunSprout), "farm supply: flowers (seeds on sale at the shed)");
         PayFirstOrder(om);
         await Frames(3);
         Check(boardProp.Visible && boardProp.CanInteract, "after the berries the board stands by the shed");
@@ -134,14 +135,15 @@ public partial class TestRunner
         // Next Dawn: 3 cards.
         clock.BeginSleep(SleepReason.Bed);
         await WaitUntil(() => !clock.IsSleeping && !main.GetNode<SleepSequence>("Systems/SleepSequence").IsRunning, 600);
-        Check(om.BoardOrders.Count() == 2, "the next Dawn the board holds the carrots and a berry order");
+        Check(om.BoardOrders.Count() == 3 && om.BoardOrders.Select(o => o.ItemId).Distinct().Count() == 3,
+            "the next Dawn the board holds 3 different orders (carrots + berries + flowers)");
         player.GlobalPosition = boardProp.ApproachPoint;
         await Frames(5);
         Check(boardProp.PromptVisible, "board prompt shows when Kit is in front of it");
         await Tap(JoyButton.A);
         await Frames(2);
-        Check(view.IsOpen && view.Cards.Count == 2 && clock.IsHeld(OrderBoardView.HoldReason) && player.Frozen,
-            "gamepad A opens the board: 2 picture cards, clock held, Kit still");
+        Check(view.IsOpen && view.Cards.Count == 3 && clock.IsHeld(OrderBoardView.HoldReason) && player.Frozen,
+            "gamepad A opens the board: 3 picture cards, clock held, Kit still");
         Check(view.Cards[0].HasFocus(), "the first card has gamepad focus");
         string id = view.CardOrderIds[0];
         view.Cards[0].EmitSignal(BaseButton.SignalName.Pressed);
@@ -149,7 +151,7 @@ public partial class TestRunner
         Check(!view.IsOpen && bubble.IsOpen && bubble.Buttons[0].Text == "Yes", "picking a card asks 'Take this order?'");
         bubble.PressButton(0);
         await Frames(2);
-        Check(om.Get(id).State == OrderState.Accepted && view.IsOpen && view.Cards.Count == 2, "'Yes' accepts it and returns to the board");
+        Check(om.Get(id).State == OrderState.Accepted && view.IsOpen && view.Cards.Count == 3, "'Yes' accepts it and returns to the board");
         await Tap(JoyButton.B);
         Check(!view.IsOpen && !clock.IsHeld(OrderBoardView.HoldReason) && !player.Frozen, "gamepad B closes the board");
 
@@ -164,7 +166,7 @@ public partial class TestRunner
         Check(o.State == OrderState.Paid && Wallet.Instance.Coins == coins + o.Reward, "'Give' on the board pays the order once");
         bubble.PressCancel();
         await Frames(2);
-        Check(view.IsOpen && view.Cards.Count == 1, "the paid card leaves the board");
+        Check(view.IsOpen && view.Cards.Count == 2, "the paid card leaves the board");
         view.Close();
         await Frames(2);
 

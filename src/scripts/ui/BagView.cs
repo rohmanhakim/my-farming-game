@@ -144,7 +144,7 @@ public partial class BagView : Control
         if (Bag != null)
             foreach (var stack in Bag.Stacks)
             {
-                _grid.AddChild(MakeSlot(stack));
+                _grid.AddChild(CropCatalog.Default.BySeed(stack.Id) != null ? MakeSeedSlot(stack) : MakeSlot(stack));
                 filled++;
             }
         for (int i = filled; i < MinSlots; i++)
@@ -206,7 +206,52 @@ public partial class BagView : Control
         return slot;
     }
 
+    /// <summary>The seed packet the seed bag plants: the chosen one, else the first in the bag.</summary>
+    public string PlantingSeed
+    {
+        get
+        {
+            string chosen = ToolBelt.Instance?.SelectedSeed ?? "";
+            if (Bag == null) return "";
+            foreach (var st in Bag.Stacks) if (st.Id == chosen) return chosen;
+            foreach (var st in Bag.Stacks) if (CropCatalog.Default.BySeed(st.Id) != null) return st.Id;
+            return "";
+        }
+    }
+
+    /// <summary>A seed packet slot is a button (Task 1.8): pressing it (A / click) makes it the
+    /// packet the seed bag plants; that slot gets a gold ring.</summary>
+    private Control MakeSeedSlot(ItemStack stack)
+    {
+        var slot = MakeSlot(stack);
+        bool planting = stack.Id == PlantingSeed;
+        var btn = new Button
+        {
+            Name = "Seed_" + stack.Id, CustomMinimumSize = new Vector2(SlotSize, SlotSize), FocusMode = FocusModeEnum.All,
+            TooltipText = ItemIds.DisplayName(stack.Id), Flat = true,
+        };
+        slot.MouseFilter = MouseFilterEnum.Ignore;
+        slot.SetAnchorsPreset(LayoutPreset.FullRect);
+        if (planting)
+            slot.AddThemeStyleboxOverride("panel", MergeRing((StyleBoxFlat)slot.GetThemeStylebox("panel")));
+        btn.AddChild(slot);
+        string id = stack.Id;
+        btn.Pressed += () => { ToolBelt.Instance?.SelectSeed(id); Refresh(); GetNodeOrNull<Button>($"%Grid/Seed_{id}")?.GrabFocus(); };
+        return btn;
+    }
+
+    private static StyleBoxFlat MergeRing(StyleBoxFlat box)
+    {
+        var b = (StyleBoxFlat)box.Duplicate();
+        b.BorderColor = new Color(0.95f, 0.7f, 0.1f);
+        b.SetBorderWidthAll(5);
+        return b;
+    }
+
     /// <summary>The count badge text shown for an item (tests); null when it has no slot.</summary>
     public string BadgeFor(string id, int quality = Inventory.MinQuality) =>
-        _grid?.GetNodeOrNull<Label>($"Item_{id}_{quality}/Count")?.Text;
+        (_grid?.GetNodeOrNull<Label>($"Item_{id}_{quality}/Count") ?? _grid?.GetNodeOrNull<Label>($"Seed_{id}/Item_{id}_{quality}/Count"))?.Text;
+
+    /// <summary>The bag button for a seed packet (tests), or null.</summary>
+    public Button SeedButton(string id) => _grid?.GetNodeOrNull<Button>("Seed_" + id);
 }

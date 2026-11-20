@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene load_steps=17 format=3]
 
 [ext_resource type="Script" path="res://scripts/world/FarmLevel.cs" id="1_level"]
 [ext_resource type="Shader" path="res://shaders/placeholder_checker.gdshader" id="2_checker"]
@@ -11,6 +11,9 @@
 [ext_resource type="PackedScene" path="res://scenes/world/BerryBush.tscn" id="9_bush"]
 [ext_resource type="PackedScene" path="res://scenes/world/Ledger.tscn" id="10_ledger"]
 [ext_resource type="PackedScene" path="res://scenes/world/OrderBoard.tscn" id="11_board"]
+[ext_resource type="PackedScene" path="res://scenes/world/ShopCounter.tscn" id="12_counter"]
+[ext_resource type="PackedScene" path="res://scenes/world/Phone.tscn" id="13_phone"]
+[ext_resource type="Script" path="res://scripts/world/AnimalHouse.cs" id="14_house"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_checker"]
 shader = ExtResource("2_checker")
@@ -52,6 +55,9 @@ ZoneName = "house"
 [node name="Bed" parent="House" instance=ExtResource("7_bed")]
 position = Vector2(80, 80)
 
+[node name="Phone" parent="House" instance=ExtResource("13_phone")]
+position = Vector2(420, 60)
+
 [node name="Coop" type="Node2D" parent="."]
 position = Vector2(1792, 128)
 script = ExtResource("6_building")
@@ -61,6 +67,10 @@ ZoneName = "coop"
 FloorSprite = "floor_straw"
 RoofSprite = "roof_coop"
 
+[node name="Hens" type="Node2D" parent="Coop"]
+script = ExtResource("14_house")
+BinOffset = Vector2(212, 52)
+
 [node name="Barn" type="Node2D" parent="."]
 position = Vector2(1408, 1600)
 script = ExtResource("6_building")
@@ -69,6 +79,14 @@ ZoneName = "barn"
 FloorSprite = "floor_straw"
 RoofSprite = "roof_barn"
 WallColor = Color(0.5, 0.2, 0.16, 1)
+
+[node name="Cows" type="Node2D" parent="Barn"]
+script = ExtResource("14_house")
+Kind = "cow"
+FeedItem = "hay"
+StartingFeed = 7
+StartingNames = PackedStringArray("Maple")
+BinOffset = Vector2(56, 220)
 
 [node name="SeedShed" type="Node2D" parent="."]
 position = Vector2(1408, -1472)
@@ -80,7 +98,10 @@ RoofSprite = "roof_shed"
 WallColor = Color(0.3, 0.42, 0.28, 1)
 
 [node name="Ledger" parent="SeedShed" instance=ExtResource("10_ledger")]
-position = Vector2(96, 72)
+position = Vector2(80, 72)
+
+[node name="ShopCounter" parent="SeedShed" instance=ExtResource("12_counter")]
+position = Vector2(240, 64)
 
 [node name="Cottage" type="Node2D" parent="."]
 position = Vector2(1920, -1536)

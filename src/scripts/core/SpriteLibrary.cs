@@ -36,12 +36,14 @@ public static class SpriteLibrary
         "floor_wood", "floor_straw", "ground_path", "ground_overgrown", "gate",
         "berry_bush", "berry_bush_empty", "gate_open", "roof_shed", "roof_cottage", "icon_talk", "icon_ledger",
         "icon_check", "icon_order_board",
+        "item_flower_seeds", "item_sun_sprout", "crop_flower_seed", "crop_flower_sprout", "crop_flower_growing",
+        "crop_flower_ready", "crop_flower_yellow", "item_chicken_feed", "item_hay", "icon_closed", "icon_coop_full",
+        "icon_clock", "phone", "shop_counter", "feed_bin_grain", "feed_bin_hay", "cow",
     };
 
     /// <summary>Colour used when neither final art nor a placeholder image exists.</summary>
     private static readonly Dictionary<string, Color> FallbackColors = new()
     {
-        { "hen", new Color(0.97f, 0.95f, 0.88f) },
         { "tool_hands", new Color(0.96f, 0.78f, 0.62f) },
     };
 

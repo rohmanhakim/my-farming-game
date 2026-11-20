@@ -37,6 +37,20 @@ public partial class ToolBelt : Node
 
     public Tool Active { get; private set; } = Tool.Hands;
 
+    /// <summary>Seed packet the seed bag plants (Task 1.8: chosen in the bag). Empty = the first
+    /// seed packet in the bag.</summary>
+    public string SelectedSeed { get; set; } = "";
+
+    /// <summary>Emitted when the seed bag's packet changes.</summary>
+    [Signal] public delegate void SelectedSeedChangedEventHandler(string item);
+
+    public void SelectSeed(string item)
+    {
+        if (SelectedSeed == item) return;
+        SelectedSeed = item ?? "";
+        EmitSignal(SignalName.SelectedSeedChanged, SelectedSeed);
+    }
+
     /// <summary>Owned tools in belt order.</summary>
     public IReadOnlyList<Tool> Tools => BeltOrder.Where(_owned.Contains).ToList();
 
@@ -131,6 +145,7 @@ public partial class ToolBelt : Node
         _owned.Clear();
         foreach (var t in StartingTools)
             _owned.Add(t);
+        SelectedSeed = "";
         EmitSignal(SignalName.ToolsChanged);
         Select(Tool.Hands);
     }

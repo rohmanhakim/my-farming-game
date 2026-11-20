@@ -41,6 +41,8 @@ public partial class TestRunner : Node
         await CheckLaneInGame();
         CheckOrderRules();
         await CheckBoardInGame();
+        CheckShopRules();
+        await CheckShopInGame();
 
         GD.Print($"[TestRunner] {_checks - _failures}/{_checks} checks passed");
         GetTree().Quit(_failures == 0 ? 0 : 1);
@@ -77,7 +79,7 @@ public partial class TestRunner : Node
 
     private void CheckSprites()
     {
-        var expectedFallback = new HashSet<string> { "hen" };
+        var expectedFallback = new HashSet<string>();
         foreach (var name in SpriteLibrary.KnownNames)
         {
             var tex = SpriteLibrary.Get(name, out var source);
@@ -735,6 +737,7 @@ public partial class TestRunner : Node
         Wallet.Instance?.ResetForNewGame();
         OrderManager.Instance?.ResetForNewGame();
         World.Ledger.Reset();
+        FeedStore.Reset();
     }
 
     private async Task Tap(JoyButton b)

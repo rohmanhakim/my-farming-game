@@ -168,7 +168,10 @@ public partial class FarmGrid : Node2D, IToolTarget
         var inv = Inventory.Instance;
         if (inv == null)
             return TileAction.Nothing;
-        foreach (var stack in inv.Stacks)
+        var stacks = new List<ItemStack>(inv.Stacks);
+        string chosen = ToolBelt.Instance?.SelectedSeed ?? "";
+        stacks.Sort((a, b) => (b.Id == chosen ? 1 : 0) - (a.Id == chosen ? 1 : 0)); // chosen packet first
+        foreach (var stack in stacks)
         {
             var crop = CropCatalog.Default.BySeed(stack.Id);
             if (crop == null || !inv.Remove(stack.Id, 1, stack.Quality))

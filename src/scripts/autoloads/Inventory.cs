@@ -13,8 +13,13 @@ public static class ItemIds
     public const string Egg = "egg";
     public const string Milk = "milk";
     public const string CarrotSeeds = "carrot_seeds";
+    public const string FlowerSeeds = "flower_seeds";
+    public const string SunSprout = "sun_sprout";
+    /// <summary>Feed is never carried: it goes from the phone order into a feed bin (Task 1.8).</summary>
+    public const string ChickenFeed = "chicken_feed";
+    public const string Hay = "hay";
 
-    public static readonly string[] All = { Berries, Carrot, Egg, Milk, CarrotSeeds };
+    public static readonly string[] All = { Berries, Carrot, Egg, Milk, CarrotSeeds, FlowerSeeds, SunSprout };
 
     /// <summary>Sprite name of an item's icon (SpriteLibrary), e.g. "item_carrot".</summary>
     public static string SpriteName(string id) => "item_" + id;
@@ -27,6 +32,10 @@ public static class ItemIds
         Egg => "Egg",
         Milk => "Milk can",
         CarrotSeeds => "Carrot seeds",
+        FlowerSeeds => "Flower seeds",
+        SunSprout => "Sun Sprout",
+        ChickenFeed => "Chicken feed",
+        Hay => "Hay",
         _ => id,
     };
 }
