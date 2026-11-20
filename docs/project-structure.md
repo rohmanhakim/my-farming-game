@@ -1,7 +1,7 @@
 # Project Structure
 
 > **Status:** Proposal for team agreement — input to Phase-001 Task 1.1 ("Team agrees on project folder structure and naming conventions")
-> **Version:** 0.16
+> **Version:** 0.17
 > **Last updated:** 2026-11-21
 > **Purpose:** The repository layout, Godot folder structure, naming rules, input/autoload registries, asset pipeline, and verification commands that every development session follows when adding code or assets under `src/`. It is a *technical* contract only — it never overrides a gameplay decision.
 
@@ -87,6 +87,7 @@ src/
 │   │   ├── Marlow.tscn        # Task 1.6 ✅ — root StaticBody2D + Marlow.cs (Prop builds sprite, body, click area, prompt)
 │   │   ├── Ledger.tscn        # Task 1.6 ✅ — on the seed-shed table (inside FarmLevel/SeedShed)
 │   │   ├── BerryBush.tscn     # Task 1.6 ✅ — 5 on the lane (FarmLevel/Bushes)
+│   │   ├── OrderBoard.tscn    # Task 1.7 ✅ — the board prop at the shed (hidden until the first order is paid)
 │   │   ├── Phone.tscn         # Task 1.8 — feed orders from home
 │   │   ├── Hen.tscn, Cow.tscn # Task 1.9
 │   │   └── Ada.tscn           # Task 1.12 — solo-play NPC
@@ -98,6 +99,7 @@ src/
 │       ├── ToolBelt.tscn      # Task 1.4 — bottom-centre picture slots (built from ToolBelt), LB / RB prompts
 │       ├── Bag.tscn           # Task 1.4 — on-screen bag button + bag panel (coin readout, ≥ 8-slot grid with count badges)
 │       ├── WalletHud.tscn     # Task 1.4 — top-left coin icon + amount
+│       ├── OrderBoard.tscn    # Task 1.7 ✅ — board screen: picture cards per open order
 │       ├── PictureBubble.tscn # Task 1.6 ✅ — portrait + picture row + one line + big buttons; holds the clock ("talk")
 │       ├── PauseMenu.tscn     # Task 1.11
 │       └── DayNightOverlay.tscn  # Task 1.11
@@ -121,6 +123,7 @@ src/
 │   │   ├── Marlow.cs          # Task 1.6 — conversations from OrderManager state
 │   │   ├── Ledger.cs          # Task 1.6 — static picture pages, Ledger.Note(key, sprite, done)
 │   │   ├── BerryBush.cs       # Task 1.6 — pick → berries; regrows 2 days later
+│   │   ├── OrderBoard.cs      # Task 1.7 — Prop: opens OrderBoardView
 │   │   ├── Phone.cs           # Task 1.8
 │   │   ├── Hen.cs, Cow.cs     # Task 1.9
 │   │   └── Ada.cs             # Task 1.12
@@ -128,6 +131,7 @@ src/
 │   │   ├── ClockDialView.cs, SleepPromptView.cs, DayTransitionView.cs   # Task 1.3 (views; state lives in GameClock)
 │   │   ├── ButtonPrompt.cs    # Task 1.3 — per-action button glyph: key cap, or Xbox / PlayStation / Nintendo face button
 │   │   ├── ToolBeltView.cs, BagView.cs, WalletView.cs   # Task 1.4 (views + their inputs; state lives in the autoloads)
+│   │   ├── OrderBoardView.cs  # Task 1.7 — cards; accept / give / cancel through the bubble
 │   │   ├── PictureBubbleView.cs   # Task 1.6 — Show(portrait, line, chips, buttons); B/right-click = cancel button
 │   │   ├── PauseMenuView.cs   # Task 1.11
 │   │   └── DayNightView.cs    # Task 1.11
@@ -143,7 +147,8 @@ src/
 │       ├── IToolTarget.cs     # Task 1.5 — ground Kit uses the active tool on (group `tool_targets`)
 │       ├── CropDefinition.cs, CropCatalog.cs   # Task 1.5 — crop data resources loaded from data/crops.tres
 │       ├── PriceTable.cs      # Task 1.6 — coins per item id from data/prices.json; OrderPremium 1.25
-│       └── Order.cs           # Task 1.6 — order data (offered → accepted → paid), save shape
+│       ├── Order.cs           # Task 1.6 — order data (offered → accepted → paid), save shape
+│       └── Production.cs      # Task 1.7 — what the farm can produce now (supply registry for the order generator)
 │
 ├── assets/                    # ALL game art/audio/fonts, imported by Godot
 │   ├── art/
@@ -265,7 +270,7 @@ Quick lookup so a session knows where its artifact belongs. Scope still comes fr
 | 1.4 Tool Belt, Bag & Wallet | `scripts/autoloads/ToolBelt.cs` + `Inventory.cs` + `Wallet.cs`, `scenes/ui/{ToolBelt,Bag,WalletHud}.tscn`, `scripts/ui/{ToolBeltView,BagView,WalletView}.cs`, `debug/BagDebugKeys.cs`, actions `cycle_tool_*`, `open_inventory`, `ui_accept`/`ui_cancel` pad buttons ✅ built |
 | 1.5 Farm Level, Clearing, Planting & Growth | `scenes/world/FarmLevel.tscn`, `scripts/world/{FarmLevel,FarmGround,FarmGrid,CropTile,Building,IndoorZone}.cs`, `scripts/core/{IToolTarget,CropDefinition,CropCatalog}.cs`, `data/crops.tres`, `tools/make_placeholders.py`; Bed moved into the house; no separate `FarmGrid.tscn`/`IndoorZone.tscn` (FarmGrid is a node in FarmLevel, Building creates its IndoorZone) ✅ built |
 | 1.6 Marlow & First Order | `scenes/world/{Marlow,Ledger,BerryBush}.tscn`, `scripts/world/{Prop,Marlow,Ledger,BerryBush}.cs`, `scenes/ui/PictureBubble.tscn` + `scripts/ui/PictureBubbleView.cs`, `scripts/autoloads/OrderManager.cs` (moved up from 1.7), `scripts/core/{Order,PriceTable}.cs`, `data/prices.json` + `tools/make_prices.py`; lane, seed shed and cottage added to `FarmLevel` ✅ built |
-| 1.7 Order Board | `scripts/autoloads/OrderManager.cs`, `scenes/ui/OrderBoard.tscn`, `scripts/ui/OrderBoardView.cs` |
+| 1.7 Order Board | `scenes/world/OrderBoard.tscn` + `scripts/world/OrderBoard.cs`, `scenes/ui/OrderBoard.tscn` + `scripts/ui/OrderBoardView.cs`, `scripts/core/Production.cs`; generator + repeats in `OrderManager` ✅ built |
 | 1.8 Seed Shop & Phone | `scenes/ui/Shop.tscn`, `scripts/ui/ShopView.cs`, `scripts/core/PriceTable.cs` (reads `docs/data/economy.csv` → `data/prices.tres`), `scenes/world/Phone.tscn` + `scripts/world/Phone.cs` (feed orders → feed bins at Dawn) |
 | 1.9 Hens, Cow & Loss Rule | `scenes/world/Hen.tscn` + `Cow.tscn`, `scripts/world/{Hen,Cow}.cs` (coop and barn are already in `FarmLevel`), `scenes/ui/LossCard.tscn` |
 | 1.10 Save / Load | `scripts/autoloads/SaveGame.cs` (versioned, section registration) |
@@ -480,3 +485,4 @@ Restore after cloning: `npx skills experimental_install` · Update: `npx skills 
 - **0.14 — 2026-11-20:** Synced with Phase-001 v0.28 (Tasks 1.5–1.13 checked against the docs): §4 tree drops the stale v0.9 names — `GardenBed` (now `FarmGrid`, Task 1.5), `GardenShelf`, `Butterfly` (the Butterfly Garden is an optional Phase-004 request), and `GrowthTiming.cs`/`growth_timing.tres` (play-time growth presets, retired by day-based growth) — and adds `FarmLevel`, `IndoorZone`, `BerryBush`, `Phone`, `Hen`/`Cow`, `Ada`, `crops.tres`, `prices.tres`. Pause menu and `pause` action labelled Task 1.11 (was 1.10). §5 rows for 1.5, 1.8, 1.9 and 1.12 updated; naming examples use `FarmGrid`/`crops.tres`.
 - **0.15 — 2026-11-21:** Task 1.5 built: tree and file map updated (FarmLevel, FarmGround, FarmGrid, CropTile, Building, IndoorZone, IToolTarget, CropDefinition/CropCatalog, `data/crops.tres`, `tools/make_placeholders.py`); PlaceholderLevel removed; no separate FarmGrid/IndoorZone scenes; §7 note on tool use with `interact`.
 - **0.16 — 2026-11-21:** Task 1.6 built: Prop base, Marlow, BerryBush, Ledger, PictureBubble, `OrderManager` autoload landed in 1.6 (board/generator still 1.7), `Order` + `PriceTable`, `data/prices.json` generated by `tools/make_prices.py` instead of `prices.tres`.
+- **0.17 — 2026-11-21:** Task 1.7 built: OrderBoard prop + board screen, `Production` supply registry; file map updated.

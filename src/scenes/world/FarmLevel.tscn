@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=13 format=3]
 
 [ext_resource type="Script" path="res://scripts/world/FarmLevel.cs" id="1_level"]
 [ext_resource type="Shader" path="res://shaders/placeholder_checker.gdshader" id="2_checker"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" path="res://scenes/world/Marlow.tscn" id="8_marlow"]
 [ext_resource type="PackedScene" path="res://scenes/world/BerryBush.tscn" id="9_bush"]
 [ext_resource type="PackedScene" path="res://scenes/world/Ledger.tscn" id="10_ledger"]
+[ext_resource type="PackedScene" path="res://scenes/world/OrderBoard.tscn" id="11_board"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_checker"]
 shader = ExtResource("2_checker")
@@ -91,6 +92,9 @@ RoofSprite = "roof_cottage"
 
 [node name="Marlow" parent="." instance=ExtResource("8_marlow")]
 position = Vector2(1712, -1168)
+
+[node name="OrderBoard" parent="." instance=ExtResource("11_board")]
+position = Vector2(1488, -1168)
 
 [node name="Bushes" type="Node2D" parent="."]
 

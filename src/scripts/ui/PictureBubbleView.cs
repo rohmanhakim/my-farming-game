@@ -159,10 +159,16 @@ public partial class PictureBubbleView : Control
         _panelRoot.Visible = true;
         _openedAt = Time.GetTicksMsec();
         GameClock.Instance?.Hold(HoldReason);
-        _buttons[0].CallDeferred(Control.MethodName.GrabFocus);
+        CallDeferred(MethodName.FocusFirst);
         if (!wasOpen) EmitSignal(SignalName.OpenChanged, true);
         EmitSignal(SignalName.ReadAloudRequested, Line);
         return true;
+    }
+
+    private void FocusFirst()
+    {
+        if (IsOpen && _buttons.Count > 0 && _buttons[0].IsInsideTree())
+            _buttons[0].GrabFocus();
     }
 
     private static Control MakeChip(BubbleChip chip)

@@ -87,7 +87,7 @@ public partial class BagView : Control
 
     /// <summary>True when nothing else is in charge of the screen (sleep question, night, pause).</summary>
     public bool CanOpen => !IsOpen && !GetTree().Paused &&
-                           (Clock == null || (!Clock.IsAsking && !Clock.IsSleeping));
+                           (Clock == null || Clock.IsPlayable);
 
     public void Open()
     {

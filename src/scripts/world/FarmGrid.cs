@@ -71,13 +71,27 @@ public partial class FarmGrid : Node2D, IToolTarget
         {
             _clock = GameClock.Instance;
             _clock.DayEnded += OnDayEnded;
+            Production.Register(this, SupplyForOrders);
         }
+    }
+
+    /// <summary>Carrots the garden can supply for an order: one per bed that is clear of weeds
+    /// (at least the 3 starting beds), Task 1.7.</summary>
+    private IEnumerable<(string, int)> SupplyForOrders()
+    {
+        int beds = 0;
+        foreach (var (_, t) in AllTiles())
+            if (t.Soil != Soil.Weeds) beds++;
+        foreach (var r in CropCatalog.Default.Crops)
+            if (r is CropDefinition c && Inventory.Instance != null)
+                yield return (c.HarvestItem, beds);
     }
 
     public override void _ExitTree()
     {
         if (_clock != null && IsInstanceValid(_clock))
             _clock.DayEnded -= OnDayEnded;
+        Production.Unregister(this);
     }
 
     private void OnDayEnded(int day) => EndDay();

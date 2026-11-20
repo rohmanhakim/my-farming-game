@@ -1,5 +1,6 @@
 using Godot;
 using MyFarmingGame.Autoloads;
+using MyFarmingGame.Core;
 
 namespace MyFarmingGame.World;
 
@@ -37,12 +38,14 @@ public partial class BerryBush : Prop
         AddToGroup(Group);
         _clock = GameClock.Instance;
         if (_clock != null) _clock.DayStarted += OnDayStarted;
+        Production.Register(this, () => new[] { (ItemIds.Berries, 1) });
         Refresh();
     }
 
     public override void _ExitTree()
     {
         if (_clock != null && IsInstanceValid(_clock)) _clock.DayStarted -= OnDayStarted;
+        Production.Unregister(this);
     }
 
     public override void Interact(Node2D player)

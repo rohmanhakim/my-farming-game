@@ -23,6 +23,10 @@ public sealed class Order
     public bool Repeat { get; set; }
     /// <summary>Day it was offered (Task 1.7 board refresh).</summary>
     public int DayOffered { get; set; } = 1;
+    /// <summary>Repeat orders: how often delivered (it grows every second time).</summary>
+    public int TimesDelivered { get; set; }
+    /// <summary>Repeat orders: the size it started at.</summary>
+    public int BaseCount { get; set; }
 
     public static Order Make(string id, string giver, string item, int count, int dayOffered = 1) => new()
     {
@@ -34,6 +38,7 @@ public sealed class Order
     {
         { "id", Id }, { "giver", Giver }, { "item", ItemId }, { "count", Count }, { "reward", Reward },
         { "state", State.ToString() }, { "repeat", Repeat }, { "dayOffered", DayOffered },
+        { "timesDelivered", TimesDelivered }, { "baseCount", BaseCount },
     };
 
     public static Order FromDict(Godot.Collections.Dictionary d)
@@ -47,6 +52,8 @@ public sealed class Order
             Reward = d.TryGetValue("reward", out var r) ? r.AsInt32() : 0,
             Repeat = d.TryGetValue("repeat", out var rp) && rp.AsBool(),
             DayOffered = d.TryGetValue("dayOffered", out var day) ? day.AsInt32() : 1,
+            TimesDelivered = d.TryGetValue("timesDelivered", out var td) ? td.AsInt32() : 0,
+            BaseCount = d.TryGetValue("baseCount", out var bc) ? bc.AsInt32() : 0,
         };
         if (d.TryGetValue("state", out var s) && System.Enum.TryParse<OrderState>(s.AsString(), out var st))
             o.State = st;

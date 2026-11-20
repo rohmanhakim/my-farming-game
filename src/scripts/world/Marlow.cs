@@ -42,10 +42,13 @@ public partial class Marlow : Prop
         if (ready != null) { AskToDeliver(bubble, ready); return; }
         var waiting = open.FirstOrDefault(o => o.State == OrderState.Accepted);
         if (waiting != null) { Restate(bubble, waiting); return; }
-        var offer = open.FirstOrDefault(o => o.State == OrderState.Offered);
+        // He only asks in person for his scripted orders; daily orders wait on the board (Task 1.7).
+        var offer = open.FirstOrDefault(o => o.State == OrderState.Offered && IsScripted(o));
         if (offer != null) { Offer(bubble, offer); return; }
         bubble.Show(Portrait, Lines.Idle, null, new[] { BubbleButton.Close() });
     }
+
+    public static bool IsScripted(Order o) => o.Id == OrderManager.FirstOrderId || o.Id == OrderManager.SecondOrderId;
 
     /// <summary>"item × count → coins" pictures for an order.</summary>
     public static List<BubbleChip> OrderChips(Order o) => new()
@@ -94,10 +97,13 @@ public partial class Marlow : Prop
         if (!orders.Deliver(o.Id)) return;
         Ledger.Note(o.Id, ItemIds.SpriteName(o.ItemId), true);
         var chips = new List<BubbleChip> { new("coin", "+" + o.Reward) };
+        var carrots = orders.Get(OrderManager.SecondOrderId);
         string line = Lines.Thanks(o);
         if (firstBoard && orders.BoardOpen)
         {
             chips.Add(new BubbleChip("icon_order_board", ""));
+            if (carrots != null)
+                chips.Add(new BubbleChip(ItemIds.SpriteName(carrots.ItemId), "×" + carrots.Count));
             line = Lines.BoardOpens;
         }
         PictureBubbleView.Find(GetTree())?.Show(Portrait, line, chips, new[] { BubbleButton.Close() });
@@ -107,7 +113,7 @@ public partial class Marlow : Prop
     public static class Lines
     {
         public const string Idle = "Ah, Kit. Lovely day for growing things.";
-        public const string BoardOpens = "Your folk sold me berries every summer. I'll pin orders on the board for you now.";
+        public const string BoardOpens = "Your folk sold me berries every summer. Here's my board. Could you grow me 5 carrots next?";
 
         public static string Ask(Order o) => o.ItemId switch
         {

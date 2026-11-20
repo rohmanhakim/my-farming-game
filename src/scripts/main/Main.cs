@@ -25,6 +25,9 @@ public partial class Main : Node
         _bubble = GetNodeOrNull<UI.PictureBubbleView>("HUD/UI/PictureBubble");
         if (_bubble != null)
             _bubble.OpenChanged += OnBagOpenChanged;
+        _board = GetNodeOrNull<UI.OrderBoardView>("HUD/UI/OrderBoard");
+        if (_board != null)
+            _board.OpenChanged += OnBagOpenChanged;
         if (OS.IsDebugBuild())
         {
             GetTree().CreateTimer(1.0).Timeout += PrintStartupState;
@@ -35,6 +38,7 @@ public partial class Main : Node
 
     private UI.BagView _bag;
     private UI.PictureBubbleView _bubble;
+    private UI.OrderBoardView _board;
 
     public override void _ExitTree()
     {
@@ -42,11 +46,16 @@ public partial class Main : Node
             _bag.OpenChanged -= OnBagOpenChanged;
         if (_bubble != null && IsInstanceValid(_bubble))
             _bubble.OpenChanged -= OnBagOpenChanged;
+        if (_board != null && IsInstanceValid(_board))
+            _board.OpenChanged -= OnBagOpenChanged;
     }
 
     /// <summary>Kit stands still while the bag or a picture bubble is open (both hold the clock).</summary>
     private void OnBagOpenChanged(bool open) =>
-        GetNode<Player.PlayerController>("World/Entities/Player").Frozen = open;
+        GetNode<Player.PlayerController>("World/Entities/Player").Frozen = AnyMenuOpen;
+
+    /// <summary>True while the bag, a picture bubble or the order board is on screen.</summary>
+    private bool AnyMenuOpen => (_bag?.IsOpen ?? false) || (_bubble?.IsOpen ?? false) || (_board?.IsOpen ?? false);
 
     /// <summary>Debug builds only: one line in Output to diagnose "blank screen" reports.</summary>
     private void PrintStartupState()

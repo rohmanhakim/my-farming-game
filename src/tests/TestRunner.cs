@@ -39,6 +39,8 @@ public partial class TestRunner : Node
         await CheckFarmInGame();
         CheckLaneRules();
         await CheckLaneInGame();
+        CheckOrderRules();
+        await CheckBoardInGame();
 
         GD.Print($"[TestRunner] {_checks - _failures}/{_checks} checks passed");
         GetTree().Quit(_failures == 0 ? 0 : 1);
