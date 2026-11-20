@@ -1,8 +1,8 @@
 # Project Structure
 
 > **Status:** Proposal for team agreement — input to Phase-001 Task 1.1 ("Team agrees on project folder structure and naming conventions")
-> **Version:** 0.3
-> **Last updated:** 2026-11-19
+> **Version:** 0.4
+> **Last updated:** 2026-11-20
 > **Purpose:** The repository layout, Godot folder structure, naming rules, input/autoload registries, asset pipeline, and verification commands that every development session follows when adding code or assets under `src/`. It is a *technical* contract only — it never overrides a gameplay decision.
 
 ---
@@ -134,6 +134,8 @@ src/
 │
 ├── data/                      # data files loaded at runtime: .tres / .json
 │   └── growth_timing.tres     # Fast / Medium / Slow presets (Task 1.4)
+├── shaders/                   # .gdshader files — snake_case.gdshader (§6)
+├── debug/                     # debug-only scenes/scripts (overlay, inspectors) — excluded from export
 ├── tests/                     # headless, repeatable, leave no state behind (§11)
 │   ├── TestRunner.tscn
 │   └── TestRunner.cs
@@ -154,6 +156,66 @@ src/
 7. **Input is declared in the InputMap** (§7), never as raw keycodes/mouse buttons in script.
 8. **Save data is written only by `SaveGame.cs`** to `user://savegame.json` (one slot, auto-save, human-readable JSON). No other script touches `user://`.
 9. **New folder or new autoload = update this document in the same session.**
+10. **Scene architecture is fixed:** `Main.tscn`'s tree, layer numbers, process modes, and level swapping follow the standard below. A new layer or a process-mode exception = update that table in the same session.
+
+### Scene architecture standard (Main ↔ Level) — agreed 2026-11-20
+
+Every task that creates or touches `Main.tscn` or a level scene follows this layout. `Main` is the single coordinator: nothing else reparents the player, camera, or UI layers.
+
+```text
+Main (Node)                            process_mode = Always
+├── Systems (Node)                     # in-tree systems that are not autoloads (§8)
+├── World (Node2D)                     process_mode = Pausable
+│   ├── Level (Node)                   # exactly one level instance lives here (load_level, below)
+│   ├── Entities (Node2D)              # Player, Camera2D, hens, NPCs — survive level swaps
+│   └── Effects (Node2D)               # world ambience/VFX — not owned by a level
+├── Audio (Node)                       # music + SFX players; buses Master / Music / SFX
+├── HUD (CanvasLayer, layer 10)        process_mode = Pausable
+├── Pause (CanvasLayer, layer 20)      process_mode = WhenPaused
+├── Transition (CanvasLayer, layer 30) process_mode = Always
+└── Debug (CanvasLayer, layer 40)      process_mode = Always
+```
+
+**Ownership rules**
+
+1. **Main owns** the layer stack, the player, the camera, `Audio`, and scene transitions.
+2. **A level scene owns only level-local data:** geometry (`TileMapLayer`s), placed interactables, environment, and `Marker2D`s (`PlayerSpawn`, `CameraLimits` — PascalCase). A level **never** contains the player, camera, or UI — it exposes markers instead.
+3. **World is a plain `Node2D`, not a CanvasLayer.** CanvasLayers are reserved for UI stacking. Layer numbers come from `scripts/core/UILayers.cs` — never hand-type a `layer = N` anywhere else.
+4. **UI roots:** `UI.tscn` instances into `HUD`; `PauseMenu.tscn` into `Pause`; fades/wipes into `Transition`; debug tooling into `Debug` (debug-only files live in `src/debug/`).
+
+**Layer constants** (`scripts/core/UILayers.cs`)
+
+| Constant | Value | Contents |
+|---|---|---|
+| `Hud` | 10 | clock dial, tool belt, bag, picture bubbles, nudges |
+| `PauseMenu` | 20 | pause menu |
+| `Transition` | 30 | day fades, scene wipes |
+| `Debug` | 40 | debug overlays |
+
+World draws at the default layer 0 as a plain `Node2D`.
+
+**Process modes — set these explicitly**
+
+A node's default is `Inherit`, and **autoloads inherit from the root (i.e. `Always`)** — so without explicit settings, `GetTree().Paused = true` freezes nothing that matters and the clock keeps ticking during pause. Set the mode in the node's `_Ready()` (`ProcessMode = ProcessMode.Pausable;`) or in the scene file:
+
+| Node / autoload | Process mode | Why |
+|---|---|---|
+| `Main` | Always | coordinator survives pause |
+| `World` (→ Level, Entities, Effects) | Pausable | the world freezes on pause |
+| `HUD` | Pausable | clock/HUD freeze with the world |
+| `Pause` | WhenPaused | only runs while paused |
+| `Transition`, `Debug`, `Audio` | Always | fades and music never break |
+| Autoloads `GameClock`, `OrderManager`, `Onboarding` | Pausable | day-driven logic must stop with the game |
+| Autoloads `ToolBelt`, `Inventory`, `Wallet` | Pausable (state is event-driven; belt-and-braces) | matters only if `_Process` is ever used |
+| Autoloads `SaveGame`, `EventBus` | Always | saving and event routing must work during pause/transitions |
+
+**`load_level` contract** — implemented once in `Main`; the only way levels change:
+
+1. Defer the swap (`CallDeferred`) — never free or reparent inside a physics/input callback.
+2. `queue_free()` the current child of `World/Level` **only** — player, camera, entities, audio, and UI stay.
+3. Instantiate the new level scene and add it under `World/Level`.
+4. Read the level's `PlayerSpawn` marker → move the player; apply `CameraLimits` to the shared `Camera2D`.
+5. Emit `LevelChanged(newLevelName)` so UI/save code reacts. Outside code calls `load_level` or listens for the signal — it never reaches into `Main` directly.
 
 ---
 
@@ -192,6 +254,7 @@ Quick lookup so a session knows where its artifact belongs. Scope still comes fr
 | Signals / C# events | past tense | `[Signal] delegate void FlowerHarvestedEventHandler(...)` |
 | Exported properties | `[Export] public` + descriptive noun | `[Export] public float StageSeconds` |
 | Resource files (`.tres`) | `snake_case.tres` | `growth_timing.tres` |
+| Shader files | `snake_case.gdshader` | `water_shimmer.gdshader` |
 | Art/audio files | `snake_case.<ext>`, placeholder prefix `ph_` (§9) | `ph_watering_can.png` |
 | Save file | fixed path | `user://savegame.json` |
 
@@ -231,7 +294,7 @@ Rules: D-pad stays reserved for movement (`controls.md` §2); no action may requ
 | `Onboarding` | `scripts/autoloads/Onboarding.cs` | Task 1.12 | guided start + one-time nudges | never blocks play |
 | `EventBus` *(proposed)* | `scripts/autoloads/EventBus.cs` | when first needed | decoupled game events | keep tiny |
 
-Adding an autoload is a structural decision that must be recorded here plus in the task's *Deviations* note. Do not create autoloads for convenience.
+Adding an autoload is a structural decision that must be recorded here plus in the task's *Deviations* note. Do not create autoloads for convenience. Each autoload's **process mode** is fixed by the §4 process-mode table — set it in the same session the autoload lands.
 
 ---
 
@@ -357,3 +420,4 @@ Restore after cloning: `npx skills experimental_install` · Update: `npx skills 
 - **0.1 — 2026-11-18:** Initial structure plan: repository and `src/` layout, task→file map for Phase-001, naming conventions, InputMap and autoload registries, placeholder/licence asset pipeline, version-control rules, intended headless verification commands, the 17 installed Godot/game-dev skills with when-to-load guidance, session checklist, and five open decisions/blockers (missing Godot binary, missing `.csproj`, spaced assembly name, `*.import` conflict, mobile renderer preset).
 - **0.2 — 2026-11-19:** Owner decisions applied (PC only): §14 items 3–5 **resolved** — assembly renamed `MyFarmingGame`, `.import` sidecars committed with only `.godot/` ignored, renderer switched to Compatibility. §2, §4, §10, §11 updated to match; `android/` ignore and the `grown_up_menu` input action removed; art guardrail wording updated. Flagged that `.agents/skills/` is committed despite being described as gitignored.
 - **0.3 — 2026-11-19:** Phase-001 re-scoped to a vertical slice: §5 task→file map rebuilt for the 13 new tasks; §8 autoload registry updated (GameClock first, ToolBelt/Inventory/Wallet, OrderManager, versioned SaveGame, Onboarding; TaskManager removed). Note: §4's scene/script tree still lists some Phase-001 v0.9 file names (GardenBed, GardenShelf, Butterfly) — treat §5 as authoritative until Task 1.1 settles the tree.
+- **0.4 — 2026-11-20:** **Scene-architecture standard agreed (owner decision).** A feature-first `source/{core,data,gameplay,levels,shaders,ui,debug}` proposal was reviewed and **rejected in favour of keeping the type-first `src/` layout**; only its new folders were absorbed. New §4 subsections: `Main ↔ Level` ownership tree (Systems / World{Level, Entities, Effects} / Audio + HUD 10 / Pause 20 / Transition 30 / Debug 40 CanvasLayers), named layer constants `scripts/core/UILayers.cs`, an explicit **process-mode table including autoloads** (records the pause gotcha: autoloads default to `Always` and would keep the clock ticking while paused), and the `load_level` contract (defer → free level only → instance → spawn from marker → `LevelChanged`). Added `src/shaders/` + `src/debug/` to the §4 tree, structural rule 10, a §6 naming row for `.gdshader`, and a §8 pointer to the process-mode table. `aspect="expand"` deliberately unchanged.

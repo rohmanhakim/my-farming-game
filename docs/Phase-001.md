@@ -1,8 +1,8 @@
 # Phase-001 — First Playable (Vertical Slice)
 
 > **Status:** Planning draft  
-> **Version:** 0.14  
-> **Last updated:** 2026-11-19  
+> **Version:** 0.15  
+> **Last updated:** 2026-11-20  
 > **Milestone:** 1 — First playable  
 > **Purpose:** Break Milestone 1 down into session tasks. Each task produces one scoped, playtested artifact that can be created and validated in a single session with AI assistance.
 
@@ -40,12 +40,14 @@ Each task includes **Team Preparation**, **Tests** (Software / Human), and a **N
 - `.gitignore`: ignore **only** `.godot/`; **commit** `*.import` sidecars (root `.gitignore` already does this)
 - Verify — do not change — the 2026-11-19 settings: renderer **Compatibility** (`gl_compatibility`, no `Mobile` tag) and assembly **`MyFarmingGame`**
 - Create root scenes: `Main.tscn`, `Player.tscn`, `UI.tscn`
+- Build `Main.tscn` to the project-structure.md §4 **scene-architecture standard**: `Systems` / `World{Level, Entities, Effects}` / `Audio` + HUD(10) / Pause(20) / Transition(30) / Debug(40) CanvasLayers, layer constants in `scripts/core/UILayers.cs`, and explicit process modes (autoloads set theirs when they land); create empty `src/shaders/` + `src/debug/` folders
 - Placeholder art (colored rectangles) for player, NPC, beds, crops, hen, coop, tools
 - Confirm the project runs and displays a scene
 
 **Acceptance criteria:**
 - Godot project opens without errors
 - `Main.tscn` runs and shows a colored background with a placeholder player sprite
+- `Main.tscn` tree, CanvasLayer numbers, and process modes match project-structure.md §4
 - `git status` shows no `.godot/` files; `*.import` sidecars are tracked
 - Renderer is Compatibility; `dotnet build src/MyFarmingGame.csproj` succeeds
 
@@ -520,3 +522,4 @@ Phase-002 (planned — docs/PHASE.md §3): market stall and shipping box with se
 - **0.12 — 2026-11-19:** Game starts with **5 hens and 1 cow** plus ≈ 7 days of feed (owner decision): Task 1.8 sells seeds, feed, and replacement hens; Task 1.9 covers hens and the cow (eggs, milk); exit criteria updated.
 - **0.13 — 2026-11-19:** Task 1.8 adds ordering feed by phone from home (18:00 cut-off, Dawn delivery into feed bins).
 - **0.14 — 2026-11-19:** Task 1.3 uses the decided clock (≈ 2 min 15 s per step, 15-minute day) and 30-day seasons.
+- **0.15 — 2026-11-20:** Task 1.1 synced with project-structure.md v0.4 (scene-architecture standard agreed by the owner): `Main.tscn` must be built to the §4 layer/process-mode tree (HUD 10 / Pause 20 / Transition 30 / Debug 40, `UILayers` constants, explicit process modes incl. autoloads), `src/shaders/` + `src/debug/` created; new acceptance criterion added. No other task changed.

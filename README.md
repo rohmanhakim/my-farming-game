@@ -3,7 +3,7 @@
 > **Working title:** Fields & Sunshine (chosen 2026-11-19; trademark check pending)
 > **Status:** 🟡 Design draft (direction reset 2026-11-19) · 🟡 Godot project initialised in `src/` (4.7, C#, Compatibility renderer, assembly `MyFarmingGame`) — no gameplay code yet
 > **Design version:** GDD v0.22 · World v0.12 (both 2026-11-19)
-> **Last README update:** 2026-11-19 (🔄 owner picks: one mode, ages 6+, day-based growth, land owned but overgrown, first order as the opening, Phase-001 vertical slice · 🆕 `docs/economy.md` + price sheet, `docs/onboarding.md`)
+> **Last README update:** 2026-11-20 (📐 session standard: scene architecture & process modes agreed → `project-structure.md` v0.4; folder layout unchanged)
 
 ![](docs/assets/game-screenshoot-small.jpeg)
 
@@ -132,7 +132,7 @@ Full plan: [`docs/PHASE.md`](./docs/PHASE.md).
 | [Onboarding (`docs/onboarding.md`)](./docs/onboarding.md) | 🆕 The ≈ 5-minute guided start and Day 1–7 nudges. |
 | [Roadmap (`docs/PHASE.md`)](./docs/PHASE.md) | Phases from prototype to release; guardrails. |
 | [Phase-001 (`docs/Phase-001.md`)](./docs/Phase-001.md) | Current phase task list. |
-| [Project Structure (`docs/project-structure.md`)](./docs/project-structure.md) | Technical contract: folders, naming, InputMap/autoload registries, version control, verification commands. |
+| [Project Structure (`docs/project-structure.md`)](./docs/project-structure.md) | Technical contract: folders, scene architecture (Main/Level ownership, layers, process modes), naming, InputMap/autoload registries, version control, verification commands. |
 
 ### How the docs fit together
 
