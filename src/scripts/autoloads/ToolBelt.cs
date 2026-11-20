@@ -139,6 +139,17 @@ public partial class ToolBelt : Node
             Select(Tool.Hands);
     }
 
+    /// <summary>Save/load (Task 1.10): owned tools, the active one and the seed packet.</summary>
+    public void Restore(IEnumerable<Tool> owned, Tool active, string seed)
+    {
+        _owned.Clear();
+        _owned.Add(Tool.Hands);
+        foreach (var t in owned) _owned.Add(t);
+        SelectedSeed = seed ?? "";
+        EmitSignal(SignalName.ToolsChanged);
+        if (!Select(active)) Select(Tool.Hands);
+    }
+
     /// <summary>New game: the starting tools, hands active.</summary>
     public void ResetForNewGame()
     {

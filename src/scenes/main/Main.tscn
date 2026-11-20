@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://scripts/main/Main.cs" id="1_main"]
 [ext_resource type="PackedScene" path="res://scenes/world/FarmLevel.tscn" id="2_level"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://scripts/main/CameraFollow.cs" id="5_camera"]
 [ext_resource type="Script" path="res://scripts/main/SleepSequence.cs" id="6_sleep"]
 [ext_resource type="PackedScene" path="res://scenes/ui/DayTransition.tscn" id="7_daytrans"]
+[ext_resource type="Script" path="res://scripts/main/SaveBinder.cs" id="8_save"]
 
 [node name="Main" type="Node"]
 process_mode = 3
@@ -19,6 +20,13 @@ script = ExtResource("6_sleep")
 PlayerPath = NodePath("../../World/Entities/Player")
 CameraPath = NodePath("../../World/Entities/Camera2D")
 TransitionPath = NodePath("../../Transition/DayTransition")
+
+[node name="SaveBinder" type="Node" parent="Systems"]
+script = ExtResource("8_save")
+PlayerPath = NodePath("../../World/Entities/Player")
+CameraPath = NodePath("../../World/Entities/Camera2D")
+LevelPath = NodePath("../../World/Level")
+ShopPath = NodePath("../../HUD/UI/Shop")
 
 [node name="World" type="Node2D" parent="."]
 process_mode = 1

@@ -38,6 +38,8 @@ public partial class TestRunner : Node
 
     private async Task RunAll()
     {
+        // Tests never read or write the player's real save (Task 1.10).
+        if (SaveGame.Instance != null) SaveGame.Instance.Enabled = false;
         CheckProjectSettings();
         CheckInputMap();
         CheckSprites();
@@ -62,6 +64,7 @@ public partial class TestRunner : Node
         await CheckShopInGame();
         CheckAnimalRules();
         await CheckAnimalsInGame();
+        await CheckSaveLoad();
     }
 
     private void Check(bool ok, string what)
@@ -196,6 +199,9 @@ public partial class TestRunner : Node
     {
         for (int i = 0; i < n; i++)
             await ToSignal(GetTree(), SceneTree.SignalName.PhysicsFrame);
+        // ...and one rendered frame, so _Process and queued input have run too (a busy machine can
+        // run several physics frames per rendered frame — found in Task 1.10).
+        await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
     }
 
     /// <summary>Applies <paramref name="press"/>, waits, releases, returns the displacement.</summary>
@@ -759,9 +765,19 @@ public partial class TestRunner : Node
     private async Task Tap(JoyButton b)
     {
         Pad(b, true);
-        await Frames(1);
+        await IdleFrames(2);
         Pad(b, false);
-        await Frames(2);
+        await IdleFrames(2);
+        await Frames(1);
+    }
+
+    /// <summary>Waits for rendered (idle) frames. Input events are flushed once per idle frame, so
+    /// waiting on physics frames alone can miss them when the machine is busy (several physics
+    /// frames per idle frame) — found in Task 1.10.</summary>
+    private async Task IdleFrames(int n)
+    {
+        for (int i = 0; i < n; i++)
+            await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
     }
 
     private async Task CheckBeltBagWalletInGame()

@@ -22,6 +22,7 @@ ToolBelt="*res://scripts/autoloads/ToolBelt.cs"
 Inventory="*res://scripts/autoloads/Inventory.cs"
 Wallet="*res://scripts/autoloads/Wallet.cs"
 OrderManager="*res://scripts/autoloads/OrderManager.cs"
+SaveGame="*res://scripts/autoloads/SaveGame.cs"
 
 [display]
 

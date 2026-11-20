@@ -6,7 +6,7 @@ namespace MyFarmingGame;
 /// <summary>
 /// Root coordinator (project-structure.md §4). Owns the layer stack, player, camera (follows the
 /// player from Task 1.2), the night's sleep sequence (Systems/SleepSequence, Task 1.3), freezing Kit
-/// while the bag is open (Task 1.4), audio and,
+/// while the bag is open (Task 1.4), loading the save at start (Task 1.10, Systems/SaveBinder), audio and,
 /// from a later task, level swapping (load_level contract). Process modes are set in Main.tscn.
 /// </summary>
 public partial class Main : Node
@@ -19,6 +19,8 @@ public partial class Main : Node
         GetNode<CanvasLayer>("Debug").Layer = UILayers.Debug;
         PlacePlayerAtSpawn();
         GetNode<CameraFollow>("World/Entities/Camera2D").SnapToTarget();
+        // Task 1.10: restore the save (if any) now that the level and Kit are in place.
+        GetNodeOrNull<SaveBinder>("Systems/SaveBinder")?.LoadAtStart();
         _bag = GetNodeOrNull<UI.BagView>("HUD/UI/Bag");
         if (_bag != null)
             _bag.OpenChanged += OnBagOpenChanged;

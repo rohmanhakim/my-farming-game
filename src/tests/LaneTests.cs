@@ -98,9 +98,10 @@ public partial class TestRunner
     private async Task Press(Key k)
     {
         Key(k, true);
-        await Frames(1);
+        await IdleFrames(2);
         Key(k, false);
-        await Frames(2);
+        await IdleFrames(2);
+        await Frames(1);
     }
 
     private async Task CheckLaneInGame()

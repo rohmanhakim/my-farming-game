@@ -1,7 +1,7 @@
 # Project Structure
 
 > **Status:** Proposal for team agreement — input to Phase-001 Task 1.1 ("Team agrees on project folder structure and naming conventions")
-> **Version:** 0.19
+> **Version:** 0.20
 > **Last updated:** 2026-11-21
 > **Purpose:** The repository layout, Godot folder structure, naming rules, input/autoload registries, asset pipeline, and verification commands that every development session follows when adding code or assets under `src/`. It is a *technical* contract only — it never overrides a gameplay decision.
 
@@ -111,7 +111,7 @@ src/
 │   │   ├── GameClock.cs       # Task 1.3 — clock (15-min readout, 3-h phases), calendar, 04:30 wake-up + 21:30 bedtime, DayEnded/DayStarted
 │   │   ├── ToolBelt.cs, Inventory.cs, Wallet.cs   # Task 1.4 — active tool + owned tools; auto-stacking items (ItemIds); coins, never below 0
 │   │   ├── OrderManager.cs    # Task 1.6 (orders, accept/decline/deliver, pays once) — Task 1.7 adds the board generator
-│   │   ├── SaveGame.cs        # Task 1.10
+│   │   ├── SaveGame.cs        # Task 1.10 ✅ — versioned JSON, Register(section, save, load), temp + rename, .bak fallback, migrations
 │   │   ├── Onboarding.cs      # Task 1.12
 │   │   └── EventBus.cs        # proposed (§8)
 │   ├── player/
@@ -143,7 +143,8 @@ src/
 │   ├── main/
 │   │   ├── Main.cs            # Task 1.1 — root coordinator: layer numbers, player spawn (load_level later)
 │   │   ├── CameraFollow.cs    # Task 1.2 — script on World/Entities/Camera2D: follows the player with smoothing
-│   │   └── SleepSequence.cs   # Task 1.3 — Main/Systems: freezes Kit, fades, rolls the day, wakes Kit at the bed
+│   │   ├── SleepSequence.cs   # Task 1.3 — Main/Systems: freezes Kit, fades, rolls the day, wakes Kit at the bed
+│   │   └── SaveBinder.cs      # Task 1.10 — Main/Systems: registers the save sections, loads at start, auto-saves
 │   └── core/                  # small shared helpers, constants, settings readers
 │       ├── UILayers.cs        # Task 1.1 — CanvasLayer constants (§4 standard)
 │       ├── SpriteLibrary.cs   # Task 1.1 — sprite lookup by name: final art → ph_ placeholder → coloured square
@@ -279,7 +280,7 @@ Quick lookup so a session knows where its artifact belongs. Scope still comes fr
 | 1.7 Order Board | `scenes/world/OrderBoard.tscn` + `scripts/world/OrderBoard.cs`, `scenes/ui/OrderBoard.tscn` + `scripts/ui/OrderBoardView.cs`, `scripts/core/Production.cs`; generator + repeats in `OrderManager` ✅ built |
 | 1.8 Seed Shop & Phone | `scenes/ui/Shop.tscn` + `scripts/ui/ShopView.cs`, `scenes/world/{ShopCounter,Phone}.tscn` + `scripts/world/{ShopCounter,Phone,AnimalHouse,FeedBin}.cs`, `scripts/core/FeedStore.cs`; prices already from `data/prices.json` (Task 1.6); Sun Sprout in `crops.tres` ✅ built |
 | 1.9 Hens, Cow & Loss Rule | `scenes/world/{Hen,Cow}.tscn`, `scripts/world/{FarmAnimal,Hen,Cow}.cs`, feeding/products/loss in `AnimalHouse.cs`, `scripts/ui/CareNoticeView.cs` (node `HUD/UI/CareNotices`; the loss card is shown in the picture bubble — no separate `LossCard.tscn`) ✅ built |
-| 1.10 Save / Load | `scripts/autoloads/SaveGame.cs` (versioned, section registration) |
+| 1.10 Save / Load | `scripts/autoloads/SaveGame.cs` (versioned, section registration), `scripts/main/SaveBinder.cs` ✅ built |
 | 1.11 Pause & Day/Night | `scenes/ui/PauseMenu.tscn`, `scenes/ui/DayNightOverlay.tscn`, action `pause` |
 | 1.12 Onboarding | `scripts/autoloads/Onboarding.cs`, `scenes/ui/Nudge.tscn`, `scenes/world/Ada.tscn` + `scripts/world/Ada.cs` |
 | 1.13 Playtest & Iterate | fixes only — no new top-level folders |
@@ -347,7 +348,7 @@ Rules: D-pad stays reserved for movement (`controls.md` §2); no action may requ
 | `Inventory` ✅ | `scripts/autoloads/Inventory.cs` | Task 1.4 | auto-stacking items (per id + quality), `ItemIds` | never "full"; `Remove` is all or nothing |
 | `Wallet` ✅ | `scripts/autoloads/Wallet.cs` | Task 1.4 | coins (500 start); never below 0 | `Spend` refuses instead of going negative |
 | `OrderManager` ✅ | `scripts/autoloads/OrderManager.cs` | Task 1.6 (board in 1.7) | order generation (producible items only), accept/deliver, repeat orders | never offers what Kit cannot produce |
-| `SaveGame` | `scripts/autoloads/SaveGame.cs` | Task 1.10 | versioned JSON save, section registration, backup | nothing else writes `user://` |
+| `SaveGame` ✅ | `scripts/autoloads/SaveGame.cs` | Task 1.10 | versioned JSON save, section registration, backup | nothing else writes `user://` |
 | `Onboarding` | `scripts/autoloads/Onboarding.cs` | Task 1.12 | guided start + one-time nudges | never blocks play |
 | `EventBus` *(proposed)* | `scripts/autoloads/EventBus.cs` | when first needed | decoupled game events | keep tiny |
 
@@ -494,3 +495,4 @@ Restore after cloning: `npx skills experimental_install` · Update: `npx skills 
 - **0.17 — 2026-11-21:** Task 1.7 built: OrderBoard prop + board screen, `Production` supply registry; file map updated.
 - **0.18 — 2026-11-21:** Task 1.8 built: Shop screen, ShopCounter, Phone, AnimalHouse + FeedBin, FeedStore; file map updated.
 - **0.19 — 2026-11-21:** Task 1.9 built: FarmAnimal/Hen/Cow, CareNoticeView (loss card in the picture bubble); file map updated.
+- **0.20 — 2026-11-21:** Task 1.10 built: SaveGame autoload (Always) and SaveBinder in Main/Systems; file map and autoload registry updated.
