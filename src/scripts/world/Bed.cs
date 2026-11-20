@@ -28,7 +28,7 @@ public partial class Bed : StaticBody2D, IInteractable
     /// <summary>True while the button prompt above the bed is visible (tests).</summary>
     public bool PromptVisible => _prompt?.Visible ?? false;
 
-    public bool CanInteract => GameClock.Instance == null || GameClock.Instance.IsRunning;
+    public bool CanInteract => GameClock.Instance == null || GameClock.Instance.IsPlayable;
 
     public override void _Ready()
     {

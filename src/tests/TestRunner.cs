@@ -35,6 +35,8 @@ public partial class TestRunner : Node
         CheckInventoryRules();
         CheckWalletRules();
         await CheckBeltBagWalletInGame();
+        CheckFarmRules();
+        await CheckFarmInGame();
 
         GD.Print($"[TestRunner] {_checks - _failures}/{_checks} checks passed");
         GetTree().Quit(_failures == 0 ? 0 : 1);
@@ -140,7 +142,7 @@ public partial class TestRunner : Node
         Check(main.GetNodeOrNull<SleepPromptView>("HUD/UI/SleepPrompt") != null, "HUD has the SleepPrompt");
         Check(main.GetNodeOrNull<DayTransitionView>("Transition/DayTransition") != null, "Transition layer has DayTransition");
         Check(main.GetNodeOrNull<SleepSequence>("Systems/SleepSequence") != null, "Systems has SleepSequence");
-        var bed = level?.GetNodeOrNull<Bed>("Bed");
+        var bed = level?.FindChild("Bed", true, false) as Bed;
         Check(bed != null && bed.IsInGroup(Bed.Group) && bed.IsInGroup(IInteractable.Group), "level has a Bed in groups beds + interactables");
         Check(bed != null && bed.ZIndex < 0, "bed draws below Kit (z_index < 0)");
 
@@ -507,7 +509,8 @@ public partial class TestRunner : Node
         var main = ResourceLoader.Load<PackedScene>("res://scenes/main/Main.tscn").Instantiate();
         AddChild(main);
         var player = main.GetNode<PlayerController>("World/Entities/Player");
-        var bed = main.GetNode("World/Level").GetChild(0).GetNode<Bed>("Bed");
+        var level = main.GetNode("World/Level").GetChild(0);
+        var bed = level.FindChild("Bed", true, false) as Bed;
         var prompt = main.GetNode<SleepPromptView>("HUD/UI/SleepPrompt");
         var fade = main.GetNode<DayTransitionView>("Transition/DayTransition");
         var seq = main.GetNode<SleepSequence>("Systems/SleepSequence");
@@ -540,7 +543,8 @@ public partial class TestRunner : Node
         Check(clock.MinutesIntoDay == m, "clock is stopped while the question is open");
         prompt.Decline();
         await Frames(2);
-        Check(!clock.IsAsking && !prompt.Visible && !player.Frozen && clock.IsRunning, "'Not yet' closes it, Kit and the clock move again");
+        Check(!clock.IsAsking && !prompt.Visible && !player.Frozen && clock.IsPlayable && clock.IsIndoors && !clock.IsRunning,
+            "'Not yet' closes it and Kit can move again (the clock stays stopped: the bed is indoors)");
 
         // Gamepad A (bottom face button on every pad) does the same.
         Pad(JoyButton.A, true);
@@ -555,7 +559,7 @@ public partial class TestRunner : Node
         Check(!clock.IsAsking && !prompt.Visible, "gamepad B closes the question");
 
         // Click the bed from a distance: Kit walks there, then the question opens.
-        player.GlobalPosition = bed.WakePoint + new Vector2(220, 160);
+        player.GlobalPosition = bed.WakePoint + new Vector2(200, 30);
         await Frames(15);
         var vp = GetViewport();
         Vector2 screen = vp.GetCanvasTransform() * bed.GlobalPosition;
@@ -576,8 +580,9 @@ public partial class TestRunner : Node
         Check(!player.Frozen && !fade.Visible, "Kit can move again and the fade is gone");
 
         // 21:30 bedtime far from home: Kit goes home and sleeps, no penalty.
-        player.GlobalPosition = bed.WakePoint + new Vector2(400, 300);
+        player.GlobalPosition = level.GetNode<Marker2D>("PlayerSpawn").GlobalPosition;
         await Frames(5);
+        Check(!clock.IsIndoors && clock.IsRunning, "Kit outside the house: the clock runs");
         clock.SetTime(clock.Day, GameClock.PlayableMinutes - 1);
         clock.TimeScale = 60;
         bool slept = await WaitUntil(() => clock.Day == 3 && !clock.IsSleeping && !seq.IsRunning, 900);

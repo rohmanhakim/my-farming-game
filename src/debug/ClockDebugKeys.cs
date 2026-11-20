@@ -22,7 +22,7 @@ public partial class ClockDebugKeys : Node
         switch (k.PhysicalKeycode)
         {
             case Key.F2:
-                if (!clock.IsRunning) return;
+                if (!clock.IsPlayable) return;
                 int next = clock.StepIndex + 1;
                 if (next * GameClock.MinutesPerStep >= GameClock.PlayableMinutes)
                     clock.SetTime(clock.Day, GameClock.PlayableMinutes - 0.01); // a moment before 21:30
@@ -35,7 +35,7 @@ public partial class ClockDebugKeys : Node
                 GD.Print($"[debug] clock speed ×{clock.TimeScale}");
                 break;
             case Key.F4:
-                if (!clock.IsRunning) return;
+                if (!clock.IsPlayable) return;
                 clock.SetTime(clock.Day, GameClock.PlayableMinutes - 10);
                 GD.Print("[debug] clock → 21:20 (bedtime in 10 in-game minutes = 10 s)");
                 break;

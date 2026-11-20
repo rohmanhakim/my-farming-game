@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://scripts/main/Main.cs" id="1_main"]
-[ext_resource type="PackedScene" path="res://scenes/world/PlaceholderLevel.tscn" id="2_level"]
+[ext_resource type="PackedScene" path="res://scenes/world/FarmLevel.tscn" id="2_level"]
 [ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="3_player"]
 [ext_resource type="PackedScene" path="res://scenes/ui/UI.tscn" id="4_ui"]
 [ext_resource type="Script" path="res://scripts/main/CameraFollow.cs" id="5_camera"]
@@ -25,7 +25,7 @@ process_mode = 1
 
 [node name="Level" type="Node" parent="World"]
 
-[node name="PlaceholderLevel" parent="World/Level" instance=ExtResource("2_level")]
+[node name="FarmLevel" parent="World/Level" instance=ExtResource("2_level")]
 
 [node name="Entities" type="Node2D" parent="World"]
 

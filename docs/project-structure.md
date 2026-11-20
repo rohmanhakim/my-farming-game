@@ -1,8 +1,8 @@
 # Project Structure
 
 > **Status:** Proposal for team agreement — input to Phase-001 Task 1.1 ("Team agrees on project folder structure and naming conventions")
-> **Version:** 0.14
-> **Last updated:** 2026-11-20
+> **Version:** 0.15
+> **Last updated:** 2026-11-21
 > **Purpose:** The repository layout, Godot folder structure, naming rules, input/autoload registries, asset pipeline, and verification commands that every development session follows when adding code or assets under `src/`. It is a *technical* contract only — it never overrides a gameplay decision.
 
 ---
@@ -82,11 +82,8 @@ src/
 │   ├── player/
 │   │   └── Player.tscn        # Task 1.1/1.2 — PlayerController root, NamedSprite, AnimationPlayer (idle_/walk_ × down/up/left/right), CollisionShape2D
 │   ├── world/                 # things the player walks up to in the garden/lane
-│   │   ├── PlaceholderLevel.tscn  # Task 1.1 — temporary level: Background (checkerboard shader, Task 1.2) + PlayerSpawn + Bed (Task 1.3)
 │   │   ├── Bed.tscn           # Task 1.3 — StaticBody2D + NamedSprite "bed", ClickArea (layer 8), ReachArea, WakeSpot, button Prompt
-│   │   ├── FarmLevel.tscn     # Task 1.5 — the slice's farm level (house, front garden, old coop, old barn, gate), replaces PlaceholderLevel
-│   │   ├── FarmGrid.tscn      # Task 1.5 — front-garden tiles: clear, till, plant, water, grow
-│   │   ├── IndoorZone.tscn    # Task 1.5 — building footprint: roof fades, GameClock stops while Kit is inside
+│   │   ├── FarmLevel.tscn     # Task 1.5 ✅ — the slice's farm level: Background, Ground (FarmGround), Gate, FrontGarden (FarmGrid), House (Building + Bed), Coop, Barn (Buildings), PlayerSpawn; replaced PlaceholderLevel (deleted)
 │   │   ├── Marlow.tscn        # Task 1.6
 │   │   ├── Ledger.tscn        # Task 1.6
 │   │   ├── BerryBush.tscn     # Task 1.6
@@ -117,7 +114,9 @@ src/
 │   │   └── PlayerController.cs   # Task 1.2 — 8-way walk, 4-way Facing, click-to-move, WalkTo(target, onArrived)
 │   ├── world/
 │   │   ├── Bed.cs             # Task 1.3 — IInteractable: interact/click → GameClock.AskToSleep(); WakePoint
-│   │   ├── FarmGrid.cs, CropTile.cs, IndoorZone.cs   # Task 1.5
+│   │   ├── FarmLevel.cs, FarmGround.cs   # Task 1.5 — farm layout table (fields, paths, gate) → blocking bodies + ground drawing
+│   │   ├── FarmGrid.cs, CropTile.cs      # Task 1.5 — front garden 8×6: tool rules, day-based growth, neglect; tile data (save shape)
+│   │   ├── Building.cs, IndoorZone.cs    # Task 1.5 — floor, walls + door gap, roof; inside → roof fades, GameClock.EnterIndoors
 │   │   ├── Marlow.cs          # Task 1.6
 │   │   ├── Ledger.cs          # Task 1.6
 │   │   ├── BerryBush.cs       # Task 1.6
@@ -139,7 +138,9 @@ src/
 │       ├── UILayers.cs        # Task 1.1 — CanvasLayer constants (§4 standard)
 │       ├── SpriteLibrary.cs   # Task 1.1 — sprite lookup by name: final art → ph_ placeholder → coloured square
 │       ├── NamedSprite.cs     # Task 1.1 — Sprite2D that takes its texture from SpriteLibrary at a fixed DisplaySize
-│       └── IInteractable.cs   # Task 1.3 — "interact / click to use" contract, group `interactables`, click layer 8
+│       ├── IInteractable.cs   # Task 1.3 — "interact / click to use" contract, group `interactables`, click layer 8
+│       ├── IToolTarget.cs     # Task 1.5 — ground Kit uses the active tool on (group `tool_targets`)
+│       └── CropDefinition.cs, CropCatalog.cs   # Task 1.5 — crop data resources loaded from data/crops.tres
 │
 ├── assets/                    # ALL game art/audio/fonts, imported by Godot
 │   ├── art/
@@ -159,7 +160,7 @@ src/
 │   └── LICENSES.md            # every third-party asset (placeholders included): source + license (§9)
 │
 ├── data/                      # data files loaded at runtime: .tres / .json
-│   ├── crops.tres             # Task 1.5 — days to harvest, regrow (crops.md; day-based growth)
+│   ├── crops.tres             # Task 1.5 ✅ — CropCatalog: carrot (3 days, carrot_seeds → carrot); crops.md is the source
 │   └── prices.tres            # Task 1.8 — generated from docs/data/economy.csv
 ├── shaders/                   # .gdshader files — snake_case.gdshader (§6)
 ├── debug/                     # debug-only scenes/scripts (overlay, inspectors) — excluded from export
@@ -259,7 +260,7 @@ Quick lookup so a session knows where its artifact belongs. Scope still comes fr
 | 1.2 Player Movement | `scripts/player/PlayerController.cs`, InputMap `move_*`, `interact`, `cancel` (§7) |
 | 1.3 Day Clock & Sleep | `scripts/autoloads/GameClock.cs`, `scenes/ui/ClockDial.tscn` + `SleepPrompt.tscn` + `DayTransition.tscn`, `scripts/ui/{ClockDialView,SleepPromptView,DayTransitionView,ButtonPrompt}.cs`, `scenes/world/Bed.tscn` + `scripts/world/Bed.cs`, `scripts/core/IInteractable.cs`, `scripts/main/SleepSequence.cs`, `debug/ClockDebugKeys.cs` ✅ built |
 | 1.4 Tool Belt, Bag & Wallet | `scripts/autoloads/ToolBelt.cs` + `Inventory.cs` + `Wallet.cs`, `scenes/ui/{ToolBelt,Bag,WalletHud}.tscn`, `scripts/ui/{ToolBeltView,BagView,WalletView}.cs`, `debug/BagDebugKeys.cs`, actions `cycle_tool_*`, `open_inventory`, `ui_accept`/`ui_cancel` pad buttons ✅ built |
-| 1.5 Farm Level, Clearing, Planting & Growth | `scenes/world/FarmLevel.tscn` + `FarmGrid.tscn` + `IndoorZone.tscn`, `scripts/world/{FarmGrid,CropTile,IndoorZone}.cs`, `data/crops.tres`; Bed moves into the house |
+| 1.5 Farm Level, Clearing, Planting & Growth | `scenes/world/FarmLevel.tscn`, `scripts/world/{FarmLevel,FarmGround,FarmGrid,CropTile,Building,IndoorZone}.cs`, `scripts/core/{IToolTarget,CropDefinition,CropCatalog}.cs`, `data/crops.tres`, `tools/make_placeholders.py`; Bed moved into the house; no separate `FarmGrid.tscn`/`IndoorZone.tscn` (FarmGrid is a node in FarmLevel, Building creates its IndoorZone) ✅ built |
 | 1.6 Marlow & First Order | `scenes/world/Marlow.tscn` + `Ledger.tscn` + `BerryBush.tscn`, `scripts/world/*.cs`, `scenes/ui/PictureBubble.tscn` |
 | 1.7 Order Board | `scripts/autoloads/OrderManager.cs`, `scenes/ui/OrderBoard.tscn`, `scripts/ui/OrderBoardView.cs` |
 | 1.8 Seed Shop & Phone | `scenes/ui/Shop.tscn`, `scripts/ui/ShopView.cs`, `scripts/core/PriceTable.cs` (reads `docs/data/economy.csv` → `data/prices.tres`), `scenes/world/Phone.tscn` + `scripts/world/Phone.cs` (feed orders → feed bins at Dawn) |
@@ -314,6 +315,8 @@ Defined once in `project.godot → [input]`, bound for **both** gamepad and keyb
 **Task 1.3:** `interact` is now read: **Space / gamepad A** (bottom face button on every pad) uses the nearest `IInteractable` in reach; a **left-click on an interactable's click area** (physics layer 8) walks Kit there, then uses it — any other left-click is a ground click. In the "Go to sleep?" prompt, Godot's built-in `ui_*` actions drive the buttons (D-pad/stick/arrows move focus, A/Space/Enter confirm, B/Esc/right-click close via `ui_cancel` + `cancel`). Button prompts come from `scripts/ui/ButtonPrompt.cs` (key cap, or Xbox letters / PlayStation shapes / Nintendo letters, picked from the last device used). Debug-only F2/F3/F4 clock keys are raw keys in `src/debug/` on purpose (developer tools, not game controls).
 
 **Task 1.4:** `open_inventory` bound to gamepad **Y** (top face button on every pad); the mouse uses the on-screen bag button; there is no keyboard key (owner decision 2026-11-20). `cycle_tool_next` events reordered to RB, X, wheel down so prompts show RB. **Godot's built-in `ui_accept` / `ui_cancel` have no gamepad buttons** (only Enter/Kp Enter/Space and Esc), so they are overridden in `project.godot` with **A** and **B** added (keys as physical keycodes) — every focused menu button now works on any pad. The bag closes on Y, B, right-click, Esc or its Close button (read in `_Input` while open, before the GUI). Debug-only F6/F7/F8 bag/wallet keys are raw keys in `src/debug/`.
+
+**Task 1.5:** no new actions. `interact` (A / Space) with no interactable in reach uses the active tool on the garden tile in front of Kit; a left-click on a garden tile walks Kit beside it, then uses the tool. Interactables win over tiles.
 
 Rules: D-pad stays reserved for movement (`controls.md` §2); no action may require reading; every new action is added to this table in the same session.
 
@@ -470,3 +473,4 @@ Restore after cloning: `npx skills experimental_install` · Update: `npx skills 
 - **0.12 — 2026-11-20:** `docs/assets/` now also holds design images: `map/bramblewick-vale.svg` (the to-scale valley map, places.md v0.10).
 - **0.13 — 2026-11-20:** Task 1.4: `ToolBelt`, `Inventory`, `Wallet` autoloads registered (Pausable). §4 tree adds `Bag.tscn`, `WalletHud.tscn`, `BagView`/`WalletView`, `debug/BagDebugKeys.cs`; `ToolBelt.tscn` relabelled Task 1.4. §5 row lists the real files. §7: `open_inventory` bound (Y + on-screen button, no key by owner decision), `cycle_tool_*` row updated, and `ui_accept`/`ui_cancel` overridden with gamepad A/B (Godot's defaults have no pad buttons).
 - **0.14 — 2026-11-20:** Synced with Phase-001 v0.28 (Tasks 1.5–1.13 checked against the docs): §4 tree drops the stale v0.9 names — `GardenBed` (now `FarmGrid`, Task 1.5), `GardenShelf`, `Butterfly` (the Butterfly Garden is an optional Phase-004 request), and `GrowthTiming.cs`/`growth_timing.tres` (play-time growth presets, retired by day-based growth) — and adds `FarmLevel`, `IndoorZone`, `BerryBush`, `Phone`, `Hen`/`Cow`, `Ada`, `crops.tres`, `prices.tres`. Pause menu and `pause` action labelled Task 1.11 (was 1.10). §5 rows for 1.5, 1.8, 1.9 and 1.12 updated; naming examples use `FarmGrid`/`crops.tres`.
+- **0.15 — 2026-11-21:** Task 1.5 built: tree and file map updated (FarmLevel, FarmGround, FarmGrid, CropTile, Building, IndoorZone, IToolTarget, CropDefinition/CropCatalog, `data/crops.tres`, `tools/make_placeholders.py`); PlaceholderLevel removed; no separate FarmGrid/IndoorZone scenes; §7 note on tool use with `interact`.

@@ -22,7 +22,8 @@ public enum SleepReason { Bed, Bedtime }
 ///   in-game hour, Harvest Moon pace — owner 2026-11-20), so the playable day 04:30 → 21:30
 ///   (17 in-game hours) lasts 17 real minutes.
 /// * Time only moves from frame deltas while this node processes: it stops when the tree is paused
-///   (pause menu), while a <see cref="Hold"/> is active (any menu), while Kit sleeps, and of course
+///   (pause menu), while a <see cref="Hold"/> is active (any menu), while Kit is indoors
+///   (<see cref="EnterIndoors"/>, Task 1.5), while Kit sleeps, and of course
 ///   while the game is closed. Nothing reads the wall clock.
 /// * At <see cref="BedtimeMinute"/> (21:30, owner decision 2026-11-20) Kit goes home and sleeps automatically, no penalty.
 /// * Sleep flow: <see cref="AskToSleep"/> (bed prompt) → <see cref="BeginSleep"/> →
@@ -71,6 +72,8 @@ public partial class GameClock : Node
     [Signal] public delegate void DayStartedEventHandler(int day);
     /// <summary>Kit is awake and can play again.</summary>
     [Signal] public delegate void WokeUpEventHandler();
+    /// <summary>Kit went inside a building (true) or back outside (false).</summary>
+    [Signal] public delegate void IndoorsChangedEventHandler(bool indoors);
 
     // ---- State -----------------------------------------------------------------------------
     /// <summary>Absolute day number, starting at 1.</summary>
@@ -91,8 +94,17 @@ public partial class GameClock : Node
     private int _lastReadout;
     private bool _rolledOver;
 
-    /// <summary>True while time moves (nothing holds it, no prompt, not asleep).</summary>
-    public bool IsRunning => _holds.Count == 0 && !IsAsking && !IsSleeping;
+    private readonly HashSet<string> _indoors = new();
+
+    /// <summary>True when Kit can act: no menu holds the clock, no prompt, not asleep. Being
+    /// indoors does not count (Kit can still use the bed, the phone, a shop counter).</summary>
+    public bool IsPlayable => _holds.Count == 0 && !IsAsking && !IsSleeping;
+
+    /// <summary>True while Kit is inside a building (Task 1.5, GDD §4 "time stops indoors").</summary>
+    public bool IsIndoors => _indoors.Count > 0;
+
+    /// <summary>True while time moves: playable and not indoors.</summary>
+    public bool IsRunning => IsPlayable && !IsIndoors;
 
     // ---- Derived values --------------------------------------------------------------------
     /// <summary>In-game minutes since midnight of the current day, 270 … 1290.</summary>
@@ -185,6 +197,21 @@ public partial class GameClock : Node
 
     public bool IsHeld(string reason) => _holds.Contains(reason);
 
+    // ---- Indoors (Task 1.5) ----------------------------------------------------------------
+    /// <summary>Kit walked into the building <paramref name="zone"/>: time stops until Kit leaves.</summary>
+    public void EnterIndoors(string zone)
+    {
+        if (_indoors.Add(zone))
+            EmitSignal(SignalName.IndoorsChanged, true);
+    }
+
+    /// <summary>Kit left <paramref name="zone"/>; time runs again once Kit is in no building.</summary>
+    public void ExitIndoors(string zone)
+    {
+        if (_indoors.Remove(zone) && _indoors.Count == 0)
+            EmitSignal(SignalName.IndoorsChanged, false);
+    }
+
     // ---- Sleep -----------------------------------------------------------------------------
     /// <summary>Kit used the bed: stops time and asks "sleep now?". Ignored while asleep.</summary>
     public void AskToSleep()
@@ -262,6 +289,7 @@ public partial class GameClock : Node
     public void ResetForNewGame()
     {
         _holds.Clear();
+        _indoors.Clear();
         IsAsking = false;
         IsSleeping = false;
         _rolledOver = false;

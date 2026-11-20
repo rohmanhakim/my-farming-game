@@ -31,6 +31,9 @@ public static class SpriteLibrary
         "tool_hands", "tool_hoe", "tool_watering_can", "tool_seed_bag", "tool_feed_scoop", "coin",
         "bed", "clock_sun", "clock_moon", "icon_sleep", "season_spring",
         "icon_bag", "item_berries", "item_carrot", "item_egg", "item_milk", "item_carrot_seeds",
+        "soil_weeds", "soil_clear", "soil_tilled", "soil_wet", "crop_carrot_seed", "crop_carrot_sprout",
+        "crop_carrot_growing", "crop_carrot_ready", "crop_carrot_yellow", "roof_house", "roof_coop", "roof_barn",
+        "floor_wood", "floor_straw", "ground_path", "ground_overgrown", "gate",
     };
 
     /// <summary>Colour used when neither final art nor a placeholder image exists.</summary>

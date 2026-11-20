@@ -114,7 +114,7 @@ public partial class ToolBeltView : Control
     }
 
     /// <summary>True when cycling is allowed (no menu, question or night in the way).</summary>
-    public bool CanCycle => Belt != null && (Clock == null || Clock.IsRunning) && !GetTree().Paused;
+    public bool CanCycle => Belt != null && (Clock == null || Clock.IsPlayable) && !GetTree().Paused;
 
     public override void _UnhandledInput(InputEvent e)
     {
