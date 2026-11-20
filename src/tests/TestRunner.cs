@@ -31,6 +31,10 @@ public partial class TestRunner : Node
         CheckClockDial();
         await CheckClockPause();
         await CheckSleepInGame();
+        CheckToolBeltRules();
+        CheckInventoryRules();
+        CheckWalletRules();
+        await CheckBeltBagWalletInGame();
 
         GD.Print($"[TestRunner] {_checks - _failures}/{_checks} checks passed");
         GetTree().Quit(_failures == 0 ? 0 : 1);
@@ -59,7 +63,7 @@ public partial class TestRunner : Node
         string[] actions =
         {
             "move_left", "move_right", "move_up", "move_down",
-            "interact", "cancel", "cycle_tool_next", "cycle_tool_prev", "pause",
+            "interact", "cancel", "cycle_tool_next", "cycle_tool_prev", "pause", "open_inventory",
         };
         foreach (var a in actions)
             Check(InputMap.HasAction(a) && InputMap.ActionGetEvents(a).Count > 0, $"input action '{a}' bound");
@@ -67,7 +71,7 @@ public partial class TestRunner : Node
 
     private void CheckSprites()
     {
-        var expectedFallback = new HashSet<string> { "hen", "tool_hands" };
+        var expectedFallback = new HashSet<string> { "hen" };
         foreach (var name in SpriteLibrary.KnownNames)
         {
             var tex = SpriteLibrary.Get(name, out var source);
@@ -599,5 +603,299 @@ public partial class TestRunner : Node
               && ButtonPrompt.FaceLabel(ButtonPrompt.PadFamily.Nintendo, JoyButton.A) == "B",
             "prompt: bottom face button shows A / cross / B per family");
         Check(ButtonPrompt.KeyLabel("interact") == "Space", $"prompt: keyboard shows Space ({ButtonPrompt.KeyLabel("interact")})");
+    }
+
+    // ---- Task 1.4: tool belt, bag, wallet ---------------------------------------------------
+
+    private void CheckToolBeltRules()
+    {
+        var belt = new ToolBelt();
+        AddChild(belt);
+        Check(belt.Active == Tool.Hands, "belt: new game starts with hands active");
+        Check(string.Join(",", belt.Tools) == "Hands,Hoe,WateringCan,SeedBag,FeedScoop",
+            $"belt: hands, hoe, can, seed bag, feed scoop in order ({string.Join(",", belt.Tools)})");
+        var seen = new List<int>();
+        void OnChanged(int t) => seen.Add(t);
+        belt.ActiveToolChanged += OnChanged;
+        belt.Next();
+        Check(belt.Active == Tool.Hoe && seen.Count == 1 && seen[0] == (int)Tool.Hoe, "belt: Next → hoe, one ActiveToolChanged");
+        belt.Next(); belt.Next(); belt.Next();
+        Check(belt.Active == Tool.FeedScoop, "belt: Next ×4 → feed scoop");
+        belt.Next();
+        Check(belt.Active == Tool.Hands, "belt: Next wraps from the last slot to hands");
+        belt.Prev();
+        Check(belt.Active == Tool.FeedScoop, "belt: Prev wraps from hands to the last slot");
+        int before = seen.Count;
+        Check(belt.Select(Tool.FeedScoop) && seen.Count == before, "belt: selecting the active tool again emits nothing");
+        belt.Take(Tool.FeedScoop);
+        Check(!belt.Owns(Tool.FeedScoop) && belt.Active == Tool.Hands, "belt: removing the active tool falls back to hands");
+        Check(!belt.Select(Tool.FeedScoop) && belt.Active == Tool.Hands, "belt: an unowned tool can't be selected");
+        belt.Select(Tool.SeedBag);
+        belt.Prev();
+        Check(belt.Active == Tool.WateringCan, "belt: Prev from the seed bag → watering can");
+        belt.Next(); belt.Next();
+        Check(belt.Active == Tool.Hands, "belt: cycling skips tools Kit doesn't own (no scoop)");
+        belt.Give(Tool.FeedScoop);
+        Check(belt.Owns(Tool.FeedScoop) && belt.Tools[^1] == Tool.FeedScoop && belt.Active == Tool.Hands,
+            "belt: a given tool slots into its place and does not become active");
+        belt.Take(Tool.Hands);
+        Check(belt.Owns(Tool.Hands), "belt: hands can never be removed");
+        belt.ActiveToolChanged -= OnChanged;
+        belt.QueueFree();
+    }
+
+    private void CheckInventoryRules()
+    {
+        var inv = new Inventory();
+        AddChild(inv);
+        Check(inv.Stacks.Count == 1 && inv.Count(ItemIds.CarrotSeeds) == 9, "bag: new game starts with one carrot packet (9 seeds, items.md)");
+        inv.Clear();
+        int changes = 0;
+        void OnChanged() => changes++;
+        inv.Changed += OnChanged;
+        Check(inv.Stacks.Count == 0, "bag: Clear empties the bag");
+        inv.Add(ItemIds.Carrot);
+        inv.Add(ItemIds.Carrot, 2);
+        Check(inv.Stacks.Count == 1 && inv.Count(ItemIds.Carrot) == 3, "bag: adding the same item stacks into one slot (3 carrots)");
+        inv.Add(ItemIds.Berries, 3);
+        inv.Add(ItemIds.Egg);
+        Check(inv.Stacks.Count == 3 && inv.Stacks[0].Id == ItemIds.Carrot && inv.Stacks[1].Id == ItemIds.Berries,
+            "bag: different items get their own slots in arrival order");
+        inv.Add(ItemIds.Egg, 1, 2);
+        Check(inv.Stacks.Count == 4 && inv.Count(ItemIds.Egg) == 1 && inv.Count(ItemIds.Egg, 2) == 1 && inv.CountAll(ItemIds.Egg) == 2,
+            "bag: different quality stacks separately");
+        Check(inv.Add(ItemIds.Milk, 0) == 0 && inv.Add(ItemIds.Milk, -2) == 0 && inv.Add("", 1) == 0 && inv.Count(ItemIds.Milk) == 0,
+            "bag: zero, negative or empty-id adds do nothing");
+        Check(!inv.Remove(ItemIds.Carrot, 5) && inv.Count(ItemIds.Carrot) == 3, "bag: removing more than Kit has fails and changes nothing");
+        Check(inv.Remove(ItemIds.Carrot, 2) && inv.Count(ItemIds.Carrot) == 1, "bag: removing 2 of 3 carrots leaves 1");
+        Check(inv.Remove(ItemIds.Carrot) && inv.Count(ItemIds.Carrot) == 0 && inv.Stacks.Count == 3, "bag: an emptied stack disappears");
+        Check(!inv.Remove(ItemIds.Milk), "bag: removing an item Kit doesn't have fails");
+        inv.Add(ItemIds.Carrot, 1000);
+        Check(inv.Count(ItemIds.Carrot) == 1000, "bag: no 'full' — 1000 carrots fit");
+        Check(changes == 8, $"bag: Changed fires once per successful add/remove ({changes})");
+        inv.ResetForNewGame();
+        Check(inv.Stacks.Count == 1 && inv.Count(ItemIds.CarrotSeeds) == 9, "bag: new game resets to just the 9 carrot seeds");
+        inv.Changed -= OnChanged;
+        inv.QueueFree();
+    }
+
+    private void CheckWalletRules()
+    {
+        Check(Wallet.StartingCoins == 500, "wallet: starting money is 500 coins (economy.md)");
+        var w = new Wallet();
+        AddChild(w);
+        Check(w.Coins == 500, "wallet: new wallet holds 500");
+        int last = -1;
+        void OnCoins(int c) => last = c;
+        w.CoinsChanged += OnCoins;
+        w.Earn(120);
+        Check(w.Coins == 620 && last == 620, "wallet: Earn 120 → 620, CoinsChanged reports it");
+        Check(w.Spend(600) && w.Coins == 20, "wallet: Spend 600 → 20");
+        last = -1;
+        Check(!w.Spend(21) && w.Coins == 20 && last == -1, "wallet: spending more than Kit has is refused and spends nothing");
+        Check(w.Spend(20) && w.Coins == 0, "wallet: spending exactly everything → 0");
+        Check(!w.Spend(1) && w.Coins == 0, "wallet: can't spend at 0 — never below 0");
+        Check(!w.Spend(-50) && w.Coins == 0, "wallet: negative spend refused (no sneaky earning)");
+        w.Earn(-30);
+        Check(w.Coins == 0, "wallet: negative earn ignored");
+        w.SetCoins(-10);
+        Check(w.Coins == 0, "wallet: SetCoins clamps at 0");
+        var rng = new RandomNumberGenerator { Seed = 1234 };
+        bool neverNegative = true;
+        for (int i = 0; i < 500; i++)
+        {
+            if (rng.Randf() < 0.5f) w.Earn(rng.RandiRange(-50, 80)); else w.Spend(rng.RandiRange(-50, 120));
+            neverNegative &= w.Coins >= 0;
+        }
+        Check(neverNegative, "wallet: 500 random earns/spends never go below 0");
+        w.ResetForNewGame();
+        Check(w.Coins == 500, "wallet: new game resets to 500");
+        w.CoinsChanged -= OnCoins;
+        w.QueueFree();
+
+        foreach (var (name, node) in new (string, Node)[] { ("ToolBelt", ToolBelt.Instance), ("Inventory", Inventory.Instance), ("Wallet", Wallet.Instance) })
+            Check(node != null && node.GetParent() == GetTree().Root && node.ProcessMode == ProcessModeEnum.Pausable,
+                $"autoload {name} registered and Pausable");
+    }
+
+    private static void ResetTask14State()
+    {
+        GameClock.Instance?.ResetForNewGame();
+        ToolBelt.Instance?.ResetForNewGame();
+        Inventory.Instance?.ResetForNewGame();
+        Wallet.Instance?.ResetForNewGame();
+    }
+
+    private async Task Tap(JoyButton b)
+    {
+        Pad(b, true);
+        await Frames(1);
+        Pad(b, false);
+        await Frames(2);
+    }
+
+    private async Task CheckBeltBagWalletInGame()
+    {
+        var belt = ToolBelt.Instance;
+        var clock = GameClock.Instance;
+        if (belt == null || clock == null || Inventory.Instance == null || Wallet.Instance == null)
+        {
+            Check(false, "Task 1.4 autoloads missing");
+            return;
+        }
+        ResetTask14State();
+        var main = ResourceLoader.Load<PackedScene>("res://scenes/main/Main.tscn").Instantiate();
+        AddChild(main);
+        await Frames(3);
+        var player = main.GetNode<PlayerController>("World/Entities/Player");
+        var beltView = main.GetNodeOrNull<ToolBeltView>("HUD/UI/ToolBelt");
+        var bag = main.GetNodeOrNull<BagView>("HUD/UI/Bag");
+        var walletView = main.GetNodeOrNull<WalletView>("HUD/UI/WalletHud");
+        Check(beltView != null && bag != null && walletView != null, "HUD has ToolBelt, Bag and WalletHud");
+        if (beltView == null || bag == null || walletView == null) { main.QueueFree(); return; }
+
+        Check(beltView.SlotButtons.Count == 5, $"belt shows 5 slots ({beltView.SlotButtons.Count})");
+        bool icons = true;
+        foreach (var b in beltView.SlotButtons.Values) icons &= b.Icon != null;
+        Check(icons, "every belt slot has an icon");
+        Check(beltView.ShownActive == Tool.Hands, "belt highlights hands at start");
+        Check(walletView.ShownText == "500", $"HUD wallet shows 500 ({walletView.ShownText})");
+
+        // Gamepad: X = next, RB = next, LB = previous (same physical buttons on every pad).
+        await Tap(JoyButton.X);
+        Check(belt.Active == Tool.Hoe && beltView.ShownActive == Tool.Hoe, "gamepad X: next tool (hoe), slot highlighted");
+        await Tap(JoyButton.RightShoulder);
+        Check(belt.Active == Tool.WateringCan, "gamepad RB: next tool (watering can)");
+        await Tap(JoyButton.LeftShoulder);
+        Check(belt.Active == Tool.Hoe, "gamepad LB: previous tool (hoe)");
+        await Tap(JoyButton.LeftShoulder);
+        await Tap(JoyButton.LeftShoulder);
+        Check(belt.Active == Tool.FeedScoop, "gamepad LB from hands wraps to the feed scoop");
+
+        // Mouse wheel over the world: down = next, up = previous.
+        var vp = GetViewport();
+        async Task Wheel(MouseButton dir, Vector2 at)
+        {
+            beltView.ResetWheelRepeat();
+            vp.PushInput(new InputEventMouseButton { ButtonIndex = dir, Pressed = true, Position = at, GlobalPosition = at, Factor = 1 }, true);
+            vp.PushInput(new InputEventMouseButton { ButtonIndex = dir, Pressed = false, Position = at, GlobalPosition = at, Factor = 1 }, true);
+            await Frames(2);
+        }
+        var mid = vp.GetVisibleRect().Size / 2 + new Vector2(0, -120);
+        await Wheel(MouseButton.WheelDown, mid);
+        Check(belt.Active == Tool.Hands, "mouse wheel down: next tool (scoop → hands)");
+        await Wheel(MouseButton.WheelUp, mid);
+        Check(belt.Active == Tool.FeedScoop, "mouse wheel up: previous tool (hands → scoop)");
+        // A burst of wheel ticks inside the repeat window counts once.
+        beltView.ResetWheelRepeat();
+        for (int i = 0; i < 4; i++)
+            vp.PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.WheelDown, Pressed = true, Position = mid, GlobalPosition = mid, Factor = 1 }, true);
+        await Frames(2);
+        Check(belt.Active == Tool.Hands, $"a fast wheel burst moves one slot, not four ({belt.Active})");
+
+        // Clicking a slot picks it; the wheel over the belt itself also cycles.
+        var can = beltView.SlotButtons[Tool.WateringCan];
+        var canCenter = can.GetGlobalRect().GetCenter();
+        Vector2 playerBefore = player.GlobalPosition;
+        vp.PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = true, Position = canCenter, GlobalPosition = canCenter }, true);
+        vp.PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = false, Position = canCenter, GlobalPosition = canCenter }, true);
+        await Frames(3);
+        Check(belt.Active == Tool.WateringCan, "clicking the watering-can slot selects it");
+        Check(!player.HasMoveTarget && player.GlobalPosition.DistanceTo(playerBefore) < 1, "a belt click is not a ground click (Kit stays)");
+        await Wheel(MouseButton.WheelDown, canCenter);
+        Check(belt.Active == Tool.SeedBag, "mouse wheel over the belt also cycles");
+
+        // Bag: gamepad Y opens, clock holds, Kit frozen, cycling ignored.
+        Inventory.Instance.Add(ItemIds.Carrot);
+        Inventory.Instance.Add(ItemIds.Carrot, 2);
+        Inventory.Instance.Add(ItemIds.Berries, 3);
+        Wallet.Instance.Earn(45);
+        clock.TimeScale = 60;
+        await Tap(JoyButton.Y);
+        Check(bag.IsOpen && clock.IsHeld(BagView.HoldReason) && player.Frozen, "gamepad Y opens the bag; clock held, Kit stands still");
+        Check(bag.CloseButton.HasFocus(), "bag's close button has gamepad/keyboard focus");
+        double m = clock.MinutesIntoDay;
+        await Frames(10);
+        Check(clock.MinutesIntoDay == m, "clock does not move while the bag is open");
+        Check(bag.BadgeFor(ItemIds.Carrot) == "3" && bag.BadgeFor(ItemIds.Berries) == "3", "bag shows 3 carrots in one slot and 3 berries");
+        Check(bag.BadgeFor(ItemIds.CarrotSeeds) == "9", "bag shows the 9 starting carrot seeds");
+        Check(bag.SlotCount == BagView.MinSlots, $"bag draws {BagView.MinSlots} slots (3 filled + empty) ({bag.SlotCount})");
+        Check(bag.CoinsText == "545" && walletView.ShownText == "545", $"bag and HUD show the wallet (545) ({bag.CoinsText}/{walletView.ShownText})");
+        Inventory.Instance.Add(ItemIds.Carrot);
+        await Frames(1);
+        Check(bag.BadgeFor(ItemIds.Carrot) == "4" && bag.SlotCount == BagView.MinSlots, "adding a carrot while open updates the badge to 4, same slot");
+        await Tap(JoyButton.RightShoulder);
+        Check(belt.Active == Tool.SeedBag, "tool cycling is ignored while the bag is open");
+        await Tap(JoyButton.Y);
+        Check(!bag.IsOpen && !clock.IsHeld(BagView.HoldReason) && !player.Frozen && clock.IsRunning, "gamepad Y again closes the bag; clock and Kit move again");
+        await Frames(5);
+        Check(clock.MinutesIntoDay > m, "clock resumes after the bag closes");
+
+        // Other ways to close: B, right-click, Esc, the close button, A on the focused close button.
+        async Task OpenThen(Func<Task> close, string what)
+        {
+            bag.Open();
+            await Frames(2);
+            bool opened = bag.IsOpen;
+            await close();
+            await Frames(2);
+            Check(opened && !bag.IsOpen && !player.Frozen && !clock.IsHeld(BagView.HoldReason), $"{what} closes the bag");
+        }
+        await OpenThen(() => Tap(JoyButton.B), "gamepad B");
+        await OpenThen(async () =>
+        {
+            var p = mid;
+            vp.PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Right, Pressed = true, Position = p, GlobalPosition = p }, true);
+            vp.PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Right, Pressed = false, Position = p, GlobalPosition = p }, true);
+            await Frames(1);
+        }, "right-click");
+        await OpenThen(async () => { Key(Godot.Key.Escape, true); await Frames(1); Key(Godot.Key.Escape, false); }, "Esc");
+        await OpenThen(async () => { bag.CloseButton.EmitSignal(BaseButton.SignalName.Pressed); await Frames(1); }, "the on-screen close button");
+        await OpenThen(() => Tap(JoyButton.A), "gamepad A on the focused close button");
+
+        // On-screen bag button (mouse) opens and closes it.
+        var bc = bag.OpenButton.GetGlobalRect().GetCenter();
+        vp.PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = true, Position = bc, GlobalPosition = bc }, true);
+        vp.PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = false, Position = bc, GlobalPosition = bc }, true);
+        await Frames(3);
+        Check(bag.IsOpen && !player.HasMoveTarget, "clicking the on-screen bag button opens the bag (not a ground click)");
+        bag.Close();
+        await Frames(2);
+
+        // Not during the sleep question.
+        clock.AskToSleep();
+        await Tap(JoyButton.Y);
+        Check(!bag.IsOpen, "the bag does not open while 'Go to sleep?' is asked");
+        clock.CancelAsk();
+        await Frames(2);
+
+        // Active tool persists across the bag and a day rollover.
+        Check(belt.Active == Tool.SeedBag, "active tool kept after opening and closing the bag");
+        // Gamepad A confirms a focused menu button (ui_accept had no pad binding before Task 1.4).
+        clock.AskToSleep();
+        await Frames(2);
+        await Tap(JoyButton.A); // inside the 200 ms guard: ignored
+        bool guarded = clock.IsAsking && !clock.IsSleeping;
+        await Frames((int)(SleepPromptView.OpenGuardMsec / 1000.0 * Engine.PhysicsTicksPerSecond) + 6);
+        await Tap(JoyButton.A);
+        Check(guarded && clock.IsSleeping, "gamepad A answers 'Sleep' on the focused button (after the open guard)");
+        bool woke = await WaitUntil(() => !clock.IsSleeping && !main.GetNode<SleepSequence>("Systems/SleepSequence").IsRunning, 900);
+        Check(woke && clock.Day == 2 && belt.Active == Tool.SeedBag && Inventory.Instance.Count(ItemIds.Carrot) == 4 && Wallet.Instance.Coins == 545,
+            "after sleeping: Day 2, same active tool, bag and wallet unchanged");
+
+        // Button prompts for the new actions.
+        Check(ButtonPrompt.PadButton("open_inventory") == JoyButton.Y, "prompt: bag uses the top face button (Y)");
+        Check(ButtonPrompt.PadButton("cycle_tool_next") == JoyButton.RightShoulder && ButtonPrompt.PadButton("cycle_tool_prev") == JoyButton.LeftShoulder,
+            "prompt: belt shows RB / LB");
+        Check(ButtonPrompt.FaceLabel(ButtonPrompt.PadFamily.Xbox, JoyButton.LeftShoulder) == "LB"
+              && ButtonPrompt.FaceLabel(ButtonPrompt.PadFamily.PlayStation, JoyButton.RightShoulder) == "R1"
+              && ButtonPrompt.FaceLabel(ButtonPrompt.PadFamily.Nintendo, JoyButton.Y) == "X",
+            "prompt: shoulder and Y labels per pad family (LB / R1 / Switch X)");
+        Check(ButtonPrompt.KeyLabel("cycle_tool_next") == "Wheel" && !ButtonPrompt.HasKey("open_inventory"),
+            "prompt: keyboard/mouse shows the wheel for the belt; the bag has an on-screen button instead of a key");
+
+        main.QueueFree();
+        await Frames(2);
+        ResetTask14State();
     }
 }

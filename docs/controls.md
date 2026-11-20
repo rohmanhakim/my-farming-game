@@ -1,7 +1,7 @@
 # Controls
 
 > **Status:** Brainstorming draft
-> **Version:** 0.11
+> **Version:** 0.12
 > **Last updated:** 2026-11-20
 > **Purpose:** Control schemes (gamepad and keyboard + mouse) for this kind of game, adjusted to the scope of the game described in the GDD. **PC first, consoles (Switch, PlayStation) later; no touch/mobile.** Tables use XBOX button names, but any modern controller works by position (see §2 *Any controller*). All mappings are tentative (see GDD open question Q5) and subject to playtesting.
 
@@ -26,7 +26,7 @@
 | Interact / use selected tool / confirm | A | Talk to NPCs, plant, water, harvest, feed, deliver orders, open shops/order board, place buildings, catch/release creatures. |
 | Cancel / back | B | Exit menus, decline a task, put tool away. |
 | Open / cycle fixed tool belt | X / LB + RB | Cycles watering can → seed box → earned tools (e.g. butterfly net, brush, basket). Large icon slots; no sortable inventory. (LB+RB is a simple two-button input, allowed per the control goals.) |
-| Open collectathon inventory | Y | Opens the collectathon slot grid. Picture-based, no reading required. (The Collection Book lives in the pause menu.) |
+| Open collectathon inventory | Y | Opens the collectathon slot grid. Picture-based, no reading required. (The Collection Book lives in the pause menu.) **Phase-001 (Task 1.4):** Y opens the simple bag (auto-stacked items + wallet); Y or B closes it. |
 | Open care menu | Right Stick (RS) click, or on-screen care icon | Dedicated button — the D-pad stays reserved for movement. Shows care meters for every animal and the fish pond, and which need attention. Picture icons. |
 | Pause menu / calendar & settings | Start | Opens pause: day/night indicator, season calendar, Collection Book, sticker book, settings (volume, read-aloud, nudges, break reminder), save, quit. |
 | Help tooltip / inspect | Back (Select) | Shows a contextual hint or spoken/visual cue for the highlighted object. **Deferred — no Phase-001 task builds it** (the hint ladder in characters.md §8 covers help for now). |
@@ -44,6 +44,7 @@
 - Buttons are mapped **by position**, not by printed letter: "A" means the bottom face button (Cross on PlayStation, B on a Switch Pro Controller), "B" the right face button, and so on. Godot's SDL controller database makes Xbox, PlayStation and Switch Pro controllers behave the same.
 - **Every action must work on a gamepad** (nothing keyboard-only), so console versions need no new scheme.
 - **Button prompts are abstract:** UI asks for the prompt of an action (`interact`, `cancel`, …), never a hard-coded "A". A later task draws per-controller icons (Xbox / PlayStation / Switch).
+- **Menus (built in Task 1.4):** A presses the focused menu button and B goes back, on every pad (Godot's own menu actions have no gamepad buttons, so the project adds them).
 - **Open (for the console phase):** Nintendo's own convention puts confirm on the right face button; decide then whether Switch builds swap `interact`/`cancel`.
 
 ## 3. Local co-op (PC)
@@ -68,7 +69,8 @@ Two ways to do everything, available at the same time, exactly as DST does it: *
 | Interact / use tool / talk / plant / water | **Left-click the object or character** — Kit walks over, then acts |
 | Quick action (nearest thing in front of Kit) | **Space** — DST's auto-action, minus combat |
 | Cancel / back (decline a bubble, exit a menu) | **Right-click**, or a visible on-screen cancel button |
-| Cycle tool belt | **Mouse wheel** or dedicated on-screen belt buttons |
+| Cycle tool belt | **Mouse wheel** or dedicated on-screen belt buttons (click a slot) |
+| Open / close the bag | **On-screen bag button** (bottom right); close with right-click, Esc or the Close button. No keyboard key (owner decision 2026-11-20). |
 | Pause / calendar & settings | **ESC** key or on-screen pause button |
 
 **Deliberately not carried over from DST:** combat keys (F), camera rotation (Q/E — our camera is fixed), all Ctrl/Alt/Shift modifiers (control goals forbid memory-heavy combos), number hotbar (tool belt is cycled instead; revisit if the belt grows long), map key (the valley map is a page in the pause menu — places.md §5 — so it needs no key of its own).
@@ -126,3 +128,4 @@ Two ways to do everything, available at the same time, exactly as DST does it: *
 - **0.9 — 2026-11-20:** Platform is now **PC first, consoles (Switch, PlayStation) later**. §2 adds *Movement feel* (8-way walking, 4-way facing, built in Task 1.2) and *Any controller* (position-based buttons for Xbox/PlayStation/Switch Pro, gamepad-complete actions, abstract button prompts, open Switch confirm-button question).
 - **0.10 — 2026-11-20:** HUD clock readout ticks every 15 in-game minutes (owner, GDD v0.32); the dial marker still jumps per 3-hour phase.
 - **0.11 — 2026-11-20:** The map-key note now points to the pause-menu picture map of Bramblewick Vale (places.md v0.10); no new binding.
+- **0.12 — 2026-11-20:** Task 1.4 built: Y / on-screen bag button opens the simple bag (no keyboard key, owner decision); gamepad A/B confirm and go back on focused menu buttons on every pad; belt slots are clickable.

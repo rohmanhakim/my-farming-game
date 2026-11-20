@@ -1,7 +1,7 @@
 # Project Structure
 
 > **Status:** Proposal for team agreement — input to Phase-001 Task 1.1 ("Team agrees on project folder structure and naming conventions")
-> **Version:** 0.12
+> **Version:** 0.14
 > **Last updated:** 2026-11-20
 > **Purpose:** The repository layout, Godot folder structure, naming rules, input/autoload registries, asset pipeline, and verification commands that every development session follows when adding code or assets under `src/`. It is a *technical* contract only — it never overrides a gameplay decision.
 
@@ -84,25 +84,31 @@ src/
 │   ├── world/                 # things the player walks up to in the garden/lane
 │   │   ├── PlaceholderLevel.tscn  # Task 1.1 — temporary level: Background (checkerboard shader, Task 1.2) + PlayerSpawn + Bed (Task 1.3)
 │   │   ├── Bed.tscn           # Task 1.3 — StaticBody2D + NamedSprite "bed", ClickArea (layer 8), ReachArea, WakeSpot, button Prompt
-│   │   ├── GardenBed.tscn     # Task 1.4
+│   │   ├── FarmLevel.tscn     # Task 1.5 — the slice's farm level (house, front garden, old coop, old barn, gate), replaces PlaceholderLevel
+│   │   ├── FarmGrid.tscn      # Task 1.5 — front-garden tiles: clear, till, plant, water, grow
+│   │   ├── IndoorZone.tscn    # Task 1.5 — building footprint: roof fades, GameClock stops while Kit is inside
 │   │   ├── Marlow.tscn        # Task 1.6
 │   │   ├── Ledger.tscn        # Task 1.6
-│   │   └── Butterfly.tscn     # Task 1.8
+│   │   ├── BerryBush.tscn     # Task 1.6
+│   │   ├── Phone.tscn         # Task 1.8 — feed orders from home
+│   │   ├── Hen.tscn, Cow.tscn # Task 1.9
+│   │   └── Ada.tscn           # Task 1.12 — solo-play NPC
 │   └── ui/                    # everything drawn on the UI CanvasLayer
-│       ├── UI.tscn            # Task 1.1 — HUD root; ClockDial + SleepPrompt (1.3), ToolBelt etc. instance in here
+│       ├── UI.tscn            # Task 1.1 — HUD root; ClockDial + SleepPrompt (1.3), WalletHud + ToolBelt + Bag (1.4) instance in here
 │       ├── ClockDial.tscn     # Task 1.3 — HUD clock: 8-phase dial, sun/moon marker per phase, 15-minute readout "07:45", season icon + "Day N"
 │       ├── SleepPrompt.tscn   # Task 1.3 — "Go to sleep?" Sleep / Not yet (gamepad focus)
 │       ├── DayTransition.tscn # Task 1.3 — sleep fade + "Day N" card; instanced into Main/Transition
-│       ├── ToolBelt.tscn      # Task 1.3
-│       ├── GardenShelf.tscn   # Task 1.5
+│       ├── ToolBelt.tscn      # Task 1.4 — bottom-centre picture slots (built from ToolBelt), LB / RB prompts
+│       ├── Bag.tscn           # Task 1.4 — on-screen bag button + bag panel (coin readout, ≥ 8-slot grid with count badges)
+│       ├── WalletHud.tscn     # Task 1.4 — top-left coin icon + amount
 │       ├── PictureBubble.tscn # Task 1.6
-│       ├── PauseMenu.tscn     # Task 1.10
+│       ├── PauseMenu.tscn     # Task 1.11
 │       └── DayNightOverlay.tscn  # Task 1.11
 │
 ├── scripts/                   # every .cs, grouped by the layer it belongs to
 │   ├── autoloads/             # cross-scene singletons — ONLY the ones in §8
 │   │   ├── GameClock.cs       # Task 1.3 — clock (15-min readout, 3-h phases), calendar, 04:30 wake-up + 21:30 bedtime, DayEnded/DayStarted
-│   │   ├── ToolBelt.cs, Inventory.cs, Wallet.cs   # Task 1.4
+│   │   ├── ToolBelt.cs, Inventory.cs, Wallet.cs   # Task 1.4 — active tool + owned tools; auto-stacking items (ItemIds); coins, never below 0
 │   │   ├── OrderManager.cs    # Task 1.7
 │   │   ├── SaveGame.cs        # Task 1.10
 │   │   ├── Onboarding.cs      # Task 1.12
@@ -111,17 +117,19 @@ src/
 │   │   └── PlayerController.cs   # Task 1.2 — 8-way walk, 4-way Facing, click-to-move, WalkTo(target, onArrived)
 │   ├── world/
 │   │   ├── Bed.cs             # Task 1.3 — IInteractable: interact/click → GameClock.AskToSleep(); WakePoint
-│   │   ├── GardenBed.cs       # Task 1.4
+│   │   ├── FarmGrid.cs, CropTile.cs, IndoorZone.cs   # Task 1.5
 │   │   ├── Marlow.cs          # Task 1.6
 │   │   ├── Ledger.cs          # Task 1.6
-│   │   └── Butterfly.cs       # Task 1.8
+│   │   ├── BerryBush.cs       # Task 1.6
+│   │   ├── Phone.cs           # Task 1.8
+│   │   ├── Hen.cs, Cow.cs     # Task 1.9
+│   │   └── Ada.cs             # Task 1.12
 │   ├── ui/
 │   │   ├── ClockDialView.cs, SleepPromptView.cs, DayTransitionView.cs   # Task 1.3 (views; state lives in GameClock)
 │   │   ├── ButtonPrompt.cs    # Task 1.3 — per-action button glyph: key cap, or Xbox / PlayStation / Nintendo face button
-│   │   ├── ToolBeltView.cs    # Task 1.4 (view code; state lives in the autoload)
-│   │   ├── GardenShelfView.cs # Task 1.5
+│   │   ├── ToolBeltView.cs, BagView.cs, WalletView.cs   # Task 1.4 (views + their inputs; state lives in the autoloads)
 │   │   ├── DialogueBubbleView.cs  # Task 1.6
-│   │   ├── PauseMenuView.cs   # Task 1.10
+│   │   ├── PauseMenuView.cs   # Task 1.11
 │   │   └── DayNightView.cs    # Task 1.11
 │   ├── main/
 │   │   ├── Main.cs            # Task 1.1 — root coordinator: layer numbers, player spawn (load_level later)
@@ -131,8 +139,7 @@ src/
 │       ├── UILayers.cs        # Task 1.1 — CanvasLayer constants (§4 standard)
 │       ├── SpriteLibrary.cs   # Task 1.1 — sprite lookup by name: final art → ph_ placeholder → coloured square
 │       ├── NamedSprite.cs     # Task 1.1 — Sprite2D that takes its texture from SpriteLibrary at a fixed DisplaySize
-│       ├── IInteractable.cs   # Task 1.3 — "interact / click to use" contract, group `interactables`, click layer 8
-│       └── GrowthTiming.cs    # Task 1.4 — named Fast/Medium/Slow preset reader (no options UI)
+│       └── IInteractable.cs   # Task 1.3 — "interact / click to use" contract, group `interactables`, click layer 8
 │
 ├── assets/                    # ALL game art/audio/fonts, imported by Godot
 │   ├── art/
@@ -152,7 +159,8 @@ src/
 │   └── LICENSES.md            # every third-party asset (placeholders included): source + license (§9)
 │
 ├── data/                      # data files loaded at runtime: .tres / .json
-│   └── growth_timing.tres     # Fast / Medium / Slow presets (Task 1.4)
+│   ├── crops.tres             # Task 1.5 — days to harvest, regrow (crops.md; day-based growth)
+│   └── prices.tres            # Task 1.8 — generated from docs/data/economy.csv
 ├── shaders/                   # .gdshader files — snake_case.gdshader (§6)
 ├── debug/                     # debug-only scenes/scripts (overlay, inspectors) — excluded from export
 │   └── ClockDebugKeys.cs      # Task 1.3 — debug builds only (Main adds it): F2 next step, F3 20× speed, F4 → 21:20
@@ -168,8 +176,8 @@ src/
 ### Structural rules (apply to every task)
 
 1. **Type-first folders:** scenes go in `scenes/<context>/`, scripts in `scripts/<layer>/`. Do not scatter loose `.tscn`/`.cs` at `src/` root (generated project files excepted).
-2. **One primary node class per scene**, and the scene file name equals its root node name (`GardenBed.tscn` → root node `GardenBed`).
-3. **Script file name equals the C# class name** (`GardenBed.cs` → `class GardenBed : Node2D`).
+2. **One primary node class per scene**, and the scene file name equals its root node name (`FarmGrid.tscn` → root node `FarmGrid`).
+3. **Script file name equals the C# class name** (`FarmGrid.cs` → `class FarmGrid : Node2D`).
 4. **Logic lives in `.cs`, layout lives in `.tscn`.** Never hard-code a node path that a scene rename would break without also updating the script; prefer `GetNode<T>("%UniqueName")` with owner-unique names for cross-scene lookups.
 5. **Scenes never reference each other directly.** Cross-scene communication goes through signals / the `EventBus` (§8) or an autoload API (§8). A scene may only be *instanced* by its parent context (`Main.tscn` instances world + UI).
 6. **Autoloads are reserved** for genuinely cross-scene, session-persistent state — exactly the list in §8. Anything else is a normal node.
@@ -250,15 +258,15 @@ Quick lookup so a session knows where its artifact belongs. Scope still comes fr
 | 1.1 Project Foundation | `scenes/main/Main.tscn`, `scenes/player/Player.tscn`, `scenes/ui/UI.tscn`, placeholder art (§9) |
 | 1.2 Player Movement | `scripts/player/PlayerController.cs`, InputMap `move_*`, `interact`, `cancel` (§7) |
 | 1.3 Day Clock & Sleep | `scripts/autoloads/GameClock.cs`, `scenes/ui/ClockDial.tscn` + `SleepPrompt.tscn` + `DayTransition.tscn`, `scripts/ui/{ClockDialView,SleepPromptView,DayTransitionView,ButtonPrompt}.cs`, `scenes/world/Bed.tscn` + `scripts/world/Bed.cs`, `scripts/core/IInteractable.cs`, `scripts/main/SleepSequence.cs`, `debug/ClockDebugKeys.cs` ✅ built |
-| 1.4 Tool Belt, Bag & Wallet | `scripts/autoloads/ToolBelt.cs` + `Inventory.cs` + `Wallet.cs`, `scenes/ui/ToolBelt.tscn`, `scenes/ui/Bag.tscn`, actions `cycle_tool_*`, `open_inventory` |
-| 1.5 Clearing, Planting & Growth | `scenes/world/FarmGrid.tscn`, `scripts/world/FarmGrid.cs`, `scripts/world/CropTile.cs`, `data/crops.tres` |
+| 1.4 Tool Belt, Bag & Wallet | `scripts/autoloads/ToolBelt.cs` + `Inventory.cs` + `Wallet.cs`, `scenes/ui/{ToolBelt,Bag,WalletHud}.tscn`, `scripts/ui/{ToolBeltView,BagView,WalletView}.cs`, `debug/BagDebugKeys.cs`, actions `cycle_tool_*`, `open_inventory`, `ui_accept`/`ui_cancel` pad buttons ✅ built |
+| 1.5 Farm Level, Clearing, Planting & Growth | `scenes/world/FarmLevel.tscn` + `FarmGrid.tscn` + `IndoorZone.tscn`, `scripts/world/{FarmGrid,CropTile,IndoorZone}.cs`, `data/crops.tres`; Bed moves into the house |
 | 1.6 Marlow & First Order | `scenes/world/Marlow.tscn` + `Ledger.tscn` + `BerryBush.tscn`, `scripts/world/*.cs`, `scenes/ui/PictureBubble.tscn` |
 | 1.7 Order Board | `scripts/autoloads/OrderManager.cs`, `scenes/ui/OrderBoard.tscn`, `scripts/ui/OrderBoardView.cs` |
-| 1.8 Seed Shop | `scenes/ui/Shop.tscn`, `scripts/ui/ShopView.cs`, `scripts/core/PriceTable.cs` (reads `docs/data/economy.csv` → `data/prices.tres`) |
-| 1.9 Chickens & Loss Rule | `scenes/world/Coop.tscn`, `scenes/world/Hen.tscn`, `scripts/world/Hen.cs`, `scenes/ui/LossCard.tscn` |
+| 1.8 Seed Shop & Phone | `scenes/ui/Shop.tscn`, `scripts/ui/ShopView.cs`, `scripts/core/PriceTable.cs` (reads `docs/data/economy.csv` → `data/prices.tres`), `scenes/world/Phone.tscn` + `scripts/world/Phone.cs` (feed orders → feed bins at Dawn) |
+| 1.9 Hens, Cow & Loss Rule | `scenes/world/Hen.tscn` + `Cow.tscn`, `scripts/world/{Hen,Cow}.cs` (coop and barn are already in `FarmLevel`), `scenes/ui/LossCard.tscn` |
 | 1.10 Save / Load | `scripts/autoloads/SaveGame.cs` (versioned, section registration) |
 | 1.11 Pause & Day/Night | `scenes/ui/PauseMenu.tscn`, `scenes/ui/DayNightOverlay.tscn`, action `pause` |
-| 1.12 Onboarding | `scripts/autoloads/Onboarding.cs`, `scenes/ui/Nudge.tscn` |
+| 1.12 Onboarding | `scripts/autoloads/Onboarding.cs`, `scenes/ui/Nudge.tscn`, `scenes/world/Ada.tscn` + `scripts/world/Ada.cs` |
 | 1.13 Playtest & Iterate | fixes only — no new top-level folders |
 
 ---
@@ -268,14 +276,14 @@ Quick lookup so a session knows where its artifact belongs. Scope still comes fr
 | Thing | Convention | Example |
 |---|---|---|
 | Folders (`src/`) | `lowercase`, no spaces | `scenes/world/` |
-| Scene files | `PascalCase.tscn` | `GardenBed.tscn` |
+| Scene files | `PascalCase.tscn` | `FarmGrid.tscn` |
 | C# files / classes | `PascalCase`, file == class | `PlayerController.cs` |
-| Node names in the tree | `PascalCase`, role-based | `GardenBed`, `ActiveSlotHighlight` |
+| Node names in the tree | `PascalCase`, role-based | `FarmGrid`, `ActiveSlotHighlight` |
 | Autoload singletons | `PascalCase`, no suffix | `TaskManager` (not `TaskManagerSystem`) |
 | InputMap actions | `snake_case`, verb_noun | `cycle_tool_next` |
 | Signals / C# events | past tense | `[Signal] delegate void FlowerHarvestedEventHandler(...)` |
 | Exported properties | `[Export] public` + descriptive noun | `[Export] public float StageSeconds` |
-| Resource files (`.tres`) | `snake_case.tres` | `growth_timing.tres` |
+| Resource files (`.tres`) | `snake_case.tres` | `crops.tres` |
 | Shader files | `snake_case.gdshader` | `water_shimmer.gdshader` |
 | Art/audio files | `snake_case.<ext>`, placeholder prefix `ph_` (§9) | `ph_watering_can.png` |
 | Save file | fixed path | `user://savegame.json` |
@@ -293,9 +301,9 @@ Defined once in `project.godot → [input]`, bound for **both** gamepad and keyb
 | `move_left` / `move_right` / `move_up` / `move_down` | Left stick + D-pad | A/D/W/S + arrows | 1.2 |
 | `interact` | A | left-click on object, Space (`quick_action` = same handler, nearest target) | 1.2 |
 | `cancel` | B | right-click | bind by 1.6 (decline/back); earlier is fine |
-| `cycle_tool_next` / `cycle_tool_prev` | X, LB+RB | mouse wheel down/up | 1.3 |
-| `pause` | Start | Esc | 1.10 |
-| `open_inventory` | Y | — | deferred (Phase-002) |
+| `cycle_tool_next` / `cycle_tool_prev` | RB or X / LB | mouse wheel down/up, or click a belt slot | 1.4 |
+| `pause` | Start | Esc | 1.11 |
+| `open_inventory` | Y | on-screen bag button (no key) | 1.4 (simple bag) |
 | `open_care_menu` | RS click | on-screen icon only | deferred (Phase-002) |
 | `help_inspect` | Back/Select | — | **deferred, explicitly out of Phase-001** |
 
@@ -304,6 +312,8 @@ Defined once in `project.godot → [input]`, bound for **both** gamepad and keyb
 **Task 1.2:** `move_*` deadzones lowered from 0.5 to **0.2** so a half-tilted stick walks slowly instead of not at all; `PlayerController` reads them with `Input.GetVector(..., 0.2)`. Ground left-clicks are handled in `PlayerController._UnhandledInput` (UI eats its own clicks first). Gamepad bindings use Godot's SDL button indices, which are **position-based**, so the same map works for Xbox, PlayStation and Switch Pro controllers (controls.md §2 *Any controller*). UI must show button prompts per action, never a hard-coded letter.
 
 **Task 1.3:** `interact` is now read: **Space / gamepad A** (bottom face button on every pad) uses the nearest `IInteractable` in reach; a **left-click on an interactable's click area** (physics layer 8) walks Kit there, then uses it — any other left-click is a ground click. In the "Go to sleep?" prompt, Godot's built-in `ui_*` actions drive the buttons (D-pad/stick/arrows move focus, A/Space/Enter confirm, B/Esc/right-click close via `ui_cancel` + `cancel`). Button prompts come from `scripts/ui/ButtonPrompt.cs` (key cap, or Xbox letters / PlayStation shapes / Nintendo letters, picked from the last device used). Debug-only F2/F3/F4 clock keys are raw keys in `src/debug/` on purpose (developer tools, not game controls).
+
+**Task 1.4:** `open_inventory` bound to gamepad **Y** (top face button on every pad); the mouse uses the on-screen bag button; there is no keyboard key (owner decision 2026-11-20). `cycle_tool_next` events reordered to RB, X, wheel down so prompts show RB. **Godot's built-in `ui_accept` / `ui_cancel` have no gamepad buttons** (only Enter/Kp Enter/Space and Esc), so they are overridden in `project.godot` with **A** and **B** added (keys as physical keycodes) — every focused menu button now works on any pad. The bag closes on Y, B, right-click, Esc or its Close button (read in `_Input` while open, before the GUI). Debug-only F6/F7/F8 bag/wallet keys are raw keys in `src/debug/`.
 
 Rules: D-pad stays reserved for movement (`controls.md` §2); no action may require reading; every new action is added to this table in the same session.
 
@@ -314,9 +324,9 @@ Rules: D-pad stays reserved for movement (`controls.md` §2); no action may requ
 | Autoload | File | Added in | Responsibility | Must not break |
 |---|---|---|---|---|
 | `GameClock` ✅ | `scripts/autoloads/GameClock.cs` | Task 1.3 | stepped clock (8 phases), day/season, 04:30 wake-up, sleep and 21:30 bedtime, `DayEnded`/`DayStarted` signals | day rollover drives growth and hunger counts — fire exactly once |
-| `ToolBelt` | `scripts/autoloads/ToolBelt.cs` | Task 1.4 | active tool + slots | other systems read the active tool through it |
-| `Inventory` | `scripts/autoloads/Inventory.cs` | Task 1.4 | auto-stacking items | — |
-| `Wallet` | `scripts/autoloads/Wallet.cs` | Task 1.4 | coins; never below 0 | — |
+| `ToolBelt` ✅ | `scripts/autoloads/ToolBelt.cs` | Task 1.4 | active tool + owned tools (hands … feed scoop), cycling | other systems read the active tool through it |
+| `Inventory` ✅ | `scripts/autoloads/Inventory.cs` | Task 1.4 | auto-stacking items (per id + quality), `ItemIds` | never "full"; `Remove` is all or nothing |
+| `Wallet` ✅ | `scripts/autoloads/Wallet.cs` | Task 1.4 | coins (500 start); never below 0 | `Spend` refuses instead of going negative |
 | `OrderManager` | `scripts/autoloads/OrderManager.cs` | Task 1.7 | order generation (producible items only), accept/deliver, repeat orders | never offers what Kit cannot produce |
 | `SaveGame` | `scripts/autoloads/SaveGame.cs` | Task 1.10 | versioned JSON save, section registration, backup | nothing else writes `user://` |
 | `Onboarding` | `scripts/autoloads/Onboarding.cs` | Task 1.12 | guided start + one-time nudges | never blocks play |
@@ -396,7 +406,7 @@ Restore after cloning: `npx skills experimental_install` · Update: `npx skills 
 | `godot-2d-movement` | Task 1.2 — CharacterBody2D controller, camera follow |
 | `input-systems` | Tasks 1.2/1.3 — InputMap actions, gamepad bindings, rebinds |
 | `godot-ui-control` + `game-ui-ux` | Tasks 1.3/1.5/1.10 — anchors, containers, gamepad focus, HUD layout |
-| `godot-resources` | Task 1.4 — growth presets, `.tres` data |
+| `godot-resources` | Tasks 1.5/1.8 — crop and price `.tres` data |
 | `godot-tilemap` | Task 1.4+ — garden/lane TileSet, `TileMapLayer` |
 | `godot-animation` | Tasks 1.2/1.6/1.11 — AnimationPlayer, tweens, sprite flips |
 | `godot-physics` | Tasks 1.2/1.8 — 2D bodies, collision layers, Area2D interaction detection |
@@ -458,3 +468,5 @@ Restore after cloning: `npx skills experimental_install` · Update: `npx skills 
 - **0.10 — 2026-11-20:** Clock references updated to the 04:30 wake-up and 21:30 bedtime (GDD v0.31); debug F4 jumps to 21:20.
 - **0.11 — 2026-11-20:** `GameClock`/`ClockDial` descriptions: readout ticks every 15 in-game minutes (`TimeChanged` signal).
 - **0.12 — 2026-11-20:** `docs/assets/` now also holds design images: `map/bramblewick-vale.svg` (the to-scale valley map, places.md v0.10).
+- **0.13 — 2026-11-20:** Task 1.4: `ToolBelt`, `Inventory`, `Wallet` autoloads registered (Pausable). §4 tree adds `Bag.tscn`, `WalletHud.tscn`, `BagView`/`WalletView`, `debug/BagDebugKeys.cs`; `ToolBelt.tscn` relabelled Task 1.4. §5 row lists the real files. §7: `open_inventory` bound (Y + on-screen button, no key by owner decision), `cycle_tool_*` row updated, and `ui_accept`/`ui_cancel` overridden with gamepad A/B (Godot's defaults have no pad buttons).
+- **0.14 — 2026-11-20:** Synced with Phase-001 v0.28 (Tasks 1.5–1.13 checked against the docs): §4 tree drops the stale v0.9 names — `GardenBed` (now `FarmGrid`, Task 1.5), `GardenShelf`, `Butterfly` (the Butterfly Garden is an optional Phase-004 request), and `GrowthTiming.cs`/`growth_timing.tres` (play-time growth presets, retired by day-based growth) — and adds `FarmLevel`, `IndoorZone`, `BerryBush`, `Phone`, `Hen`/`Cow`, `Ada`, `crops.tres`, `prices.tres`. Pause menu and `pause` action labelled Task 1.11 (was 1.10). §5 rows for 1.5, 1.8, 1.9 and 1.12 updated; naming examples use `FarmGrid`/`crops.tres`.

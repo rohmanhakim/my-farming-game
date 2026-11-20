@@ -1,0 +1,179 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/BagView.cs" id="1_view"]
+[ext_resource type="Script" path="res://scripts/ui/ButtonPrompt.cs" id="2_prompt"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+content_margin_left = 20.0
+content_margin_top = 16.0
+content_margin_right = 20.0
+content_margin_bottom = 16.0
+bg_color = Color(0.36, 0.25, 0.16, 0.97)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.95, 0.88, 0.7, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="LabelSettings" id="LabelSettings_coins"]
+font_size = 26
+font_color = Color(1, 0.95, 0.7, 1)
+outline_size = 6
+outline_color = Color(0.15, 0.12, 0.1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bagbutton"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.16, 0.13, 0.1, 0.78)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.8, 0.72, 0.55, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[node name="Bag" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_view")
+
+[node name="ButtonRow" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -140.0
+offset_top = -96.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 8
+alignment = 2
+
+[node name="OpenPrompt" type="Control" parent="ButtonRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+script = ExtResource("2_prompt")
+Action = "open_inventory"
+HideWithoutKey = true
+
+[node name="OpenButton" type="Button" parent="ButtonRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+tooltip_text = "Bag"
+theme_override_styles/normal = SubResource("StyleBoxFlat_bagbutton")
+theme_override_styles/hover = SubResource("StyleBoxFlat_bagbutton")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_bagbutton")
+icon_alignment = 1
+expand_icon = true
+
+[node name="PanelRoot" type="ColorRect" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.05, 0.04, 0.08, 0.45)
+
+[node name="Center" type="CenterContainer" parent="PanelRoot"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Panel" type="PanelContainer" parent="PanelRoot/Center"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="Column" type="VBoxContainer" parent="PanelRoot/Center/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Header" type="HBoxContainer" parent="PanelRoot/Center/Panel/Column"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="BagIcon" type="TextureRect" parent="PanelRoot/Center/Panel/Column/Header"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Spacer" type="Control" parent="PanelRoot/Center/Panel/Column/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="CoinIcon" type="TextureRect" parent="PanelRoot/Center/Panel/Column/Header"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+size_flags_vertical = 4
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Coins" type="Label" parent="PanelRoot/Center/Panel/Column/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "500"
+label_settings = SubResource("LabelSettings_coins")
+vertical_alignment = 1
+
+[node name="Grid" type="GridContainer" parent="PanelRoot/Center/Panel/Column"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+columns = 4
+
+[node name="Footer" type="HBoxContainer" parent="PanelRoot/Center/Panel/Column"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="ClosePrompt" type="Control" parent="PanelRoot/Center/Panel/Column/Footer"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+script = ExtResource("2_prompt")
+Action = "cancel"
+HideWithoutKey = true
+
+[node name="CloseButton" type="Button" parent="PanelRoot/Center/Panel/Column/Footer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(140, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Close"

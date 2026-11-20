@@ -1,7 +1,7 @@
 # Economy & Balance Sheet
 
 > **Status:** First draft for owner review — new document
-> **Version:** 0.12
+> **Version:** 0.13
 > **Last updated:** 2026-11-20
 > **Purpose:** Prices, income, and costs, plus a balance check showing how long each goal takes. Owner rule (2026-11-19): **what Kit sells ≈ real-world price; what Kit buys ≈ half the real price** (the kid-friendly part). **Real prices are Australian (owner decision 2026-11-20)**: a big-farm country with cheap animals and hay, which keeps hens and sheep worth buying. The full price list is the spreadsheet **[`data/economy.csv`](./data/economy.csv)** (79 items; opens in Excel/Sheets). Most real prices are estimates and must be checked before they are final (§6).
 
@@ -109,7 +109,7 @@ All figures sell the raw product at ★ quality, with bought feed and no order p
 | Natural pond (free, 4 × 4) + 10 fish | 118 | 80 | < 1 day (after clearing its corner of Field E) |
 | New 4 × 4 pond (16 water tiles) + 10 fish | 118 | 4,080 + channel | ≈ 35 days |
 
-### 5.3 Rough timeline (30-day seasons, 15-minute days — GDD §4)
+### 5.3 Rough timeline (30-day seasons, 17-minute days — GDD §4)
 
 | Goal | When (typical) |
 |---|---|
@@ -158,3 +158,4 @@ All figures sell the raw product at ★ quality, with bought feed and no order p
 - **0.10 — 2026-11-20:** **Farmhands first, machines later (owner decision 2026-11-20):** farmhand wage set to **500/day** (game wage, below half-real), hired by the day from T2; farmhand cottage removed from the price sheet (80 items); balance risk 6 replaced by the farmhand-vs-machine payback (feeding ≈ 62 days, watering ≈ 107 days).
 - **0.11 — 2026-11-20:** **Machines simplified (owner decision 2026-11-20):** sprinkler prices include hidden pipes (400 / 1,200 / 2,500; no water source needed); feed orders go straight into the silo / pond-feeder hopper once built; farmhand-vs-sprinkler payback now ≈ 20 days.
 - **0.12 — 2026-11-20:** **Windmill / water pump removed (owner decision 2026-11-20):** row dropped from `data/economy.csv` (79 items); flour is milled at the village watermill.
+- **0.13 — 2026-11-20:** §5.3 heading corrected to 17-minute days (GDD §4, Harvest Moon pace); the timeline counts days, so no figure changes.

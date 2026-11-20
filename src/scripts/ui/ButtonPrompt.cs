@@ -25,6 +25,10 @@ public partial class ButtonPrompt : Control
         set { _action = value; QueueRedraw(); }
     }
 
+    /// <summary>When true and the keyboard/mouse is in use, a prompt for an action with no keyboard
+    /// key draws nothing (the on-screen button next to it is the mouse way in).</summary>
+    [Export] public bool HideWithoutKey { get; set; }
+
     /// <summary>Shared by all prompts: true after gamepad input, false after keyboard/mouse.</summary>
     public static bool UsingGamepad { get; set; } = Input.GetConnectedJoypads().Count > 0;
 
@@ -64,12 +68,26 @@ public partial class ButtonPrompt : Control
     /// PlayStation returns the shape's name; the shape itself is drawn.</summary>
     public static string FaceLabel(PadFamily family, JoyButton b) => family switch
     {
-        PadFamily.PlayStation => b switch { JoyButton.A => "cross", JoyButton.B => "circle", JoyButton.X => "square", JoyButton.Y => "triangle", _ => b.ToString() },
-        PadFamily.Nintendo => b switch { JoyButton.A => "B", JoyButton.B => "A", JoyButton.X => "Y", JoyButton.Y => "X", _ => b.ToString() },
-        _ => b switch { JoyButton.A => "A", JoyButton.B => "B", JoyButton.X => "X", JoyButton.Y => "Y", _ => b.ToString() },
+        PadFamily.PlayStation => b switch { JoyButton.A => "cross", JoyButton.B => "circle", JoyButton.X => "square", JoyButton.Y => "triangle", JoyButton.LeftShoulder => "L1", JoyButton.RightShoulder => "R1", _ => b.ToString() },
+        PadFamily.Nintendo => b switch { JoyButton.A => "B", JoyButton.B => "A", JoyButton.X => "Y", JoyButton.Y => "X", JoyButton.LeftShoulder => "L", JoyButton.RightShoulder => "R", _ => b.ToString() },
+        _ => b switch { JoyButton.A => "A", JoyButton.B => "B", JoyButton.X => "X", JoyButton.Y => "Y", JoyButton.LeftShoulder => "LB", JoyButton.RightShoulder => "RB", _ => b.ToString() },
     };
 
-    /// <summary>Keyboard key name for the action, e.g. "Space".</summary>
+    /// <summary>True for the shoulder buttons, which are drawn as a pill instead of a circle.</summary>
+    public static bool IsShoulder(JoyButton b) => b is JoyButton.LeftShoulder or JoyButton.RightShoulder;
+
+    /// <summary>True if the action has a keyboard key.</summary>
+    public static bool HasKey(string action)
+    {
+        if (!InputMap.HasAction(action)) return false;
+        foreach (var ev in InputMap.ActionGetEvents(action))
+            if (ev is InputEventKey)
+                return true;
+        return false;
+    }
+
+    /// <summary>Keyboard key name for the action, e.g. "Space"; "Wheel" for a mouse-wheel binding;
+    /// "Click" otherwise.</summary>
     public static string KeyLabel(string action)
     {
         if (!InputMap.HasAction(action)) return "?";
@@ -82,6 +100,9 @@ public partial class ButtonPrompt : Control
                     : DisplayServer.KeyboardGetKeycodeFromPhysical(k.PhysicalKeycode);
                 return OS.GetKeycodeString(code);
             }
+        foreach (var ev in InputMap.ActionGetEvents(action))
+            if (ev is InputEventMouseButton { ButtonIndex: MouseButton.WheelUp or MouseButton.WheelDown })
+                return "Wheel";
         return "Click";
     }
 
@@ -119,6 +140,11 @@ public partial class ButtonPrompt : Control
         var btn = PadButton(Action);
         if (!(UsingGamepad && btn.HasValue))
         {
+            if (HideWithoutKey && !HasKey(Action))
+            {
+                SetMinWidth(0);
+                return;
+            }
             // Key cap: rounded box with the key name.
             string text = KeyLabel(Action);
             int fs = 14;
@@ -131,8 +157,20 @@ public partial class ButtonPrompt : Control
             return;
         }
 
-        SetMinWidth(Size.Y);
         var family = FamilyFor(Input.GetJoyName(LastPadDevice));
+        if (IsShoulder(btn.Value))
+        {
+            // Shoulder button: a dark pill with LB / RB, L1 / R1 or L / R.
+            string sl = FaceLabel(family, btn.Value);
+            float pw = Mathf.Max(Size.Y * 1.4f, font.GetStringSize(sl, HorizontalAlignment.Left, -1, 14).X + 14);
+            var pill = new StyleBoxFlat { BgColor = new Color(0.25f, 0.25f, 0.28f), BorderColor = dark };
+            pill.SetBorderWidthAll(2); pill.SetCornerRadiusAll((int)(Size.Y / 2));
+            DrawStyleBox(pill, new Rect2(0, 0, pw, Size.Y));
+            DrawString(font, new Vector2(0, Size.Y / 2 + 14 * 0.35f), sl, HorizontalAlignment.Center, pw, 14, Colors.White);
+            SetMinWidth(pw);
+            return;
+        }
+        SetMinWidth(Size.Y);
         var c = Size / 2f;
         float r = Mathf.Min(Size.X, Size.Y) / 2f - 1f;
         string label = FaceLabel(family, btn.Value);

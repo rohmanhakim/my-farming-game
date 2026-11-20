@@ -1,7 +1,7 @@
 # Game Design Document
 
 > **Status:** Brainstorming draft — **direction reset 2026-11-19** (see v0.19–v0.20 change log)
-> **Version:** 0.39
+> **Version:** 0.40
 > **Last updated:** 2026-11-20
 > **Purpose:** A living document for shaping the game together. Confirmed owner decisions are marked **decided**; everything else is a proposal, not a commitment.
 
@@ -194,7 +194,7 @@ One rule for everything that lives on the farm: **3 days in a row without care �
 - **Readout every 15 in-game minutes** (15 real seconds per tick); the **phase** (light, presence, dial marker) changes one 3-hour step at a time.
 - **Day length (decided 2026-11-19, reset 2026-11-20): 17 real minutes** for the playable day, 04:30 wake-up → 21:30 bedtime (17 in-game hours). The 3-hour steps are counted from the wake-up: 04:30, 07:30, 10:30, 13:30, 16:30, 19:30. That is **60 real seconds per in-game hour — Harvest Moon pace** (owner 2026-11-20), so one 3-hour step = **3 min** and 04:30 → 18:00 takes 13 min 30 s. ~5 real minutes of chores (watering, feeding) ≈ 5 in-game hours, done by ≈ 09:30. (Stardew Valley ≈ 42 s per in-game hour.)
 - **Runs only while playing:** stops in the pause menu and while the game is closed.
-- **When time stops (decided 2026-11-20, owner):** time stops while any menu or screen is open — pause menu, bag, the "Go to sleep?" question, a conversation, a shop screen. Time **also stops indoors** (houses, seed shed, barn, coop) so younger players can take their time (owner 2026-11-20, kid tolerance; replaces the earlier "keeps running indoors"). Known trade-off: indoor work (shopping, chatting, processing) costs no time, so shop hours and timed orders only bite outdoors.
+- **When time stops (decided 2026-11-20, owner):** time stops while any menu or screen is open — pause menu, bag, the "Go to sleep?" question, a conversation, a shop screen. Time **also stops indoors** (houses, seed shed, barn, coop) so younger players can take their time (owner 2026-11-20, kid tolerance; replaces the earlier "keeps running indoors"). Known trade-off: indoor work (shopping, chatting, processing) costs no time, so shop hours and timed orders only bite outdoors. **In Phase-001, buildings are entered on the same map** (owner 2026-11-20): walking into a building's footprint fades its roof out and stops the clock; there are no separate interior scenes yet (open question 16).
 - **Sleep/rest** ends the day: the calendar day increments and the clock resets to **Dawn (04:30, owner 2026-11-20)**.
 - **Forced bedtime at 21:30 (decided 2026-11-20, owner):** if Kit is still up at 21:30, Kit heads home and sleeps automatically — no penalty. Without this, a player who never sleeps would freeze the calendar now that growth is day-based.
 - **Night (22:30–01:30) and Small hours (01:30–04:30)** are never played: bedtime comes two hours into Dusk. They exist only as wedges on the HUD dial. Night-only content in the table below (seed shed lit, Moon Petal glow) needs a new home — open question.
@@ -426,6 +426,7 @@ Playtests with children are conducted with appropriate adult supervision and con
 13. **RESOLVED (v0.26, reset v0.29–v0.33):** day length 17 real minutes (04:30 → 21:30, 60 s per in-game hour).
 14. **RESOLVED (v0.26):** 30-day seasons, 120-day year (Harvest Moon).
 15. **⚠️ OPEN — order premium.** Should orders pay ×1.25 the market price? (economy.md §6, recommended.)
+16. **⚠️ OPEN — interior scenes.** Phase-001 enters buildings on the same map (roof fades, §4). Do later buildings need separate interior scenes (a fade to a room map)? Decide in Phase-002 planning; the kitchen upgrade is the first likely case.
 
 ## Related documents
 
@@ -490,3 +491,4 @@ Playtests with children are conducted with appropriate adult supervision and con
 - **0.37 — 2026-11-20:** **Farmhands first, machines later (owner decision 2026-11-20):** farmhands are hired by the day from T2 at 500 coins/day and come and go like *Harvest Moon*; the farmhand cottage is removed. Machines become the later investment.
 - **0.38 — 2026-11-20:** **Machines simplified (owner decision 2026-11-20):** sprinklers need no water source; auto-feeders run for weeks from the silo or a pond hopper filled by phone orders.
 - **0.39 — 2026-11-20:** **Windmill / water pump removed (owner decision 2026-11-20):** not needed for water (sprinklers have hidden pipes) and flour comes from the village watermill; hydroponics needs no power.
+- **0.40 — 2026-11-20:** §4 *When time stops* notes that Phase-001 enters buildings on the same map (roof fades, clock stops) with no separate interior scenes (owner); new open question 16 on interior scenes for Phase-002.

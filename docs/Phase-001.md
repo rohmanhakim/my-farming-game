@@ -1,7 +1,7 @@
 # Phase-001 — First Playable (Vertical Slice)
 
-> **Status:** In progress — Tasks 1.1–1.2 done; Task 1.3 built, pending human playtest (2026-11-20)  
-> **Version:** 0.26  
+> **Status:** In progress — Tasks 1.1–1.3 done; Task 1.4 built, pending human playtest (2026-11-20)  
+> **Version:** 0.29  
 > **Last updated:** 2026-11-20  
 > **Milestone:** 1 — First playable  
 > **Purpose:** Break Milestone 1 down into session tasks. Each task produces one scoped, playtested artifact that can be created and validated in a single session with AI assistance.
@@ -10,16 +10,18 @@
 
 **Goal (re-scoped 2026-11-19):** a **vertical slice of the money loop** — produce → order → money → invest — in one connected area. Owner decision: narrow the first playable to include orders and chickens.
 
-**Scene:** Kit's front garden → the lane (berry bushes) → Mr. Marlow's seed shed (order board, shop).
+**Scene:** Kit's house (bed, phone) and front garden with the old coop → the old barn behind the house → the farm gate → the lane (berry bushes) → Mr. Marlow's seed shed (order board, shop).
 
-**Where this sits on the map (places.md v0.10, Bramblewick Vale, 2026-11-20):** the slice covers the farm's front garden with the old coop and barn, and the lane up to Mr. Marlow's cottage and seed shed. The village green, the brook, the wood, and the hill are built in later phases; the slice needs no area transitions. Unchanged scope.
+**Where this sits on the map (places.md v0.10, Bramblewick Vale, 2026-11-20):** the slice covers the farm's centre column from places.md §3 — the house with the front garden and old coop facing the gate, the cross path, and the old barn at the back edge of Field A (behind the house, ground around it already clear) — plus the lane up to Mr. Marlow's cottage and seed shed (≈ 20 tiles from the front door). Fields A–E stay overgrown and are not walkable yet. The village green, the brook, the wood, and the hill are built in later phases; the slice needs no area transitions.
+
+**Indoors (GDD §4 "time stops indoors", owner decision 2026-11-20):** in this phase the house, coop, barn and seed shed are entered **on the same map** — walking into a building's footprint fades its roof out to show the inside, and the clock stops while Kit is inside. There are **no separate interior scenes** (fade to a room map) in Phase-001; whether later phases need them is an open question for Phase-002 planning (the kitchen upgrade is the first likely case).
 
 **Loop in this milestone:**
 1. Kit clears weeds, plants starter carrots, and waters them daily.
 2. Marlow's first order: 3 handfuls of wild berries (forage) → coins; the order board opens.
 3. Marlow's second order: 5 carrots (3 days of watering) → coins.
 4. Crops grow one day per watered night; left dry they turn yellow (2 days) and are gone (3 days).
-5. Kit starts with **5 hens and 1 cow** in the family's old coop and barn, plus ≈ 7 days of feed; Kit buys more feed and seeds at the seed shed (half real price).
+5. Kit starts with **5 hens and 1 cow** in the family's old coop and barn, plus ≈ 7 days of feed; Kit orders more feed **by phone from home** and buys seeds at the seed shed (half real price, economy.md §2).
 6. Kit feeds the animals daily and collects eggs and milk; egg and milk orders appear and repeat; an animal unfed for 3 days is gone (gravestone message card).
 7. Everything saves and loads.
 
@@ -138,7 +140,7 @@ Each task includes **Team Preparation**, **Tests** (Software / Human), and a **N
 **Dependencies:** Task 1.2.
 
 **Notes & learnings:**
-- **Outcome / status:** 2026-11-20 — **Done — pending human playtest.** Software tests: PASS — `tools/verify.sh`: `dotnet build` 0 warnings/0 errors, import + 120-frame boot clean (no errors in the log), `TestRunner` **187/187** (75 new: readout ticks every 15 in-game minutes = 15 s and not before; 04:30 → 18:00 = 810 s; design constants; fresh clock = Spring Day 1 04:30; time-scaled run 04:30→07:30→…→19:30 with one `StepChanged` per step in order; 21:30 bedtime fires once, starts sleep, time frozen while asleep; `DayEnded`/`DayStarted` exactly once per rollover for both bed and bedtime, even when `BeginSleep`/`CompleteRollover`/`Wake` are called twice; bed prompt stops the clock and "not yet" restarts it; 100 s hitch counts as 0.25 s; held clock stands still; calendar 30 → Spring 30, 31 → Summer 1, 121 → Spring 1 year 2; restarted clock starts fresh; autoload registered and Pausable; dial follows the clock and draws all 8 phases with sun by day / moon by night; tree pause stops the clock and unpause resumes it; in the real Main scene: bed prompt only when near, Space and gamepad A open "Go to sleep?", Kit freezes, B / "Not yet" closes it, clicking the bed walks Kit there and asks, "Sleep" → Day 2 04:30 with the HUD updated, 21:30 far from home → Kit wakes beside the bed on Day 3 at 04:30 with the camera snapped; button-prompt glyphs per pad family). A `--write-movie` frame check confirmed the dial, the bed prompt and the question panel draw (temporary capture scene deleted afterwards). · Human playtest: **PENDING**.
+- **Outcome / status:** 2026-11-20 — **Done** (owner playtest 2026-11-20: approved). Software tests: PASS — `tools/verify.sh`: `dotnet build` 0 warnings/0 errors, import + 120-frame boot clean (no errors in the log), `TestRunner` **187/187** (75 new: readout ticks every 15 in-game minutes = 15 s and not before; 04:30 → 18:00 = 810 s; design constants; fresh clock = Spring Day 1 04:30; time-scaled run 04:30→07:30→…→19:30 with one `StepChanged` per step in order; 21:30 bedtime fires once, starts sleep, time frozen while asleep; `DayEnded`/`DayStarted` exactly once per rollover for both bed and bedtime, even when `BeginSleep`/`CompleteRollover`/`Wake` are called twice; bed prompt stops the clock and "not yet" restarts it; 100 s hitch counts as 0.25 s; held clock stands still; calendar 30 → Spring 30, 31 → Summer 1, 121 → Spring 1 year 2; restarted clock starts fresh; autoload registered and Pausable; dial follows the clock and draws all 8 phases with sun by day / moon by night; tree pause stops the clock and unpause resumes it; in the real Main scene: bed prompt only when near, Space and gamepad A open "Go to sleep?", Kit freezes, B / "Not yet" closes it, clicking the bed walks Kit there and asks, "Sleep" → Day 2 04:30 with the HUD updated, 21:30 far from home → Kit wakes beside the bed on Day 3 at 04:30 with the camera snapped; button-prompt glyphs per pad family). A `--write-movie` frame check confirmed the dial, the bed prompt and the question panel draw (temporary capture scene deleted afterwards). · Human playtest: **PASS** by the owner (F5, unembedded). Still worth a check with a real gamepad and a 6-year-old when available.
 - **What worked well:** Keeping the clock's rules separate from visuals: `GameClock.Tick(delta)` is public and tests make private clocks (`new GameClock()` added with `SetProcess(false)`) so a full day runs in seven calls with no waiting. Time runs continuously underneath and only the *display* is stepped, which keeps the bedtime and 45 s per in-game hour exact. One sleep flow for both bed and bedtime (`BeginSleep` → `CompleteRollover` → `Wake`) with guards makes "exactly once" a property of the clock, not of the callers. Named handler methods plus `-=` in `_ExitTree` for every subscription to the autoload, because tests instance `Main.tscn` several times. A throwaway GDScript scene + `--write-movie` is a quick way to look at a UI state for one frame without adding test code.
 - **Problems & fixes:** (1) `DisplayServer.KeyboardGetKeycodeFromPhysical` logs `ERROR: Not supported by this display server` in headless runs → `ButtonPrompt.KeyLabel` uses the physical keycode when `DisplayServer.GetName() == "headless"`. (2) The "Sleep" button ignores presses for 200 ms after opening so the A/Space press that opened the question cannot answer it; at first "Not yet"/B had the same guard and a fast headless test closed nothing → only "Sleep" is guarded now ("Not yet" never loses anything). (3) The bedtime is not a step boundary: steps are counted from the 04:30 wake-up (04:30, 07:30 … 19:30), so the dial stays on "19:30" (Dusk) until 21:30 arrives 1 min 30 s of real time later. `ShownTime` therefore formats hours *and* minutes (`GameClock.FormatTime`). (4) **Night (22:30–01:30) and Small hours (01:30–04:30) are never played** because bedtime comes first; the dial keeps their wedges and tests draw them via `ClockDialView.Display`. Night-only content (seed shed lit, Moon Petal) needs a new time — raised with the owner. (5) A huge frame delta (window dragged, breakpoint) would skip time → each frame counts at most 0.25 s (`GameClock.MaxFrameSeconds`). (6) A test lambda that checked every `SleepStarted` reason failed once a later bed sleep fired the same signal → record reasons in a list and check the first.
 - **Deviations from scope or plan:** (a) **Step length 180 s** (3 min, 60 s per in-game hour — Harvest Moon pace, owner 2026-11-20 after trying 135 s; `GameClock.RealSecondsPerStep`), playable day 04:30 → 21:30 = 17 in-game hours = 17 real minutes (GDD §4 v0.33); season length 30 (`SeasonLengthDays`). Seasons roll over generally (day 31 = Summer 1) though Phase-001 only has Spring content and a spring icon; nothing reads the season yet. (b) **"Go to sleep?" question** (Sleep / Not yet) when using the bed, so a stray A press can't end the day by accident; it follows controls.md §6 ("clear visual button") and the rule that the clock stops while any menu is open. **Owner decision 2026-11-20: keep the question.** (c) **Interaction groundwork** (needed to reach the bed, per the Task 1.2 handoff): `scripts/core/IInteractable.cs` (group `interactables`, click areas on physics layer 8) and `PlayerController` now reads `interact` — Space / A uses the nearest interactable in reach; a left-click on one walks Kit there, then uses it; any other click is still a ground click. `PlayerController.Frozen` stops Kit during the question and the night. (d) **Button prompts** per action (`scripts/ui/ButtonPrompt.cs`): keyboard key cap, or the gamepad's bottom face button drawn as Xbox "A", PlayStation cross, or Nintendo "B", chosen from the last device used and the pad's name. (e) **Placeholder art drawn for this task** (the two Kenney packs in use have no bed, sun or moon): `assets/placeholder/handmade/ph_bed.png`, `ph_clock_sun.png`, `ph_clock_moon.png`, `ph_icon_sleep.png`, `ph_season_spring.png`; `SpriteLibrary` now searches `placeholder/{kenney,handmade}`. Final art drops in by name. (f) The bed stands in `PlaceholderLevel` at (-320, -224); "Kit goes home" at 21:30 means Kit wakes at the bed's `WakeSpot` (fade, no walking). Task 1.5's real level should move the bed into Kit's house. (g) Night card: 0.8 s fade to a night colour with the sleep icon, 1.2 s season icon + "Day N", 0.8 s fade in (`DayTransitionView` exports). (h) HUD clock in the top-right corner: 8-wedge dial (dawn rises on the left, noon at the top, night at the bottom; current wedge bright, others dimmed; marker jumps per phase), a readout that **ticks every 15 in-game minutes** ("07:45", owner 2026-11-20; `GameClock.ReadoutMinutes`, signal `TimeChanged(int minuteOfDay)`), spring icon + "Day N". (i) **Debug builds only:** F2 = next step, F3 = 20× clock speed, F4 = jump to 21:20 (`src/debug/ClockDebugKeys.cs`, added by `Main`); raw keys on purpose, developer tools only. (j) **Owner decisions 2026-11-20 (after the build):** day reset to **wake-up 04:30, forced bedtime 21:30** (after trying 01:00 and midnight) and marked decided (GDD v0.31; `GameClock.DayStartMinute` / `BedtimeMinute`; the GDD/mechanics phase tables now start at 04:30); Small hours stays a dial-only phase; keep the "Go to sleep?" question.
@@ -173,20 +175,24 @@ Each task includes **Team Preparation**, **Tests** (Software / Human), and a **N
 **Dependencies:** Task 1.2.
 
 **Notes & learnings:**
-- **Outcome / status:** _TBD_
-- **What worked well:** _TBD_
-- **Problems & fixes:** _TBD_
-- **Deviations from scope or plan:** _TBD_
-- **Handoff to Task 1.5:** _TBD — APIs for active tool, AddItem/RemoveItem, Spend/Earn_
+- **Outcome / status:** 2026-11-20 — **Done — pending human playtest.** Software tests: PASS — `tools/verify.sh`: `dotnet build` 0 warnings/0 errors, import + 120-frame boot clean, `TestRunner` **275/275** (88 new. Rules on private instances: belt order hands → hoe → can → seed bag → scoop, Next/Prev wrap both ways, one `ActiveToolChanged` per change, unowned tools skipped and unselectable, removing the active tool falls back to hands, hands can't be removed; new bag holds the 9 starting carrot seeds; bag stacks the same item into one slot, separate slots in arrival order, quality stacks separately, bad adds ignored, remove is all-or-nothing, emptied stacks disappear, 1000 items fit; wallet starts at 500, earns, spends, refuses overspending and negative amounts, 500 random earns/spends never go below 0; the three autoloads are registered and Pausable. In the real Main scene: 5 belt slots with icons, hands highlighted, HUD shows 500; gamepad X and RB = next, LB = previous with wrap; mouse wheel down/up over the world and over the belt; a fast wheel burst moves one slot; clicking a slot selects it and is not a ground click; gamepad Y opens the bag (clock held, Kit frozen, close button focused), badges "3" carrots + "3" berries in 8 slots, wallet 545 in bag and HUD, a carrot added while open → badge "4" in the same slot, cycling ignored while open; Y, B, right-click, Esc, the close button and A on it all close it and the clock resumes; the on-screen bag button opens it; it won't open during "Go to sleep?"; gamepad A answers "Sleep" after the guard; after sleeping the active tool, bag and wallet are unchanged; prompt labels LB/RB, L1/R1, Switch X, "Wheel"). A `--write-movie` frame confirmed the belt, wallet, bag button and an open bag with badges draw (temporary capture scene deleted). · Human playtest: **PENDING** (icons distinguishable at a glance; check with a real gamepad).
+- **What worked well:** The Task 1.3 pattern again: autoload state with private test instances (`new ToolBelt()` etc.; only the root child sets `Instance`), views that only subscribe with named handlers and unsubscribe in `_ExitTree`. Holding the clock with `GameClock.Hold("bag")` needed no clock changes. Building the belt slots and bag slots in code from the autoload state (scenes hold only the layout) keeps them right when tools or items change. A pure-Python PNG writer (zlib + struct, no PIL on this Mac) draws the placeholder icons.
+- **Problems & fixes:** (1) **Gamepad A/B did nothing on focused menu buttons.** Godot 4.7's built-in `ui_accept` is only Enter / Keypad Enter / Space and `ui_cancel` only Esc, so the Task 1.3 "Go to sleep?" buttons could not be confirmed with a gamepad (only keyboard/mouse). Fix: `ui_accept` and `ui_cancel` are now overridden in `project.godot` with gamepad A (button 0) and B (button 1) added, keys as physical keycodes; a new test confirms A answers "Sleep". A button only fires on a release whose press it also saw, so the A press that opens a menu can't also click its focused button. (2) The bag's dimmed backdrop (a `ColorRect`, mouse Stop) ate right-clicks before `_UnhandledInput` → the bag reads its close inputs in `_Input` while open. (3) The mouse wheel over a belt slot is consumed by the GUI (in Godot 4 even `MOUSE_FILTER_PASS` marks it handled) → slots forward wheel events from `GuiInput`. (4) One wheel flick can send several ticks → at most one tool change per 120 ms from the wheel (`ToolBeltView.WheelRepeatMsec`). (5) `Container`s reset a child's `Scale`, so "raise the active slot" with Scale did nothing → the active slot uses a light background and a thick white outline instead. (6) `ERROR: Condition "!is_inside_tree()"` when the game quit with the bag open (`ReleaseFocus()` from `_ExitTree`) → `_ExitTree` only releases the clock hold. (7) `ToString("N0")` follows the Mac's locale (Indonesian would print "1.000") → invariant culture, "1,750". (8) Test-only: `Input.ParseInputEvent` with only `PhysicalKeycode` set does not match an action bound by `keycode` (Godot's default Esc) → project bindings stay physical.
+- **Deviations from scope or plan:** (a) **Feed scoop on the belt from Day 1** (items.md v0.9): Kit starts with hens and a cow, so the starting belt has all five tools (`ToolBelt.StartingTools`); `Give`/`Take` exist for later tools. **Starting bag = one carrot packet, 9 seeds** (items.md v0.9, `Inventory.StartingItems`). (b) **Inputs:** bag = new action `open_inventory` (gamepad Y, the top face button on every pad; was "deferred" in project-structure.md §7) plus an on-screen bag button bottom-right; **no keyboard key** (owner decision 2026-11-20: not needed). Close = Y, B, right-click, Esc, or the Close button (focused, so A/Space/Enter press it). `cycle_tool_next` binding order changed to RB, X, wheel down so the belt prompt shows RB (X still works); `cycle_tool_prev` = LB, wheel up. The LB+RB chord remains "LB = previous, RB = next". (c) **Belt layout:** bottom centre, 72 px picture slots, LB prompt on the left and RB on the right (keyboard/mouse shows "Wheel"); slot tooltips name the tool; clicking a slot selects it (controls.md §4 "on-screen belt buttons"). (d) **Bag:** centred panel with the bag icon, coin readout, a 4-column grid with at least 8 slots (empty ones drawn faintly, so it never looks full; inventory.md "start ≈ 8"), count badge bottom-right of each slot. No categories, quality stars or item actions yet; only ★ items exist in Phase-001. Items: `berries`, `carrot`, `egg`, `milk`, `carrot_seeds` (`ItemIds`). (e) **Wallet HUD** top-left (coin + amount, `WalletHud.tscn`); the bag shows it too. New game: 9 carrot seeds in the bag and 500 coins. (f) `ButtonPrompt` additions: shoulder buttons drawn as a pill (LB/RB, L1/R1, L/R), "Wheel" for wheel bindings, `HideWithoutKey` (hides a keyboard prompt for actions without a key). (g) **Placeholder art drawn for this task** (`assets/placeholder/handmade/`): `ph_tool_hands`, `ph_icon_bag`, `ph_item_berries`, `ph_item_carrot`, `ph_item_egg`, `ph_item_milk`, `ph_item_carrot_seeds` (32×32). The Kenney watering can and feed scoop tiles look much alike; that is for the human icon test. (h) **Debug builds only:** F6 = +1 of every item, F7 = +100 coins, F8 = spend 100 (`src/debug/BagDebugKeys.cs`, added by `Main`). (i) `Main` freezes Kit while the bag is open (`BagView.OpenChanged`).
+- **Handoff to Task 1.5:** Autoloads (namespace `MyFarmingGame.Autoloads`, all Pausable): **`ToolBelt.Instance`** — `Active` (`Tool.Hands/Hoe/WateringCan/SeedBag/FeedScoop`), `ActiveToolChanged(int tool)`, `ToolsChanged`, `Tools`, `Owns`, `Select`, `Next`, `Prev`, `Give`, `Take`, `ResetForNewGame`, `SpriteName(tool)`. **`Inventory.Instance`** — `Add(id, count = 1, quality = 1)` (returns the new stack size; always fits), `Remove(id, count = 1, quality = 1)` (all or nothing, returns bool), `Count`, `CountAll`, `Has`, `Stacks` (`ItemStack{Id, Quality, Count}` in arrival order), `Changed`, `Clear`, `ResetForNewGame` (back to `StartingItems` = 9 carrot seeds); ids in `ItemIds` (`berries`, `carrot`, `egg`, `milk`, `carrot_seeds`), icon name `ItemIds.SpriteName(id)` = `item_<id>`. **`Wallet.Instance`** — `Coins`, `Earn(n)`, `Spend(n)` (false and nothing spent if Kit can't afford it), `CanAfford`, `SetCoins` (save/load, clamped at 0), `CoinsChanged(int)`, `StartingCoins = 500`, `ResetForNewGame`. Scenes: `HUD/UI/ToolBelt` (`ToolBeltView`), `HUD/UI/Bag` (`BagView`: `Open`, `Close`, `IsOpen`, `OpenChanged(bool)`, hold reason `"bag"`), `HUD/UI/WalletHud` (`WalletView`). Task 1.5 adds "use `ToolBelt.Instance.Active` on the tile in front of `Facing`" as the fallback when `interact` finds no interactable (`PlayerController._UnhandledInput`); harvesting calls `Inventory.Instance.Add(ItemIds.Carrot)` and planting `Remove(ItemIds.CarrotSeeds)`. The 9 starting carrot seeds are already in the bag on a new game. Tool cycling and the bag are ignored while the clock is stopped by a menu or the night; keep any new menu on `GameClock.Hold(...)` so this stays true. Save/load (1.10): belt owned tools + active tool, inventory stacks, wallet coins.
 
 ---
 
 ### Task 1.5 — Clearing, Planting & Day-Based Growth
 
-**Artifact:** Front-garden tiles that can be cleared, tilled, planted, watered, grown over days, and lost to neglect.
+**Artifact:** The real farm level for the slice, with front-garden tiles that can be cleared, tilled, planted, watered, grown over days, and lost to neglect.
 
 **Scope:**
-- Front garden 8 × 6 tiles (buildings.md §2): 3 beds clear, the rest weeds (hands) and small stones (hammer deferred — in this phase stones are decorative and block tiles)
+- **Farm level** replacing `PlaceholderLevel`, laid out per places.md §3 (centre column only, §1 above): house with the front garden and old coop facing the gate, the cross path, the old barn behind the house with cleared ground around it, the gate to the lane; overgrown fields shown but blocked. Coop and barn are placed as props here (animals come in Task 1.9)
+- **Bed moved into Kit's house** (Task 1.3 handoff); the forced-bedtime wake spot follows it
+- **Indoors** (§1, GDD §4): an indoor zone per building footprint — Kit inside → roof fades out and `GameClock` stops; outside → roof back, clock runs. Built for the house here; Tasks 1.6, 1.8 and 1.9 reuse it for the seed shed, coop and barn
+- Front garden 8 × 6 tiles (buildings.md §2): 3 beds clear, the rest weeds (cleared by hand). No stones in the front garden (stones start in Field A)
+- Starting seeds: **one carrot seed packet (9 seeds)** in the bag (owner 2026-11-20; items.md §2), enough for the 5-carrot order
 - Clear weeds (hands) → till (hoe) → plant (seed bag) → water (can)
 - **Day-based growth:** on `DayEnded`, each crop watered that day grows one day; carrots take 3 days (crops.md)
 - **Neglect:** 2 dry days in a row → yellow sprite; 3 → crop removed, tile stays tilled; watering resets the count
@@ -197,15 +203,16 @@ Each task includes **Team Preparation**, **Tests** (Software / Human), and a **N
 - Full cycle clear → till → plant → water → grow → harvest works
 - Unwatered crops yellow after 2 days and disappear after 3; watering at yellow recovers
 - Nothing changes while the game is closed
+- Kit can walk from the house to the barn and to the gate; the bed is in the house; the clock stops inside the house and runs again outside
 
 **Team Preparation:**
-- Placeholder sprites: weeds, stone, tilled soil, dry soil, wet soil, carrot stages, yellow carrot
+- Placeholder sprites: weeds, tilled soil, dry soil, wet soil, carrot stages, yellow carrot, house (walls + separate roof), old coop, old barn, gate, path, overgrown-field edge
 
 **Tests:**
-- **Software:** scripted day rollovers verify growth only on watered days, yellow at 2, removal at 3, reset on watering
-- **Human:** player reads yellow as "needs water"; losing a crop feels fair
+- **Software:** scripted day rollovers verify growth only on watered days, yellow at 2, removal at 3, reset on watering; entering/leaving the house stops/restarts the clock; Kit starts with 9 carrot seeds
+- **Human:** player reads yellow as "needs water"; losing a crop feels fair; the faded roof reads as "inside"
 
-**AI assistance:** Prompt for "Godot 4.x C# farm tile grid with till/plant/water and day-based growth with a dry-days counter."
+**AI assistance:** Prompt for "Godot 4.x C# farm tile grid with till/plant/water and day-based growth with a dry-days counter, plus an Area2D indoor zone that fades a roof and pauses a game clock."
 
 **Dependencies:** Tasks 1.3, 1.4.
 
@@ -228,6 +235,7 @@ Each task includes **Team Preparation**, **Tests** (Software / Human), and a **N
 - First order: "3 handfuls of wild berries" → deliver → coins (economy.md price ×1.25 order premium, pending approval — use a named constant)
 - Decline/back with B / right-click; Marlow restates unfinished orders kindly
 - Ledger prop at the shed (picture pages; `Ledger.Note()` API) — kept from v0.7
+- The lane from the farm gate to Marlow's cottage and seed shed (≈ 20 tiles, places.md §2.1); the seed shed uses the Task 1.5 indoor zone (clock stops inside); the clock also stops while a conversation is open (GDD §4)
 
 **Acceptance criteria:**
 - Accept, decline, and deliver all work; coins added once
@@ -258,7 +266,7 @@ Each task includes **Team Preparation**, **Tests** (Software / Human), and a **N
 **Artifact:** The order board at the seed shed with orders matched to what Kit can produce.
 
 **Scope:**
-- `OrderManager` autoload: generates orders each Dawn from what Kit can currently produce (unlocked crops, owned hens), at quantities the farm can supply
+- `OrderManager` autoload: generates orders each Dawn from what Kit can currently produce (unlocked crops, owned hens and cow — eggs and milk), at quantities the farm can supply
 - Board UI: picture cards (item icon × count, coin reward)
 - Accept / decline / cancel any time, no penalty, no deadline
 - Second scripted order: Marlow's "5 carrots"
@@ -290,27 +298,29 @@ Each task includes **Team Preparation**, **Tests** (Software / Human), and a **N
 
 ### Task 1.8 — Seed Shop & Buying
 
-**Artifact:** Buying at the seed shed: seeds, feed, and extra hens, at half real price (economy.md); the old coop and barn are pre-placed with their starting animals.
+**Artifact:** Buying seeds and extra hens at the seed shed and ordering feed by phone from home, at half real price (economy.md); the old coop and barn hold their starting animals and feed.
 
 **Scope:**
-- Shop UI at the seed shed: carrot and flower seed packets, laying hen (125, only while the coop has room)
-- **Phone at home** (feed seller's number left by Kit's parents on a note): chicken feed (1 per portion), hay (25 per cow portion); orders before 18:00 are delivered to the coop/barn feed bins at the next Dawn (after 18:00 → the day after); no fee
-- The **old coop** (4 × 3, 5 hens) and **old barn** (6 × 5, 5 stalls, 1 cow) are pre-placed at game start with ≈ 7 days of feed; buying cows and extra buildings is Phase-002
-- Prices read from `data/economy.csv` (or a `.tres` generated from it)
+- Shop UI at the seed shed: carrot and flower seed packets (20 each, packet of 9), laying hen (**175**, only while the coop has room)
+- **Shop hours:** the seed shed is open **07:30–16:30** (opens with Morning, closes as Evening begins — GDD §4 phase table); outside hours Marlow's picture bubble shows a closed sign and the opening time. The shop screen stops the clock (GDD §4)
+- **Phone at home** (feed seller's number left by Kit's parents on a note; inside the house, so the clock is already stopped): chicken feed (1 per portion), hay (25 per cow portion); orders before 18:00 are delivered to the coop/barn feed bins at the next Dawn (after 18:00 → the day after); no fee
+- The **old coop** (4 × 3, 5 hens) and **old barn** (6 × 5, 5 stalls, 1 cow) start with ≈ 7 days of feed in their bins (35 chicken portions + 7 hay portions); **no buildings or cows are bought in Phase-001** (Phase-002)
+- Prices read from `docs/data/economy.csv` (or a `.tres` generated from it)
 - Coop capacity 5 hens; buying more is blocked with a friendly "coop is full" icon
 
 **Acceptance criteria:**
-- Buying deducts coins and adds items/buildings; can't buy without enough coins
+- Buying deducts coins and adds items or a hen; can't buy without enough coins
 - Capacity enforced (coop full at start, so hens can only be bought after a loss)
+- The shop only sells inside its hours; the phone works any time Kit is home
 
 **Team Preparation:**
-- Placeholder shop panel; old-coop sprite
+- Placeholder shop panel, phone and feed-seller note, feed-bin icons, closed sign
 
 **Tests:**
-- **Software:** purchases, wallet floor, capacity cap; feed order before/after 18:00 arrives on the right Dawn into the right bin
-- **Human:** prices and "not enough coins" are understandable
+- **Software:** purchases, wallet floor, capacity cap, prices match `economy.csv` (hen 175, seeds 20, chicken feed 1, cow hay 25); shop closed before 07:30 and from 16:30; feed order before/after 18:00 arrives on the right Dawn into the right bin
+- **Human:** prices and "not enough coins" are understandable; the closed sign is clear
 
-**AI assistance:** Prompt for "Godot 4.x C# shop reading prices from CSV, with grid placement of a building."
+**AI assistance:** Prompt for "Godot 4.x C# shop reading prices from CSV, with opening hours and a delayed phone delivery into feed bins."
 
 **Dependencies:** Tasks 1.4, 1.5.
 
@@ -328,20 +338,22 @@ Each task includes **Team Preparation**, **Tests** (Software / Human), and a **N
 **Artifact:** The starting 5 hens and 1 cow: daily feeding, eggs and milk, and loss after 3 unfed days.
 
 **Scope:**
-- Hen and cow entities in the old coop and barn; feed with the feed scoop (grain for hens, hay for the cow), once per day
+- Hen and cow entities in the old coop and barn; feed with the feed scoop from the building's feed bin (grain for hens, hay for the cow), once per day
+- Coop and barn use the Task 1.5 indoor zone (clock stops inside)
 - Fed today → next morning 1 egg per hen, 4 milk cans from the cow (★ quality only in this phase)
-- 1 unfed day → need icon; 2 → flashing icon + Ada line; 3 → hen gone + **message card with gravestone picture**, name, and tip
+- **Heart meter** per animal, no numbers (animals.md §3): full when fed today, ⅔ at 1 unfed day, ⅓ at 2
+- The same rule for **every animal, hens and the cow**: 1 unfed day → need icon (no product tomorrow); 2 → flashing icon + an Ada or Marlow line (Ada's line is a picture bubble without her sprite until Task 1.12 adds her); 3 → the animal is gone + **message card with gravestone picture**, its name, and a tip, dismissed with one button
 - Egg and milk orders become available from Day 1 (Task 1.7 generator)
 
 **Acceptance criteria:**
-- Feeding resets the count; eggs appear only after fed days
-- Loss card appears once; no on-screen death; nothing else is removed
+- Feeding resets the count; eggs and milk appear only after fed days
+- Loss card appears once per lost animal (hen or cow); no on-screen death; nothing else is removed
 
 **Team Preparation:**
-- Placeholder hen, cow, egg, milk can, feed scoop, gravestone card illustration
+- Placeholder hen, cow, egg, milk can, feed scoop, feed bins, heart meter, gravestone card illustration
 
 **Tests:**
-- **Software:** scripted rollovers verify egg production and the 3-day loss; card shown once
+- **Software:** scripted rollovers verify egg and milk production, the heart meter, and the 3-day loss for a hen and for the cow; card shown once per animal
 - **Human:** the loss card is gentle, not frightening, for a 6-year-old; the warning is noticed
 
 **AI assistance:** Prompt for "Godot 4.x C# animal with daily feeding counter and production."
@@ -363,13 +375,13 @@ Each task includes **Team Preparation**, **Tests** (Software / Human), and a **N
 
 **Scope:**
 - `SaveGame` autoload; JSON at `user://savegame.json` with top-level `schemaVersion: 1`
-- Sections owned by each system (`clock`, `farm`, `inventory`, `wallet`, `orders`, `animals`, `player`) via a registration API
+- Sections owned by each system (`clock`, `farm`, `inventory`, `wallet`, `orders`, `animals`, `player`, plus `feed` — bin contents and phone orders not yet delivered —, `forage` — berry-bush regrowth —, `ledger`, `onboarding` — guided-start step and shown nudges) via a registration API
 - Auto-save at every day rollover and after purchases/deliveries; manual save from pause menu
 - Safe write (temp file + rename); previous save kept as `savegame.bak.json`; fall back to it if parsing fails
 - A no-op migration chain ready for `v1 → v2`
 
 **Acceptance criteria:**
-- Restart restores everything (position, day, tiles, crops, dry counts, inventory, coins, orders, hens, hunger counts)
+- Restart restores everything (position, day, tiles, crops, dry counts, inventory, coins, orders, hens and cow, hunger counts, feed bins, pending feed deliveries, berry bushes, ledger pages; onboarding progress once Task 1.12 registers it)
 - Corrupt main file → backup loads
 
 **Team Preparation:**
@@ -381,7 +393,7 @@ Each task includes **Team Preparation**, **Tests** (Software / Human), and a **N
 
 **AI assistance:** Prompt for "Godot 4.x C# versioned JSON save with section registration, atomic write, and backup."
 
-**Dependencies:** Tasks 1.3–1.9.
+**Dependencies:** Tasks 1.3–1.9. (Onboarding, Task 1.12, registers its section when it is built.)
 
 **Notes & learnings:**
 - **Outcome / status:** _TBD_
@@ -397,9 +409,10 @@ Each task includes **Team Preparation**, **Tests** (Software / Human), and a **N
 **Artifact:** Pause menu (resume, save, settings, quit) and the lighting shift across day phases.
 
 **Scope:**
-- `PauseMenu.tscn`: Resume, Save, Settings (volume, nudges on/off, read-aloud placeholder), Quit; calendar (season, day)
+- `PauseMenu.tscn`: Resume, Save, Settings (volume, nudges on/off, read-aloud placeholder, break reminder on/off — off by default, GDD §4; the reminder interval is still to be agreed, so only the toggle is built), Quit; calendar (season, day) and the day/night indicator matching the HUD dial (controls.md)
 - Lighting tint per day phase from `GameClock`
 - Pause stops time
+- **Deferred (not in this phase):** the Collection Book and sticker book pages (Phase-002, stickers), and the valley picture map (places.md §5; owner 2026-11-20 — the slice is one area)
 
 **Acceptance criteria:**
 - Opens with Start/Esc; every button works; tint follows the phase
@@ -429,16 +442,17 @@ Each task includes **Team Preparation**, **Tests** (Software / Human), and a **N
 **Artifact:** The ≈ 5-minute guided start and Day 1–7 nudges from [onboarding.md](./onboarding.md).
 
 **Scope:**
-- Steps 1–9 of onboarding.md §2 as a small step machine
-- One-time nudges from onboarding.md §3 that apply to this phase (sleep, watering, yellow, lost crop, feed low, first eggs/milk, hungry animals)
-- Nudges toggle in Settings
+- Steps 1–10 of onboarding.md §2 as a small step machine (step 10 = the "feed lasts 7 days — earn coins for more" goal icon)
+- **Ada** as a simple solo-play NPC at the house (characters.md §7): waves on arrival, shows the hens and cow (step 9), speaks her nudges in a picture bubble; she never does Kit's tasks. Co-play Ada stays Phase-003
+- One-time nudges from onboarding.md §3 that apply to this phase: first evening (sleep), morning after planting (watering), yellow crop, lost crop, carrots ready, feed running low, first morning (collect eggs and milk), first eggs and milk, hens unfed for 2 days. The rain nudge waits for rain (Phase-002)
+- Nudges toggle in Settings; the onboarding step and shown nudges register a save section with Task 1.10's API
 
 **Acceptance criteria:**
 - Guided start completes in ≈ 5 minutes and never blocks free play
-- Each nudge shows once
+- Each nudge shows once, also across save/load
 
 **Team Preparation:**
-- Pointer/arrow icon; short lines for each step
+- Pointer/arrow icon; short lines for each step; placeholder Ada sprite and the arrival cart prop
 
 **Tests:**
 - **Software:** step machine advances on the right actions; nudges fire once; toggle works
@@ -466,7 +480,7 @@ Each task includes **Team Preparation**, **Tests** (Software / Human), and a **N
 - Answer the GDD §14 playtest questions; iterate on clarity, timing, and prices
 
 **Acceptance criteria:**
-- A new player completes the guided start, the first two orders, buys hens, and keeps them fed without adult help
+- A new player completes the guided start and the first two orders, buys seeds, orders feed by phone, and keeps the hens and cow fed without adult help
 - All tasks 1.1–1.12 complete and integrated
 
 **Team Preparation:**
@@ -494,8 +508,9 @@ Each task includes **Team Preparation**, **Tests** (Software / Human), and a **N
 
 - [ ] All 13 session tasks are done
 - [ ] A new player (6+) completes the guided start and the first two orders with little or no explanation
-- [ ] Crops grow by day, yellow at 2 dry days, and are lost at 3; hens are lost at 3 unfed days with the gentle card
-- [ ] Starting hens and cow work (feed, eggs, milk, loss rule); buying seeds and feed works at economy.md prices
+- [ ] Crops grow by day, yellow at 2 dry days, and are lost at 3; hens and the cow are lost at 3 unfed days with the gentle card
+- [ ] Starting hens and cow work (feed, eggs, milk, loss rule); buying seeds at the shed and ordering feed by phone work at economy.md prices
+- [ ] The clock stops indoors (house, coop, barn, seed shed) and in every menu
 - [ ] Game saves and loads correctly (versioned)
 - [ ] Stable frame rate on target PC hardware
 - [ ] Placeholder art clearly marked as temporary
@@ -536,3 +551,6 @@ Phase-002 (planned — docs/PHASE.md §3): market stall and shipping box with se
 - **0.24 — 2026-11-20:** Task 1.3 clock speed set to **Harvest Moon pace** (60 s per in-game hour; day 17 min) by the owner.
 - **0.25 — 2026-11-20:** §1 notes where the slice sits on the new Bramblewick Vale map (places.md v0.10): farm front garden + the lane to Marlow's shed; no scope change.
 - **0.26 — 2026-11-20:** Feed price in the phone-order note updated to the Australian-based economy (economy.md v0.9): hay 25 per cow portion.
+- **0.27 — 2026-11-20:** **Task 1.3 Done** — owner playtested and approved the day clock, bed and bedtime.
+- **0.28 — 2026-11-20:** **Tasks 1.5–1.13 checked against the design docs** (owner: "docs is source of truth"). §1: feed is phone-ordered from home (economy.md §2), the slice includes the house and the old barn behind it (places.md §3), and a new **Indoors** note — buildings are entered on the same map, the roof fades and the clock stops (GDD §4); no separate interior scenes in Phase-001 (open question for Phase-002). Task 1.5 now builds the real farm level, moves the bed into the house, adds the indoor zone, drops front-garden stones (buildings.md §2) and starts Kit with one carrot packet (9 seeds, owner). 1.6 adds the lane and the shed's indoor zone. 1.7 adds the cow (milk orders). 1.8: hen **175** (was 125, economy.csv), no buildings bought, shop hours 07:30–16:30, starting feed bins. 1.9: heart meter, loss rule for the cow too, Ada or Marlow warning. 1.10: save sections for feed, forage, ledger, onboarding. 1.11: break-reminder toggle; Collection Book, stickers and the picture map deferred (owner). 1.12: all 10 onboarding steps, Ada as a simple NPC, missing nudges added. 1.13 and exit criteria: "buys hens" (impossible with a full coop) → buys seeds and orders feed; cow loss and indoor clock stop added.
+- **0.29 — 2026-11-20:** **Task 1.4 built — pending human playtest.** Notes & learnings filled: `ToolBelt`, `Inventory`, `Wallet` autoloads; belt (RB/X next, LB previous, wheel, click a slot), bag (Y or on-screen button; clock held, Kit frozen), HUD wallet (500 start, never below 0); feed scoop owned from Day 1 and 9 starting carrot seeds (items.md v0.9; owner confirmed); no keyboard key for the bag (owner); handmade item icons; gotcha fixed: gamepad A/B now confirm/cancel focused menu buttons (`ui_accept`/`ui_cancel`), which also fixes the Task 1.3 sleep question on a gamepad.

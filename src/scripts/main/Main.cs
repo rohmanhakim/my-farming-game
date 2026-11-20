@@ -5,7 +5,8 @@ namespace MyFarmingGame;
 
 /// <summary>
 /// Root coordinator (project-structure.md §4). Owns the layer stack, player, camera (follows the
-/// player from Task 1.2), the night's sleep sequence (Systems/SleepSequence, Task 1.3), audio and,
+/// player from Task 1.2), the night's sleep sequence (Systems/SleepSequence, Task 1.3), freezing Kit
+/// while the bag is open (Task 1.4), audio and,
 /// from a later task, level swapping (load_level contract). Process modes are set in Main.tscn.
 /// </summary>
 public partial class Main : Node
@@ -18,12 +19,28 @@ public partial class Main : Node
         GetNode<CanvasLayer>("Debug").Layer = UILayers.Debug;
         PlacePlayerAtSpawn();
         GetNode<CameraFollow>("World/Entities/Camera2D").SnapToTarget();
+        _bag = GetNodeOrNull<UI.BagView>("HUD/UI/Bag");
+        if (_bag != null)
+            _bag.OpenChanged += OnBagOpenChanged;
         if (OS.IsDebugBuild())
         {
             GetTree().CreateTimer(1.0).Timeout += PrintStartupState;
             GetNode("Debug").AddChild(new Debugging.ClockDebugKeys { Name = "ClockDebugKeys" });
+            GetNode("Debug").AddChild(new Debugging.BagDebugKeys { Name = "BagDebugKeys" });
         }
     }
+
+    private UI.BagView _bag;
+
+    public override void _ExitTree()
+    {
+        if (_bag != null && IsInstanceValid(_bag))
+            _bag.OpenChanged -= OnBagOpenChanged;
+    }
+
+    /// <summary>Kit stands still while the bag is open (the bag also holds the clock).</summary>
+    private void OnBagOpenChanged(bool open) =>
+        GetNode<Player.PlayerController>("World/Entities/Player").Frozen = open;
 
     /// <summary>Debug builds only: one line in Output to diagnose "blank screen" reports.</summary>
     private void PrintStartupState()

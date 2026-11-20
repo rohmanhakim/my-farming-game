@@ -30,6 +30,7 @@ public static class SpriteLibrary
         "player", "npc_marlow", "grass", "garden_bed", "crop_sprout", "hen", "coop",
         "tool_hands", "tool_hoe", "tool_watering_can", "tool_seed_bag", "tool_feed_scoop", "coin",
         "bed", "clock_sun", "clock_moon", "icon_sleep", "season_spring",
+        "icon_bag", "item_berries", "item_carrot", "item_egg", "item_milk", "item_carrot_seeds",
     };
 
     /// <summary>Colour used when neither final art nor a placeholder image exists.</summary>
