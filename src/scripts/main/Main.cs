@@ -4,7 +4,8 @@ using MyFarmingGame.Core;
 namespace MyFarmingGame;
 
 /// <summary>
-/// Root coordinator (project-structure.md §4). Owns the layer stack, player, camera, audio and,
+/// Root coordinator (project-structure.md §4). Owns the layer stack, player, camera (follows the
+/// player from Task 1.2), audio and,
 /// from a later task, level swapping (load_level contract). Process modes are set in Main.tscn.
 /// </summary>
 public partial class Main : Node
@@ -16,6 +17,20 @@ public partial class Main : Node
         GetNode<CanvasLayer>("Transition").Layer = UILayers.Transition;
         GetNode<CanvasLayer>("Debug").Layer = UILayers.Debug;
         PlacePlayerAtSpawn();
+        GetNode<CameraFollow>("World/Entities/Camera2D").SnapToTarget();
+        if (OS.IsDebugBuild())
+            GetTree().CreateTimer(1.0).Timeout += PrintStartupState;
+    }
+
+    /// <summary>Debug builds only: one line in Output to diagnose "blank screen" reports.</summary>
+    private void PrintStartupState()
+    {
+        var player = GetNode<Node2D>("World/Entities/Player");
+        var cam = GetNode<Camera2D>("World/Entities/Camera2D");
+        GD.Print($"[Main] 1s state: player={player.GlobalPosition} visible={player.IsVisibleInTree()} " +
+                 $"camera={cam.GetScreenCenterPosition()} current={cam.IsCurrent()} " +
+                 $"viewport={GetViewport().GetVisibleRect().Size} window={GetWindow().Size} " +
+                 $"level={GetNode("World/Level").GetChildCount()}");
     }
 
     /// <summary>Moves the player to the current level's PlayerSpawn marker, if it has one.</summary>

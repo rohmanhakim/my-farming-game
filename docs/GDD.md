@@ -1,8 +1,8 @@
 # Game Design Document
 
 > **Status:** Brainstorming draft — **direction reset 2026-11-19** (see v0.19–v0.20 change log)
-> **Version:** 0.27
-> **Last updated:** 2026-11-19
+> **Version:** 0.28
+> **Last updated:** 2026-11-20
 > **Purpose:** A living document for shaping the game together. Confirmed owner decisions are marked **decided**; everything else is a proposal, not a commitment.
 
 ## 1. High Concept
@@ -23,7 +23,7 @@ The game takes inspiration from the welcoming farming and community feel of *Sta
 - **Play modes:** Solo, or **local co-op** on one PC: one house, one farm, one map, shared wallet and orders, with a **dynamic split screen** that merges into one view when the two players are close together (§4 *Co-play*).
 - **Second player:** Plays **Ada**, the family friend (characters.md §7).
 - **Reading:** helpful but not required for core actions; short text always comes with icons, and key text can be read aloud.
-- **Platform:** **PC only** (decided 2026-11-19). No tablet, mobile, or touchscreen versions are planned.
+- **Platform:** **PC first; consoles later** (decided 2026-11-20, replaces "PC only" from 2026-11-19). The game ships on PC first; **Nintendo Switch and PlayStation** versions are planned after that. No tablet, mobile, or touchscreen versions are planned.
 
 ## 3. Design Goals
 
@@ -313,7 +313,7 @@ Short sessions are satisfying; long sessions are possible. There is no required 
 
 ### Interaction model
 
-Movement plus one primary interaction action; simple visual menus for seeds, orders, and shops. **PC only:** two selectable schemes — gamepad, and keyboard + mouse.
+Movement plus one primary interaction action; simple visual menus for seeds, orders, and shops. **PC first:** two selectable schemes — gamepad (any modern controller: Xbox, PlayStation, Switch Pro), and keyboard + mouse. Every action works on a gamepad, so later console versions need no new control scheme.
 
 **Exact PC mappings — decided (v0.18; full tables in [controls.md](./controls.md) §2 and §4):**
 
@@ -362,7 +362,7 @@ The premise and cast are in [world.md](./world.md). Voice, localisation, and mus
 
 ## 13. Technical Direction
 
-- **Platform:** **PC only** (Windows first; macOS/Linux exports considered later). No mobile or tablet.
+- **Platform:** **PC first; consoles later** (owner decision 2026-11-20): Windows first, macOS/Linux considered; **Nintendo Switch and PlayStation planned after the PC release**. No mobile or tablet. Console ports need platform SDK access and Godot console-porting support (third-party porting partners); not scheduled yet.
 - **Engine:** Godot 4.x with **C#** (docs/PHASE.md §6). Renderer: **Compatibility (`gl_compatibility`)** — the lightest 2D-friendly renderer with the widest PC hardware support. Assembly name: **`MyFarmingGame`**.
 - The first playable (Phase-001) answers movement, clearing, planting, day-based growth and neglect, orders, buying, chickens, and saving before content production begins.
 
@@ -411,7 +411,7 @@ Playtests with children are conducted with appropriate adult supervision and con
 2. Which orders and dialogue events change an NPC's relationship, and by how much?
 3. Which recipes, blueprints, and special events should high relationships unlock?
 4. **RESOLVED (v0.20):** co-op shares one house, farm, map, wallet, and orders, with a merging split screen (§4).
-5. **RESOLVED for PC (v0.18):** control mappings in controls.md. (Tablet half dropped — PC only.)
+5. **RESOLVED for PC (v0.18):** control mappings in controls.md. (Tablet half dropped — PC first, consoles later; no tablet.)
 6. What research is needed to design original teen/adult characters in the European comics direction?
 7. Which open story questions in [world.md](./world.md) should be decided next?
 8. ~~Grown-up gesture to protect the challenge-layer menu~~ — **closed (v0.19):** layers retired; difficulty mode lives in normal Settings.
@@ -474,3 +474,4 @@ Playtests with children are conducted with appropriate adult supervision and con
 - **0.25 — 2026-11-19:** Feed is **ordered from home** (by phone — the parents left the feed seller's number) before 18:00 and delivered to the feed bins at Dawn next day; no fee.
 - **0.26 — 2026-11-19:** **Day length ≈ 15 real minutes** (06:00 → 02:00; 45 s per in-game hour; one 3-hour step ≈ 2 min 15 s) and **30-day seasons / 120-day year** like Harvest Moon (owner decisions). Q13–Q14 resolved. **Kit is a boy** (characters.md).
 - **0.27 — 2026-11-19:** Working title set to **Fields & Sunshine**; art primary references (Pioneers of Olive Town, Harvest Moon: Home Sweet Home) and ≈ 5-head proportions linked from §9.
+- **0.28 — 2026-11-20:** **Platform: PC first, consoles later** (owner decision): Nintendo Switch and PlayStation planned after the PC release; still no mobile/tablet. §2, §8, §13 and Q5 updated; gamepad scheme must cover every action (any modern controller).

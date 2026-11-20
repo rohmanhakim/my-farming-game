@@ -1,9 +1,9 @@
 # Fields & Sunshine
 
 > **Working title:** Fields & Sunshine (chosen 2026-11-19; trademark check pending)
-> **Status:** 🟡 Design draft (direction reset 2026-11-19) · 🟡 Godot project initialised in `src/` (4.7, C#, Compatibility renderer, assembly `MyFarmingGame`) · 🟢 Task 1.1 foundation runs (Godot 4.7.2 .NET, placeholder art, headless tests) — no gameplay code yet
-> **Design version:** GDD v0.22 · World v0.12 (both 2026-11-19)
-> **Last README update:** 2026-11-20 (🆕 Phase-001 Task 1.1 done: bootable `Main.tscn` built to the scene-architecture standard, CC0 Kenney placeholders, `tools/verify.sh` · 📐 session standard: scene architecture & process modes agreed → `project-structure.md` v0.4; folder layout unchanged)
+> **Status:** 🟡 Design draft (direction reset 2026-11-19) · 🟡 Godot project initialised in `src/` (4.7, C#, Compatibility renderer, assembly `MyFarmingGame`) · 🟢 Task 1.1 foundation runs (Godot 4.7.2 .NET, placeholder art, headless tests) · 🟢 Task 1.2 player movement done (owner playtested)
+> **Design version:** GDD v0.28 (2026-11-20) · World v0.12 (2026-11-19)
+> **Last README update:** 2026-11-20 (🆕 Task 1.2: Kit walks in 8 directions and faces 4, keyboard / any gamepad / click-to-move, smooth follow camera · 🎮 platform: **PC first, consoles (Switch, PlayStation) later** · 🆕 Phase-001 Task 1.1 done: bootable `Main.tscn` built to the scene-architecture standard, CC0 Kenney placeholders, `tools/verify.sh` · 📐 session standard: scene architecture & process modes agreed → `project-structure.md` v0.4; folder layout unchanged)
 
 ![](docs/assets/game-screenshoot-small.jpeg)
 
@@ -67,7 +67,7 @@ The [Game Design Document](./docs/GDD.md) is the **single source of truth** for 
 - [x] Initial brief captured
 - [x] Engine selected — **Godot 4.x with C#**
 - [x] Milestone 0 decisions (growth timing, clock, story, controls) — growth amended 2026-11-19 (watering now required)
-- [x] **Direction reset (2026-11-19):** Kit 17, orders, neglect consequences, farm growth, automation, PC only
+- [x] **Direction reset (2026-11-19):** Kit 17, orders, neglect consequences, farm growth, automation, PC first (consoles later, decided 2026-11-20)
 - [x] **Owner picks (2026-11-19):** one mode, ages 6+, day-based growth, land owned but overgrown, housing caps, first order, co-op split screen, economy sheet, short onboarding, Phase-001 vertical slice
 - [x] Godot project config: Compatibility renderer, `MyFarmingGame` assembly, `.import` files committed, only `.godot/` ignored
 - [ ] **Owner decisions open:** day length, season length, order premium (GDD §16 Q13–Q15); art/audio brief inputs
@@ -75,7 +75,7 @@ The [Game Design Document](./docs/GDD.md) is the **single source of truth** for 
 - [ ] First playable prototype
 - [ ] First playtest
 
-Only the Task 1.1 foundation exists (main scene, player placeholder, input map, tests) — no gameplay yet. The current milestone is **Phase-001, the first playable vertical slice** (`docs/Phase-001.md`).
+The Task 1.1 foundation (main scene, input map, tests) and Task 1.2 player movement exist (Kit walks with keyboard, any gamepad, or click-to-move; the camera follows) — no farming gameplay yet. The current milestone is **Phase-001, the first playable vertical slice** (`docs/Phase-001.md`).
 
 ## Roadmap
 
@@ -90,11 +90,11 @@ Full plan: [`docs/PHASE.md`](./docs/PHASE.md).
 | **005** | Long-term goals: festivals, contests, farm charm, collections, hydroponics, farm shop, lane restoration |
 | **Release** | Polished, localised, age-rated PC release |
 
-**Not planned:** mobile/tablet versions, online multiplayer, combat, sickness/vet systems, debt, real-money purchases.
+**Not planned:** mobile/tablet versions (consoles come after PC), online multiplayer, combat, sickness/vet systems, debt, real-money purchases.
 
 ## Technical direction
 
-- **Platform:** **PC only** (Windows first; macOS/Linux considered later).
+- **Platform:** **PC first; consoles later** (owner decision 2026-11-20): Windows first, macOS/Linux considered; **Nintendo Switch and PlayStation planned after the PC release**. No mobile or tablet.
 - **Engine:** Godot 4.x with **C#**; renderer **Compatibility (`gl_compatibility`)**; assembly **`MyFarmingGame`**.
 - **Version control:** `*.import` sidecars are committed; only `src/.godot/` is ignored.
 - The first prototype answers movement, planting, watering, growth/neglect feedback, and saving **before** content production starts.
@@ -123,7 +123,7 @@ Full plan: [`docs/PHASE.md`](./docs/PHASE.md).
 | [Items (`docs/items.md`)](./docs/items.md) | Tools, produce, processed goods, blueprints, automation items, decorations, rare items. |
 | [Inventory System (`docs/inventory.md`)](./docs/inventory.md) | Auto-stacking picture slots, quality stacks, wallet, storage chest, Collection Book. |
 | [Mechanics (`docs/mechanics.md`)](./docs/mechanics.md) | Verbs and systems: farming, orders, selling, crafting, building, automation. |
-| [Controls (`docs/controls.md`)](./docs/controls.md) | PC gamepad and keyboard + mouse mappings; local co-op seat rule. |
+| [Controls (`docs/controls.md`)](./docs/controls.md) | Gamepad (any controller) and keyboard + mouse mappings; local co-op seat rule. |
 | [Events (`docs/events.md`)](./docs/events.md) | Daily, order, neglect, seasonal, festival, merchant, and restoration events. |
 | [Progression (`docs/progression.md`)](./docs/progression.md) | Farm growth tiers, clearing the land, orders as progression, and long-term goals (charm, collections, trophies, restoration, mastery). |
 | [Difficulty (`docs/challenge-layers.md`)](./docs/challenge-layers.md) | The single mode — realistic but kid-friendly — and its rules. |

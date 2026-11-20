@@ -1,9 +1,9 @@
 # Controls
 
 > **Status:** Brainstorming draft
-> **Version:** 0.8
-> **Last updated:** 2026-11-19
-> **Purpose:** PC control schemes (gamepad and keyboard + mouse; **PC only** — no touch/mobile) for this kind of game, adjusted to the scope of the game described in the GDD. Assumes an XBOX-layout gamepad. All mappings are tentative (see GDD open question Q5) and subject to playtesting.
+> **Version:** 0.9
+> **Last updated:** 2026-11-20
+> **Purpose:** Control schemes (gamepad and keyboard + mouse) for this kind of game, adjusted to the scope of the game described in the GDD. **PC first, consoles (Switch, PlayStation) later; no touch/mobile.** Tables use XBOX button names, but any modern controller works by position (see §2 *Any controller*). All mappings are tentative (see GDD open question Q5) and subject to playtesting.
 
 ---
 
@@ -33,6 +33,18 @@
 | Reserved (unassigned in prototype) | LT / RT | Held for future tools or camera options if needed. |
 
 ---
+
+### Movement feel (decided 2026-11-20, built in Task 1.2)
+
+- Kit **walks in 8 directions** with smooth starts and stops, but **faces and uses tools in 4 directions** (up, down, left, right), Harvest Moon / Stardew style. On a diagonal Kit keeps facing the way they already faced, so the sprite doesn't flicker.
+- A half-tilted stick walks slower; diagonals are as fast as straight lines.
+
+### Any controller (decided 2026-11-20)
+
+- Buttons are mapped **by position**, not by printed letter: "A" means the bottom face button (Cross on PlayStation, B on a Switch Pro Controller), "B" the right face button, and so on. Godot's SDL controller database makes Xbox, PlayStation and Switch Pro controllers behave the same.
+- **Every action must work on a gamepad** (nothing keyboard-only), so console versions need no new scheme.
+- **Button prompts are abstract:** UI asks for the prompt of an action (`interact`, `cancel`, …), never a hard-coded "A". A later task draws per-controller icons (Xbox / PlayStation / Switch).
+- **Open (for the console phase):** Nintendo's own convention puts confirm on the right face button; decide then whether Switch builds swap `interact`/`cancel`.
 
 ## 3. Local co-op (PC)
 
@@ -67,7 +79,7 @@ Two ways to do everything, available at the same time, exactly as DST does it: *
 
 ## 5. Touchscreen — removed
 
-**PC only (decided 2026-11-19).** The former iPad/Android touch mapping and touch turn-taking are dropped; no mobile or tablet version is planned.
+**No touch (decided 2026-11-19; platform updated 2026-11-20 to PC first, consoles later).** The former iPad/Android touch mapping and touch turn-taking are dropped; no mobile or tablet version is planned.
 
 ---
 
@@ -111,3 +123,4 @@ Two ways to do everything, available at the same time, exactly as DST does it: *
 - **0.6 — 2026-11-18:** **Milestone 0 (control mappings) decided.** §4 rewritten as the **Don't Starve Together-style keyboard + mouse scheme**: WASD/arrow *or* click-to-move, left-click = walk-to-then-act, Space = quick action on the nearest interactable, right-click = cancel, wheel = belt, Esc = pause; DST's combat keys, camera rotation, modifiers, hotbar and map deliberately dropped. New **seat rule** in §3 and §4: **keyboard + mouse is locked to one player — a second player must use a gamepad, otherwise co-op cannot start.** Back/Select help tooltip marked **deferred** (no Phase-001 task builds it). Gamepad table (§2) unchanged and confirmed.
 - **0.7 — 2026-11-19:** **PC only (direction reset, GDD v0.19).** §5 touchscreen mapping and touch turn-taking removed; touch wording dropped from §1 and §4. **Grown-up menu (Start-hold) removed** — challenge layers are retired and the difficulty mode lives in normal Settings. Interact row extended for feed/deliver/shops/place; care menu now covers the fish pond; Player 2 named Ada.
 - **0.8 — 2026-11-19:** Co-op camera decided: **dynamic split screen** that merges when players are close; shared house/farm/map. Difficulty setting removed from the pause menu (single mode); read-aloud and nudges toggles added.
+- **0.9 — 2026-11-20:** Platform is now **PC first, consoles (Switch, PlayStation) later**. §2 adds *Movement feel* (8-way walking, 4-way facing, built in Task 1.2) and *Any controller* (position-based buttons for Xbox/PlayStation/Switch Pro, gamepad-complete actions, abstract button prompts, open Switch confirm-button question).

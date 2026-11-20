@@ -1,7 +1,7 @@
 # Project Structure
 
 > **Status:** Proposal for team agreement — input to Phase-001 Task 1.1 ("Team agrees on project folder structure and naming conventions")
-> **Version:** 0.5
+> **Version:** 0.6
 > **Last updated:** 2026-11-20
 > **Purpose:** The repository layout, Godot folder structure, naming rules, input/autoload registries, asset pipeline, and verification commands that every development session follows when adding code or assets under `src/`. It is a *technical* contract only — it never overrides a gameplay decision.
 
@@ -80,9 +80,9 @@ src/
 │   ├── main/
 │   │   └── Main.tscn          # Task 1.1 — root scene: World + Player + UI + Camera2D
 │   ├── player/
-│   │   └── Player.tscn        # Task 1.1/1.2 — Sprite2D, AnimationPlayer, CollisionShape2D
+│   │   └── Player.tscn        # Task 1.1/1.2 — PlayerController root, NamedSprite, AnimationPlayer (idle_/walk_ × down/up/left/right), CollisionShape2D
 │   ├── world/                 # things the player walks up to in the garden/lane
-│   │   ├── PlaceholderLevel.tscn  # Task 1.1 — temporary level: Background + PlayerSpawn
+│   │   ├── PlaceholderLevel.tscn  # Task 1.1 — temporary level: Background (checkerboard shader, Task 1.2) + PlayerSpawn
 │   │   ├── GardenBed.tscn     # Task 1.4
 │   │   ├── Marlow.tscn        # Task 1.6
 │   │   ├── Ledger.tscn        # Task 1.6
@@ -104,7 +104,7 @@ src/
 │   │   ├── Onboarding.cs      # Task 1.12
 │   │   └── EventBus.cs        # proposed (§8)
 │   ├── player/
-│   │   └── PlayerController.cs   # Task 1.2
+│   │   └── PlayerController.cs   # Task 1.2 — 8-way walk, 4-way Facing, click-to-move, WalkTo(target, onArrived)
 │   ├── world/
 │   │   ├── GardenBed.cs       # Task 1.4
 │   │   ├── Marlow.cs          # Task 1.6
@@ -117,7 +117,8 @@ src/
 │   │   ├── PauseMenuView.cs   # Task 1.10
 │   │   └── DayNightView.cs    # Task 1.11
 │   ├── main/
-│   │   └── Main.cs            # Task 1.1 — root coordinator: layer numbers, player spawn (load_level later)
+│   │   ├── Main.cs            # Task 1.1 — root coordinator: layer numbers, player spawn (load_level later)
+│   │   └── CameraFollow.cs    # Task 1.2 — script on World/Entities/Camera2D: follows the player with smoothing
 │   └── core/                  # small shared helpers, constants, settings readers
 │       ├── UILayers.cs        # Task 1.1 — CanvasLayer constants (§4 standard)
 │       ├── SpriteLibrary.cs   # Task 1.1 — sprite lookup by name: final art → ph_ placeholder → coloured square
@@ -289,6 +290,8 @@ Defined once in `project.godot → [input]`, bound for **both** gamepad and keyb
 
 **Bound in Task 1.1** (all Phase-001 rows above except the deferred ones). Keyboard uses physical keycodes. `cycle_tool_next` = X, RB, wheel down; `cycle_tool_prev` = LB, wheel up (InputMap cannot express the LB+RB chord). `interact` includes left mouse, so click-to-move (Task 1.2) must split ground clicks from object clicks in code.
 
+**Task 1.2:** `move_*` deadzones lowered from 0.5 to **0.2** so a half-tilted stick walks slowly instead of not at all; `PlayerController` reads them with `Input.GetVector(..., 0.2)`. Ground left-clicks are handled in `PlayerController._UnhandledInput` (UI eats its own clicks first). Gamepad bindings use Godot's SDL button indices, which are **position-based**, so the same map works for Xbox, PlayStation and Switch Pro controllers (controls.md §2 *Any controller*). UI must show button prompts per action, never a hard-coded letter.
+
 Rules: D-pad stays reserved for movement (`controls.md` §2); no action may require reading; every new action is added to this table in the same session.
 
 ---
@@ -329,7 +332,7 @@ Adding an autoload is a structural decision that must be recorded here plus in t
 src/.godot/
 ```
 
-No `android/` entry (PC only). Export output, if ever produced inside the repo, goes to a `build/` folder added to `.gitignore` in the task that first exports.
+No `android/` entry (PC first, consoles later; no mobile). Export output, if ever produced inside the repo, goes to a `build/` folder added to `.gitignore` in the task that first exports.
 
 Root `.gitignore` (repo-wide, current):
 
@@ -435,3 +438,4 @@ Restore after cloning: `npx skills experimental_install` · Update: `npx skills 
 - **0.3 — 2026-11-19:** Phase-001 re-scoped to a vertical slice: §5 task→file map rebuilt for the 13 new tasks; §8 autoload registry updated (GameClock first, ToolBelt/Inventory/Wallet, OrderManager, versioned SaveGame, Onboarding; TaskManager removed). Note: §4's scene/script tree still lists some Phase-001 v0.9 file names (GardenBed, GardenShelf, Butterfly) — treat §5 as authoritative until Task 1.1 settles the tree.
 - **0.4 — 2026-11-20:** **Scene-architecture standard agreed (owner decision).** A feature-first `source/{core,data,gameplay,levels,shaders,ui,debug}` proposal was reviewed and **rejected in favour of keeping the type-first `src/` layout**; only its new folders were absorbed. New §4 subsections: `Main ↔ Level` ownership tree (Systems / World{Level, Entities, Effects} / Audio + HUD 10 / Pause 20 / Transition 30 / Debug 40 CanvasLayers), named layer constants `scripts/core/UILayers.cs`, an explicit **process-mode table including autoloads** (records the pause gotcha: autoloads default to `Always` and would keep the clock ticking while paused), and the `load_level` contract (defer → free level only → instance → spawn from marker → `LevelChanged`). Added `src/shaders/` + `src/debug/` to the §4 tree, structural rule 10, a §6 naming row for `.gdshader`, and a §8 pointer to the process-mode table. `aspect="expand"` deliberately unchanged.
 - **0.5 — 2026-11-20:** Task 1.1 implemented (incl. the scene-architecture tree and `UILayers.cs`): §2 toolchain verified (Godot 4.7.2 .NET, SDK 11 with RollForward), §4 adds `assets/placeholder/`, `SpriteLibrary`/`NamedSprite`, main scene configured, `.cs.uid` sidecars; §7 bindings recorded; §9 placeholder folder and load-by-name rule; §11 commands verified + `tools/verify.sh`; §14 items 1–2 resolved.
+- **0.6 — 2026-11-20:** Task 1.2: §4 tree adds `scripts/main/CameraFollow.cs` and describes `Player.tscn`/`PlayerController.cs`; §7 records the 0.2 move deadzone, where ground clicks are handled, and position-based gamepad buttons (any controller, abstract prompts). §10 wording: PC first, consoles later. Also: `src/shaders/placeholder_checker.gdshader` (temporary checkerboard ground for `PlaceholderLevel`, replaced by tiles in Task 1.5).

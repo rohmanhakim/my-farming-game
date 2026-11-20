@@ -17,7 +17,7 @@ You're a Senior Game Developer that will develop a current described project:
 - **Engine:** Godot 4.x with **C#** (not GDScript — see `docs/PHASE.md` §6); renderer Compatibility (`gl_compatibility`); assembly `MyFarmingGame`.
 - **Status:** Follow the `README.md` "Status" line — it is the honest snapshot of how much code exists.
 - **Team:** Two people with AI assistance. Tasks are scoped so one task = one AI-assisted session.
-- **Platforms:** **PC only.** No mobile or tablet work.
+- **Platforms:** **PC first, consoles later** (Switch, PlayStation after the PC release). No mobile or tablet work. Build for PC now, but keep every action gamepad-complete (any controller) and button prompts abstract.
 
 ## 2. Source of truth (resolve conflicts in this order)
 
@@ -195,3 +195,4 @@ Bring **every** document in line with the implementation as it now exists. For e
 - **0.1 — 2026-11-18:** Initial working agreement: source-of-truth map, one-task-per-session protocol, human pre-session preparation checklist, software-vs-human testing split with mandatory playtest declaration, mandatory Notes & learnings gotcha capture, stop-and-ask conditions, phase retrospective and doc-sync sweep.
 - **0.2 — 2026-11-19:** Synced with the owner's direction reset (GDD v0.19): project snapshot rewritten (Kit 17, realistic-but-kid-friendly, orders, automation, three modes), **PC only**, Compatibility renderer and `MyFarmingGame` assembly recorded, guardrail summary updated to the new PHASE.md §7, `.import` sidecars now committed (only `.godot/` ignored), `buildings.md` added to the domain-doc lists, human-test examples de-aged.
 - **0.3 — 2026-11-19:** Snapshot synced with GDD v0.20 (single mode, 6+, day-based growth); `economy.md` and `onboarding.md` added to the domain-doc lists.
+- **0.4 — 2026-11-20:** Platform snapshot changed to **PC first, consoles later** (owner decision): Switch and PlayStation after the PC release; gamepad-complete controls and abstract button prompts required.
