@@ -36,6 +36,19 @@ public partial class FarmGrid : Node2D, IToolTarget
     [Signal] public delegate void TileChangedEventHandler(Vector2I cell);
     [Signal] public delegate void CropLostEventHandler(Vector2I cell);
     [Signal] public delegate void CropHarvestedEventHandler(Vector2I cell, string item);
+    /// <summary>A tool did something (Task 1.12 onboarding counts it). Arguments: <see cref="TileAction"/>, cell.</summary>
+    [Signal] public delegate void ToolUsedEventHandler(int action, Vector2I cell);
+
+    private bool _waterHints;
+
+    /// <summary>Task 1.12 nudge "morning after planting": a watering-can icon over every dry bed.</summary>
+    public bool WaterHints
+    {
+        get => _waterHints;
+        set { _waterHints = value; QueueRedraw(); }
+    }
+
+    private float _sparkle;
 
     private CropTile[] _tiles;
     private GameClock _clock;
@@ -158,6 +171,7 @@ public partial class FarmGrid : Node2D, IToolTarget
         if (done != TileAction.Nothing)
         {
             EmitSignal(SignalName.TileChanged, cell);
+            EmitSignal(SignalName.ToolUsed, (int)done, cell);
             QueueRedraw();
         }
         return done;
@@ -257,6 +271,17 @@ public partial class FarmGrid : Node2D, IToolTarget
             _highlight = next;
             QueueRedraw();
         }
+        _sparkle += (float)delta;
+        if (_waterHints || AnyReady) QueueRedraw();
+    }
+
+    public bool AnyReady
+    {
+        get
+        {
+            foreach (var (_, t) in AllTiles()) if (t.IsReady) return true;
+            return false;
+        }
     }
 
     /// <summary>The tile highlighted in front of Kit (tests).</summary>
@@ -271,6 +296,21 @@ public partial class FarmGrid : Node2D, IToolTarget
             string crop = CropSprite(t);
             if (crop != null)
                 DrawTextureRect(SpriteLibrary.Get(crop), rect, false);
+        }
+        // Ready crops sparkle (onboarding "carrots ready"); dry crops get a can icon while the
+        // morning-after-planting hint is on.
+        var can = SpriteLibrary.Get("tool_watering_can");
+        foreach (var (cell, t) in AllTiles())
+        {
+            var c = new Vector2((cell.X + 0.5f) * TileSize, (cell.Y + 0.5f) * TileSize);
+            if (t.IsReady)
+            {
+                float a = 0.5f + 0.5f * Mathf.Sin(_sparkle * 5 + cell.X);
+                DrawCircle(c + new Vector2(18, -20), 4f, new Color(1, 1, 0.7f, a));
+                DrawCircle(c + new Vector2(-16, -10), 3f, new Color(1, 1, 0.7f, 1 - a));
+            }
+            else if (_waterHints && t.HasCrop && !t.Watered)
+                DrawTextureRect(can, new Rect2(c + new Vector2(-14, -48 + Mathf.Sin(_sparkle * 4) * 3), new Vector2(28, 28)), false);
         }
         DrawRect(new Rect2(0, 0, Columns * TileSize, Rows * TileSize), new Color(0.35f, 0.25f, 0.15f), false, 3f);
         if (_highlight is Vector2I h)

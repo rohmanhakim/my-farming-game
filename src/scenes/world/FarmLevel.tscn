@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3]
+[gd_scene load_steps=18 format=3]
 
 [ext_resource type="Script" path="res://scripts/world/FarmLevel.cs" id="1_level"]
 [ext_resource type="Shader" path="res://shaders/placeholder_checker.gdshader" id="2_checker"]
@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" path="res://scenes/world/ShopCounter.tscn" id="12_counter"]
 [ext_resource type="PackedScene" path="res://scenes/world/Phone.tscn" id="13_phone"]
 [ext_resource type="Script" path="res://scripts/world/AnimalHouse.cs" id="14_house"]
+[ext_resource type="PackedScene" path="res://scenes/world/Ada.tscn" id="15_ada"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_checker"]
 shader = ExtResource("2_checker")
@@ -135,5 +136,15 @@ position = Vector2(1752, -880)
 [node name="BerryBush5" parent="Bushes" instance=ExtResource("9_bush")]
 position = Vector2(1448, -1060)
 
+[node name="Ada" parent="." instance=ExtResource("15_ada")]
+position = Vector2(1456, 468)
+
+[node name="Cart" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(1712, 160)
+script = ExtResource("4_sprite")
+SpriteName = "cart"
+DisplaySize = Vector2(96, 96)
+
 [node name="PlayerSpawn" type="Marker2D" parent="."]
-position = Vector2(1600, 440)
+position = Vector2(1600, 200)

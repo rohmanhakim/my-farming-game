@@ -20,6 +20,7 @@ public partial class TestRunner
         Check(menu != null && light != null && button != null, "Pause/PauseMenu, World/Effects/DayNightOverlay and the HUD pause button exist");
         if (menu == null || light == null || button == null) { main.QueueFree(); return; }
         menu.AllowQuit = false;
+        GameSettings.ResetToDefaults();
         await Frames(3);
 
         // Start (gamepad) opens it and pauses the game; the clock stands still.

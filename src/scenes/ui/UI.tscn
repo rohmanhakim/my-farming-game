@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/ui/ClockDial.tscn" id="1_clock"]
 [ext_resource type="PackedScene" path="res://scenes/ui/SleepPrompt.tscn" id="2_sleep"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/Shop.tscn" id="8_shop"]
 [ext_resource type="Script" path="res://scripts/ui/CareNoticeView.cs" id="9_care"]
 [ext_resource type="Script" path="res://scripts/ui/PauseButton.cs" id="10_pausebtn"]
+[ext_resource type="PackedScene" path="res://scenes/ui/Nudge.tscn" id="11_nudge"]
 
 [node name="UI" type="Control"]
 layout_mode = 3
@@ -30,6 +31,9 @@ layout_mode = 0
 layout_mode = 1
 
 [node name="Bag" parent="." instance=ExtResource("5_bag")]
+layout_mode = 1
+
+[node name="Nudge" parent="." instance=ExtResource("11_nudge")]
 layout_mode = 1
 
 [node name="OrderBoard" parent="." instance=ExtResource("7_board")]

@@ -140,10 +140,15 @@ public partial class OrderBoardView : Control
         if (_cards.Count > 0) CloseButton.FocusNeighborTop = _cards[0].GetPath();
     }
 
+    /// <summary>Order ids whose cards are lit (Kit can deliver them now).</summary>
+    public bool CardLit(string id) => OrderManager.Instance?.CanDeliver(id) ?? false;
+
     private static Button MakeCard(Order o)
     {
         var card = new Button { CustomMinimumSize = new Vector2(150, 190), FocusMode = FocusModeEnum.All };
-        card.AddThemeStyleboxOverride("normal", CardStyle(o.State == OrderState.Accepted ? new Color(0.98f, 0.95f, 0.8f) : new Color(1f, 0.99f, 0.95f), false));
+        // A card Kit can hand in right now lights up (Task 1.12 "the order card lights up").
+        bool ready = OrderManager.Instance?.CanDeliver(o.Id) ?? false;
+        card.AddThemeStyleboxOverride("normal", CardStyle(ready ? new Color(1f, 0.93f, 0.55f) : o.State == OrderState.Accepted ? new Color(0.98f, 0.95f, 0.8f) : new Color(1f, 0.99f, 0.95f), false));
         card.AddThemeStyleboxOverride("hover", CardStyle(new Color(1f, 1f, 0.9f), false));
         card.AddThemeStyleboxOverride("focus", CardStyle(new Color(1f, 1f, 0.9f), true));
         card.AddThemeStyleboxOverride("pressed", CardStyle(new Color(0.9f, 0.9f, 0.8f), true));

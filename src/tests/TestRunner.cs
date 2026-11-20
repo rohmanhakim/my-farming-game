@@ -40,6 +40,7 @@ public partial class TestRunner : Node
     {
         // Tests never read or write the player's real save (Task 1.10).
         if (SaveGame.Instance != null) SaveGame.Instance.Enabled = false;
+        GameSettings.Nudges = false;
         CheckProjectSettings();
         CheckInputMap();
         CheckSprites();
@@ -66,6 +67,8 @@ public partial class TestRunner : Node
         await CheckAnimalsInGame();
         await CheckSaveLoad();
         await CheckPauseAndLight();
+        CheckOnboardingRules();
+        await CheckOnboardingInGame();
     }
 
     private void Check(bool ok, string what)
@@ -239,6 +242,9 @@ public partial class TestRunner : Node
         _player = main.GetNodeOrNull<PlayerController>("World/Entities/Player");
         Check(_player != null, "Player root has PlayerController");
         if (_player == null) { main.QueueFree(); return; }
+        // Start in the open yard between the coop and the house (the new-game spawn is by the cart,
+        // where walking right runs into the coop — Task 1.12).
+        _player.GlobalPosition = new Vector2(1600, 440);
         var anim = _player.GetNodeOrNull<AnimationPlayer>("AnimationPlayer");
         var sprite = _player.GetNode<NamedSprite>("Sprite");
         Check(anim != null, "Player has AnimationPlayer");
@@ -761,6 +767,8 @@ public partial class TestRunner : Node
         OrderManager.Instance?.ResetForNewGame();
         World.Ledger.Reset();
         FeedStore.Reset();
+        Onboarding.Instance?.ResetForNewGame();
+        GameSettings.Nudges = false; // nudge bubbles only in the onboarding tests
     }
 
     private async Task Tap(JoyButton b)

@@ -248,6 +248,18 @@ public partial class OrderManager : Node
         return Order.Make(id, "marlow", item, count, day);
     }
 
+    /// <summary>Adds a daily order for <paramref name="item"/> now (Task 1.12 nudge "first eggs and
+    /// milk": egg and milk orders appear on the board). Returns it, or null if it isn't priced.</summary>
+    public Order AddDailyOrder(string item, int day)
+    {
+        if (!BoardOpen || !PriceTable.Has(item)) return null;
+        int n = 0;
+        while (Get($"gen_{day}_{item}_{n}") != null) n++;
+        var o = Order.Make($"gen_{day}_{item}_{n}", "marlow", item, Math.Clamp(BaseCount(item) + TotalDelivered / 3, 1, MaxOrderCount), day);
+        Add(o);
+        return o;
+    }
+
     /// <summary>Save/load (Task 1.10).</summary>
     public void Restore(IEnumerable<Order> orders, bool boardOpen, IDictionary<string, int> delivered = null, int seed = 1)
     {

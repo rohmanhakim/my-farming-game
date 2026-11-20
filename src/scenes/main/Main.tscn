@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://scripts/main/Main.cs" id="1_main"]
 [ext_resource type="PackedScene" path="res://scenes/world/FarmLevel.tscn" id="2_level"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" path="res://scripts/main/SaveBinder.cs" id="8_save"]
 [ext_resource type="PackedScene" path="res://scenes/ui/PauseMenu.tscn" id="9_pause"]
 [ext_resource type="PackedScene" path="res://scenes/ui/DayNightOverlay.tscn" id="10_daynight"]
+[ext_resource type="Script" path="res://scripts/main/OnboardingDirector.cs" id="11_onboard"]
 
 [node name="Main" type="Node"]
 process_mode = 3
@@ -29,6 +30,12 @@ PlayerPath = NodePath("../../World/Entities/Player")
 CameraPath = NodePath("../../World/Entities/Camera2D")
 LevelPath = NodePath("../../World/Level")
 ShopPath = NodePath("../../HUD/UI/Shop")
+
+[node name="OnboardingDirector" type="Node" parent="Systems"]
+script = ExtResource("11_onboard")
+PlayerPath = NodePath("../../World/Entities/Player")
+LevelPath = NodePath("../../World/Level")
+EffectsPath = NodePath("../../World/Effects")
 
 [node name="World" type="Node2D" parent="."]
 process_mode = 1

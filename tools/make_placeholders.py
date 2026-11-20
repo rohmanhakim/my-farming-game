@@ -488,6 +488,32 @@ def icon_pause():
     return c
 
 
+def ada():
+    """Ada: the parents' old friend — short hair, cardigan, apron."""
+    c = Canvas(32, 32)
+    skin, hair, top, apron = (226, 180, 140), (110, 70, 50), (200, 110, 90), (240, 236, 220)
+    c.disc(16, 9, 6, hair)
+    c.rect(12, 8, 9, 8, skin)
+    c.set(14, 11, INK); c.set(18, 11, INK)
+    c.line(14, 14, 18, 14, (170, 90, 80))
+    c.rect(10, 16, 13, 12, top)
+    c.rect(12, 19, 9, 9, apron)
+    c.rect(7, 17, 3, 7, top); c.rect(23, 17, 3, 7, top)
+    c.rect(12, 28, 3, 3, (80, 60, 50)); c.rect(18, 28, 3, 3, (80, 60, 50))
+    return c
+
+
+def cart():
+    c = Canvas(32, 32)
+    c.rect(3, 10, 26, 12, (160, 118, 72))
+    c.outline(3, 10, 26, 12, (110, 76, 46))
+    c.rect(6, 5, 8, 6, (200, 160, 110)); c.rect(16, 6, 9, 5, (120, 140, 180))  # bags and a suitcase
+    c.disc(9, 24, 5, (80, 60, 40)); c.disc(23, 24, 5, (80, 60, 40))
+    c.disc(9, 24, 2, (160, 130, 90)); c.disc(23, 24, 2, (160, 130, 90))
+    c.line(29, 14, 31, 8, (110, 76, 46))
+    return c
+
+
 SPRITES = {
     # Task 1.5 — farm level, front garden, buildings
     "soil_weeds": soil_weeds,
@@ -541,6 +567,9 @@ SPRITES = {
     "gravestone": gravestone,
     # Task 1.11 — pause button
     "icon_pause": icon_pause,
+    # Task 1.12 — onboarding
+    "npc_ada": ada,
+    "cart": cart,
 }
 
 
