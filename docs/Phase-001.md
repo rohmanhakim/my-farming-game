@@ -1,7 +1,7 @@
 # Phase-001 — First Playable (Vertical Slice)
 
-> **Status:** In progress — Tasks 1.1–1.4 and 1.10 done; Tasks 1.5–1.9, 1.11 and 1.12 built, pending human playtest (2026-11-21)  
-> **Version:** 0.38  
+> **Status:** In progress — Tasks 1.1–1.4 and 1.10 done; Tasks 1.5–1.9 and 1.11–1.12 built, pending human playtest; Task 1.13 software part done, playtest pending (2026-11-21)  
+> **Version:** 0.39  
 > **Last updated:** 2026-11-21  
 > **Milestone:** 1 — First playable  
 > **Purpose:** Break Milestone 1 down into session tasks. Each task produces one scoped, playtested artifact that can be created and validated in a single session with AI assistance.
@@ -496,11 +496,11 @@ Each task includes **Team Preparation**, **Tests** (Software / Human), and a **N
 **Dependencies:** All previous tasks.
 
 **Notes & learnings:**
-- **Outcome / status:** _TBD_
-- **What worked well:** _TBD_
-- **Problems & fixes:** _TBD_
-- **Playtest findings (GDD §14 answers):** _TBD_
-- **Advice for Phase-002 planning:** _TBD_
+- **Outcome / status:** 2026-11-21 — **Software part done; human playtest PENDING** (this task is mostly a human task: players aged 6+ and adults, GDD §14). Software tests: PASS — (1) **all automated checks in one pass:** `tools/verify.sh` → `dotnet build` 0 warnings/0 errors, import, 120-frame boot, `TestRunner` **618/618** (Tasks 1.1–1.12), no `.godot/` files in git; (2) **frame rate:** a scripted 8-second walk from the arrival cart up the lane in the real game window on the owner's MacBook Air (M1, Compatibility renderer): ≈ 120 fps average (961 frames / 8 s), average frame CPU 13.5 ms, one worst frame 22 ms; headless the same walk averages 4.8 ms per frame; 477 nodes in the scene; (3) **no runtime errors** in the boot run, the walk, or the test run (`ERROR`/`SCRIPT ERROR` grep clean); (4) **save/load end to end:** the Task 1.10 test restarts `Main` and compares the whole save snapshot, 50 cycles, corrupt-file fallback. · Human playtest: **PENDING** — run it with `docs/playtest-001.md`; the "stable frame rate on target PC hardware" exit item also needs a Windows PC check.
+- **What worked well:** Building every task on the same few patterns (autoload state with private test instances; small views that only subscribe; a `Prop` base for anything Kit uses; one picture bubble for every conversation) let nine tasks land with one test runner and no rework of earlier systems. Whole-snapshot comparisons (save/load) and "is this already true?" loops (onboarding) caught more than per-field checks would. A throwaway GDScript capture scene + `--write-movie` gave a real look at each new screen without adding test code.
+- **Problems & fixes:** (1) GDScript can't call C# methods with `Action` or nullable parameters (`Invalid call. Nonexistent function 'WalkTo'`) and the capture script then waited forever → the frame-time script presses `move_up` with `Input.action_press` instead. (2) A windowed run started from the agent shell sat in the background for minutes (likely macOS throttling a window behind the editor) while its timers never fired → measure with a self-quitting frame counter rather than wall-clock timers, and check the process list for leftover runs. (3) Recurring theme across Tasks 1.9–1.12: on a busy Mac physics frames outrun rendered frames, so tests that inject input or read `_Process` results must wait on rendered frames (fixed in the helpers; see Task 1.10).
+- **Playtest findings (GDD §14 answers):** **Not yet run** — no player has tried the slice (2026-11-21). Use `docs/playtest-001.md` §3 (one sheet per player) and copy the answers here: start without explanation; tell what can be used; crops need water / yellow = warning; losing a crop feels fair; controls on gamepad and keyboard + mouse; NPC want/task/reward understood before accepting; first order makes the money loop clear; the 3-days rule understood from the warnings. Fallback if no children are available: team members play and mark findings "needs target-player validation".
+- **Advice for Phase-002 planning:** (1) **Decide the open design points this slice had to guess** and write them into the docs: the ×1.25 order premium (constant `PriceTable.OrderPremium`); any tool harvests and ready crops never dry out; feeding all animals from the bin with one scoop press; the phone's fixed packs (day / week); seed choice by pressing a packet in the bag; the loss-card tip (not "auto-feeder"); the first-evening hint at 16:30. (2) **Interior scenes** (open question 16): same-map buildings worked for the slice, but the coop is tight with 5 hens and the bin; the kitchen upgrade will want a real room. (3) **Night phases** (22:30–04:30) are never played (21:30 bedtime), so night content (Moon Petal, the lit shed) needs a time decision. (4) **Final art** can drop in by sprite name (`SpriteLibrary`); Kit, Marlow and Ada need clearly different silhouettes — the Kenney Kit and Marlow tiles looked alike. (5) **Test runtime** is now several minutes; split `TestRunner` into fast rule tests and slower in-game tests, or allow running one group. (6) Market stall, shipping box and rain (Phase-002) plug into `Production`, `PriceTable` and the `GameClock.DayStarted/DayEnded` hooks; register any new state with `SaveGame.Register`.
 
 ---
 
@@ -510,11 +510,11 @@ Each task includes **Team Preparation**, **Tests** (Software / Human), and a **N
 - [ ] A new player (6+) completes the guided start and the first two orders with little or no explanation
 - [ ] Crops grow by day, yellow at 2 dry days, and are lost at 3; hens and the cow are lost at 3 unfed days with the gentle card
 - [ ] Starting hens and cow work (feed, eggs, milk, loss rule); buying seeds at the shed and ordering feed by phone work at economy.md prices
-- [ ] The clock stops indoors (house, coop, barn, seed shed) and in every menu
-- [ ] Game saves and loads correctly (versioned)
-- [ ] Stable frame rate on target PC hardware
-- [ ] Placeholder art clearly marked as temporary
-- [ ] Notes recorded for Phase-002 planning
+- [x] The clock stops indoors (house, coop, barn, seed shed) and in every menu — software tests 2026-11-21 (still worth confirming in the playtest)
+- [x] Game saves and loads correctly (versioned) — Task 1.10 tests, 2026-11-21
+- [ ] Stable frame rate on target PC hardware — ≈ 120 fps on the owner's M1 MacBook Air (2026-11-21); a Windows PC check is still needed
+- [x] Placeholder art clearly marked as temporary — `ph_` files in `src/assets/placeholder/` with a README; final art replaces them by name
+- [x] Notes recorded for Phase-002 planning — Task 1.13 *Advice for Phase-002 planning*
 
 ---
 
@@ -563,3 +563,4 @@ Phase-002 (planned — docs/PHASE.md §3): market stall and shipping box with se
 - **0.36 — 2026-11-21:** **Task 1.10 Done** (Human: none required). Notes & learnings filled: `SaveGame` autoload (versioned JSON at `user://savegame.json`, section registration, temp + rename, `savegame.bak.json` fallback, migration chain), `SaveBinder` in Main/Systems with 10 sections, load at start, auto-save after each night, purchase and delivered order; tests never touch the real save.
 - **0.37 — 2026-11-21:** **Task 1.11 built — pending human playtest.** Notes & learnings filled: pause menu (Start / Esc / on-screen button; Resume, Save, Settings, Quit; calendar + the HUD's day/night dial), settings (volume −/+, hints, read aloud placeholder, break reminder off by default) saved to `user://settings.json` through `SaveGame`, day/night CanvasModulate tint per phase.
 - **0.38 — 2026-11-21:** **Task 1.12 built — pending human playtest.** Notes & learnings filled: `Onboarding` autoload (step, counters, shown nudges, own save section), `OnboardingDirector` (10 steps advanced by what happens, skip-ahead, hint chip + guide arrow), Ada as a solo NPC by the house (waves, step lines, speaks nudges and the hungry warning), arrival cart and new-game spawn by the gate, 8 one-time nudges behind the Hints setting, ready crops sparkle and deliverable cards light up.
+- **0.39 — 2026-11-21:** **Task 1.13 software part done — human playtest pending.** Full `verify.sh` pass (618/618), frame-time check on the owner's Mac, no runtime errors, save/load end to end; new `docs/playtest-001.md` (session setup, what to try per task, GDD §14 observation sheet); exit criteria ticked only where the running game shows them; advice for Phase-002 recorded.
