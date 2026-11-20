@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://scripts/main/Main.cs" id="1_main"]
 [ext_resource type="PackedScene" path="res://scenes/world/FarmLevel.tscn" id="2_level"]
@@ -8,6 +8,8 @@
 [ext_resource type="Script" path="res://scripts/main/SleepSequence.cs" id="6_sleep"]
 [ext_resource type="PackedScene" path="res://scenes/ui/DayTransition.tscn" id="7_daytrans"]
 [ext_resource type="Script" path="res://scripts/main/SaveBinder.cs" id="8_save"]
+[ext_resource type="PackedScene" path="res://scenes/ui/PauseMenu.tscn" id="9_pause"]
+[ext_resource type="PackedScene" path="res://scenes/ui/DayNightOverlay.tscn" id="10_daynight"]
 
 [node name="Main" type="Node"]
 process_mode = 3
@@ -48,6 +50,8 @@ TargetPath = NodePath("../Player")
 
 [node name="Effects" type="Node2D" parent="World"]
 
+[node name="DayNightOverlay" parent="World/Effects" instance=ExtResource("10_daynight")]
+
 [node name="Audio" type="Node" parent="."]
 process_mode = 3
 
@@ -58,6 +62,8 @@ process_mode = 1
 
 [node name="Pause" type="CanvasLayer" parent="."]
 process_mode = 2
+
+[node name="PauseMenu" parent="Pause" instance=ExtResource("9_pause")]
 
 [node name="Transition" type="CanvasLayer" parent="."]
 process_mode = 3

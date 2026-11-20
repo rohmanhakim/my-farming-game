@@ -65,6 +65,7 @@ public partial class TestRunner : Node
         CheckAnimalRules();
         await CheckAnimalsInGame();
         await CheckSaveLoad();
+        await CheckPauseAndLight();
     }
 
     private void Check(bool ok, string what)

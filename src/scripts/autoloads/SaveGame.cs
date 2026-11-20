@@ -18,6 +18,7 @@ namespace MyFarmingGame.Autoloads;
 ///   parsed, the backup is loaded instead.
 /// * <b>Migrations:</b> <see cref="Migrations"/> maps a version to a step that upgrades the data to
 ///   the next one; <see cref="Migrate"/> runs the chain up to <see cref="SchemaVersion"/>.
+/// * Settings (Task 1.11) go to <see cref="SettingsPath"/> through <see cref="SaveSettings"/>.
 /// * Only this class writes to <c>user://</c>. Tests point <see cref="SavePath"/> at a temp file or
 ///   switch <see cref="Enabled"/> off.
 /// </summary>
@@ -63,6 +64,30 @@ public partial class SaveGame : Node
     {
         if (Instance == this)
             Instance = null;
+    }
+
+    // ---- Settings (Task 1.11): kept apart from the game save, so a new game keeps them -------
+    public const string SettingsPath = "user://settings.json";
+
+    public override void _Ready()
+    {
+        if (Instance == this) LoadSettings();
+    }
+
+    public bool SaveSettings()
+    {
+        if (!Enabled) return false;
+        using var f = FileAccess.Open(SettingsPath, FileAccess.ModeFlags.Write);
+        if (f == null) return false;
+        f.StoreString(Json.Stringify(MyFarmingGame.Core.GameSettings.ToDict(), "  "));
+        return true;
+    }
+
+    public void LoadSettings()
+    {
+        var d = FileAccess.FileExists(SettingsPath) ? Json.ParseString(FileAccess.GetFileAsString(SettingsPath)) : default;
+        if (d.VariantType == Variant.Type.Dictionary) MyFarmingGame.Core.GameSettings.FromDict(d.AsGodotDictionary());
+        else MyFarmingGame.Core.GameSettings.SetVolume(MyFarmingGame.Core.GameSettings.Volume);
     }
 
     public void Register(string section, Func<Godot.Collections.Dictionary> save, Action<Godot.Collections.Dictionary> load) =>

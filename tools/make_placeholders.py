@@ -480,6 +480,14 @@ def gravestone():
     return c
 
 
+def icon_pause():
+    c = Canvas(32, 32)
+    c.disc(16, 16, 14, (250, 248, 240))
+    c.rect(10, 9, 4, 14, (60, 60, 80))
+    c.rect(18, 9, 4, 14, (60, 60, 80))
+    return c
+
+
 SPRITES = {
     # Task 1.5 — farm level, front garden, buildings
     "soil_weeds": soil_weeds,
@@ -531,6 +539,8 @@ SPRITES = {
     "cow": cow,
     # Task 1.9 — loss card
     "gravestone": gravestone,
+    # Task 1.11 — pause button
+    "icon_pause": icon_pause,
 }
 
 

@@ -1,7 +1,7 @@
 # Project Structure
 
 > **Status:** Proposal for team agreement — input to Phase-001 Task 1.1 ("Team agrees on project folder structure and naming conventions")
-> **Version:** 0.20
+> **Version:** 0.21
 > **Last updated:** 2026-11-21
 > **Purpose:** The repository layout, Godot folder structure, naming rules, input/autoload registries, asset pipeline, and verification commands that every development session follows when adding code or assets under `src/`. It is a *technical* contract only — it never overrides a gameplay decision.
 
@@ -103,8 +103,8 @@ src/
 │       ├── OrderBoard.tscn    # Task 1.7 ✅ — board screen: picture cards per open order
 │       ├── Shop.tscn          # Task 1.8 ✅ — buying screen (seed shed, phone)
 │       ├── PictureBubble.tscn # Task 1.6 ✅ — portrait + picture row + one line + big buttons; holds the clock ("talk")
-│       ├── PauseMenu.tscn     # Task 1.11
-│       └── DayNightOverlay.tscn  # Task 1.11
+│       ├── PauseMenu.tscn     # Task 1.11 ✅ — instanced into Main/Pause: calendar + dial, Resume / Save / Settings / Quit
+│       └── DayNightOverlay.tscn  # Task 1.11 ✅ — CanvasModulate, instanced into Main/World/Effects
 │
 ├── scripts/                   # every .cs, grouped by the layer it belongs to
 │   ├── autoloads/             # cross-scene singletons — ONLY the ones in §8
@@ -138,8 +138,8 @@ src/
 │   │   ├── CareNoticeView.cs  # Task 1.9 — hungry warning + gravestone loss cards, shown on waking
 │   │   ├── OrderBoardView.cs  # Task 1.7 — cards; accept / give / cancel through the bubble
 │   │   ├── PictureBubbleView.cs   # Task 1.6 — Show(portrait, line, chips, buttons); B/right-click = cancel button
-│   │   ├── PauseMenuView.cs   # Task 1.11
-│   │   └── DayNightView.cs    # Task 1.11
+│   │   ├── PauseMenuView.cs, PauseButton.cs   # Task 1.11 — the menu (WhenPaused) and its opener (Start / Esc / HUD button)
+│   │   └── DayNightView.cs    # Task 1.11 — tint per day phase
 │   ├── main/
 │   │   ├── Main.cs            # Task 1.1 — root coordinator: layer numbers, player spawn (load_level later)
 │   │   ├── CameraFollow.cs    # Task 1.2 — script on World/Entities/Camera2D: follows the player with smoothing
@@ -154,6 +154,7 @@ src/
 │       ├── CropDefinition.cs, CropCatalog.cs   # Task 1.5 — crop data resources loaded from data/crops.tres
 │       ├── PriceTable.cs      # Task 1.6 — coins per item id from data/prices.json; OrderPremium 1.25
 │       ├── Order.cs           # Task 1.6 — order data (offered → accepted → paid), save shape
+│       ├── GameSettings.cs    # Task 1.11 — volume, hints, read aloud, break reminder (user://settings.json via SaveGame)
 │       ├── Production.cs      # Task 1.7 — what the farm can produce now (supply registry for the order generator)
 │       └── FeedStore.cs       # Task 1.8 — phone feed orders waiting for Dawn
 │
@@ -281,7 +282,7 @@ Quick lookup so a session knows where its artifact belongs. Scope still comes fr
 | 1.8 Seed Shop & Phone | `scenes/ui/Shop.tscn` + `scripts/ui/ShopView.cs`, `scenes/world/{ShopCounter,Phone}.tscn` + `scripts/world/{ShopCounter,Phone,AnimalHouse,FeedBin}.cs`, `scripts/core/FeedStore.cs`; prices already from `data/prices.json` (Task 1.6); Sun Sprout in `crops.tres` ✅ built |
 | 1.9 Hens, Cow & Loss Rule | `scenes/world/{Hen,Cow}.tscn`, `scripts/world/{FarmAnimal,Hen,Cow}.cs`, feeding/products/loss in `AnimalHouse.cs`, `scripts/ui/CareNoticeView.cs` (node `HUD/UI/CareNotices`; the loss card is shown in the picture bubble — no separate `LossCard.tscn`) ✅ built |
 | 1.10 Save / Load | `scripts/autoloads/SaveGame.cs` (versioned, section registration), `scripts/main/SaveBinder.cs` ✅ built |
-| 1.11 Pause & Day/Night | `scenes/ui/PauseMenu.tscn`, `scenes/ui/DayNightOverlay.tscn`, action `pause` |
+| 1.11 Pause & Day/Night | `scenes/ui/PauseMenu.tscn` + `scripts/ui/{PauseMenuView,PauseButton}.cs`, `scenes/ui/DayNightOverlay.tscn` + `scripts/ui/DayNightView.cs`, `scripts/core/GameSettings.cs`, action `pause` (bound since 1.1) ✅ built |
 | 1.12 Onboarding | `scripts/autoloads/Onboarding.cs`, `scenes/ui/Nudge.tscn`, `scenes/world/Ada.tscn` + `scripts/world/Ada.cs` |
 | 1.13 Playtest & Iterate | fixes only — no new top-level folders |
 
@@ -330,6 +331,8 @@ Defined once in `project.godot → [input]`, bound for **both** gamepad and keyb
 **Task 1.3:** `interact` is now read: **Space / gamepad A** (bottom face button on every pad) uses the nearest `IInteractable` in reach; a **left-click on an interactable's click area** (physics layer 8) walks Kit there, then uses it — any other left-click is a ground click. In the "Go to sleep?" prompt, Godot's built-in `ui_*` actions drive the buttons (D-pad/stick/arrows move focus, A/Space/Enter confirm, B/Esc/right-click close via `ui_cancel` + `cancel`). Button prompts come from `scripts/ui/ButtonPrompt.cs` (key cap, or Xbox letters / PlayStation shapes / Nintendo letters, picked from the last device used). Debug-only F2/F3/F4 clock keys are raw keys in `src/debug/` on purpose (developer tools, not game controls).
 
 **Task 1.4:** `open_inventory` bound to gamepad **Y** (top face button on every pad); the mouse uses the on-screen bag button; there is no keyboard key (owner decision 2026-11-20). `cycle_tool_next` events reordered to RB, X, wheel down so prompts show RB. **Godot's built-in `ui_accept` / `ui_cancel` have no gamepad buttons** (only Enter/Kp Enter/Space and Esc), so they are overridden in `project.godot` with **A** and **B** added (keys as physical keycodes) — every focused menu button now works on any pad. The bag closes on Y, B, right-click, Esc or its Close button (read in `_Input` while open, before the GUI). Debug-only F6/F7/F8 bag/wallet keys are raw keys in `src/debug/`.
+
+**Task 1.11:** `pause` (Start / Esc) now opens the pause menu; an on-screen pause button does the same for the mouse. Inside the menu B / Esc / Start close it (B / Esc first leave Settings).
 
 **Task 1.6:** no new actions. In a picture bubble the focused button takes A / Space / Enter / click; B, right-click and Esc press its cancel button ("Not now"). Props and Marlow use `interact` like the bed.
 
@@ -496,3 +499,4 @@ Restore after cloning: `npx skills experimental_install` · Update: `npx skills 
 - **0.18 — 2026-11-21:** Task 1.8 built: Shop screen, ShopCounter, Phone, AnimalHouse + FeedBin, FeedStore; file map updated.
 - **0.19 — 2026-11-21:** Task 1.9 built: FarmAnimal/Hen/Cow, CareNoticeView (loss card in the picture bubble); file map updated.
 - **0.20 — 2026-11-21:** Task 1.10 built: SaveGame autoload (Always) and SaveBinder in Main/Systems; file map and autoload registry updated.
+- **0.21 — 2026-11-21:** Task 1.11 built: PauseMenu (Main/Pause), PauseButton, DayNightOverlay (Main/World/Effects), GameSettings; settings file written by SaveGame.
