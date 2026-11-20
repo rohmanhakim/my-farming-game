@@ -86,6 +86,7 @@ Kind = "cow"
 FeedItem = "hay"
 StartingFeed = 7
 StartingNames = PackedStringArray("Maple")
+Spots = PackedVector2Array(270, 150, 190, 150, 110, 150, 270, 250, 190, 250)
 BinOffset = Vector2(56, 220)
 
 [node name="SeedShed" type="Node2D" parent="."]

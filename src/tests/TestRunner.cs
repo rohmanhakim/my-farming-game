@@ -21,6 +21,23 @@ public partial class TestRunner : Node
 
     public override async void _Ready()
     {
+        try
+        {
+            await RunAll();
+        }
+        catch (Exception ex)
+        {
+            // An exception in an async test would otherwise leave the runner hanging (Task 1.9).
+            _checks++;
+            _failures++;
+            GD.PrintErr($"  FAIL  test runner crashed: {ex}");
+        }
+        GD.Print($"[TestRunner] {_checks - _failures}/{_checks} checks passed");
+        GetTree().Quit(_failures == 0 ? 0 : 1);
+    }
+
+    private async Task RunAll()
+    {
         CheckProjectSettings();
         CheckInputMap();
         CheckSprites();
@@ -43,9 +60,8 @@ public partial class TestRunner : Node
         await CheckBoardInGame();
         CheckShopRules();
         await CheckShopInGame();
-
-        GD.Print($"[TestRunner] {_checks - _failures}/{_checks} checks passed");
-        GetTree().Quit(_failures == 0 ? 0 : 1);
+        CheckAnimalRules();
+        await CheckAnimalsInGame();
     }
 
     private void Check(bool ok, string what)

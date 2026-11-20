@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/ui/ClockDial.tscn" id="1_clock"]
 [ext_resource type="PackedScene" path="res://scenes/ui/SleepPrompt.tscn" id="2_sleep"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/PictureBubble.tscn" id="6_bubble"]
 [ext_resource type="PackedScene" path="res://scenes/ui/OrderBoard.tscn" id="7_board"]
 [ext_resource type="PackedScene" path="res://scenes/ui/Shop.tscn" id="8_shop"]
+[ext_resource type="Script" path="res://scripts/ui/CareNoticeView.cs" id="9_care"]
 
 [node name="UI" type="Control"]
 layout_mode = 3
@@ -38,6 +39,9 @@ layout_mode = 1
 
 [node name="PictureBubble" parent="." instance=ExtResource("6_bubble")]
 layout_mode = 1
+
+[node name="CareNotices" type="Node" parent="."]
+script = ExtResource("9_care")
 
 [node name="SleepPrompt" parent="." instance=ExtResource("2_sleep")]
 layout_mode = 1

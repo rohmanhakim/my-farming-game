@@ -48,10 +48,22 @@ public partial class FeedBin : Prop
 
     public string CountText => _count?.Text ?? "";
 
+    /// <summary>With the feed scoop: feed every hungry animal here one portion (Task 1.9).
+    /// Otherwise show how much is in the bin.</summary>
     public override void Interact(Node2D player)
     {
         if (House == null) return;
+        if (ToolBelt.Instance?.Active == Tool.FeedScoop && House.Hungry > 0)
+        {
+            if (House.FeedAll() == 0) ShowEmpty(GetTree(), House);
+            return;
+        }
         PictureBubbleView.Find(GetTree())?.Show("", "", new[] { new BubbleChip(ItemIds.SpriteName(House.FeedItem), "×" + House.Feed) },
             new[] { BubbleButton.Close() });
     }
+
+    /// <summary>The bin is empty: show it, and the phone that brings more.</summary>
+    public static void ShowEmpty(SceneTree tree, AnimalHouse house) =>
+        PictureBubbleView.Find(tree)?.Show("", "The bin is empty. Order feed with the phone at home.",
+            new[] { new BubbleChip(ItemIds.SpriteName(house.FeedItem), "×0"), new BubbleChip("phone", "") }, new[] { BubbleButton.Close() });
 }

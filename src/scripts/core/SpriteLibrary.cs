@@ -38,7 +38,7 @@ public static class SpriteLibrary
         "icon_check", "icon_order_board",
         "item_flower_seeds", "item_sun_sprout", "crop_flower_seed", "crop_flower_sprout", "crop_flower_growing",
         "crop_flower_ready", "crop_flower_yellow", "item_chicken_feed", "item_hay", "icon_closed", "icon_coop_full",
-        "icon_clock", "phone", "shop_counter", "feed_bin_grain", "feed_bin_hay", "cow",
+        "icon_clock", "phone", "shop_counter", "feed_bin_grain", "feed_bin_hay", "cow", "gravestone",
     };
 
     /// <summary>Colour used when neither final art nor a placeholder image exists.</summary>

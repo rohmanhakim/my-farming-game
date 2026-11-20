@@ -465,6 +465,21 @@ def cow():
     return c
 
 
+def gravestone():
+    """A small, gentle stone with a flower beside it (loss card, animals.md §5)."""
+    c = Canvas(32, 32)
+    c.rect(2, 26, 28, 5, (110, 160, 80))
+    c.disc(16, 12, 8, (176, 176, 186))
+    c.rect(8, 12, 16, 15, (176, 176, 186))
+    c.outline(8, 12, 16, 15, (130, 130, 140))
+    c.line(16, 9, 16, 19, (140, 140, 150)); c.line(13, 12, 19, 12, (140, 140, 150))
+    c.line(26, 27, 26, 21, LEAF_D)
+    for dx, dy in ((-2, 0), (2, 0), (0, -2), (0, 2)):
+        c.disc(26 + dx, 19 + dy, 1.4, (240, 160, 190))
+    c.set(26, 19, (250, 220, 80))
+    return c
+
+
 SPRITES = {
     # Task 1.5 — farm level, front garden, buildings
     "soil_weeds": soil_weeds,
@@ -514,6 +529,8 @@ SPRITES = {
     "feed_bin_hay": lambda: feed_bin((226, 196, 90)),
     "hen": hen,
     "cow": cow,
+    # Task 1.9 — loss card
+    "gravestone": gravestone,
 }
 
 

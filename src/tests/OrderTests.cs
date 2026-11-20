@@ -125,8 +125,8 @@ public partial class TestRunner
         await Frames(3);
         Check(boardProp != null && view != null && !boardProp.Visible && !boardProp.CanInteract, "the order board is hidden until the first order is paid");
         Check(Production.Supply().TryGetValue(ItemIds.Carrot, out var c) && c >= 3 && Production.Supply()[ItemIds.Berries] == 5
-              && !Production.Supply().ContainsKey(ItemIds.Egg),
-            "farm supply: carrots from the garden, 5 berry bushes; no eggs before Task 1.9's hens");
+              && Production.Supply()[ItemIds.Egg] == 5 && Production.Supply()[ItemIds.Milk] == 4,
+            "farm supply: carrots from the garden, 5 berry bushes, 5 eggs (hens), 4 milk cans (cow)");
         Check(Production.Supply().ContainsKey(ItemIds.SunSprout), "farm supply: flowers (seeds on sale at the shed)");
         PayFirstOrder(om);
         await Frames(3);
