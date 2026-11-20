@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bckm1ixbig0h6"
-path="res://.godot/imported/ph_npc_marlow.png-274bbe5dba025d508b56eefce7a4e77e.ctex"
+uid="uid://cxpyuflybavgg"
+path="res://.godot/imported/ph_roof_shed.png-4816ce858ff1627524654ef6ac4fe02a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/placeholder/kenney/ph_npc_marlow.png"
-dest_files=["res://.godot/imported/ph_npc_marlow.png-274bbe5dba025d508b56eefce7a4e77e.ctex"]
+source_file="res://assets/placeholder/handmade/ph_roof_shed.png"
+dest_files=["res://.godot/imported/ph_roof_shed.png-4816ce858ff1627524654ef6ac4fe02a.ctex"]
 
 [params]
 

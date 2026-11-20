@@ -164,7 +164,8 @@ public partial class TestRunner
         player.GlobalPosition = spawn;
         await Frames(5);
         Check(await WalkLeg(player, new Vector2(1600, 40)), "Kit walks from the front door to the gate");
-        Check(!await WalkLeg(player, new Vector2(1600, -200), 120) && player.GlobalPosition.Y > -10, "the gate is shut (lane comes in Task 1.6)");
+        Check(await WalkLeg(player, new Vector2(1600, -200), 200), "the gate is open onto the lane (Task 1.6)");
+        Check(await WalkLeg(player, new Vector2(1600, 40), 200), "back through the gate");
         bool toBarn = await WalkLeg(player, new Vector2(1290, 440)) && await WalkLeg(player, new Vector2(1290, 830))
                       && await WalkLeg(player, new Vector2(1600, 830)) && await WalkLeg(player, barn.DoorOutside);
         Check(toBarn, "Kit walks around the house and down the path to the old barn");

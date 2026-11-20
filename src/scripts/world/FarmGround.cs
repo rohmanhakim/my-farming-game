@@ -26,7 +26,11 @@ public partial class FarmGround : Node2D
         var overgrown = SpriteLibrary.Get("ground_overgrown");
         foreach (var f in FarmLevel.OvergrownFields)
             DrawTextureRect(overgrown, Half(FarmLevel.ToPx(f)), true);
+        foreach (var h in FarmLevel.Hedges)
+            DrawTextureRect(overgrown, Half(FarmLevel.ToPx(h)), true);
         foreach (var p in FarmLevel.Paths)
+            DrawTextureRect(path, Half(FarmLevel.ToPx(p)), true);
+        foreach (var p in FarmLevel.LanePaths)
             DrawTextureRect(path, Half(FarmLevel.ToPx(p)), true);
         DrawSetTransform(Vector2.Zero, 0, Vector2.One);
 

@@ -4,7 +4,7 @@ using MyFarmingGame.Core;
 namespace MyFarmingGame.World;
 
 /// <summary>
-/// Kit's farm for the Phase-001 slice (Task 1.5; places.md §3, Phase-001 §1). Tile = 64 px; the farm
+/// Kit's farm and the lane to Marlow's seed shed for the Phase-001 slice (Task 1.5; places.md §3, Phase-001 §1). Tile = 64 px; the farm
 /// is 50 × 32 tiles with its top-left corner at the level origin and the gate in the middle of the
 /// top fence. Only the centre column is walkable in Phase-001: the house with the front garden and
 /// old coop facing the gate, the cross path, and the old barn behind the house with cleared ground
@@ -39,11 +39,32 @@ public partial class FarmLevel : Node2D
         new(24, 14, 2, 11),  // → old barn
     };
 
+    /// <summary>The lane north of the gate to Marlow's seed shed (Task 1.6, places.md §2.1), in tiles.</summary>
+    public static readonly Rect2I[] LanePaths =
+    {
+        new(24, -19, 2, 19),
+    };
+
+    /// <summary>Hedges either side of the lane (drawn overgrown, blocked), in tiles.</summary>
+    public static readonly Rect2I[] Hedges =
+    {
+        new(14, -19, 8, 19),
+        new(28, -19, 8, 19),
+    };
+
+    /// <summary>Edges of the clearing around the seed shed and cottage (blocked, not drawn).</summary>
+    public static readonly Rect2I[] ClearingEdges =
+    {
+        new(15, -28, 21, 1),
+        new(15, -28, 1, 9),
+        new(35, -28, 1, 9),
+    };
+
     /// <summary>The gate in the top fence, in tiles.</summary>
     public static readonly Rect2I Gate = new(24, 0, 2, 1);
 
-    /// <summary>True while the gate is shut (Task 1.5: the lane comes in Task 1.6).</summary>
-    [Export] public bool GateClosed { get; set; } = true;
+    /// <summary>True to shut the gate (the lane is open from Task 1.6).</summary>
+    [Export] public bool GateClosed { get; set; }
 
     public const float FenceThickness = 10f;
 
@@ -55,6 +76,10 @@ public partial class FarmLevel : Node2D
         AddChild(blockers);
         foreach (var f in OvergrownFields)
             AddBlock(blockers, ToPx(f));
+        foreach (var h in Hedges)
+            AddBlock(blockers, ToPx(h));
+        foreach (var e in ClearingEdges)
+            AddBlock(blockers, ToPx(e));
 
         // Fence around the farm with a gap for the gate.
         Rect2 farm = ToPx(Farm), gate = ToPx(Gate);

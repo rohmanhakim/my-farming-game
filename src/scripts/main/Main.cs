@@ -22,6 +22,9 @@ public partial class Main : Node
         _bag = GetNodeOrNull<UI.BagView>("HUD/UI/Bag");
         if (_bag != null)
             _bag.OpenChanged += OnBagOpenChanged;
+        _bubble = GetNodeOrNull<UI.PictureBubbleView>("HUD/UI/PictureBubble");
+        if (_bubble != null)
+            _bubble.OpenChanged += OnBagOpenChanged;
         if (OS.IsDebugBuild())
         {
             GetTree().CreateTimer(1.0).Timeout += PrintStartupState;
@@ -31,14 +34,17 @@ public partial class Main : Node
     }
 
     private UI.BagView _bag;
+    private UI.PictureBubbleView _bubble;
 
     public override void _ExitTree()
     {
         if (_bag != null && IsInstanceValid(_bag))
             _bag.OpenChanged -= OnBagOpenChanged;
+        if (_bubble != null && IsInstanceValid(_bubble))
+            _bubble.OpenChanged -= OnBagOpenChanged;
     }
 
-    /// <summary>Kit stands still while the bag is open (the bag also holds the clock).</summary>
+    /// <summary>Kit stands still while the bag or a picture bubble is open (both hold the clock).</summary>
     private void OnBagOpenChanged(bool open) =>
         GetNode<Player.PlayerController>("World/Entities/Player").Frozen = open;
 

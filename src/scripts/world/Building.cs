@@ -4,7 +4,7 @@ using MyFarmingGame.Core;
 namespace MyFarmingGame.World;
 
 /// <summary>Which wall has the door.</summary>
-public enum DoorSide { Top, Bottom }
+public enum DoorSide { Top, Bottom, None }
 
 /// <summary>
 /// A building entered on the same map (Task 1.5, Phase-001 §1 Indoors): floor, walls with a door
@@ -91,7 +91,8 @@ public partial class Building : Node2D
         };
         AddChild(Roof);
 
-        // Inside = the floor between the walls.
+        // Inside = the floor between the walls (a building without a door can't be entered).
+        if (Door == DoorSide.None) return;
         Zone = new IndoorZone { Name = "IndoorZone", ZoneName = ZoneName, Roof = Roof };
         var shape = new CollisionShape2D
         {

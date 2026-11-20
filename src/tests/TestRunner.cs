@@ -37,6 +37,8 @@ public partial class TestRunner : Node
         await CheckBeltBagWalletInGame();
         CheckFarmRules();
         await CheckFarmInGame();
+        CheckLaneRules();
+        await CheckLaneInGame();
 
         GD.Print($"[TestRunner] {_checks - _failures}/{_checks} checks passed");
         GetTree().Quit(_failures == 0 ? 0 : 1);
@@ -729,6 +731,8 @@ public partial class TestRunner : Node
         ToolBelt.Instance?.ResetForNewGame();
         Inventory.Instance?.ResetForNewGame();
         Wallet.Instance?.ResetForNewGame();
+        OrderManager.Instance?.ResetForNewGame();
+        World.Ledger.Reset();
     }
 
     private async Task Tap(JoyButton b)

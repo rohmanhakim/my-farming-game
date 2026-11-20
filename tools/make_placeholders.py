@@ -227,6 +227,93 @@ def gate():
     return c
 
 
+def bush(berries):
+    c = Canvas(32, 32)
+    c.disc(16, 18, 12, (60, 120, 56))
+    c.disc(10, 14, 7, (74, 140, 64))
+    c.disc(22, 13, 7, (74, 140, 64))
+    if berries:
+        for x, y in ((9, 12), (15, 9), (22, 11), (12, 20), (19, 18), (25, 20), (16, 25)):
+            c.disc(x, y, 1.6, (150, 40, 90))
+            c.set(x, y - 1, (220, 120, 170))
+    c.rect(14, 29, 4, 3, (100, 70, 40))
+    return c
+
+
+def gate_open():
+    c = Canvas(64, 32)
+    post = (110, 76, 46)
+    c.rect(0, 0, 6, 32, post)
+    c.rect(58, 0, 6, 32, post)
+    c.rect(6, 4, 4, 24, (160, 118, 72))  # gate swung back against the post
+    return c
+
+
+def icon_talk():
+    c = Canvas(32, 32)
+    c.disc(16, 13, 11, (250, 248, 240))
+    c.line(9, 20, 6, 28, (250, 248, 240))
+    c.line(10, 20, 7, 28, (250, 248, 240))
+    c.line(11, 21, 7, 28, (250, 248, 240))
+    for x in (10, 16, 22):
+        c.disc(x, 13, 1.6, INK)
+    return c
+
+
+def icon_ledger():
+    c = Canvas(32, 32)
+    c.rect(3, 6, 26, 20, (120, 70, 40))
+    c.rect(5, 7, 10, 17, (246, 238, 214))
+    c.rect(17, 7, 10, 17, (246, 238, 214))
+    c.rect(15, 6, 2, 20, (90, 50, 30))
+    c.disc(10, 13, 3, (200, 80, 120))
+    c.line(10, 16, 10, 21, LEAF_D)
+    for y in (11, 14, 17, 20):
+        c.line(19, y, 25, y, (170, 160, 140))
+    return c
+
+
+def icon_check():
+    c = Canvas(32, 32)
+    c.disc(16, 16, 13, (80, 170, 90))
+    for d in (0, 1, 2):
+        c.line(9, 16 + d, 14, 21 + d, (255, 255, 255))
+        c.line(14, 21 + d, 23, 10 + d, (255, 255, 255))
+    return c
+
+
+def icon_order_board():
+    c = Canvas(32, 32)
+    c.rect(4, 4, 24, 20, (150, 108, 66))
+    c.rect(6, 6, 20, 16, (196, 160, 112))
+    c.rect(8, 8, 7, 9, (250, 248, 240))
+    c.rect(17, 9, 7, 9, (250, 248, 240))
+    c.disc(11, 8, 1, (210, 60, 60))
+    c.disc(20, 9, 1, (210, 60, 60))
+    c.rect(7, 24, 3, 7, (110, 76, 46))
+    c.rect(22, 24, 3, 7, (110, 76, 46))
+    return c
+
+
+def marlow():
+    """Mr. Marlow: wide soft hat with a seed packet, white beard, gardening smock, walking stick."""
+    c = Canvas(32, 32)
+    skin, smock, hat = (236, 196, 160), (120, 140, 90), (96, 120, 70)
+    c.rect(12, 9, 9, 8, skin)                    # face
+    c.rect(6, 6, 21, 3, hat)                     # brim
+    c.rect(10, 1, 13, 6, hat)                    # crown
+    c.rect(19, 2, 3, 4, (240, 200, 90))          # tucked seed packet
+    c.set(14, 12, INK); c.set(18, 12, INK)       # eyes
+    c.rect(12, 14, 9, 4, (240, 240, 236))        # beard
+    c.rect(10, 17, 13, 11, smock)                # smock
+    c.rect(10, 22, 13, 1, (96, 112, 72))
+    c.rect(12, 28, 3, 3, (90, 70, 50)); c.rect(18, 28, 3, 3, (90, 70, 50))
+    c.line(25, 14, 25, 31, (130, 92, 56))        # walking stick
+    c.rect(23, 18, 3, 2, skin)                   # hand on the stick
+    c.outline(10, 1, 13, 6, INK)
+    return c
+
+
 SPRITES = {
     # Task 1.5 — farm level, front garden, buildings
     "soil_weeds": soil_weeds,
@@ -246,6 +333,17 @@ SPRITES = {
     "ground_path": ground_path,
     "ground_overgrown": ground_overgrown,
     "gate": gate,
+    # Task 1.6 — lane, Marlow, berries, ledger, bubbles
+    "berry_bush": lambda: bush(True),
+    "berry_bush_empty": lambda: bush(False),
+    "gate_open": gate_open,
+    "roof_shed": lambda: roof((96, 130, 90), (70, 100, 66), 48, 32),
+    "roof_cottage": lambda: roof((120, 96, 150), (90, 70, 116), 40, 32),
+    "icon_talk": icon_talk,
+    "icon_ledger": icon_ledger,
+    "icon_check": icon_check,
+    "icon_order_board": icon_order_board,
+    "npc_marlow": marlow,
 }
 
 

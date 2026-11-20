@@ -34,6 +34,8 @@ public static class SpriteLibrary
         "soil_weeds", "soil_clear", "soil_tilled", "soil_wet", "crop_carrot_seed", "crop_carrot_sprout",
         "crop_carrot_growing", "crop_carrot_ready", "crop_carrot_yellow", "roof_house", "roof_coop", "roof_barn",
         "floor_wood", "floor_straw", "ground_path", "ground_overgrown", "gate",
+        "berry_bush", "berry_bush_empty", "gate_open", "roof_shed", "roof_cottage", "icon_talk", "icon_ledger",
+        "icon_check", "icon_order_board",
     };
 
     /// <summary>Colour used when neither final art nor a placeholder image exists.</summary>

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://scripts/world/FarmLevel.cs" id="1_level"]
 [ext_resource type="Shader" path="res://shaders/placeholder_checker.gdshader" id="2_checker"]
@@ -7,6 +7,9 @@
 [ext_resource type="Script" path="res://scripts/world/FarmGrid.cs" id="5_grid"]
 [ext_resource type="Script" path="res://scripts/world/Building.cs" id="6_building"]
 [ext_resource type="PackedScene" path="res://scenes/world/Bed.tscn" id="7_bed"]
+[ext_resource type="PackedScene" path="res://scenes/world/Marlow.tscn" id="8_marlow"]
+[ext_resource type="PackedScene" path="res://scenes/world/BerryBush.tscn" id="9_bush"]
+[ext_resource type="PackedScene" path="res://scenes/world/Ledger.tscn" id="10_ledger"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_checker"]
 shader = ExtResource("2_checker")
@@ -32,7 +35,7 @@ script = ExtResource("3_ground")
 z_index = -2
 position = Vector2(1600, -12)
 script = ExtResource("4_sprite")
-SpriteName = "gate"
+SpriteName = "gate_open"
 DisplaySize = Vector2(128, 64)
 
 [node name="FrontGarden" type="Node2D" parent="."]
@@ -65,6 +68,46 @@ ZoneName = "barn"
 FloorSprite = "floor_straw"
 RoofSprite = "roof_barn"
 WallColor = Color(0.5, 0.2, 0.16, 1)
+
+[node name="SeedShed" type="Node2D" parent="."]
+position = Vector2(1408, -1472)
+script = ExtResource("6_building")
+SizeTiles = Vector2i(6, 4)
+Door = 1
+ZoneName = "shed"
+RoofSprite = "roof_shed"
+WallColor = Color(0.3, 0.42, 0.28, 1)
+
+[node name="Ledger" parent="SeedShed" instance=ExtResource("10_ledger")]
+position = Vector2(96, 72)
+
+[node name="Cottage" type="Node2D" parent="."]
+position = Vector2(1920, -1536)
+script = ExtResource("6_building")
+SizeTiles = Vector2i(4, 4)
+Door = 2
+ZoneName = "cottage"
+RoofSprite = "roof_cottage"
+
+[node name="Marlow" parent="." instance=ExtResource("8_marlow")]
+position = Vector2(1712, -1168)
+
+[node name="Bushes" type="Node2D" parent="."]
+
+[node name="BerryBush1" parent="Bushes" instance=ExtResource("9_bush")]
+position = Vector2(1448, -280)
+
+[node name="BerryBush2" parent="Bushes" instance=ExtResource("9_bush")]
+position = Vector2(1752, -480)
+
+[node name="BerryBush3" parent="Bushes" instance=ExtResource("9_bush")]
+position = Vector2(1448, -680)
+
+[node name="BerryBush4" parent="Bushes" instance=ExtResource("9_bush")]
+position = Vector2(1752, -880)
+
+[node name="BerryBush5" parent="Bushes" instance=ExtResource("9_bush")]
+position = Vector2(1448, -1060)
 
 [node name="PlayerSpawn" type="Marker2D" parent="."]
 position = Vector2(1600, 440)

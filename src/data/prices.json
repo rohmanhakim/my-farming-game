@@ -1,0 +1,65 @@
+{
+  "source": "docs/data/economy.csv",
+  "items": {
+    "berries": {
+      "name": "Wild berries (forage)",
+      "unit": "1 handful",
+      "direction": "sell",
+      "coins": 15
+    },
+    "carrot": {
+      "name": "Carrot",
+      "unit": "1 carrot",
+      "direction": "sell",
+      "coins": 4
+    },
+    "sun_sprout": {
+      "name": "Sun Sprout (flower)",
+      "unit": "1 stem",
+      "direction": "sell",
+      "coins": 25
+    },
+    "egg": {
+      "name": "Egg",
+      "unit": "1 egg",
+      "direction": "sell",
+      "coins": 6
+    },
+    "milk": {
+      "name": "Milk",
+      "unit": "1 can (5 L)",
+      "direction": "sell",
+      "coins": 100
+    },
+    "carrot_seeds": {
+      "name": "Carrot seeds",
+      "unit": "packet of 9",
+      "direction": "buy",
+      "coins": 20
+    },
+    "flower_seeds": {
+      "name": "Flower seeds",
+      "unit": "packet of 9",
+      "direction": "buy",
+      "coins": 20
+    },
+    "hen": {
+      "name": "Laying hen",
+      "unit": "1 hen",
+      "direction": "buy",
+      "coins": 175
+    },
+    "chicken_feed": {
+      "name": "Chicken feed",
+      "unit": "1 portion (1 hen-day)",
+      "direction": "buy",
+      "coins": 1
+    },
+    "hay": {
+      "name": "Hay (cow portion)",
+      "unit": "1 portion (1 cow-day \u2248 16 kg)",
+      "direction": "buy",
+      "coins": 25
+    }
+  }
+}
