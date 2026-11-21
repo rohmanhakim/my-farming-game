@@ -43,6 +43,10 @@ public partial class Building : Node3D
     /// come closer so they fill the screen (owner 2026-11-21).</summary>
     [Export] public float CameraDistance { get; set; }
 
+    /// <summary>False = a closed front door (village places not yet enterable, Phase-002 Task 2.3):
+    /// the door gap is shut by a door panel and nothing can be entered.</summary>
+    [Export] public bool Enterable { get; set; } = true;
+
     /// <summary>For a building outside: the room scene its doorway leads into ("" = not enterable
     /// from here; without it the building is entered on the map as in Phase-001).</summary>
     [Export] public string RoomScene { get; set; } = "";
@@ -157,6 +161,19 @@ public partial class Building : Node3D
         }
 
         if (Door == DoorSide.None) return;
+        if (!Enterable)
+        {
+            // A shut door in the gap: painted wood, solid.
+            float gz = Door == DoorSide.Top ? WallThickness / 2 : d - WallThickness / 2;
+            var door = new MeshInstance3D
+            {
+                Name = "ClosedDoor", Mesh = new BoxMesh { Size = new Vector3(DoorTiles, 1.9f, WallThickness * 0.8f) },
+                MaterialOverride = ModelLibrary.MaterialFor(new Color("#7a4a2a")), Position = new Vector3(w / 2, 0.95f, gz),
+            };
+            AddChild(door);
+            walls.AddChild(new CollisionShape3D { Shape = new BoxShape3D { Size = new Vector3(DoorTiles, 2f, WallThickness) }, Position = door.Position });
+            return;
+        }
         float doorZ = Door == DoorSide.Top ? 0 : d;
         float outZ = Door == DoorSide.Top ? -0.625f : d + 0.625f;
         float inZ = Door == DoorSide.Top ? 0.75f : d - 1.0f;

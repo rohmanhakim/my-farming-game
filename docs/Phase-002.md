@@ -1,7 +1,7 @@
 # Phase-002 — Economy Depth (Box, House Orders, Real Rooms)
 
-> **Status:** **Approved by the owner 2026-11-21** — Tasks 2.1–2.2 done; Task 2.3 next
-> **Version:** 0.6
+> **Status:** **Approved by the owner 2026-11-21** — Tasks 2.1–2.3 done (2.2–2.3 pending human playtest); Task 2.4 next
+> **Version:** 0.7
 > **Last updated:** 2026-11-21
 > **Milestone:** 2 — Economy depth
 > **Purpose:** Break Milestone 2 down into session tasks. Each task produces one scoped, playtested artifact that can be created and validated in a single session with AI assistance. Same task shape and rules as Phase-001 (AGENTS.md §3–§4).
@@ -125,7 +125,7 @@ Tasks are ordered by dependency. After each task the game runs and the new artif
 
 **Scope:**
 - Village level reached at the top of the lane (area transition through `load_level`), laid out from places.md §2.1 (one ring path, every door on it) at 1 tile = 1 m; placeholder buildings and props by model name
-- Marlow's cottage and seed shed move here from the farm level; the seed shed interior from Task 2.2 is reached from the village
+- ~~Marlow's cottage and seed shed move here from the farm level~~ — they stay **on the lane** in the farm scene, as places.md §2.1 lists them ("on the lane"); the lane now runs on to the green (changed 2026-11-21, docs are the source of truth)
 - Bakery, allotments and general store exteriors: **closed** (a picture of what opens them, places.md rule "gentle locks") until their neighbour arrives at the existing triggers
 - Neighbours as NPCs at their places once open (the baker, the allotment neighbour, the shopkeeper — placeholder capsules in clearly different colours and heights)
 - Walking time farm door → green ≈ the places.md figure; camera limits per area
@@ -146,11 +146,11 @@ Tasks are ordered by dependency. After each task the game runs and the new artif
 **Dependencies:** Task 2.2.
 
 **Notes & learnings:**
-- **Outcome / status:** _TBD_
-- **What worked well:** _TBD_
-- **Problems & fixes:** _TBD_
-- **Deviations from scope or plan:** _TBD_
-- **Handoff to Task 2.4:** _TBD_
+- **Outcome / status:** 2026-11-21 — **Done — pending human playtest.** Software tests: PASS — `tools/verify.sh` (`dotnet build` 0/0, import, Main boots, `TestRunner` **810/810**), new `VillageTests`: the top of the lane leads to the green; walking up the lane loads `VillageGreen.tscn` with Kit at `FromLane` facing in and the clock running; the outdoor camera frames the green; the guide arrow for a farm target points at the lane home; the bakery, store and allotments start closed (picture sign) and the bakery and store doors are shut; the bakery's sign shows what opens it (the first eggs); once the baker has arrived the bakery opens with the baker at the door (others stay closed) and the baker greets Kit; the duck pond blocks; the ring path goes all the way round; walking down the lane loads the farm with Kit at `LaneTop` facing home. All existing Marlow, board, shop, ledger and phone checks still pass. `tools/perf_check.sh` (farm view): ≈ 98–110 fps, 191–198 draw calls, ≈ 61k triangles, both profiles OK. · Human playtest: **PENDING** (a 6-year-old finds the bakery and back home without help; the green's size and the walk feel right).
+- **What worked well:** The green is just another level: the same `DoorTrigger` + marker mechanism as the rooms, now with exported `TargetScene`/`TargetMarker`/`Facing` so an area doorway is set up in the scene file. Closed places need no new state: `VillagePlace` reads `OrderManager.ActiveNeighbours` (the arrival triggers that already exist), so a place opens the moment its neighbour arrives, saved with the orders. The ground is baked into one mesh like the farm's (`ModelLibrary.BakeBoxes`), so the whole green costs few draw calls.
+- **Problems & fixes:** (1) GDScript/debug calls could not reach `Main.LoadLevelNow` (nullable facing) → added `Main.GoTo(path, marker)`. (2) The guide arrow only knew building rooms → `OnboardingDirector.ThroughDoors` also points at an area doorway leading to the target scene, else at the one leading home. (3) The farm's north clearing edge and the lane hedges were closed → a 2 m lane gap (`LanePaths` + hedges) up to the `ToGreen` doorway.
+- **Deviations from scope or plan:** (a) **Marlow's cottage, the seed shed and the noticeboard stay on the lane** in the farm scene (places.md §2.1 puts them "on the lane"); the scope line is changed. (b) Bakery and general store are shells with a shut door (`Building.Enterable = false`); their rooms come with their shops later. (c) Neighbours at open places are placeholder figures standing at the door (`VillagePlace` model by name: `baker`, `allotment`, `shopkeeper`), not walking NPCs. (d) Walking time front door → green centre ≈ 53 m ≈ 21 s at 2.5 m/s (places.md says ≈ 39 tiles / 16 s) — left for the playtest; the lane can be shortened without moving anything else. (e) The perf check still measures the farm view; the green measured by eye in the editor screenshot only.
+- **Handoff to Task 2.4:** `VillageGreen` (layout tables: `Paths`, `Pond`, `Allotments`, hedges), `VillagePlace` (`NeighbourId`, `OpensWith`, `NeighbourModel`, `IsOpen`), `Building.Enterable`, `DoorTrigger` exports, `Main.GoTo`. Farm markers: `ToGreen`, `LaneTop`; green markers: `ToLane`, `FromLane`. The shipping box goes beside the farmhouse door (places.md §3) in `FarmLevel.tscn`; its 18:00 pickup belongs in an autoload (like `FarmState`) so it runs wherever Kit is.
 
 ---
 
@@ -513,3 +513,4 @@ Tasks are ordered by dependency. After each task the game runs and the new artif
 - **0.4 — 2026-11-21:** **Task 2.1 done:** Phase-001 closed, docs synced, owner decisions written back; Notes filled.
 - **0.5 — 2026-11-21:** **Task 2.2 built — pending human playtest:** real rooms for the house, coop, barn and seed shed, entered by walking into the doorway; rooms live in the same level (no `load_level` / schema v3 needed yet — choice for review). Notes filled; 774/774; 192 draw calls.
 - **0.6 — 2026-11-21:** **Task 2.2 rebuilt — a separate scene for each room (owner 2026-11-21):** `FarmState` autoload holds the garden, herds and bushes; `Main.LoadLevelNow`/`Travel` implement `load_level`; save schema 3 (scene in the player section); per-room camera distance. Notes rewritten.
+- **0.7 — 2026-11-21:** **Task 2.3 built — pending human playtest:** Bramblewick Green's first ring as its own scene, reached up the lane; bakery, allotments and general store closed with picture signs until their neighbour arrives; Marlow stays on the lane (places.md). Notes filled; 810/810.

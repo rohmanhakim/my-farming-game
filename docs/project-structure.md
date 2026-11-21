@@ -1,7 +1,7 @@
 # Project Structure
 
 > **Status:** Proposal for team agreement — input to Phase-001 Task 1.1 ("Team agrees on project folder structure and naming conventions")
-> **Version:** 0.35
+> **Version:** 0.36
 > **Last updated:** 2026-11-21
 > **Purpose:** The repository layout, Godot folder structure, naming rules, input/autoload registries, asset pipeline, and verification commands that every development session follows when adding code or assets under `src/`. It is a *technical* contract only — it never overrides a gameplay decision.
 
@@ -82,7 +82,8 @@ src/
 │   ├── player/
 │   │   └── Player.tscn        # Kit: CharacterBody3D + capsule collider + NamedModel "kit" (child "Model"; the held tool "Hand" is added in code)
 │   ├── world/                 # the level and everything Kit walks up to (3D)
-│   │   ├── FarmLevel.tscn     # farm + lane + seed shed: ground/fields/fence built by FarmLevel.cs, Buildings (house, coop, barn, shed, cottage; each with `RoomScene` + a doorway), FrontGarden (FarmGrid view), props, markers
+│   │   ├── FarmLevel.tscn     # farm + lane (+ `ToGreen` area doorway and `LaneTop` marker at its north end, Task 2.3) + seed shed: ground/fields/fence built by FarmLevel.cs, Buildings (house, coop, barn, shed, cottage; each with `RoomScene` + a doorway), FrontGarden (FarmGrid view), props, markers
+│   │   ├── VillageGreen.tscn  # Phase-002 Task 2.3 — Bramblewick Green (64 × 44): ground/ring path/pond/allotments/hedges built by VillageGreen.cs; Bakery + GeneralStore (`Building`, `Enterable = false` until they open), VillagePlace props at their doors, market stand, ducks, `ToLane` doorway, `FromLane` marker, camera limits
 │   │   ├── rooms/             # Phase-002 Task 2.2 — one scene per room: HouseRoom (bed, phone), CoopRoom (hens view, trough, bin), BarnRoom (cow), ShedRoom (ledger, counter); root = a `Building` with `IsRoom`
 │   │   ├── Bed.tscn, Marlow.tscn, Ada.tscn, Ledger.tscn, BerryBush.tscn, OrderBoard.tscn, ShopCounter.tscn, Phone.tscn
 │   │   │                      # one-node Prop scenes (StaticBody3D + script; the Prop base builds look, body, click area, prompt)
@@ -100,7 +101,9 @@ src/
 │   │   └── PlayerController.cs   # Kit: screen-relative 8-way walk, 4-way grid Facing, click-to-move by camera ray, WalkTo, tool use, held tool + use motion
 │   ├── world/
 │   │   ├── FarmLevel.cs       # layout tables (tiles = metres) → baked ground/fence/hedge meshes, tuft MultiMesh, blockers
-│   │   ├── Building.cs (+ Fader), IndoorZone.cs, DoorTrigger.cs   # walls, floor, roof model, window; occluder fade; rooms (`IsRoom`, Phase-002 Task 2.2) linked to their building, doorways that fade Kit in and out
+│   │   ├── VillageGreen.cs    # the green's layout tables → one baked ground mesh + blockers (pond, hedges, allotment fence)
+│   │   ├── VillagePlace.cs    # a village place's door: picture "closed" sign until its neighbour is in `OrderManager.ActiveNeighbours`, then the neighbour stands there and greets Kit
+│   │   ├── Building.cs (+ Fader), IndoorZone.cs, DoorTrigger.cs   # walls, floor, roof model, window; occluder fade; rooms (`IsRoom`, Phase-002 Task 2.2) linked to their building, doorways that fade Kit in and out (`DoorTrigger` also links areas: farm ↔ green); `Enterable = false` shuts the door gap
 │   │   ├── GardenState.cs, FarmGrid.cs, CropTile.cs   # garden rules (persistent, in FarmState) + the view (MultiMesh tiles, front-tile frame, pins, puffs)
 │   │   ├── Prop.cs            # 3D base for usable things (IInteractable, NamedModel look, click Area3D layer 8, WorldPin prompt)
 │   │   ├── Bed, Marlow, Ada, Ledger, BerryBush, OrderBoard, ShopCounter, Phone, FeedBin, TroughSlot (.cs)
@@ -145,7 +148,7 @@ src/
 │   └── PerfCheck.tscn + PerfCheck.cs                              # windowed frame budget (tools/perf_check.sh)
 ├── tests/                     # headless, repeatable, leave no state behind (§11)
 │   ├── TestRunner.tscn, TestRunner.cs   # groups `rules` and `game`
-│   └── FarmTests, LaneTests, OrderTests, ShopTests, AnimalTests, SaveTests, PauseTests, OnboardingTests, Tests3D (.cs)
+│   └── FarmTests, LaneTests, OrderTests, ShopTests, AnimalTests, SaveTests, PauseTests, OnboardingTests, VillageTests, Tests3D (.cs)
 ├── addons/                    # third-party plugins (GDScript-only addons flagged in Notes)
 └── .godot/                    # generated — gitignored, never committed
 ```
@@ -526,3 +529,4 @@ Rules:
 - **0.33 — 2026-11-21:** **Phase-002 Task 2.1 doc sync:** §4 tree rewritten for the 3D project (scenes, scripts, data, debug, tests), 2D-era wording removed from the structural rules, scene architecture and `load_level` contract; §5 rows 1.14 and 1.19 corrected; §7 `open_orders` decided (Back/Select).
 - **0.34 — 2026-11-21:** Phase-002 Task 2.2: rooms in `FarmLevel.tscn`, `DoorTrigger.cs`, `Building` rooms, `Main.Teleport` and the room camera recorded in §4.
 - **0.35 — 2026-11-21:** Phase-002 Task 2.2 rebuilt (owner: a separate scene per room): `FarmState` autoload (§8 registry + process mode), `GardenState`/`HerdState`, room scenes in `scenes/world/rooms/`, `Main.LoadLevelNow`/`Travel`, save schema 3.
+- **0.36 — 2026-11-21:** Phase-002 Task 2.3: `VillageGreen.tscn`/`.cs`, `VillagePlace.cs`, `Building.Enterable`, area doorways (`ToGreen`/`ToLane`, markers `LaneTop`/`FromLane`), `VillageTests` recorded in §4.

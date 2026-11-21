@@ -46,6 +46,7 @@ public partial class FarmLevel : Node3D
     public static readonly Rect2I[] LanePaths =
     {
         new(24, -19, 2, 19),
+        new(24, -31, 2, 3),   // through the clearing's north edge to the village green (Phase-002 Task 2.3)
     };
 
     /// <summary>Hedges either side of the lane (drawn overgrown, blocked), in tiles.</summary>
@@ -53,12 +54,15 @@ public partial class FarmLevel : Node3D
     {
         new(14, -19, 8, 19),
         new(28, -19, 8, 19),
+        new(22, -31, 2, 3),   // the short lane north to the green
+        new(26, -31, 2, 3),
     };
 
     /// <summary>Edges of the clearing around the seed shed and cottage (blocked, not drawn).</summary>
     public static readonly Rect2I[] ClearingEdges =
     {
-        new(15, -28, 21, 1),
+        new(15, -28, 9, 1),   // north edge, with a 2-tile gap for the lane to the green (Task 2.3)
+        new(26, -28, 10, 1),
         new(15, -28, 1, 9),
         new(35, -28, 1, 9),
     };

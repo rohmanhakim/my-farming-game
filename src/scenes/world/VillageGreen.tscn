@@ -1,0 +1,92 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/world/VillageGreen.cs" id="1_green"]
+[ext_resource type="Script" path="res://scripts/world/Building.cs" id="2_building"]
+[ext_resource type="Script" path="res://scripts/world/VillagePlace.cs" id="3_place"]
+[ext_resource type="Script" path="res://scripts/core/NamedModel.cs" id="4_model"]
+[ext_resource type="Script" path="res://scripts/world/DoorTrigger.cs" id="5_door"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lane"]
+size = Vector3(2, 2, 0.4)
+
+[node name="VillageGreen" type="Node3D"]
+script = ExtResource("1_green")
+
+[node name="Bakery" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0, 1)
+script = ExtResource("2_building")
+SizeTiles = Vector2i(6, 5)
+Door = 1
+ZoneName = "bakery"
+RoofModel = "roof_bakery"
+WallColor = Color(0.96, 0.86, 0.68, 1)
+HasWindow = true
+Enterable = false
+
+[node name="GeneralStore" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 42, 0, 1)
+script = ExtResource("2_building")
+SizeTiles = Vector2i(6, 5)
+Door = 1
+ZoneName = "store"
+RoofModel = "roof_store"
+WallColor = Color(0.88, 0.92, 0.86, 1)
+HasWindow = true
+Enterable = false
+
+[node name="BakeryDoor" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17, 0, 7.2)
+script = ExtResource("3_place")
+NeighbourId = "baker"
+OpensWith = "item_egg"
+NeighbourModel = "baker"
+
+[node name="StoreDoor" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45, 0, 7.2)
+script = ExtResource("3_place")
+NeighbourId = "shopkeeper"
+OpensWith = "icon_order_board"
+NeighbourModel = "shopkeeper"
+
+[node name="AllotmentGate" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.5, 0, 19.3)
+script = ExtResource("3_place")
+NeighbourId = "allotment"
+OpensWith = "item_carrot"
+NeighbourModel = "allotment"
+ApproachOffset = Vector3(1.3, 0, 0.7)
+
+[node name="MarketStand" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56.5, 0, 20)
+script = ExtResource("4_model")
+ModelName = "market_stand"
+
+[node name="Duck1" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0.01, 21)
+script = ExtResource("4_model")
+ModelName = "duck"
+
+[node name="Duck2" type="Node3D" parent="."]
+transform = Transform3D(-0.7, 0, 0.7, 0, 1, 0, -0.7, 0, -0.7, 33.5, 0.01, 23.5)
+script = ExtResource("4_model")
+ModelName = "duck"
+
+[node name="ToLane" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, 43.6)
+script = ExtResource("5_door")
+TargetScene = "res://scenes/world/FarmLevel.tscn"
+TargetMarker = "LaneTop"
+Facing = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ToLane"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("BoxShape3D_lane")
+
+[node name="FromLane" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, 41.2)
+
+[node name="CameraLimitMin" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 6)
+
+[node name="CameraLimitMax" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56, 0, 40)

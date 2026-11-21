@@ -9,6 +9,10 @@
 [ext_resource type="PackedScene" path="res://scenes/world/OrderBoard.tscn" id="11_board"]
 [ext_resource type="PackedScene" uid="uid://lv4argu1mu3e" path="res://scenes/world/Tree.tscn" id="14_fmf45"]
 [ext_resource type="PackedScene" path="res://scenes/world/Ada.tscn" id="15_ada"]
+[ext_resource type="Script" path="res://scripts/world/DoorTrigger.cs" id="16_door"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_green"]
+size = Vector3(2, 2, 0.4)
 
 [node name="FarmLevel" type="Node3D" unique_id=948452471]
 script = ExtResource("1_level")
@@ -116,3 +120,17 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0, 12)
 
 [node name="Tree2" parent="Trees" unique_id=1213065813 instance=ExtResource("14_fmf45")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0, -8)
+
+[node name="ToGreen" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 0, -30.4)
+script = ExtResource("16_door")
+TargetScene = "res://scenes/world/VillageGreen.tscn"
+TargetMarker = "FromLane"
+Facing = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ToGreen"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("BoxShape3D_green")
+
+[node name="LaneTop" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 0, -26.8)

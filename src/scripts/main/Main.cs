@@ -107,6 +107,9 @@ public partial class Main : Node
         return Level;
     }
 
+    /// <summary><see cref="LoadLevelNow"/> without a facing, callable from GDScript tools (capture scenes).</summary>
+    public void GoTo(string path, string marker) => LoadLevelNow(path, marker);
+
     /// <summary>True while a doorway fade is running.</summary>
     public bool Teleporting { get; private set; }
 

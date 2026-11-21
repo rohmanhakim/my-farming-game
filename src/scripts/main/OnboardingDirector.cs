@@ -346,7 +346,11 @@ public partial class OnboardingDirector : Node
         if (_main?.CurrentRoom is Building room) return room.DoorPoint;
         var lvl = _level.GetChildCount() > 0 ? _level.GetChild(0) : null;
         var door = lvl?.FindChildren("*", "Node3D", true, false).OfType<Building>().FirstOrDefault(b => b.RoomScene == scene);
-        return door?.DoorOutside;
+        if (door != null) return door.DoorOutside;
+        // Another area (Task 2.3): the way there, or else the way home to the farm.
+        var ways = lvl?.FindChildren("*", "Area3D", true, false).OfType<DoorTrigger>().ToList() ?? new List<DoorTrigger>();
+        var way = ways.FirstOrDefault(d => d.TargetScene == scene) ?? ways.FirstOrDefault(d => d.TargetScene == Main.FarmScene);
+        return way?.GlobalPosition;
     }
 
     private void UpdateGuide()

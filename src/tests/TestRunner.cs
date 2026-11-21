@@ -92,6 +92,7 @@ public partial class TestRunner : Node
         if (Want("game")) await CheckPauseAndLight();
         if (Want("rules")) CheckOnboardingRules();
         if (Want("game")) await CheckOnboardingInGame();
+        if (Want("game")) await CheckVillageInGame();
     }
 
     private void Check(bool ok, string what)
