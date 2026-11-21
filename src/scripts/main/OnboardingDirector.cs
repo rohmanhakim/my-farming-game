@@ -44,13 +44,13 @@ public partial class OnboardingDirector : Node
     private Ada _ada;
     private List<BerryBush> _bushes = new();
     private GuideArrow _arrow;
-    private readonly List<Node2D> _morningMarkers = new();
+    private readonly List<Node3D> _morningMarkers = new();
     private readonly Queue<(string Id, string Portrait, string Line, BubbleChip[] Chips)> _pending = new();
     private double _t;
     private bool _lostToday;
 
     public GuideArrow Arrow => _arrow;
-    public IReadOnlyList<Node2D> MorningMarkers => _morningMarkers;
+    public IReadOnlyList<Node3D> MorningMarkers => _morningMarkers;
     public int PendingBubbles => _pending.Count;
 
     public override void _Ready()
@@ -181,12 +181,17 @@ public partial class OnboardingDirector : Node
     private void AddMorningMarker(AnimalHouse h, string item)
     {
         if (h == null || h.GetParent() is not Building b) return;
-        var m = new Sprite2D
+        // A big product icon pinned above the building's roof; freed with the level.
+        var m = new Node3D { Name = "MorningMarker", Position = new Vector3(b.Size.X / 2, 0, b.Size.Y / 2) };
+        var pin = new WorldPin { WorldOffset = new Vector3(0, Building.WallHeight + 2.0f, 0) };
+        pin.AddChild(new TextureRect
         {
-            Name = "MorningMarker", Texture = SpriteLibrary.Get(ItemIds.SpriteName(item)), ZIndex = 45,
-            Position = new Vector2(b.SizePx.X / 2, -36), Scale = new Vector2(1.5f, 1.5f),
-        };
-        b.AddChild(m); // above the roof; freed with the level
+            Texture = SpriteLibrary.Get(ItemIds.SpriteName(item)), Size = new Vector2(48, 48), Position = new Vector2(-24, -48),
+            ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize, StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered,
+            MouseFilter = Control.MouseFilterEnum.Ignore,
+        });
+        m.AddChild(pin);
+        b.AddChild(m);
         _morningMarkers.Add(m);
     }
 
@@ -232,7 +237,7 @@ public partial class OnboardingDirector : Node
         switch (s)
         {
             case OnboardingStep.Arrival:
-                return _player == null || _house == null || (_player.GlobalPosition + PlayerController.FeetOffset).DistanceTo(_house.DoorOutside) < 110
+                return _player == null || _house == null || _player.Feet.DistanceTo(_house.DoorOutside) < 1.72f
                        || _house.Zone?.PlayerInside == true;
             case OnboardingStep.Garden: return _ob.WeedsPulled >= 3;
             case OnboardingStep.Plant: return _ob.Planted >= 3;
@@ -267,7 +272,7 @@ public partial class OnboardingDirector : Node
     }
 
     /// <summary>Where the guide arrow points for the current step (null = hidden).</summary>
-    public Vector2? GuideTarget()
+    public Vector3? GuideTarget()
     {
         switch (_ob?.Step)
         {
@@ -288,7 +293,7 @@ public partial class OnboardingDirector : Node
         }
     }
 
-    private Vector2? NearestTile(System.Func<CropTile, bool> pick)
+    private Vector3? NearestTile(System.Func<CropTile, bool> pick)
     {
         if (_garden == null) return null;
         // Near the starting beds first (the guided start happens by the path).

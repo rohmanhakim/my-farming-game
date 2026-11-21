@@ -27,8 +27,8 @@ public partial class SaveBinder : Node
     [Export] public NodePath ShopPath { get; set; }
 
     private SaveGame _save;
-    private Node2D _player;
-    private CameraFollow _camera;
+    private Node3D _player;
+    private CameraRig _camera;
     private Node _level;
     private UI.ShopView _shop;
 
@@ -38,8 +38,8 @@ public partial class SaveBinder : Node
     public override void _Ready()
     {
         _save = SaveGame.Instance;
-        _player = GetNodeOrNull<Node2D>(PlayerPath);
-        _camera = GetNodeOrNull<CameraFollow>(CameraPath);
+        _player = GetNodeOrNull<Node3D>(PlayerPath);
+        _camera = GetNodeOrNull<CameraRig>(CameraPath);
         _level = GetNodeOrNull(LevelPath);
         _shop = GetNodeOrNull<UI.ShopView>(ShopPath);
         if (_save == null) return;
@@ -53,7 +53,7 @@ public partial class SaveBinder : Node
     public void LoadAtStart()
     {
         LoadedAtStart = _save?.Enabled == true && _save.Load();
-        if (LoadedAtStart) _camera?.SnapToTarget();
+        if (LoadedAtStart) _camera?.Snap();
     }
 
     public override void _ExitTree()
@@ -254,17 +254,18 @@ public partial class SaveBinder : Node
 
     private GDict SavePlayer()
     {
-        var pos = _player?.GlobalPosition ?? Vector2.Zero;
+        // Metres on the ground plane since schemaVersion 2 (3D, Task 1.20); v1 stored pixels as x / y.
+        var pos = _player?.GlobalPosition ?? Vector3.Zero;
         var facing = (_player as Player.PlayerController)?.Facing ?? Player.Facing.Down;
-        return new GDict { { "x", pos.X }, { "y", pos.Y }, { "facing", facing.ToString() } };
+        return new GDict { { "x", pos.X }, { "z", pos.Z }, { "facing", facing.ToString() } };
     }
 
     private void LoadPlayer(GDict d)
     {
         if (_player == null) return;
-        _player.GlobalPosition = new Vector2((float)d["x"].AsDouble(), (float)d["y"].AsDouble());
+        _player.GlobalPosition = new Vector3((float)d["x"].AsDouble(), 0, (float)d["z"].AsDouble());
         if (_player is Player.PlayerController pc && System.Enum.TryParse<Player.Facing>(d["facing"].AsString(), out var f))
             pc.Face(f);
-        _camera?.SnapToTarget();
+        _camera?.Snap();
     }
 }

@@ -1,58 +1,42 @@
 using Godot;
 using MyFarmingGame.Autoloads;
-using MyFarmingGame.Core;
-using MyFarmingGame.UI;
 
 namespace MyFarmingGame.World;
 
 /// <summary>
-/// Kit's bed (Task 1.3). Walk up and press <c>interact</c> (A / Space), or click it, to get the
-/// "sleep now?" prompt. Kit also wakes up here every morning (<see cref="WakePoint"/>), including
-/// after the automatic 21:30 bedtime. Placeholder sprite "bed" (swap art by name).
+/// Kit's bed (Task 1.3; a 3D <see cref="Prop"/> since Task 1.15). Walk up and press <c>interact</c>
+/// (A / Space), or click it, to get the "Go to sleep?" prompt. Kit also wakes up here every morning
+/// (<see cref="WakePoint"/>), including after the automatic 21:30 bedtime. Model "bed".
 /// </summary>
-public partial class Bed : StaticBody2D, IInteractable
+public partial class Bed : Prop
 {
     /// <summary>Group of beds; Main's SleepSequence wakes Kit at the first one.</summary>
     public const string Group = "beds";
 
-    private Area2D _reach;
-    private Marker2D _wake;
-    private Node2D _prompt;
-    private Node2D _playerInReach;
-
-    public Vector2 ApproachPoint => _wake?.GlobalPosition ?? GlobalPosition;
+    public Bed()
+    {
+        ModelName = "bed";
+        SpriteName = "bed";
+        PromptSprite = "icon_sleep";
+        BodySize = new Vector3(0.94f, 0.6f, 1.25f);
+        ClickSize = new Vector3(1f, 0.9f, 1.5f);
+        ApproachOffset = new Vector3(0, 0, 1.06f); // 2D: WakeSpot 68 px below
+        Reach = 1.3f;
+        PromptHeight = 1.2f;
+    }
 
     /// <summary>Where Kit stands after waking up.</summary>
-    public Vector2 WakePoint => ApproachPoint;
-
-    /// <summary>True while the button prompt above the bed is visible (tests).</summary>
-    public bool PromptVisible => _prompt?.Visible ?? false;
-
-    public bool CanInteract => GameClock.Instance == null || GameClock.Instance.IsPlayable;
+    public Vector3 WakePoint => ApproachPoint;
 
     public override void _Ready()
     {
-        AddToGroup(IInteractable.Group);
+        base._Ready();
         AddToGroup(Group);
-        _reach = GetNode<Area2D>("ReachArea");
-        _wake = GetNode<Marker2D>("WakeSpot");
-        _prompt = GetNode<Node2D>("Prompt");
-        GetNode<TextureRect>("%PromptIcon").Texture = SpriteLibrary.Get("icon_sleep");
-        _reach.BodyEntered += b => { if (b is CharacterBody2D p && p.IsInGroup("player")) _playerInReach = p; };
-        _reach.BodyExited += b => { if (b == _playerInReach) _playerInReach = null; };
-        _prompt.Visible = false;
     }
 
-    public bool IsInReach(Node2D player) => player != null && _reach.OverlapsBody(player);
-
-    public void Interact(Node2D player)
+    public override void Interact(Node3D player)
     {
         if (CanInteract)
             GameClock.Instance?.AskToSleep();
-    }
-
-    public override void _Process(double delta)
-    {
-        _prompt.Visible = _playerInReach != null && CanInteract;
     }
 }

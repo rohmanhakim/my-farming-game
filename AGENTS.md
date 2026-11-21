@@ -13,8 +13,8 @@ You're a Senior Game Developer that will develop a current described project:
 
 ## 1. Project snapshot
 
-- **Game:** A fully 2D, realistic but kid-friendly, educational farming game. Kit (17) grows the family plot into a farm through neighbour orders, investment, and automation; neglect has gentle consequences (crops yellow then are lost; neglected animals are gone, shown only as a gravestone message). One difficulty mode (realistic but kid-friendly); ages 6+; day-based growth; 3 days without care → gone. (See GDD v0.20.)
-- **Engine:** Godot 4.x with **C#** (not GDScript — see `docs/PHASE.md` §6); renderer Compatibility (`gl_compatibility`); assembly `MyFarmingGame`.
+- **Game:** A 3D (fixed angled top-down camera, cartoony and colourful — switched from 2D on 2026-11-21), realistic but kid-friendly, educational farming game. Kit (17) grows the family plot into a farm through neighbour orders, investment, and automation; neglect has gentle consequences (crops yellow then are lost; neglected animals are gone, shown only as a gravestone message). One difficulty mode (realistic but kid-friendly); ages 6+; day-based growth; 3 days without care → gone. (See GDD v0.20; 3D since GDD v0.45.)
+- **Engine:** Godot 4.x with **C#** (not GDScript — see `docs/PHASE.md` §6); renderer Compatibility (`gl_compatibility`, draws the 3D world); physics Jolt; assembly `MyFarmingGame`. Placeholders are built-in primitive meshes; respect the performance budget in `docs/project-structure.md` §16 (Switch later).
 - **Status:** Follow the `README.md` "Status" line — it is the honest snapshot of how much code exists.
 - **Team:** Two people with AI assistance. Tasks are scoped so one task = one AI-assisted session.
 - **Platforms:** **PC first, consoles later** (Switch, PlayStation after the PC release). No mobile or tablet work. Build for PC now, but keep every action gamepad-complete (any controller) and button prompts abstract.
@@ -198,3 +198,4 @@ Bring **every** document in line with the implementation as it now exists. For e
 - **0.4 — 2026-11-20:** Platform snapshot changed to **PC first, consoles later** (owner decision): Switch and PlayStation after the PC release; gamepad-complete controls and abstract button prompts required.
 - **0.5 — 2026-11-20:** Guardrail summary in §4.3 synced with PHASE.md v0.6: "the lane never grows" replaced by "the valley is fixed" (Bramblewick Vale, places.md v0.10).
 - **0.6 — 2026-11-21:** Guardrail summary in §4.3 synced with PHASE.md v0.8: neighbour orders may expire (owner decision), costing nothing besides the missed money.
+- **0.7 — 2026-11-21:** Project snapshot synced with GDD v0.45: the game is now **3D** with a fixed angled top-down camera and a cartoony look; primitive-mesh placeholders; Jolt physics; performance budget pointer (project-structure.md §16).

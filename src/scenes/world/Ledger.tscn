@@ -2,5 +2,5 @@
 
 [ext_resource type="Script" path="res://scripts/world/Ledger.cs" id="1_script"]
 
-[node name="Ledger" type="StaticBody2D"]
+[node name="Ledger" type="StaticBody3D"]
 script = ExtResource("1_script")

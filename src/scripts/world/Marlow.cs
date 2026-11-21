@@ -19,15 +19,15 @@ public partial class Marlow : Prop
 
     public Marlow()
     {
+        ModelName = "marlow";
         SpriteName = "npc_marlow";
         PromptSprite = "icon_talk";
-        BodySize = new Vector2(40, 24);
-        BodyOffset = new Vector2(0, 20);
-        ApproachOffset = new Vector2(0, 64);
-        Reach = 80f;
+        BodySize = new Vector3(0.62f, 1.6f, 0.4f);
+        ApproachOffset = new Vector3(0, 0, 1.0f);
+        Reach = 1.25f;
     }
 
-    public override void Interact(Node2D player) => Talk();
+    public override void Interact(Node3D player) => Talk();
 
     /// <summary>Opens the right conversation for the current orders.</summary>
     public void Talk()

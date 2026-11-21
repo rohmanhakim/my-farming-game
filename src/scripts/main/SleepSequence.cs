@@ -22,14 +22,14 @@ public partial class SleepSequence : Node
     public bool IsRunning { get; private set; }
 
     private PlayerController _player;
-    private CameraFollow _camera;
+    private CameraRig _camera;
     private DayTransitionView _fade;
     private GameClock _clock;
 
     public override void _Ready()
     {
         _player = GetNodeOrNull<PlayerController>(PlayerPath);
-        _camera = GetNodeOrNull<CameraFollow>(CameraPath);
+        _camera = GetNodeOrNull<CameraRig>(CameraPath);
         _fade = GetNodeOrNull<DayTransitionView>(TransitionPath);
         _clock = GameClock.Instance;
         if (_clock == null)
@@ -89,9 +89,10 @@ public partial class SleepSequence : Node
             if (n is Bed bed && bed.IsInsideTree())
             {
                 _player.GlobalPosition = bed.WakePoint;
+                _player.Face(Facing.Down);
                 break;
             }
         }
-        _camera?.SnapToTarget();
+        _camera?.Snap();
     }
 }

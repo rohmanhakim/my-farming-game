@@ -10,19 +10,21 @@ namespace MyFarmingGame.World;
 public enum TileAction { Nothing, Cleared, Tilled, Planted, Watered, Harvested }
 
 /// <summary>
-/// The front garden (Task 1.5, buildings.md §2): <see cref="Columns"/> × <see cref="Rows"/> tiles of
-/// 64 px. Starts as weeds with <see cref="StartingBeds"/> already tilled ("3 beds already clear").
+/// The front garden (Task 1.5; 3D since Task 1.16; buildings.md §2): <see cref="Columns"/> ×
+/// <see cref="Rows"/> tiles of 1 m, the node sitting at its north-west corner. Starts as weeds with <see cref="StartingBeds"/> already tilled ("3 beds already clear").
 ///
 /// Tool rules: hands pull weeds; hoe tills cleared ground; seed bag plants the first seed packet in
 /// the bag on an empty tilled tile; watering can waters tilled soil (and recovers a yellow crop);
 /// any tool harvests a ready crop into the bag. Growth and neglect run on
 /// <see cref="GameClock.DayEnded"/> (<see cref="EndDay"/>), so nothing changes while the game is
-/// closed. Draws itself from SpriteLibrary names (soil_*, crop_&lt;id&gt;_*), plus a highlight on the
-/// tile in front of Kit.
+/// closed. Draws itself from model names (soil_*, crop_&lt;id&gt;_*) with one MultiMesh per model part
+/// (performance budget rule 1), plus a white frame on the tile in front of Kit; hints, sparkles and
+/// can icons are screen UI pinned above tiles (<see cref="WorldPin"/>).
 /// </summary>
-public partial class FarmGrid : Node2D, IToolTarget
+public partial class FarmGrid : Node3D, IToolTarget
 {
-    public const int TileSize = 64;
+    /// <summary>Metres per tile.</summary>
+    public const float TileSize = 1f;
 
     [Export] public int Columns { get; set; } = 8;
     [Export] public int Rows { get; set; } = 6;
@@ -78,8 +80,9 @@ public partial class FarmGrid : Node2D, IToolTarget
     public override void _Ready()
     {
         AddToGroup(IToolTarget.Group);
-        ZIndex = -5; // below Kit, above the ground (Task 1.1 draw-order gotcha)
+        BuildDecor();
         _ = Tiles;
+        QueueRedraw();
         if (ListenToClock && GameClock.Instance != null)
         {
             _clock = GameClock.Instance;
@@ -122,19 +125,21 @@ public partial class FarmGrid : Node2D, IToolTarget
     }
 
     // ---- Coordinates ----------------------------------------------------------------------
-    public Vector2I WorldToCell(Vector2 world)
+    /// <summary>The cell under a world point (its height is ignored).</summary>
+    public Vector2I WorldToCell(Vector3 world)
     {
-        Vector2 local = ToLocal(world);
-        return new Vector2I(Mathf.FloorToInt(local.X / TileSize), Mathf.FloorToInt(local.Y / TileSize));
+        Vector3 local = new Vector3(world.X, GlobalPosition.Y, world.Z) - GlobalPosition;
+        return new Vector2I(Mathf.FloorToInt(local.X / TileSize), Mathf.FloorToInt(local.Z / TileSize));
     }
 
-    public Vector2 CellCenter(Vector2I cell) => ToGlobal(new Vector2((cell.X + 0.5f) * TileSize, (cell.Y + 0.5f) * TileSize));
+    /// <summary>The centre of a cell on the ground.</summary>
+    public Vector3 CellCenter(Vector2I cell) => GlobalPosition + new Vector3((cell.X + 0.5f) * TileSize, 0, (cell.Y + 0.5f) * TileSize);
 
-    public bool ContainsPoint(Vector2 worldPoint) => InBounds(WorldToCell(worldPoint));
+    public bool ContainsPoint(Vector3 worldPoint) => InBounds(WorldToCell(worldPoint));
 
-    public Vector2 TileCenterAt(Vector2 worldPoint) => CellCenter(WorldToCell(worldPoint));
+    public Vector3 TileCenterAt(Vector3 worldPoint) => CellCenter(WorldToCell(worldPoint));
 
-    public bool UseToolAt(Tool tool, Vector2 worldPoint) => UseTool(tool, WorldToCell(worldPoint)) != TileAction.Nothing;
+    public bool UseToolAt(Tool tool, Vector3 worldPoint) => UseTool(tool, WorldToCell(worldPoint)) != TileAction.Nothing;
 
     // ---- Rules ----------------------------------------------------------------------------
     /// <summary>Uses <paramref name="tool"/> on <paramref name="cell"/> and returns what happened.</summary>
@@ -305,14 +310,16 @@ public partial class FarmGrid : Node2D, IToolTarget
             var cell = WorldToCell(player.FrontPoint);
             if (InBounds(cell)) next = cell;
         }
-        if (next != _highlight)
+        _highlight = next;
+        if (_frame != null)
         {
-            _highlight = next;
-            QueueRedraw();
+            _frame.Visible = next.HasValue;
+            if (next is Vector2I h) _frame.Position = new Vector3((h.X + 0.5f) * TileSize, 0, (h.Y + 0.5f) * TileSize);
         }
         _sparkle += (float)delta;
         if (_hintLeft > 0) _hintLeft -= (float)delta;
-        if (_waterHints || AnyReady || _hintLeft > -0.1f) QueueRedraw();
+        if (_dirty) Redraw();
+        UpdatePins();
     }
 
     public bool AnyReady
@@ -327,41 +334,181 @@ public partial class FarmGrid : Node2D, IToolTarget
     /// <summary>The tile highlighted in front of Kit (tests).</summary>
     public Vector2I? HighlightedCell => _highlight;
 
-    public override void _Draw()
+    // ---- 3D drawing -------------------------------------------------------------------------
+    private bool _dirty = true;
+    private Node3D _frame;
+    private Node3D _tilesRoot;
+    private readonly Dictionary<string, List<MultiMeshInstance3D>> _layers = new();
+    private WorldPin _hintPin;
+    private TextureRect _hintIcon;
+    private readonly List<WorldPin> _cellPins = new();
+
+    /// <summary>Marks the tiles for redrawing on the next frame (the 2D API name, kept).</summary>
+    public void QueueRedraw() => _dirty = true;
+
+    /// <summary>How many tiles each model name is drawn on right now (tests, budget).</summary>
+    public IReadOnlyDictionary<string, int> DrawnCounts => _drawnCounts;
+    private readonly Dictionary<string, int> _drawnCounts = new();
+
+    private void BuildDecor()
     {
-        foreach (var (cell, t) in AllTiles())
+        _tilesRoot = new Node3D { Name = "Tiles" };
+        AddChild(_tilesRoot);
+        // White frame on the tile in front of Kit (helps gamepad players see what A will hit).
+        _frame = new Node3D { Name = "Highlight", Visible = false };
+        var white = new StandardMaterial3D { AlbedoColor = Colors.White, ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded };
+        foreach (var (pos, size) in new[]
         {
-            var rect = new Rect2(cell.X * TileSize, cell.Y * TileSize, TileSize, TileSize);
-            DrawTextureRect(SpriteLibrary.Get(SoilSprite(t)), rect, false);
-            string crop = CropSprite(t);
-            if (crop != null)
-                DrawTextureRect(SpriteLibrary.Get(crop), rect, false);
+            (new Vector3(0, 0.08f, -0.45f), new Vector3(0.96f, 0.03f, 0.06f)), (new Vector3(0, 0.08f, 0.45f), new Vector3(0.96f, 0.03f, 0.06f)),
+            (new Vector3(-0.45f, 0.08f, 0), new Vector3(0.06f, 0.03f, 0.96f)), (new Vector3(0.45f, 0.08f, 0), new Vector3(0.06f, 0.03f, 0.96f)),
+        })
+            _frame.AddChild(new MeshInstance3D { Mesh = new BoxMesh { Size = size }, MaterialOverride = white, Position = pos, CastShadow = GeometryInstance3D.ShadowCastingSetting.Off });
+        AddChild(_frame);
+        // A low wooden border round the garden.
+        var wood = ModelLibrary.MaterialFor(new Color(0.42f, 0.30f, 0.18f));
+        float w = Columns * TileSize, d = Rows * TileSize;
+        foreach (var (pos, size) in new[]
+        {
+            (new Vector3(w / 2, 0.06f, -0.03f), new Vector3(w + 0.1f, 0.12f, 0.06f)), (new Vector3(w / 2, 0.06f, d + 0.03f), new Vector3(w + 0.1f, 0.12f, 0.06f)),
+            (new Vector3(-0.03f, 0.06f, d / 2), new Vector3(0.06f, 0.12f, d)), (new Vector3(w + 0.03f, 0.06f, d / 2), new Vector3(0.06f, 0.12f, d)),
+        })
+            AddChild(new MeshInstance3D { Name = "Border", Mesh = new BoxMesh { Size = size }, MaterialOverride = wood, Position = pos });
+        _hintIcon = new TextureRect
+        {
+            Size = new Vector2(36, 36), Position = new Vector2(-18, -60), ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize,
+            StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered, MouseFilter = Control.MouseFilterEnum.Ignore,
+        };
+        _hintPin = new WorldPin { Name = "Hint", Shown = false };
+        _hintPin.AddChild(new Puff());
+        _hintPin.AddChild(_hintIcon);
+        AddChild(_hintPin);
+    }
+
+    /// <summary>Rebuilds the soil and crop MultiMeshes from the tiles.</summary>
+    private void Redraw()
+    {
+        _dirty = false;
+        if (_tilesRoot == null) return;
+        var byModel = new Dictionary<string, List<Vector3>>();
+        void add(string model, Vector2I cell)
+        {
+            if (model == null) return;
+            if (!byModel.TryGetValue(model, out var l)) byModel[model] = l = new List<Vector3>();
+            l.Add(new Vector3((cell.X + 0.5f) * TileSize, 0, (cell.Y + 0.5f) * TileSize));
         }
-        // Ready crops sparkle (onboarding "carrots ready"); dry crops get a can icon while the
-        // morning-after-planting hint is on.
-        var can = SpriteLibrary.Get("tool_watering_can");
         foreach (var (cell, t) in AllTiles())
         {
-            var c = new Vector2((cell.X + 0.5f) * TileSize, (cell.Y + 0.5f) * TileSize);
-            if (t.IsReady)
+            add(SoilSprite(t), cell);
+            add(CropSprite(t), cell);
+        }
+        _drawnCounts.Clear();
+        foreach (var (model, list) in _layers)
+            foreach (var mmi in list) mmi.Multimesh.InstanceCount = 0;
+        foreach (var (model, cells) in byModel)
+        {
+            _drawnCounts[model] = cells.Count;
+            if (!_layers.TryGetValue(model, out var list))
             {
-                float a = 0.5f + 0.5f * Mathf.Sin(_sparkle * 5 + cell.X);
-                DrawCircle(c + new Vector2(18, -20), 4f, new Color(1, 1, 0.7f, a));
-                DrawCircle(c + new Vector2(-16, -10), 3f, new Color(1, 1, 0.7f, 1 - a));
+                list = new List<MultiMeshInstance3D>();
+                var parts = ModelLibrary.PlaceholderMeshes(model) ?? new List<(Mesh, Material, Transform3D)>
+                    { (ModelLibrary.MeshFor("box", new Vector3(0.9f, 0.1f, 0.9f)), ModelLibrary.MaterialFor(ModelLibrary.FallbackColor), new Transform3D(Basis.Identity, new Vector3(0, 0.05f, 0))) };
+                foreach (var (mesh, mat, local) in parts)
+                {
+                    var mmi = new MultiMeshInstance3D
+                    {
+                        Name = model, MaterialOverride = mat, CastShadow = GeometryInstance3D.ShadowCastingSetting.Off,
+                        Multimesh = new MultiMesh { TransformFormat = MultiMesh.TransformFormatEnum.Transform3D, Mesh = mesh },
+                    };
+                    mmi.SetMeta("local", local);
+                    _tilesRoot.AddChild(mmi);
+                    list.Add(mmi);
+                }
+                _layers[model] = list;
             }
-            else if (_waterHints && t.HasCrop && !t.Watered)
-                DrawTextureRect(can, new Rect2(c + new Vector2(-14, -48 + Mathf.Sin(_sparkle * 4) * 3), new Vector2(28, 28)), false);
+            foreach (var mmi in list)
+            {
+                var local = mmi.GetMeta("local").AsTransform3D();
+                mmi.Multimesh.InstanceCount = cells.Count;
+                for (int i = 0; i < cells.Count; i++)
+                    mmi.Multimesh.SetInstanceTransform(i, new Transform3D(Basis.Identity, cells[i]) * local);
+            }
         }
-        DrawRect(new Rect2(0, 0, Columns * TileSize, Rows * TileSize), new Color(0.35f, 0.25f, 0.15f), false, 3f);
-        if (_hintLeft > 0 && _hintSprite != null)
+    }
+
+    /// <summary>Hint puff, ready sparkles and can icons over dry beds (screen UI above tiles).</summary>
+    private void UpdatePins()
+    {
+        if (_hintPin != null)
         {
-            float a = Mathf.Clamp(_hintLeft / HintSeconds * 1.5f, 0, 1);
-            var hc = new Vector2((_hintCell.X + 0.5f) * TileSize, (_hintCell.Y + 0.5f) * TileSize);
-            DrawCircle(hc + new Vector2(-12, 6), 10, new Color(1, 1, 1, 0.5f * a));
-            DrawCircle(hc + new Vector2(10, 2), 8, new Color(1, 1, 1, 0.4f * a));
-            DrawTextureRect(SpriteLibrary.Get(_hintSprite), new Rect2(hc + new Vector2(-18, -60), new Vector2(36, 36)), false, new Color(1, 1, 1, a));
+            bool on = _hintLeft > 0 && _hintSprite != null;
+            _hintPin.Shown = on;
+            if (on)
+            {
+                _hintPin.WorldOffset = new Vector3((_hintCell.X + 0.5f) * TileSize, 0.3f, (_hintCell.Y + 0.5f) * TileSize);
+                _hintIcon.Texture = SpriteLibrary.Get(_hintSprite);
+                _hintPin.Modulate = new Color(1, 1, 1, Mathf.Clamp(_hintLeft / HintSeconds * 1.5f, 0, 1));
+            }
         }
-        if (_highlight is Vector2I h)
-            DrawRect(new Rect2(h.X * TileSize + 2, h.Y * TileSize + 2, TileSize - 4, TileSize - 4), new Color(1, 1, 1, 0.9f), false, 3f);
+        int used = 0;
+        foreach (var (cell, t) in AllTiles())
+        {
+            bool sparkle = t.IsReady;
+            bool can = !sparkle && _waterHints && t.HasCrop && !t.Watered;
+            if (!sparkle && !can) continue;
+            if (used == _cellPins.Count)
+            {
+                var pin = new WorldPin { Name = "TilePin" };
+                pin.AddChild(new TextureRect
+                {
+                    Size = new Vector2(28, 28), Position = new Vector2(-14, -40), ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize,
+                    StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered, MouseFilter = Control.MouseFilterEnum.Ignore,
+                });
+                pin.AddChild(new Sparkle());
+                AddChild(pin);
+                _cellPins.Add(pin);
+            }
+            var p = _cellPins[used++];
+            p.Shown = true;
+            p.WorldOffset = new Vector3((cell.X + 0.5f) * TileSize, 0.55f, (cell.Y + 0.5f) * TileSize);
+            p.ScreenOffset = new Vector2(0, can ? Mathf.Sin(_sparkle * 4) * 3 : 0);
+            var icon = p.GetChild<TextureRect>(0);
+            icon.Visible = can;
+            if (can) icon.Texture = SpriteLibrary.Get("tool_watering_can");
+            var sp = p.GetChild<Sparkle>(1);
+            sp.Visible = sparkle;
+            sp.Phase = _sparkle * 5 + cell.X;
+            sp.QueueRedraw();
+        }
+        for (int i = used; i < _cellPins.Count; i++) _cellPins[i].Shown = false;
+        WaterHintCount = 0;
+        foreach (var p in _cellPins) if (p.Shown && p.GetChild<TextureRect>(0).Visible) WaterHintCount++;
+    }
+
+    /// <summary>How many watering-can icons show right now (tests).</summary>
+    public int WaterHintCount { get; private set; }
+
+    /// <summary>True while the wrong-tool puff shows (tests).</summary>
+    public bool HintShowing => _hintPin != null && _hintPin.Shown;
+
+    private partial class Puff : Control
+    {
+        public Puff() { MouseFilter = MouseFilterEnum.Ignore; }
+        public override void _Draw()
+        {
+            DrawCircle(new Vector2(-12, 6), 10, new Color(1, 1, 1, 0.5f));
+            DrawCircle(new Vector2(10, 2), 8, new Color(1, 1, 1, 0.4f));
+        }
+    }
+
+    private partial class Sparkle : Control
+    {
+        public float Phase { get; set; }
+        public Sparkle() { MouseFilter = MouseFilterEnum.Ignore; }
+        public override void _Draw()
+        {
+            float a = 0.5f + 0.5f * Mathf.Sin(Phase);
+            DrawCircle(new Vector2(18, -20), 4f, new Color(1, 1, 0.7f, a));
+            DrawCircle(new Vector2(-16, -10), 3f, new Color(1, 1, 0.7f, 1 - a));
+        }
     }
 }

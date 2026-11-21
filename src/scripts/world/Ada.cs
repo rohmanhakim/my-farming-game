@@ -18,12 +18,12 @@ public partial class Ada : Prop
 
     public Ada()
     {
+        ModelName = "ada";
         SpriteName = "npc_ada";
         PromptSprite = "icon_talk";
-        BodySize = new Vector2(36, 20);
-        BodyOffset = new Vector2(0, 20);
-        ApproachOffset = new Vector2(-56, 20);
-        Reach = 72f;
+        BodySize = new Vector3(0.56f, 1.6f, 0.36f);
+        ApproachOffset = new Vector3(-0.875f, 0, 0.3f);
+        Reach = 1.125f;
     }
 
     public bool Waving => _waving;
@@ -31,18 +31,18 @@ public partial class Ada : Prop
     public void SetWaving(bool on)
     {
         _waving = on;
-        if (!on && Sprite != null) Sprite.Rotation = 0;
+        if (!on && Model != null) Model.Rotation = Vector3.Zero;
     }
 
     public override void _Process(double delta)
     {
         base._Process(delta);
-        if (!_waving || Sprite == null) return;
+        if (!_waving || Model == null) return;
         _t += (float)delta;
-        Sprite.Rotation = Mathf.Sin(_t * 6f) * 0.15f;
+        Model.Rotation = new Vector3(0, 0, Mathf.Sin(_t * 6f) * 0.15f); // a little sway = waving
     }
 
-    public override void Interact(Node2D player)
+    public override void Interact(Node3D player)
     {
         var step = Onboarding.Instance?.Step ?? OnboardingStep.Done;
         PictureBubbleView.Find(GetTree())?.Show(Portrait, LineFor(step), null, new[] { BubbleButton.Close() });

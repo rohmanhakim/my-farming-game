@@ -26,10 +26,12 @@ public partial class BerryBush : Prop
 
     public BerryBush()
     {
+        ModelName = "berry_bush";
         SpriteName = "berry_bush";
         PromptSprite = "item_berries";
-        BodySize = new Vector2(40, 20);
-        BodyOffset = new Vector2(0, 18);
+        BodySize = new Vector3(0.62f, 0.8f, 0.4f);
+        ClickSize = new Vector3(1f, 1f, 1f);
+        PromptHeight = 1.2f;
     }
 
     public override void _Ready()
@@ -48,7 +50,7 @@ public partial class BerryBush : Prop
         Production.Unregister(this);
     }
 
-    public override void Interact(Node2D player)
+    public override void Interact(Node3D player)
     {
         if (!HasBerries) return;
         HasBerries = false;
@@ -80,6 +82,6 @@ public partial class BerryBush : Prop
 
     private void Refresh()
     {
-        if (Sprite != null) Sprite.SpriteName = HasBerries ? "berry_bush" : "berry_bush_empty";
+        if (Model != null) Model.ModelName = HasBerries ? "berry_bush" : "berry_bush_empty";
     }
 }

@@ -118,7 +118,7 @@ public partial class TestRunner
         Check(hens.Entities.Count == 5 && hens.Entities.All(e => e is Hen) && cows.Entities.Count == 1 && cows.Entities[0] is Cow,
             "5 hens stand in the coop, the cow in the barn");
         var coop = level.GetNode<Building>("Coop");
-        Check(hens.Entities.All(e => coop.Interior.HasPoint(e.GlobalPosition)), "the hens are inside the coop walls");
+        Check(hens.Entities.All(e => coop.Interior.HasPoint(new Vector2(e.GlobalPosition.X, e.GlobalPosition.Z))), "the hens are inside the coop walls");
 
         async Task Sleep()
         {
@@ -142,8 +142,14 @@ public partial class TestRunner
         Check(cows.Animals[0].FedToday && cows.Feed == 6, "feed scoop + A at the cow feeds her");
         await Sleep();
         Check(hens.Animals.All(a => a.ProductReady == 1) && cows.Animals[0].ProductReady == 4, "next morning: an egg per hen, 4 milk cans");
-        await Frames(2);
-        Check(hens.Entities[0].ProductVisible && cow.ProductVisible && !hens.Entities[0].NeedVisible, "eggs and milk show on the animals");
+        Check(!hens.Entities[0].ProductVisible, "with Kit in the house, the coop's roof hides the hens' egg icons (as in 2D)");
+        player.GlobalPosition = coop.DoorInside;
+        await Frames(20);
+        bool eggsShow = hens.Entities[0].ProductVisible && !hens.Entities[0].NeedVisible && hens.Entities[0].HeartsVisible;
+        var barnB = cows.GetParent<Building>();
+        player.GlobalPosition = barnB.DoorInside;
+        await Frames(20);
+        Check(eggsShow && cow.ProductVisible, "inside the coop and barn, eggs and milk show on the animals (with their hearts)");
         ToolBelt.Instance.Select(Tool.Hands);
         player.GlobalPosition = cow.ApproachPoint;
         await Frames(5);
@@ -156,9 +162,13 @@ public partial class TestRunner
         Check(Inventory.Instance.Count(ItemIds.Egg) >= 1, "A at a hen collects her egg");
 
         // Neglect: 1 day → need icons; 2 → flashing + a neighbour's warning; 3 → loss cards.
-        player.GlobalPosition = level.GetNode<Marker2D>("PlayerSpawn").GlobalPosition;
+        player.GlobalPosition = level.GetNode<Marker3D>("PlayerSpawn").GlobalPosition;
         await Sleep();
+        player.GlobalPosition = coop.DoorInside;
+        await Frames(20);
         Check(hens.Entities.All(e => e.NeedVisible) && hens.Animals.All(a => a.Hearts == 2), "after a missed day: need icons, hearts ⅔");
+        player.GlobalPosition = level.GetNode<Marker3D>("PlayerSpawn").GlobalPosition;
+        await Frames(5);
         await Sleep();
         Check(notices.WarningsShown >= 1 && bubble.IsOpen && bubble.Portrait == CareNoticeView.WarningPortrait && bubble.Line.Contains("hungry"),
             "after 2 missed days a neighbour mentions the hungry animals when Kit wakes");

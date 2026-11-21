@@ -2,5 +2,5 @@
 
 [ext_resource type="Script" path="res://scripts/world/ShopCounter.cs" id="1_script"]
 
-[node name="ShopCounter" type="StaticBody2D"]
+[node name="ShopCounter" type="StaticBody3D"]
 script = ExtResource("1_script")

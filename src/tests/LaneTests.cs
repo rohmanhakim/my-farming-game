@@ -83,14 +83,14 @@ public partial class TestRunner
         AddChild(bush);
         int before = Inventory.Instance.Count(ItemIds.Berries);
         bush.Interact(null);
-        Check(!bush.HasBerries && Inventory.Instance.Count(ItemIds.Berries) == before + 1 && bush.Sprite.SpriteName == "berry_bush_empty",
+        Check(!bush.HasBerries && Inventory.Instance.Count(ItemIds.Berries) == before + 1 && bush.Model.ModelName == "berry_bush_empty",
             "picking a bush: one handful into the bag, bush bare");
         bush.Interact(null);
         Check(Inventory.Instance.Count(ItemIds.Berries) == before + 1 && !bush.CanInteract, "a bare bush gives nothing");
         bush.NewDay(2);
         Check(!bush.HasBerries, "still bare the next day");
         bush.NewDay(3);
-        Check(bush.HasBerries && bush.Sprite.SpriteName == "berry_bush", "berries regrow after 2 days");
+        Check(bush.HasBerries && bush.Model.ModelName == "berry_bush", "berries regrow after 2 days");
         bush.QueueFree();
         ResetTask14State();
     }
@@ -126,12 +126,12 @@ public partial class TestRunner
         await Frames(5);
 
         // Walk from the house up the lane to Marlow (≈ 20 tiles).
-        var spawn = level.GetNode<Marker2D>("PlayerSpawn").GlobalPosition;
+        var spawn = level.GetNode<Marker3D>("PlayerSpawn").GlobalPosition;
         player.GlobalPosition = spawn;
         await Frames(3);
-        Check(await WalkLeg(player, new Vector2(1600, 40)) && await WalkLeg(player, new Vector2(1600, -1100), 800),
+        Check(await WalkLeg(player, M(1600, 40)) && await WalkLeg(player, M(1600, -1100), 800),
             "Kit walks from the front door through the gate up the lane to the seed shed");
-        Check((spawn.Y - player.GlobalPosition.Y) / 64f >= 18, $"the shed is ≈ 20 tiles from the door ({(spawn.Y - player.GlobalPosition.Y) / 64f:0} tiles)");
+        Check(spawn.Z - player.GlobalPosition.Z >= 18, $"the shed is ≈ 20 tiles from the door ({spawn.Z - player.GlobalPosition.Z:0} tiles)");
 
         // Talk: gamepad A next to Marlow.
         player.GlobalPosition = marlow.ApproachPoint;

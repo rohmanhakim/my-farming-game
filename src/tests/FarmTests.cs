@@ -115,7 +115,7 @@ public partial class TestRunner
         ResetTask14State();
     }
 
-    private async Task<bool> WalkLeg(PlayerController p, Vector2 to, int frames = 400)
+    private async Task<bool> WalkLeg(PlayerController p, Vector3 to, int frames = 400)
     {
         bool arrived = false;
         p.WalkTo(to, () => arrived = true);
@@ -139,8 +139,10 @@ public partial class TestRunner
         var bed = level.FindChild("Bed", true, false) as Bed;
         Check(house != null && coop != null && barn != null && grid != null, "farm has house, old coop, old barn and front garden");
         Check(coop.SizeTiles == new Vector2I(4, 3) && barn.SizeTiles == new Vector2I(6, 5), "old coop 4×3, old barn 6×5 (buildings.md)");
-        Check(bed != null && bed.GetParent() == house && house.Interior.HasPoint(bed.WakePoint), "the bed is inside Kit's house");
-        Check(grid.ZIndex < 0 && house.Roof.ZIndex > 0, "garden draws below Kit, roofs above");
+        Check(bed != null && bed.GetParent() == house && house.Interior.HasPoint(new Vector2(bed.WakePoint.X, bed.WakePoint.Z)), "the bed is inside Kit's house");
+        Check(house.Roof != null && house.Roof.Source != ModelLibrary.Source.Fallback && house.Bounds.Size.Y > Building.WallHeight,
+            "the house has walls and a roof (model 'roof_house')");
+        Check(((FarmLevel)level).Tufts?.Multimesh.InstanceCount > 900, $"overgrown fields are drawn as one MultiMesh of tufts ({((FarmLevel)level).Tufts?.Multimesh.InstanceCount})");
         await Frames(5);
         Check(!clock.IsIndoors && clock.IsRunning, "new game: Kit starts outside and the clock runs");
 
@@ -151,10 +153,21 @@ public partial class TestRunner
         double m = clock.MinutesIntoDay;
         await Frames(20);
         Check(clock.IsIndoors && house.Zone.PlayerInside && clock.MinutesIntoDay == m, "inside the house the clock stops");
-        Check(house.Roof.Modulate.A < 0.05f, $"inside the house the roof fades out ({house.Roof.Modulate.A:0.00})");
-        player.GlobalPosition = house.DoorOutside;
+        Check(house.RoofFaded && !house.Roof.Visible, "inside the house the roof fades out (and is hidden)");
+        var rig = main.GetNode<CameraRig>("World/Entities/CameraRig");
+        Check(house.WallFaded(Vector3.Back) && house.WallFaded(rig.BackDirection.X > 0 ? Vector3.Right : Vector3.Left)
+              && !house.WallFaded(Vector3.Forward), "inside, the two walls facing the camera fade; the far wall stays");
+        player.GlobalPosition = house.DoorOutside + new Vector3(0, 0, -3); // out, and clear of the house
         await Frames(30);
-        Check(!clock.IsIndoors && clock.MinutesIntoDay > m && house.Roof.Modulate.A > 0.95f, "outside again: roof back, clock runs");
+        Check(!clock.IsIndoors && clock.MinutesIntoDay > m && !house.RoofFaded && house.Roof.Visible && !house.WallFaded(Vector3.Back),
+            "outside again: roof and walls back, clock runs");
+        // Behind the house (north of it, seen from the south): the house fades so Kit stays visible.
+        player.GlobalPosition = house.GlobalPosition + new Vector3(house.Size.X / 2 + 1.5f, 0, -0.4f);
+        await Frames(30);
+        Check(!clock.IsIndoors && house.RoofFaded, "Kit hidden behind the house: its roof fades (occluder fade)");
+        player.GlobalPosition = house.DoorOutside + new Vector3(0, 0, -3);
+        await Frames(30);
+        Check(!house.RoofFaded, "Kit in the open again: the roof comes back");
         foreach (var b in new[] { coop, barn })
         {
             player.GlobalPosition = b.DoorInside;
@@ -167,22 +180,22 @@ public partial class TestRunner
         clock.TimeScale = 1;
 
         // Walk from the house to the gate, and around the house to the barn.
-        var spawn = level.GetNode<Marker2D>("PlayerSpawn").GlobalPosition;
+        var spawn = level.GetNode<Marker3D>("PlayerSpawn").GlobalPosition;
         player.GlobalPosition = spawn;
         await Frames(5);
-        Check(await WalkLeg(player, new Vector2(1600, 40)), "Kit walks from the front door to the gate");
-        Check(await WalkLeg(player, new Vector2(1600, -200), 200), "the gate is open onto the lane (Task 1.6)");
-        Check(await WalkLeg(player, new Vector2(1600, 40), 200), "back through the gate");
-        bool toBarn = await WalkLeg(player, new Vector2(1290, 440)) && await WalkLeg(player, new Vector2(1290, 830))
-                      && await WalkLeg(player, new Vector2(1600, 830)) && await WalkLeg(player, barn.DoorOutside);
+        Check(await WalkLeg(player, M(1600, 40)), "Kit walks from the front door to the gate");
+        Check(await WalkLeg(player, M(1600, -200), 200), "the gate is open onto the lane (Task 1.6)");
+        Check(await WalkLeg(player, M(1600, 40), 200), "back through the gate");
+        bool toBarn = await WalkLeg(player, M(1290, 440)) && await WalkLeg(player, M(1290, 830))
+                      && await WalkLeg(player, M(1600, 830)) && await WalkLeg(player, barn.DoorOutside);
         Check(toBarn, "Kit walks around the house and down the path to the old barn");
         Check(await WalkLeg(player, barn.DoorInside), "Kit walks into the barn");
-        Check(!await WalkLeg(player, new Vector2(1200, 1100), 200), "overgrown Field A is blocked");
+        Check(!await WalkLeg(player, M(1200, 1100), 200), "overgrown Field A is blocked");
 
         // Gamepad A on the tile in front of Kit: clear → till → plant → water.
         var cell = new Vector2I(2, 5);
-        Vector2 center = grid.CellCenter(cell);
-        player.GlobalPosition = center + new Vector2(0, 56) - PlayerController.FeetOffset;
+        Vector3 center = grid.CellCenter(cell);
+        player.GlobalPosition = center + new Vector3(0, 0, 0.875f);
         player.Face(Facing.Up);
         await Frames(3);
         Check(grid.HighlightedCell == cell, "the tile in front of Kit is highlighted");
@@ -203,34 +216,27 @@ public partial class TestRunner
         // Mouse: click a weed tile → Kit walks beside it, faces it, pulls the weeds.
         belt.Select(Tool.Hands);
         var target = new Vector2I(4, 4);
-        var vp = GetViewport();
-        Vector2 screen = vp.GetCanvasTransform() * grid.CellCenter(target);
-        vp.PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = true, Position = screen, GlobalPosition = screen }, true);
-        vp.PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = false, Position = screen, GlobalPosition = screen }, true);
+        ClickWorld(grid.CellCenter(target));
         bool clicked = await WaitUntil(() => grid.Get(target).Soil == Soil.Clear, 300);
         Check(clicked, "clicking a weed tile walks Kit there and pulls the weeds");
 
         // Owner playtest 2026-11-21: a tile within reach is dug at once; a far one is walked to, then dug.
         belt.Select(Tool.Hoe);
         await Frames(15);
-        Vector2 here = player.GlobalPosition;
-        var near = grid.WorldToCell(player.GlobalPosition + PlayerController.FeetOffset + new Vector2(0, -64));
-        Check(grid.InBounds(near) && grid.Get(near).Soil == Soil.Weeds, "a weed tile right beside Kit");
-        screen = vp.GetCanvasTransform() * grid.CellCenter(near);
-        vp.PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = true, Position = screen, GlobalPosition = screen }, true);
-        vp.PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = false, Position = screen, GlobalPosition = screen }, true);
+        Vector3 here = player.GlobalPosition;
+        var near = grid.WorldToCell(player.Feet + new Vector3(0, 0, -1));
+        Check(grid.InBounds(near) && grid.Get(near).Soil == Soil.Weeds, $"a weed tile right beside Kit ({near})");
+        ClickWorld(grid.CellCenter(near));
         await Frames(2);
-        Check(grid.Get(near).Soil == Soil.Tilled && !player.HasMoveTarget && player.GlobalPosition.DistanceTo(here) < 2 && player.Facing == Facing.Up,
+        Check(grid.Get(near).Soil == Soil.Tilled && !player.HasMoveTarget && player.GlobalPosition.DistanceTo(here) < 0.03f && player.Facing == Facing.Up,
             "clicking a tile within reach with the hoe digs it at once (Kit turns to it, no walking)");
         var far = new Vector2I(0, 0);
-        screen = vp.GetCanvasTransform() * grid.CellCenter(far);
-        vp.PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = true, Position = screen, GlobalPosition = screen }, true);
-        vp.PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = false, Position = screen, GlobalPosition = screen }, true);
+        ClickWorld(grid.CellCenter(far));
         Check(player.HasMoveTarget, "clicking a far tile walks Kit there first");
         Check(await WaitUntil(() => grid.Get(far).Soil == Soil.Tilled, 400), "…and digs it on arrival (the corner by the field edge too)");
         bool adaClear = true;
         foreach (var (tileCell, _) in grid.AllTiles())
-            adaClear &= player.InteractableAt(grid.CellCenter(tileCell)) == null;
+            adaClear &= player.InteractableAt(ScreenOf(grid.CellCenter(tileCell))) == null;
         Check(adaClear, "no interactable (Ada) sits over the garden, so clicks and A always reach the tiles");
 
         // The night grows the watered carrot (DayEnded hook).

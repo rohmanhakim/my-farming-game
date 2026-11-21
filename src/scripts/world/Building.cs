@@ -1,112 +1,259 @@
+using System.Collections.Generic;
 using Godot;
 using MyFarmingGame.Core;
+using MyFarmingGame.Player;
 
 namespace MyFarmingGame.World;
 
-/// <summary>Which wall has the door.</summary>
+/// <summary>Which wall has the door. Top = north (−Z), Bottom = south (+Z).</summary>
 public enum DoorSide { Top, Bottom, None }
 
 /// <summary>
-/// A building entered on the same map (Task 1.5, Phase-001 §1 Indoors): floor, walls with a door
-/// gap, a roof drawn over Kit, and an <see cref="IndoorZone"/> over the floor (roof fades, clock
-/// stops while Kit is inside). The node's position is the footprint's top-left corner; size is in
-/// 64-px tiles. Things inside (bed, phone, feed bins, animals) are children placed in the scene.
-/// Art by sprite name: <see cref="FloorSprite"/>, <see cref="RoofSprite"/>.
+/// A building entered on the same map (Task 1.5; 3D since Task 1.15; Phase-001 §1 Indoors): floor,
+/// four walls with a door gap, a roof (model by name, <see cref="RoofModel"/>), and an
+/// <see cref="IndoorZone"/> over the floor. While Kit is inside, the roof and the walls facing the
+/// camera fade out and the clock stops. Outdoors, while the building stands between the camera and
+/// Kit, its roof and camera-side walls fade too, so Kit is never lost behind it.
+///
+/// The node's position is the footprint's north-west corner; size is in tiles (1 tile = 1 m).
+/// Things inside (bed, phone, feed bins, animals) are children placed in the scene.
+/// Walls and floor are built from colours; each faded piece has its own material (few buildings).
 /// </summary>
-public partial class Building : Node2D
+public partial class Building : Node3D
 {
-    public const int Tile = 64;
-    public const float WallThickness = 12f;
+    public const float WallThickness = 0.19f;   // 2D: 12 px
+    public const float WallHeight = 2.2f;
 
     [Export] public Vector2I SizeTiles { get; set; } = new(6, 4);
     [Export] public DoorSide Door { get; set; } = DoorSide.Top;
     [Export] public int DoorTiles { get; set; } = 2;
     [Export] public string ZoneName { get; set; } = "house";
-    [Export] public string FloorSprite { get; set; } = "floor_wood";
-    [Export] public string RoofSprite { get; set; } = "roof_house";
-    [Export] public Color WallColor { get; set; } = new(0.45f, 0.32f, 0.22f);
+    [Export] public string RoofModel { get; set; } = "roof_house";
+    [Export] public Color WallColor { get; set; } = new(0.94f, 0.88f, 0.76f);
+    [Export] public Color FloorColor { get; set; } = new(0.62f, 0.45f, 0.30f);
+    /// <summary>Adds a window on the south wall that glows at night (group night_windows).</summary>
+    [Export] public bool HasWindow { get; set; }
 
     public IndoorZone Zone { get; private set; }
-    public TextureRect Roof { get; private set; }
+    public NamedModel Roof { get; private set; }
 
-    public Vector2 SizePx => new(SizeTiles.X * Tile, SizeTiles.Y * Tile);
+    /// <summary>The fading pieces: roof and the four walls (north, south, west, east).</summary>
+    private readonly List<Fader> _walls = new();
+    private Fader _roofFader;
+    private readonly List<Vector3> _wallNormals = new();
 
-    /// <summary>A point just outside the door (world coordinates).</summary>
-    public Vector2 DoorOutside => GlobalPosition + new Vector2(SizePx.X / 2, Door == DoorSide.Top ? -40 : SizePx.Y + 40);
+    /// <summary>Footprint size in metres (x = width on X, y = depth on Z).</summary>
+    public Vector2 Size => new(SizeTiles.X, SizeTiles.Y);
 
-    /// <summary>A point just inside the door (world coordinates).</summary>
-    public Vector2 DoorInside => GlobalPosition + new Vector2(SizePx.X / 2, Door == DoorSide.Top ? 48 : SizePx.Y - 64);
+    /// <summary>A point just outside the door (on the ground).</summary>
+    public Vector3 DoorOutside => GlobalPosition + new Vector3(Size.X / 2, 0, Door == DoorSide.Top ? -0.625f : Size.Y + 0.625f);
 
-    /// <summary>The floor inside the walls (world coordinates).</summary>
-    public Rect2 Interior => new(GlobalPosition + new Vector2(WallThickness, WallThickness), SizePx - new Vector2(2 * WallThickness, 2 * WallThickness));
+    /// <summary>A point just inside the door (on the ground).</summary>
+    public Vector3 DoorInside => GlobalPosition + new Vector3(Size.X / 2, 0, Door == DoorSide.Top ? 0.75f : Size.Y - 1.0f);
+
+    /// <summary>The floor inside the walls as (x, z, width, depth) on the ground.</summary>
+    public Rect2 Interior => new(GlobalPosition.X + WallThickness, GlobalPosition.Z + WallThickness, Size.X - 2 * WallThickness, Size.Y - 2 * WallThickness);
+
+    /// <summary>The whole building, roof included, in world space (occlusion test).</summary>
+    public Aabb Bounds => new(GlobalPosition, new Vector3(Size.X, WallHeight + 1.6f, Size.Y));
+
+    /// <summary>True while the roof is faded (Kit inside or hidden behind it).</summary>
+    public bool RoofFaded => _roofFader?.Target < 0.5f;
+
+    /// <summary>True when the wall facing <paramref name="normal"/> (e.g. Vector3.Back = south) is faded.</summary>
+    public bool WallFaded(Vector3 normal)
+    {
+        for (int i = 0; i < _walls.Count; i++)
+            if (_wallNormals[i].IsEqualApprox(normal)) return _walls[i].Target < 0.5f;
+        return false;
+    }
 
     public override void _Ready()
     {
-        Vector2 size = SizePx;
-
-        // Floor (texture tiled at 64 px: 32-px placeholder × 2).
-        var floor = new TextureRect
+        float w = Size.X, d = Size.Y, t = WallThickness;
+        var floor = new MeshInstance3D
         {
-            Name = "Floor",
-            Texture = SpriteLibrary.Get(FloorSprite),
-            StretchMode = TextureRect.StretchModeEnum.Tile,
-            Size = size / 2,
-            Scale = new Vector2(2, 2),
-            MouseFilter = Control.MouseFilterEnum.Ignore,
-            ZIndex = -8,
-            TextureRepeat = TextureRepeatEnum.Enabled,
+            Name = "Floor", Mesh = new BoxMesh { Size = new Vector3(w, 0.04f, d) },
+            MaterialOverride = ModelLibrary.MaterialFor(FloorColor), Position = new Vector3(w / 2, 0.02f, d / 2),
         };
         AddChild(floor);
 
-        // Walls (drawn and solid), with a door gap.
-        var walls = new StaticBody2D { Name = "Walls" };
+        var walls = new StaticBody3D { Name = "Walls" };
         AddChild(walls);
-        float gapW = DoorTiles * Tile;
-        float gapX = (size.X - gapW) / 2;
-        float t = WallThickness;
-        float topY = 0, bottomY = size.Y - t;
-        AddWall(walls, new Rect2(0, 0, t, size.Y));                // left
-        AddWall(walls, new Rect2(size.X - t, 0, t, size.Y));       // right
-        foreach (var (y, hasDoor) in new[] { (topY, Door == DoorSide.Top), (bottomY, Door == DoorSide.Bottom) })
-        {
-            if (hasDoor)
-            {
-                AddWall(walls, new Rect2(0, y, gapX, t));
-                AddWall(walls, new Rect2(gapX + gapW, y, size.X - gapX - gapW, t));
-            }
-            else
-                AddWall(walls, new Rect2(0, y, size.X, t));
-        }
+        // North and south walls run along X (one may have the door gap); west and east along Z.
+        AddWallSide(walls, "WallNorth", Vector3.Forward, 0, d: t, along: w, z: 0, hasDoor: Door == DoorSide.Top);
+        AddWallSide(walls, "WallSouth", Vector3.Back, 0, d: t, along: w, z: d - t, hasDoor: Door == DoorSide.Bottom);
+        AddWallSide(walls, "WallWest", Vector3.Left, 0, d: d, along: t, z: 0, hasDoor: false);
+        AddWallSide(walls, "WallEast", Vector3.Right, w - t, d: d, along: t, z: 0, hasDoor: false);
 
-        // Roof over everything (and over Kit) until Kit walks in.
-        Roof = new TextureRect
-        {
-            Name = "Roof",
-            Texture = SpriteLibrary.Get(RoofSprite),
-            StretchMode = TextureRect.StretchModeEnum.Scale,
-            Position = new Vector2(-8, -16),
-            Size = size + new Vector2(16, 20),
-            MouseFilter = Control.MouseFilterEnum.Ignore,
-            ZIndex = 30,
-        };
+        Roof = new NamedModel { Name = "Roof", ModelName = RoofModel, Position = new Vector3(w / 2, 0, d / 2) };
         AddChild(Roof);
+        _roofFader = new Fader(Roof);
+
+        if (HasWindow)
+        {
+            var glass = new StandardMaterial3D { AlbedoColor = new Color("#5a7ea8"), Emission = new Color("#ffd27a") };
+            var win = new MeshInstance3D
+            {
+                Name = "Window", Mesh = new BoxMesh { Size = new Vector3(0.8f, 0.6f, 0.04f) },
+                MaterialOverride = glass, Position = new Vector3(w * 0.25f, 1.3f, d + 0.01f),
+            };
+            win.AddToGroup(UI.DayNightView.WindowGroup);
+            // The window belongs to the south wall's look so it fades with it.
+            int south = _wallNormals.IndexOf(Vector3.Back);
+            (south >= 0 ? _walls[south].Root : this).AddChild(win);
+            win.Position = new Vector3(w * 0.25f, 1.3f, d + 0.01f) - (south >= 0 ? ((Node3D)_walls[south].Root).Position : Vector3.Zero);
+            if (south >= 0) _walls[south].Refresh();
+        }
 
         // Inside = the floor between the walls (a building without a door can't be entered).
         if (Door == DoorSide.None) return;
-        Zone = new IndoorZone { Name = "IndoorZone", ZoneName = ZoneName, Roof = Roof };
-        var shape = new CollisionShape2D
+        Zone = new IndoorZone { Name = "IndoorZone", ZoneName = ZoneName, Building = this };
+        Zone.AddChild(new CollisionShape3D
         {
-            Shape = new RectangleShape2D { Size = size - new Vector2(2 * t, 2 * t) },
-            Position = size / 2,
-        };
-        Zone.AddChild(shape);
+            Shape = new BoxShape3D { Size = new Vector3(w - 2 * t, 2f, d - 2 * t) },
+            Position = new Vector3(w / 2, 1f, d / 2),
+        });
         AddChild(Zone);
     }
 
-    private void AddWall(StaticBody2D body, Rect2 r)
+    /// <summary>One wall side: a solid body and a look (split around the door gap when it has one).</summary>
+    private void AddWallSide(StaticBody3D body, string name, Vector3 normal, float x, float d, float along, float z, bool hasDoor)
     {
-        if (r.Size.X <= 0 || r.Size.Y <= 0) return;
-        body.AddChild(new CollisionShape2D { Shape = new RectangleShape2D { Size = r.Size }, Position = r.GetCenter() });
-        AddChild(new ColorRect { Position = r.Position, Size = r.Size, Color = WallColor, MouseFilter = Control.MouseFilterEnum.Ignore, ZIndex = -7 });
+        var look = new Node3D { Name = name, Position = new Vector3(x, 0, z) };
+        AddChild(look);
+        var pieces = new List<Rect2>(); // local (x, z, w, d) relative to the wall side
+        bool runsAlongX = along > d;
+        if (hasDoor && runsAlongX)
+        {
+            float gapW = DoorTiles, gapX = (along - gapW) / 2;
+            pieces.Add(new Rect2(0, 0, gapX, d));
+            pieces.Add(new Rect2(gapX + gapW, 0, along - gapX - gapW, d));
+        }
+        else
+            pieces.Add(new Rect2(0, 0, along, d));
+        foreach (var r in pieces)
+        {
+            if (r.Size.X <= 0 || r.Size.Y <= 0) continue;
+            var center = new Vector3(r.GetCenter().X, WallHeight / 2, r.GetCenter().Y);
+            look.AddChild(new MeshInstance3D
+            {
+                Mesh = new BoxMesh { Size = new Vector3(r.Size.X, WallHeight, r.Size.Y) },
+                MaterialOverride = new StandardMaterial3D { AlbedoColor = WallColor, Roughness = 0.9f },
+                Position = center,
+            });
+            body.AddChild(new CollisionShape3D
+            {
+                Shape = new BoxShape3D { Size = new Vector3(r.Size.X, WallHeight, r.Size.Y) },
+                Position = look.Position + center,
+            });
+        }
+        _walls.Add(new Fader(look));
+        _wallNormals.Add(normal);
+    }
+
+    /// <summary>Ground direction from this building towards the camera (null without a camera rig).</summary>
+    private Vector3? CameraSide()
+    {
+        var cam = GetViewport()?.GetCamera3D();
+        if (cam?.GetParent() is CameraRig rig) return rig.BackDirection;
+        if (cam == null) return null;
+        Vector3 b = cam.GlobalBasis.Z;
+        return new Vector3(b.X, 0, b.Z).Normalized();
+    }
+
+    private bool _kitInside;
+    private bool _hidingKit;
+
+    /// <summary>Called by the indoor zone.</summary>
+    public void SetKitInside(bool inside)
+    {
+        _kitInside = inside;
+        UpdateFades();
+    }
+
+    public override void _Process(double delta)
+    {
+        bool hiding = false;
+        var cam = GetViewport()?.GetCamera3D();
+        if (!_kitInside && cam != null && GetTree().GetFirstNodeInGroup(PlayerController.Group) is Node3D kit)
+        {
+            // Kit's chest → camera: does the segment pass through the building?
+            Vector3 chest = kit.GlobalPosition + new Vector3(0, 0.9f, 0);
+            hiding = Bounds.IntersectsSegment(chest, cam.GlobalPosition);
+        }
+        if (hiding != _hidingKit) { _hidingKit = hiding; UpdateFades(); }
+        else if (_kitInside || _hidingKit) UpdateFades(); // the camera corner may switch
+        _roofFader.Step((float)delta);
+        foreach (var f in _walls) f.Step((float)delta);
+    }
+
+    /// <summary>Inside or hiding Kit → roof and the walls facing the camera fade; otherwise all back.</summary>
+    private void UpdateFades()
+    {
+        bool open = _kitInside || _hidingKit;
+        _roofFader.Target = open ? 0f : 1f;
+        Vector3? side = CameraSide();
+        for (int i = 0; i < _walls.Count; i++)
+        {
+            bool cameraSide = side.HasValue && _wallNormals[i].Dot(side.Value) > 0.05f;
+            _walls[i].Target = open && cameraSide ? 0f : 1f;
+        }
+    }
+
+    /// <summary>Instant fades (tests, waking up).</summary>
+    public void FinishFades()
+    {
+        _roofFader.Step(10f);
+        foreach (var f in _walls) f.Step(10f);
+    }
+}
+
+/// <summary>
+/// Fades every mesh under a node in and out (Task 1.15): each mesh gets its own copy of its
+/// material; alpha blending is switched on only while partly faded and the node is hidden when
+/// fully faded (performance budget rule 3: no permanently transparent meshes).
+/// </summary>
+public sealed class Fader
+{
+    public const float Seconds = 0.25f;
+    public Node Root { get; }
+    public float Target { get; set; } = 1f;
+    public float Alpha { get; private set; } = 1f;
+    private readonly List<StandardMaterial3D> _mats = new();
+
+    public Fader(Node root) { Root = root; Refresh(); }
+
+    /// <summary>Takes ownership of the materials under <see cref="Root"/> (call again after a model swap).</summary>
+    public void Refresh()
+    {
+        _mats.Clear();
+        Collect(Root);
+    }
+
+    private void Collect(Node n)
+    {
+        if (n is MeshInstance3D mi)
+        {
+            Material src = mi.MaterialOverride ?? (mi.Mesh != null && mi.Mesh.GetSurfaceCount() > 0 ? mi.Mesh.SurfaceGetMaterial(0) : null);
+            var own = src?.Duplicate() as StandardMaterial3D ?? new StandardMaterial3D();
+            mi.MaterialOverride = own;
+            _mats.Add(own);
+        }
+        foreach (Node c in n.GetChildren()) Collect(c);
+    }
+
+    public void Step(float delta)
+    {
+        if (Mathf.IsEqualApprox(Alpha, Target)) return;
+        Alpha = Mathf.MoveToward(Alpha, Target, delta / Seconds);
+        bool partial = Alpha > 0.001f && Alpha < 0.999f;
+        foreach (var m in _mats)
+        {
+            m.Transparency = partial ? BaseMaterial3D.TransparencyEnum.Alpha : BaseMaterial3D.TransparencyEnum.Disabled;
+            var c = m.AlbedoColor;
+            m.AlbedoColor = new Color(c.R, c.G, c.B, Alpha);
+        }
+        if (Root is Node3D n3) n3.Visible = Alpha > 0.001f;
     }
 }

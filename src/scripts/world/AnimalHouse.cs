@@ -63,7 +63,7 @@ public sealed class AnimalData
 /// * Registers its products with <see cref="Production"/> so egg and milk orders appear.
 /// Spawns one <see cref="FarmAnimal"/> per animal at <see cref="Spots"/>.
 /// </summary>
-public partial class AnimalHouse : Node2D
+public partial class AnimalHouse : Node3D
 {
     public const string Group = "animal_houses";
 
@@ -74,10 +74,11 @@ public partial class AnimalHouse : Node2D
     [Export] public string FeedItem { get; set; } = ItemIds.ChickenFeed;
     [Export] public int StartingFeed { get; set; } = 35;
     [Export] public string[] StartingNames { get; set; } = { "Bramble", "Clover", "Pip", "Hazel", "Daisy" };
-    /// <summary>Where the feed bin stands, relative to this node.</summary>
-    [Export] public Vector2 BinOffset { get; set; } = Vector2.Zero;
-    /// <summary>Where each animal stands (one per capacity slot), relative to this node.</summary>
-    [Export] public Vector2[] Spots { get; set; } = { new(40, 70), new(95, 70), new(150, 70), new(40, 140), new(215, 140) };
+    /// <summary>Where the feed bin stands, relative to this node (metres; this node sits at the
+    /// building's north-west corner).</summary>
+    [Export] public Vector3 BinOffset { get; set; } = Vector3.Zero;
+    /// <summary>Where each animal stands (one per capacity slot), relative to this node (metres).</summary>
+    [Export] public Vector3[] Spots { get; set; } = { new(0.625f, 0, 1.1f), new(1.5f, 0, 1.1f), new(2.35f, 0, 1.1f), new(0.625f, 0, 2.1f), new(1.5f, 0, 2.1f) };
     /// <summary>When false the house ignores the clock (rule tests call <see cref="EndDay"/>).</summary>
     [Export] public bool ListenToClock { get; set; } = true;
 
@@ -172,7 +173,7 @@ public partial class AnimalHouse : Node2D
             e.Name = "Animal_" + _animals[i].Name;
             e.Data = _animals[i];
             e.House = this;
-            e.Position = Spots != null && i < Spots.Length ? Spots[i] : new Vector2(40 + 50 * i, 100);
+            e.Position = Spots != null && i < Spots.Length ? Spots[i] : new Vector3(0.6f + 0.8f * i, 0, 1.5f);
             AddChild(e);
             _entities.Add(e);
         }

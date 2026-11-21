@@ -45,15 +45,16 @@ public partial class Ledger : Prop
 
     public Ledger()
     {
+        ModelName = "ledger";
         SpriteName = "icon_ledger";
-        DisplaySize = new Vector2(48, 48);
         PromptSprite = "icon_ledger";
-        BodySize = new Vector2(56, 28);
-        BodyOffset = Vector2.Zero;
-        ApproachOffset = new Vector2(0, 52);
+        BodySize = new Vector3(0.9f, 0.8f, 0.5f);
+        ClickSize = new Vector3(1f, 1f, 0.7f);
+        ApproachOffset = new Vector3(0, 0, 0.8f);
+        PromptHeight = 1.2f;
     }
 
-    public override void Interact(Node2D player)
+    public override void Interact(Node3D player)
     {
         var bubble = PictureBubbleView.Find(GetTree());
         if (bubble == null) return;

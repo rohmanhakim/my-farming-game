@@ -16,15 +16,16 @@ public partial class Phone : Prop
 {
     public Phone()
     {
+        ModelName = "phone";
         SpriteName = "phone";
-        DisplaySize = new Vector2(48, 48);
         PromptSprite = "phone";
-        BodySize = new Vector2(40, 20);
-        BodyOffset = new Vector2(0, 10);
-        ApproachOffset = new Vector2(0, 52);
+        BodySize = new Vector3(0.5f, 0.9f, 0.4f);
+        ClickSize = new Vector3(0.7f, 1.1f, 0.7f);
+        ApproachOffset = new Vector3(0, 0, 0.8f);
+        PromptHeight = 1.4f;
     }
 
-    public override void Interact(Node2D player)
+    public override void Interact(Node3D player)
     {
         var clock = GameClock.Instance;
         int day = clock?.Day ?? 1;

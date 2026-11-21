@@ -20,13 +20,13 @@ public partial class ShopCounter : Prop
 
     public ShopCounter()
     {
+        ModelName = "shop_counter";
         SpriteName = "shop_counter";
-        DisplaySize = new Vector2(96, 64);
         PromptSprite = "item_carrot_seeds";
-        BodySize = new Vector2(96, 30);
-        BodyOffset = new Vector2(0, 10);
-        ClickSize = new Vector2(96, 64);
-        ApproachOffset = new Vector2(0, 60);
+        BodySize = new Vector3(1.5f, 0.9f, 0.5f);
+        ClickSize = new Vector3(1.5f, 1.2f, 0.8f);
+        ApproachOffset = new Vector3(0, 0, 0.94f);
+        PromptHeight = 1.5f;
     }
 
     /// <summary>Is the shop open at <paramref name="minuteOfDay"/>?</summary>
@@ -34,7 +34,7 @@ public partial class ShopCounter : Prop
 
     public static bool IsOpenNow => IsOpenAt((int)(GameClock.Instance?.AbsoluteMinute ?? OpenMinute));
 
-    public override void Interact(Node2D player)
+    public override void Interact(Node3D player)
     {
         if (!IsOpenNow)
         {

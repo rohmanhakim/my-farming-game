@@ -70,11 +70,11 @@ public partial class TestRunner
         }
 
         // 1 Arrival: Kit by the cart at the gate, Ada waves, the arrow points at the door.
-        Check(ada != null && level.GetNodeOrNull<Node2D>("Cart") != null, "Ada stands by the house; the arrival cart is by the gate");
+        Check(ada != null && level.GetNodeOrNull<Node3D>("Cart") != null, "Ada stands by the house; the arrival cart is by the gate");
         Check(ob.Step == OnboardingStep.Arrival && chip.Shown && chip.Text.Contains("front door") && ada.Waving, "step 1: hint 'Walk to the front door', Ada waves");
         Check(director.Arrow.Visible && director.Arrow.Target == house.DoorOutside, "the guide arrow points at the front door");
-        Check(player.GlobalPosition.DistanceTo(house.DoorOutside) > 200, "Kit starts away from the door (by the cart)");
-        await WalkLeg(player, house.DoorOutside - PlayerController.FeetOffset);
+        Check(player.Feet.DistanceTo(house.DoorOutside) > 3, "Kit starts away from the door (by the cart)");
+        await WalkLeg(player, house.DoorOutside);
         Check(await Until(() => ob.Step == OnboardingStep.Garden) && !ada.Waving, "walking to the door → step 2 (the garden)");
 
         // Ada talks about the current step, never doing it.

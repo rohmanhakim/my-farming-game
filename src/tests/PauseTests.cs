@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using Godot;
 using MyFarmingGame.Autoloads;
@@ -15,9 +16,9 @@ public partial class TestRunner
         var clock = GameClock.Instance;
         var main = await NewMain();
         var menu = main.GetNodeOrNull<PauseMenuView>("Pause/PauseMenu");
-        var light = main.GetNodeOrNull<DayNightView>("World/Effects/DayNightOverlay");
+        var light = main.GetNodeOrNull<DayNightView>("World/Effects/DayNight");
         var button = main.GetNodeOrNull<PauseButton>("HUD/UI/PauseButton");
-        Check(menu != null && light != null && button != null, "Pause/PauseMenu, World/Effects/DayNightOverlay and the HUD pause button exist");
+        Check(menu != null && light != null && button != null, "Pause/PauseMenu, World/Effects/DayNight and the HUD pause button exist");
         if (menu == null || light == null || button == null) { main.QueueFree(); return; }
         menu.AllowQuit = false;
         GameSettings.ResetToDefaults();
@@ -84,8 +85,11 @@ public partial class TestRunner
         Check(!menu.IsOpen, "the pause menu doesn't open over 'Go to sleep?'");
         clock.CancelAsk();
 
-        // Day/night tint follows the phase.
+        // Day/night light follows the phase (3D since Task 1.19: sun colour, brightness and height, sky, ambient).
         light.FadeSeconds = 0.01f;
+        var sun = main.GetNode<DirectionalLight3D>("World/Effects/Sun");
+        var env = main.GetNode<WorldEnvironment>("World/Effects/WorldEnvironment").Environment;
+        var seen = new System.Collections.Generic.List<float>();
         Color prev = Colors.Black;
         bool differs = true;
         foreach (DayPhase phase in System.Enum.GetValues(typeof(DayPhase)))
@@ -93,10 +97,29 @@ public partial class TestRunner
             if (phase > DayPhase.Dusk) break; // night phases are never reached before bedtime (dial only)
             clock.SetTime(1, (int)phase * GameClock.MinutesPerStep + 1);
             await Frames(3);
-            differs &= light.Target == DayNightView.TintFor(phase) && light.Color.IsEqualApprox(light.Target) && light.Target != prev;
-            prev = light.Target;
+            await WaitUntil(() => light.Settled, 60);
+            var want = DayNightView.LightFor(phase);
+            differs &= light.TargetTint == DayNightView.TintFor(phase) && sun.LightColor.IsEqualApprox(want.Tint)
+                       && Mathf.IsEqualApprox(sun.LightEnergy, want.SunEnergy) && env.AmbientLightColor.IsEqualApprox(want.Tint)
+                       && env.BackgroundColor.IsEqualApprox(want.Sky) && light.TargetTint != prev;
+            seen.Add(sun.RotationDegrees.X);
+            prev = light.TargetTint;
         }
-        Check(differs, "the world tint changes per phase and reaches each phase's colour");
+        Check(differs, "the sun, sky and ambient light change per phase and reach each phase's values");
+        Check(seen.Count >= 5 && seen.Min() < -50 && seen.Max() > -25, $"the sun climbs to midday and sinks towards dusk ({string.Join(", ", seen.Select(v => v.ToString("0")))})");
+        foreach (DayPhase phase in System.Enum.GetValues(typeof(DayPhase)))
+            Check(DayNightView.BrightnessOf(DayNightView.LightFor(phase)) >= DayNightView.MinBrightness,
+                $"{phase} light is at least half as bright as midday ({DayNightView.BrightnessOf(DayNightView.LightFor(phase)):0.00})");
+        var windows = GetTree().GetNodesInGroup(DayNightView.WindowGroup);
+        clock.SetTime(1, (int)DayPhase.Dusk * GameClock.MinutesPerStep + 1);
+        await WaitUntil(() => light.Settled, 60);
+        Check(windows.Count >= 3 && windows.Cast<Node>().All(w => w is GeometryInstance3D { MaterialOverride: StandardMaterial3D { EmissionEnabled: true } }),
+            $"windows of the house, shed and cottage glow at dusk ({windows.Count})");
+        clock.SetTime(1, (int)DayPhase.Midday * GameClock.MinutesPerStep + 1);
+        await WaitUntil(() => light.Settled, 60);
+        Check(windows.Cast<Node>().All(w => w is GeometryInstance3D { MaterialOverride: StandardMaterial3D { EmissionEnabled: false } }),
+            "…and stop glowing by day");
+        Check(main.FindChildren("*", "Light3D", true, false).Count == 1, "budget: one light in the world (windows glow, they are not lights)");
         Check(DayNightView.TintFor(DayPhase.Midday) == Colors.White, "midday is untinted");
         var night = DayNightView.TintFor(DayPhase.Night);
         Check(night.V >= 0.5f && night.V < 0.9f && DayNightView.TintFor(DayPhase.Dusk).V < 1f, "night is dim but readable (≥ 50 % bright)");

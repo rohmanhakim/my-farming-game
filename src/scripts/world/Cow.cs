@@ -7,10 +7,11 @@ public partial class Cow : FarmAnimal
 {
     public Cow()
     {
+        ModelName = "cow";
         SpriteName = "cow";
-        DisplaySize = new Vector2(96, 96);
-        ClickSize = new Vector2(96, 80);
-        ApproachOffset = new Vector2(0, 64);
-        Reach = 60f;
+        ClickSize = new Vector3(1.0f, 1.4f, 1.6f);
+        ApproachOffset = new Vector3(0, 0, 1.0f);
+        Reach = 0.95f;
+        PromptHeight = 1.8f;
     }
 }

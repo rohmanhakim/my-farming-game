@@ -2,5 +2,5 @@
 
 [ext_resource type="Script" path="res://scripts/world/Ada.cs" id="1_script"]
 
-[node name="Ada" type="StaticBody2D"]
+[node name="Ada" type="StaticBody3D"]
 script = ExtResource("1_script")

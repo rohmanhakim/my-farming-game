@@ -5,26 +5,21 @@ using MyFarmingGame.Player;
 namespace MyFarmingGame.World;
 
 /// <summary>
-/// A building's inside (Task 1.5, GDD §4 "time stops indoors", Phase-001 §1 Indoors): while Kit
-/// stands in this area the roof fades out and <see cref="GameClock"/> stops; outside, the roof comes
-/// back and the clock runs. Created by <see cref="Building"/> over its floor; any Area2D shape works.
+/// A building's inside (Task 1.5; 3D since Task 1.15; GDD §4 "time stops indoors"): while Kit stands
+/// in this area <see cref="GameClock"/> stops and the building fades its roof and camera-side walls
+/// (<see cref="Building.SetKitInside"/>); outside, they come back and the clock runs. Created by
+/// <see cref="Building"/> over its floor.
 /// </summary>
-public partial class IndoorZone : Area2D
+public partial class IndoorZone : Area3D
 {
     /// <summary>Name passed to <see cref="GameClock.EnterIndoors"/> ("house", "coop", …).</summary>
     [Export] public string ZoneName { get; set; } = "house";
 
-    /// <summary>The roof drawn over the building; faded out while Kit is inside.</summary>
-    public CanvasItem Roof { get; set; }
-
-    /// <summary>Seconds the roof takes to fade.</summary>
-    [Export] public float FadeSeconds { get; set; } = 0.25f;
+    public Building Building { get; set; }
 
     [Signal] public delegate void PlayerInsideChangedEventHandler(bool inside);
 
     public bool PlayerInside { get; private set; }
-
-    private Tween _tween;
 
     public override void _Ready()
     {
@@ -42,29 +37,21 @@ public partial class IndoorZone : Area2D
         PlayerInside = false;
     }
 
-    private void OnBodyEntered(Node2D body)
+    private void OnBodyEntered(Node3D body)
     {
         if (!body.IsInGroup(PlayerController.Group) || PlayerInside) return;
         PlayerInside = true;
         GameClock.Instance?.EnterIndoors(ZoneName);
-        FadeRoof(0f);
+        Building?.SetKitInside(true);
         EmitSignal(SignalName.PlayerInsideChanged, true);
     }
 
-    private void OnBodyExited(Node2D body)
+    private void OnBodyExited(Node3D body)
     {
         if (!body.IsInGroup(PlayerController.Group) || !PlayerInside) return;
         PlayerInside = false;
         GameClock.Instance?.ExitIndoors(ZoneName);
-        FadeRoof(1f);
+        Building?.SetKitInside(false);
         EmitSignal(SignalName.PlayerInsideChanged, false);
-    }
-
-    private void FadeRoof(float alpha)
-    {
-        if (Roof == null) return;
-        _tween?.Kill();
-        _tween = CreateTween();
-        _tween.TweenProperty(Roof, "modulate:a", alpha, FadeSeconds);
     }
 }

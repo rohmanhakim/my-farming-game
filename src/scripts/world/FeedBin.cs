@@ -1,5 +1,6 @@
 using Godot;
 using MyFarmingGame.Autoloads;
+using MyFarmingGame.Core;
 using MyFarmingGame.UI;
 
 namespace MyFarmingGame.World;
@@ -13,28 +14,33 @@ public partial class FeedBin : Prop
 {
     public AnimalHouse House { get; set; }
     private Label _count;
+    private WorldPin _countPin;
 
     public FeedBin()
     {
-        DisplaySize = new Vector2(56, 56);
-        BodySize = new Vector2(52, 20);
-        BodyOffset = new Vector2(0, 14);
-        ApproachOffset = new Vector2(0, 52);
-        Reach = 64f;
+        BodySize = new Vector3(0.8f, 0.7f, 0.5f);
+        ClickSize = new Vector3(1f, 1f, 0.9f);
+        ApproachOffset = new Vector3(0, 0, 0.8f);
+        Reach = 1.0f;
+        PromptHeight = 1.3f;
     }
 
     public override void _Ready()
     {
         SpriteName = House?.FeedItem == ItemIds.Hay ? "feed_bin_hay" : "feed_bin_grain";
+        ModelName = SpriteName;
         PromptSprite = House != null ? ItemIds.SpriteName(House.FeedItem) : "";
         base._Ready();
         _count = new Label
         {
-            Position = new Vector2(-28, -6), Size = new Vector2(56, 28), HorizontalAlignment = HorizontalAlignment.Center,
+            Position = new Vector2(-28, -14), Size = new Vector2(56, 28), HorizontalAlignment = HorizontalAlignment.Center,
             LabelSettings = new LabelSettings { FontSize = 20, FontColor = Colors.White, OutlineSize = 6, OutlineColor = new Color(0.15f, 0.1f, 0.05f) },
             MouseFilter = Control.MouseFilterEnum.Ignore,
         };
-        AddChild(_count);
+        // The number of portions, pinned on the bin as screen UI.
+        _countPin = new WorldPin { Name = "Count", WorldOffset = new Vector3(0, 0.75f, 0) };
+        _countPin.AddChild(_count);
+        AddChild(_countPin);
         if (House != null) House.FeedChanged += OnFeedChanged;
         OnFeedChanged(House?.Feed ?? 0);
     }
@@ -48,9 +54,15 @@ public partial class FeedBin : Prop
 
     public string CountText => _count?.Text ?? "";
 
+    public override void _Process(double delta)
+    {
+        base._Process(delta);
+        if (_countPin != null) _countPin.Shown = !UnderRoof;
+    }
+
     /// <summary>With the feed scoop: feed every hungry animal here one portion (Task 1.9).
     /// Otherwise show how much is in the bin.</summary>
-    public override void Interact(Node2D player)
+    public override void Interact(Node3D player)
     {
         if (House == null) return;
         if (ToolBelt.Instance?.Active == Tool.FeedScoop && House.Hungry > 0)

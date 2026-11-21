@@ -1,7 +1,7 @@
 # Phase-001 — First Playable (Vertical Slice)
 
-> **Status:** In progress — Tasks 1.1–1.4 and 1.10 done; Tasks 1.5–1.9 and 1.11–1.12 built, pending human playtest; Task 1.13 software part done, playtest pending (2026-11-21)  
-> **Version:** 0.42  
+> **Status:** In progress — Tasks 1.1–1.4 and 1.10 done; Tasks 1.5–1.9 and 1.11–1.12 built in 2D, pending human playtest; Task 1.13 software part done, playtest pending; **3D migration (Tasks 1.14–1.20, owner decision 2026-11-21): Tasks 1.14–1.18 built (the slice now runs in 3D; 1.15–1.18 pending human playtest)** — the playtest runs on the 3D build (2026-11-21)  
+> **Version:** 0.47  
 > **Last updated:** 2026-11-21  
 > **Milestone:** 1 — First playable  
 > **Purpose:** Break Milestone 1 down into session tasks. Each task produces one scoped, playtested artifact that can be created and validated in a single session with AI assistance.
@@ -15,6 +15,8 @@
 **Where this sits on the map (places.md v0.10, Bramblewick Vale, 2026-11-20):** the slice covers the farm's centre column from places.md §3 — the house with the front garden and old coop facing the gate, the cross path, and the old barn at the back edge of Field A (behind the house, ground around it already clear) — plus the lane up to Mr. Marlow's cottage and seed shed (≈ 20 tiles from the front door). Fields A–E stay overgrown and are not walkable yet. The village green, the brook, the wood, and the hill are built in later phases; the slice needs no area transitions.
 
 **Indoors (GDD §4 "time stops indoors", owner decision 2026-11-20):** in this phase the house, coop, barn and seed shed are entered **on the same map** — walking into a building's footprint fades its roof out to show the inside, and the clock stops while Kit is inside. There are **no separate interior scenes** (fade to a room map) in Phase-001; whether later phases need them is an open question for Phase-002 planning (the kitchen upgrade is the first likely case).
+
+**3D (owner decision 2026-11-21):** the slice was built in 2D (Tasks 1.1–1.13). The game is now **3D with a fixed, angled top-down camera** and a cartoony, colourful look (GDD v0.45 §9). **Tasks 1.14–1.20** move the slice to 3D with built-in primitive meshes as placeholders, keeping every game rule, autoload, UI screen and save section; the Task 1.13 playtest then runs on the 3D build. Real 3D models, outlines and a final toon shader are **not** part of Phase-001 (GDD §16 Q17).
 
 **Loop in this milestone:**
 1. Kit clears weeds, plants starter carrots, and waters them daily.
@@ -497,7 +499,7 @@ Each task includes **Team Preparation**, **Tests** (Software / Human), and a **N
 **Dependencies:** All previous tasks.
 
 **Notes & learnings:**
-- **Outcome / status:** 2026-11-21 — **Software part done; human playtest PENDING** (this task is mostly a human task: players aged 6+ and adults, GDD §14). Software tests: PASS — (1) **all automated checks in one pass:** `tools/verify.sh` → `dotnet build` 0 warnings/0 errors, import, 120-frame boot, `TestRunner` **618/618** (Tasks 1.1–1.12), no `.godot/` files in git; (2) **frame rate:** a scripted 8-second walk from the arrival cart up the lane in the real game window on the owner's MacBook Air (M1, Compatibility renderer): ≈ 120 fps average (961 frames / 8 s), average frame CPU 13.5 ms, one worst frame 22 ms; headless the same walk averages 4.8 ms per frame; 477 nodes in the scene; (3) **no runtime errors** in the boot run, the walk, or the test run (`ERROR`/`SCRIPT ERROR` grep clean); (4) **save/load end to end:** the Task 1.10 test restarts `Main` and compares the whole save snapshot, 50 cycles, corrupt-file fallback. · Human playtest: **PENDING** — run it with `docs/playtest-001.md`; the "stable frame rate on target PC hardware" exit item also needs a Windows PC check.
+- **Outcome / status:** 2026-11-21 — **Software part done; human playtest PENDING** (this task is mostly a human task: players aged 6+ and adults, GDD §14). Software tests: PASS — (1) **all automated checks in one pass:** `tools/verify.sh` → `dotnet build` 0 warnings/0 errors, import, 120-frame boot, `TestRunner` **618/618** (Tasks 1.1–1.12), no `.godot/` files in git; (2) **frame rate:** a scripted 8-second walk from the arrival cart up the lane in the real game window on the owner's MacBook Air (M1, Compatibility renderer): ≈ 120 fps average (961 frames / 8 s), average frame CPU 13.5 ms, one worst frame 22 ms; headless the same walk averages 4.8 ms per frame; 477 nodes in the scene; (3) **no runtime errors** in the boot run, the walk, or the test run (`ERROR`/`SCRIPT ERROR` grep clean); (4) **save/load end to end:** the Task 1.10 test restarts `Main` and compares the whole save snapshot, 50 cycles, corrupt-file fallback. · Human playtest: **PENDING** — run it with `docs/playtest-001.md`; the "stable frame rate on target PC hardware" exit item also needs a Windows PC check. **Update 2026-11-21:** the owner switched the game to 3D; the playtest now runs on the 3D build after Task 1.20 (see *3D migration* below).
 - **What worked well:** Building every task on the same few patterns (autoload state with private test instances; small views that only subscribe; a `Prop` base for anything Kit uses; one picture bubble for every conversation) let nine tasks land with one test runner and no rework of earlier systems. Whole-snapshot comparisons (save/load) and "is this already true?" loops (onboarding) caught more than per-field checks would. A throwaway GDScript capture scene + `--write-movie` gave a real look at each new screen without adding test code.
 - **Problems & fixes:** (1) GDScript can't call C# methods with `Action` or nullable parameters (`Invalid call. Nonexistent function 'WalkTo'`) and the capture script then waited forever → the frame-time script presses `move_up` with `Input.action_press` instead. (2) A windowed run started from the agent shell sat in the background for minutes (likely macOS throttling a window behind the editor) while its timers never fired → measure with a self-quitting frame counter rather than wall-clock timers, and check the process list for leftover runs. (3) Recurring theme across Tasks 1.9–1.12: on a busy Mac physics frames outrun rendered frames, so tests that inject input or read `_Process` results must wait on rendered frames (fixed in the helpers; see Task 1.10).
 - **Playtest findings (GDD §14 answers):** **Not yet run** — no player has tried the slice (2026-11-21). Use `docs/playtest-001.md` §3 (one sheet per player) and copy the answers here: start without explanation; tell what can be used; crops need water / yellow = warning; losing a crop feels fair; controls on gamepad and keyboard + mouse; NPC want/task/reward understood before accepting; first order makes the money loop clear; the 3-days rule understood from the warnings. Fallback if no children are available: team members play and mark findings "needs target-player validation".
@@ -505,9 +507,289 @@ Each task includes **Team Preparation**, **Tests** (Software / Human), and a **N
 
 ---
 
+### 3D migration — Tasks 1.14–1.20 (owner decision 2026-11-21)
+
+The owner switched the game from 2D three-quarter top-down to **3D with a fixed, angled top-down camera** (GDD v0.45 §9; mood reference *Find Your Words*: 3D, top-down, cartoony, colourful). These tasks move the finished slice to 3D **without changing any gameplay rule**. They follow the same one-task-per-session protocol (AGENTS.md §4).
+
+**What carries over unchanged:** every autoload (`GameClock`, `ToolBelt`, `Inventory`, `Wallet`, `OrderManager`, `SaveGame`, `Onboarding`), everything in `scripts/core/` (orders, prices, crops, neighbours, feed store, settings, production), all UI screens and the HUD (they are 2D CanvasLayers on top of the 3D world), the InputMap and button prompts, the save sections and their JSON shapes, and the game rules inside `FarmGrid`, `AnimalHouse`, `BerryBush` and the props. **What is rebuilt:** the level, the player body and movement, the camera, the tile grid's drawing and picking, props and NPC bodies, animals' bodies, the indoor roof fade, the world-space prompts and guide arrow, and day/night lighting.
+
+**Ground rules for all seven tasks**
+
+1. **Build beside, then swap.** *(Changed in Task 1.15: converting `IInteractable`, `Prop`, the garden and the animals to 3D breaks every 2D prop at compile time, so the cut-over happened in Task 1.15 instead of 1.20 — `Main.tscn` is 3D from then on; see Task 1.15 Notes.)* The 3D world grows in a parallel `scenes/main/Main3D.tscn` (same Systems / World / Audio / HUD / Pause / Transition / Debug tree, but `World` is a `Node3D`). `Main.tscn` stays the 2D main scene and keeps working, so the slice is playable after every task. Task 1.20 makes the 3D scene the main scene and deletes the 2D world. Run the 3D build with F6 on `Main3D.tscn` (or `godot --path src res://scenes/main/Main3D.tscn`).
+2. **Units and axes:** 1 tile = 1 m (places.md already uses 64 px ≈ 1 m); the ground is the XZ plane at y = 0; map north = −Z (with the diagonal camera, map north points up-and-to-the-side on screen, not straight up). Every layout number in tiles carries over: 2D tile `(x, y)` → 3D tile centre `(x + 0.5, 0, y + 0.5)`. Speeds convert at 64 px = 1 m (Kit's 160 px/s = 2.5 m/s).
+3. **Camera:** one `Camera3D` on a rig that follows Kit with smoothing and stops at the level's limits. **Fixed angle, never rotated or zoomed by the player** (controls.md §7). **Diagonal (owner 2026-11-21):** tilted down (not straight down) and turned roughly 45° so it looks across the farm from a corner, the grid runs diagonally on screen and tiles show as diamonds. The turn does **not** have to be exactly 45° (owner 2026-11-21). Starting proposal: perspective, ≈ 52° down, turned ≈ 45° (camera at the farm's south-east, looking north-west), field of view ≈ 40°, framing about the same area as the 2D camera's 20 × 11 tiles; Task 1.14 lets the owner compare tilt presets (45°, 52°, 60°, and an orthographic option), turn presets (≈ 30°, 37°, 45°) and the corner (south-east or south-west) before one is fixed.
+4. **Movement and facing:** stick, D-pad and keys move Kit **relative to the screen** (up = up the screen), not along the grid. Kit's model turns smoothly towards the walking direction, but the **tool and interaction "front" stays one of the 4 grid directions** (controls.md *Movement feel*), so the tile in front is always a whole tile. With the diagonal camera the grid directions are the screen diagonals, so the front is the grid direction nearest to where Kit walks; at exactly 45° pressing straight up / down / left / right on screen lies exactly between two grid directions (at any other turn one of them is nearer, so the tie rarely happens), and on a tie Kit keeps the current front if it is one of those two (otherwise the north / south one — as built in Task 1.14, reusing the 2D facing rule). The highlighted tile always shows which tile A will hit. This is a playtest question for Task 1.14.
+5. **Placeholders:** everything is drawn by name through `ModelLibrary` / `NamedModel` from built-in primitive meshes with flat colours (`data/placeholder_models.json`; art-audio.md §1b). A real `.glb` with the same name in `src/assets/models/` replaces a placeholder **with no code or scene change** (project-structure.md §9). No real models are needed for these tasks.
+6. **Picking:** gamepad and keyboard work exactly as before (A / Space on the nearest thing in reach, or the tile in front). The mouse casts a ray from the camera: click areas (physics layer 8, now `Area3D`) win, otherwise the ray hits the ground plane → ground click / tile click. Every action stays gamepad-complete on any pad; nothing becomes keyboard- or mouse-only.
+7. **Indoors:** buildings stay on the same map (GDD §4, open question 16). Inside → the roof **and the two camera-side walls** (with the diagonal camera both walls facing the camera's corner) fade out and the clock stops, as in 2D. **Doors:** the house and barn doors face north in the layout, away from a south-side camera, so Kit walks round to the back to enter; the occluder fade keeps Kit visible. Whether to turn doors to face the camera (a layout change in places.md) is an owner question for Task 1.15. Outdoors, a building standing between the camera and Kit fades its roof so Kit is never lost behind it.
+8. **Performance:** every task stays inside project-structure.md §16 (draw calls, triangles, one sun shadow, MultiMesh for repeated tiles, shared materials) and adds or updates the budget check where it adds content. The Switch version comes later; nothing built now should need a redo for it.
+9. **Tests:** the rule tests (no scene) stay as they are. Each task ports the in-game checks of the 2D task it replaces to a 3D test group; the 2D group keeps running until Task 1.20 deletes it.
+10. **Pending 2D human playtests:** the gameplay questions of Tasks 1.5–1.12 (orders understood, loss feels fair, cards readable, onboarding) still hold and move to the 3D build. Questions about the 2D look (the faded roof reading as "inside", the night tint) are re-asked by Tasks 1.15 and 1.19. The Task 1.13 playtest runs on the 3D build after Task 1.20.
+
+---
+
+### Task 1.14 — 3D Foundation: Camera, Kit & Placeholder Models
+
+**Artifact:** A 3D test ground where a placeholder Kit walks under the fixed angled top-down camera with every input, built on the load-by-name 3D model pipeline.
+
+**Scope:**
+- `scenes/main/Main3D.tscn`: the `Main.tscn` tree with `World`, `World/Entities`, `World/Effects` as `Node3D`, the same HUD / Pause / Transition / Debug layers, process modes and `load_level` contract (spawn from a `Marker3D`, camera limits from two corner markers). The 2D `Main.tscn` is not changed
+- `ModelLibrary` + `NamedModel` + `data/placeholder_models.json`: lookup `assets/models/…/<name>.glb` (or `.tscn`) → placeholder primitive parts (box, capsule, cylinder, sphere, prism; size, flat colour, offset) → magenta box; materials cached by colour. `assets/models/` folders with a README; first entries: `kit`, `ground_grass`, `test_box`
+- `WorldEnvironment` (sky colour, soft ambient light) and one sun (`DirectionalLight3D`, one shadow) in `World/Effects`, set to the midday look; day/night comes in Task 1.19
+- `scenes/world/TestGround3D.tscn`: 20 × 20 m ground with a 1 m checker (like the Task 1.2 checker) and a few boxes to walk around
+- `Player3D.tscn` + `PlayerController3D`: `CharacterBody3D` with a capsule collider and `NamedModel` "kit" (capsule + a small box "nose" that shows the facing); left stick / D-pad / WASD / arrows walk 8-way **relative to the screen** under the diagonal camera at 2.5 m/s (0.2 deadzone, half tilt walks slower, diagonals not faster); smooth turn; 4-way grid `Facing` for the front point (nearest grid direction, ties keep the current one — ground rule 4) with a highlighted front tile on the test ground; click on the ground (camera ray → y = 0 plane) walks there; any key or stick input cancels a click target; `WalkTo(target, onArrived)` kept for later tasks
+- `CameraRig`: fixed pitch, turn (≈ 45°, exact value from the owner's pick) and distance (diagonal view), follows Kit with smoothing, snaps on spawn, clamps to the level limits (the visible area is a diamond over the rectangular map, so limits are checked on the screen edges); **debug-only** keys cycle the tilt presets (45°, 52°, 60°, orthographic), the turn presets (≈ 30°, 37°, 45°) and the corner (south-east / south-west) for the owner's pick
+- `TestRunner` split into groups (`rules`, `game2d`, `game3d`) selectable by a command-line argument; `tools/verify.sh` runs all (Task 1.13 advice 5)
+- First budget check: draw calls and triangles in the test view (project-structure.md §16)
+
+**Acceptance criteria:**
+- `Main3D.tscn` runs with no errors; Kit walks with gamepad, keyboard and mouse click; the camera follows smoothly at a fixed angle and never rotates
+- Kit's model faces the walking direction; the front point snaps to 4 directions
+- Removing the placeholder entry shows a magenta box; adding a model file with the same name replaces the capsule with no code change
+- The 2D game (`Main.tscn`) still runs and all 2D tests still pass
+
+**Team Preparation:**
+- A gamepad (any: Xbox, PlayStation or Switch Pro) and a mouse
+- Owner: be ready to compare the camera presets and pick one (recorded in this task's Notes)
+- Optional: install a Godot 3D skill (character controller, camera) — project-structure.md §12
+- No art needed (primitives only)
+
+**Tests:**
+- **Software:** port the Task 1.2 movement checks to 3D (WASD, arrows, diagonal speed, stick full and half tilt, D-pad, ground click through the camera ray, key input cancels a click target, `WalkTo` arrival callback, facing per direction, camera trails then settles, camera tilt and turn unchanged after walking; screen-up input moves Kit up the screen; front direction from every input incl. the tie rule); `ModelLibrary` lookup order (model file → placeholder → magenta box) and shared materials; budget numbers within §16; `Main3D` tree, process modes and layer numbers; whole 2D suite still green
+- **Human:** pick the camera tilt, turn and corner; walking and the tool front feel natural with the diagonal view (D-pad and keys too); Kit's speed and turning feel right on a gamepad and keyboard + mouse; Kit reads clearly as "the player" even as a capsule
+
+**AI assistance:** Prompt for "Godot 4.x C# CharacterBody3D top-down controller with a fixed-angle follow camera, 8-way camera-relative movement with 4-way facing, click-to-move via a camera ray onto the ground plane, and a load-by-name model library with primitive mesh fallbacks."
+
+**Dependencies:** Tasks 1.1–1.13 (software parts done).
+
+**Notes & learnings:**
+- **Outcome / status:** 2026-11-21 — **Done — pending human playtest** (camera pick and movement feel). Software tests: PASS — `tools/verify.sh`: `dotnet build` 0 warnings/0 errors, import, 2D `Main.tscn` and 3D `Main3D.tscn` each boot 120 frames with no errors, `TestRunner` **767/767** after the owner follow-up (645 earlier + 122 new: placeholder table entries and parts; kit = 1.7 m capsule on the feet; unknown name → magenta box; two Kits share one mesh and material; a model file named `kit` (written to `user://test_models`, then deleted) replaces the capsule in `ModelLibrary` and in a `NamedModel`; camera maths for SE/SW at 45° (screen up = north-west / north-east, diamond tiles), half stick stays half, grid front at 37° for all four screen directions and the 45° tie rule, model yaw; preset cycling; `Main3D` tree with node types, process modes, layers, markers, one sun with shadows, exactly one light, HUD + pause on top, saving switched off; in the 3D game: spawn at the marker, camera 52° down and turned 45° from the south-east, perspective 40°; D / W / arrows / W+D / left stick full and half / D-pad Up and Right each move along the right ground direction (W moves Kit up the screen), 2.5 m/s, diagonals as fast as straight; front tile and marker; model turns to the walking direction; camera trails then settles and never rotates; the camera ray hits the clicked ground point and a left-click walks Kit there; `WalkTo` callback; keys cancel a click target; a solid box blocks and the walk gives up; gamepad Y opens the bag and freezes Kit, B closes it; presets change the view live and W still moves up the screen; orthographic; focus stays inside the limits; budget check). **Windowed on the owner's M1 MacBook Air:** ≈ 120 fps while walking, **64 draw calls, ≈ 18.9k triangles** (budget ≤ 300 / ≤ 150k). · Human playtest: **camera picked by the owner 2026-11-21: tilt 45°, turn 45°, south-east corner, perspective** (now the `CameraRig` default), and the owner wants to keep switching corners in play → added as `camera_switch`. Still **PENDING:** walking and the tool front feel natural with a gamepad and keyboard + mouse; Kit reads as the player.
+- **What worked well:** Keeping all screen ↔ ground maths in `CameraRig` (`ScreenUpOnGround`, `ScreenRightOnGround`, `ScreenToGround`) so movement, tests and later click/tile code share one definition and every preset just works. Reusing the 2D `PlayerController.FacingFor` for the grid front (ground X/Z as a 2D vector) — the same tie rule, no new code. Shared meshes and materials in `ModelLibrary` from day one. Building the 3D scene beside the 2D one let the full 2D suite keep running untouched.
+- **Problems & fixes:** (1) **Saving had to be switched off in the 3D build:** with no `SaveBinder` registering sections, the pause menu's Save (or any auto-save) would have written an empty save over the owner's real 2D save. `Main3D` sets `SaveGame.Enabled = false` (tested by switching it on before the scene loads). (2) A preset test failed because Kit was still pressed against a box from the previous check (`moved (1.12, 0, 0)` — it slid along the face) → reset Kit to open ground before each movement check. (3) The first frames came out washed out and the camera label overlapped the clock dial → ambient energy 0.55 → 0.4 and the label moved below the dial; final light and colour tuning is Task 1.19. (4) **No key reached the game at first** (owner: "no reaction"): on a MacBook F9–F11 are media keys (fn needed), and the game window started from the editor opened **without keyboard focus** (greyed title, Kit not moving with WASD). Fixes: number keys 1–4 mirror F9–F12, and `Main3D` asks for window focus at start in debug builds; tell testers to click the game window once. (5) **One action bound to both directions of a stick axis** (`camera_switch` = right stick left and right): Godot matches a motion event to the *first* binding on that axis whatever its sign, so `IsActionPressed` was false for one side → `CameraRig` reads the axis value itself and switches once per flick (with hysteresis). (6) The Godot editor was open on the project during the run; new files were picked up without problems, but close or reload it if the editor complains about changed files.
+- **Deviations from scope or plan:** (a) **Camera limits bound the focus point** (the ground point the camera looks at) to the `CameraLimitMin/Max` rectangle, not the screen edges of the diamond view — simpler and enough for the test ground; Task 1.15 revisits it with the real farm edges. (b) **Tie rule at exactly 45°:** keep the current front if it is one of the two grid directions next to the walk, otherwise the north / south one (the existing 2D rule), not "the one turning clockwise" as first written; ground rule 4 updated. Consequence: at turn 45° pressing right on screen from a south front turns Kit to face north (both north and east are equally "right"); at 30° or 37° there is no tie. (c) Kit's placeholder has a skin-coloured head sphere and a small "nose" box on the north side, so the look shows which way Kit faces. (d) `TestGround3D` has a 3 × 2 m hut (`test_hut`, walls + prism roof) to judge the angle against a building, besides the boxes. (e) Kit uses floating motion (no gravity) and stays at y = 0 — the farm is flat in Phase-001. (f) Default camera: tilt 52°, turn 45°, south-east corner, perspective, FOV 40°, distance 13 m (≈ the 2D framing), smoothing 5 (same as the 2D camera). Debug keys **F9** tilt (45 / 52 / 60°), **F10** turn (30 / 37 / 45°), **F11** corner (south-east / south-west), **F12** perspective / orthographic, and **1 / 2 / 3 / 4** do the same (owner 2026-11-21: on a MacBook F9–F11 are media keys and need fn); the label under the clock shows the setting. (g) The 3D build has no sleep sequence, so the 21:30 bedtime puts the clock to sleep with nothing to wake it — not reachable in normal testing of this task; Task 1.15 wires `SleepSequence`. (i) **Corner switch for the player** (owner 2026-11-21, after picking the camera: "still can keep camera switch like number 3"): `camera_switch` (right stick flick left/right on any pad, or Q) swaps south-east ↔ south-west with a ≈ 0.4 s glide; not while a menu is open; screen-relative movement follows the new view. Tilt and turn presets stay debug-only. (h) `TestRunner` groups `rules` / `game2d` / `game3d` (`-- --group=…`), `tools/verify.sh [groups]`, and verify now also boots `Main3D.tscn`.
+- **Handoff to Task 1.15:** Scene `res://scenes/main/Main3D.tscn` (`Main3D.cs`: `Player`, `Rig`; reads `PlayerSpawn`, `CameraLimitMin`, `CameraLimitMax` `Marker3D`s from the level; freezes Kit while bag / bubble / board / shop are open). Replace `World/Level/TestGround3D` with `FarmLevel3D` and delete `TestGround3D` (its front marker moves to the garden view in 1.16). Kit: `PlayerController3D` — `Feet`, `Facing` (Up = −Z north … grid), `FacingVector`, `FrontPoint` (0.7 m ahead), `FrontCell` (`Vector2I`, tile (x, y) = x..x+1, z = y..y+1), `Face(f)`, `WalkTo(Vector3, onArrived)`, `CancelWalkTo`, `GroundAt(screenPos)`, `Frozen`, `InputOverride`; group `player`; the mouse handler only does ground clicks yet (props and tiles join in 1.16–1.17). Camera: `CameraRig` — `Target`, `Snap()`, `Focus`, `Tilt`/`Turn`/`Corner`/`Orthographic`, `ScreenToGround`, `ScreenUpOnGround`, `ScreenRightOnGround`, `LimitMin`/`LimitMax`. Looks: `NamedModel` (`ModelName`) / `ModelLibrary.Instantiate(name)`; add the farm's names (`house`, `coop`, `barn`, `seed_shed`, `cottage`, walls, roofs, `ground_*`) to `data/placeholder_models.json`. Saving stays off in `Main3D` until a save binder exists there. The owner's pick (45° / 45° / south-east / perspective) is already the `CameraRig` default; keep `camera_switch` working when the level changes (`Snap()` cancels a glide).
+
+---
+
+### Task 1.15 — Farm Level & Buildings in 3D
+
+**Artifact:** The slice's farm, lane and seed shed in 3D with walk-in buildings, faded roofs and walls, and the bed working.
+
+**Scope:**
+- `FarmLayout` (core): the layout table now in `FarmLevel.cs` (fields, paths, gate, building rects and doors, in tiles) moved to one shared class used by both the 2D and the 3D level
+- `FarmLevel3D.tscn`: ground regions as a few large flat meshes (grass, path, cleared ground); overgrown fields as low "tall grass" blocks with blocking colliders (one MultiMesh, not one node per tile); the gate (open) and the lane north to Marlow's cottage and seed shed; `PlayerSpawn` and camera limit markers; the TestGround3D is deleted
+- `Building3D`: floor, four walls with a door gap, sloped prism roof, all from placeholder names (`house`, `coop`, `barn`, `seed_shed`, `cottage`); `IndoorZone3D` (`Area3D` over the floor): Kit inside → roof and the two camera-side walls fade out in ≈ 0.25 s then hide, `GameClock.EnterIndoors`; outside → back, `ExitIndoors`
+- `OccluderFade`: outdoors, a building between the camera and Kit fades its roof (and wall if needed) until Kit is clear
+- Bed in the house as a simple 3D body with its click area and wake spot; `SleepSequence` works with the 3D player (freeze, fade, wake at the bed; 21:30 bedtime far from home wakes Kit at the bed with the camera snapped)
+- Interactions other than the bed stay for Task 1.17; the garden is drawn as plain ground until Task 1.16
+
+**Acceptance criteria:**
+- Kit can walk door → gate → up the lane to the seed shed, around the house to the barn and into every building; walls and overgrown fields block
+- Inside any building the clock stops and the roof and camera-side walls are gone; outside they return and the clock runs
+- Kit is never hidden behind a building from the camera
+- Sleeping in the bed and the 21:30 bedtime both work in 3D
+
+**Team Preparation:**
+- None beyond Task 1.14 (primitives only). Owner's camera pick from Task 1.14 recorded
+
+**Tests:**
+- **Software:** every 2D layout rect has a 3D counterpart at the same tile coordinates (from `FarmLayout`); scripted walks door → gate → lane → shed and house → barn arrive; blocked spots stay blocked; entering / leaving each building stops / restarts the clock and fades / restores roof and wall; a building between camera and Kit fades; bed prompt only when near, sleep → Day 2 04:30, bedtime wake at the bed; budget check in the busiest farm view; 2D suite still green
+- **Human:** the faded roof and wall read as "inside" (re-asks the Task 1.5 question in 3D); Kit never feels lost behind a building; the camera angle works for the whole farm
+
+**AI assistance:** Prompt for "Godot 4.x C# 3D building with walls, door gap and prism roof built from primitive meshes, an Area3D indoor zone that fades the roof and camera-facing wall, and an occluder fade for buildings between a fixed camera and the player."
+
+**Dependencies:** Task 1.14.
+
+**Notes & learnings:**
+- **Outcome / status:** 2026-11-21 — **Done — pending human playtest.** Built in one pass together with Tasks 1.16–1.18 (see Deviations). Software tests: PASS — `tools/verify.sh`: `dotnet build` 0 warnings/0 errors, import, `Main.tscn` (now 3D) boots 120 frames with no errors, `TestRunner` **749/749** (groups `rules` + `game`; every 2D in-game check ported to 3D, none dropped). New/ported here: FarmLevel is the level; house / coop / barn / seed shed / cottage with walls and a roof model; overgrown fields drawn as one MultiMesh of tufts (> 900); into the house → clock stops, roof faded and hidden, the two camera-side walls faded, the far wall standing; out → all back, clock runs; **Kit north of the house (hidden from the south-east camera) → the house fades (occluder fade)**, in the open again → back; coop and barn stop the clock; walks door → gate → lane and back, round the house to the barn and into it; Field A blocked; a wall blocks a click-walk; bed found by a camera-ray click, Kit walks there and the question opens; Space / A / B at the bed; sleep → Day 2 04:30 with DayEnded/DayStarted once; 21:30 bedtime far from home → Kit wakes at the bed facing out, camera snapped. Windowed on the M1 at the coop: ≈ 120 fps, 232 draw calls, ≈ 60k triangles. · Human playtest: **PENDING** (the faded roof and walls read as "inside"; Kit never feels lost behind a building; the camera works for the whole farm).
+- **What worked well:** The 2D layout tables (`FarmLevel.OvergrownFields`, `Paths`, `Hedges`, …) carried over untouched: 1 tile = 1 m, so every rect and door position just became metres. One `Fader` class (own material copy per mesh, alpha only while partly faded, hidden at 0) serves roofs and walls, and works for real models dropped in later. Which walls fade is worked out from the camera rig's `BackDirection`, so the corner switch (Q / right stick) needs no extra code. The occluder test is one line: does the segment Kit's chest → camera cross the building's box (`Aabb.IntersectsSegment`).
+- **Problems & fixes:** (1) **The plan's "build beside, then swap" could not hold:** making `IInteractable`, `Prop`, `FarmGrid` and `AnimalHouse` 3D breaks every 2D prop at compile time, and keeping both meant copying ~15 classes twice. Fix: convert in place and **cut over in this task** (see Deviations). (2) A ported check expected the roof back right outside the house's north door — but there the house stands between Kit and the south-east camera, so the occluder fade (correctly) keeps it faded → the check now steps Kit clear of the house first. (3) With 924 tuft cones casting shadows the farm view hit 267 draw calls and 141k triangles (shadow passes double the geometry) → tufts, garden tiles and fence rails cast no shadow, shadow distance 30 → 22 m: 232 draw calls, 60k triangles. (4) A Control added under a Node3D draws on the world canvas below the HUD: used for every pinned prompt/heart/icon (`WorldPin`), with `TopLevel` so the 3D parent's transform never leaks in.
+- **Deviations from scope or plan:** (a) **Cut-over moved from Task 1.20 to here** (choice for review): `Main.tscn` / `Main.cs` are now the 3D scene (the 1.14 `Main3D` files became them), `Player.tscn` / `PlayerController.cs` are the 3D Kit, and the 2D world files are deleted (`CameraFollow`, `FarmGround`, the 2D level/player scenes, `NamedSprite`, `TestGround3D`, `DayNightOverlay.tscn`, `shaders/placeholder_checker.gdshader`). F5 now starts the 3D game. The `game2d`/`game3d` test groups became one `game` group. (b) **Saving is back on** in the 3D game: `SaveBinder` works in 3D and the v1 → v2 save migration (planned for 1.20) landed now, because without it an old save would have put Kit at pixel coordinates read as metres. (c) **Doors kept as in the docs** (choice for review): the house and barn doors still face north (places.md §3), away from the south-east camera; Kit walks round to the back and the occluder fade keeps Kit visible. Turning them to face the camera is a layout change for the owner to decide. (d) Buildings: walls 2.2 m high and 0.19 m thick, floors and walls from colours, roof = model by name (`roof_house`, `roof_coop`, `roof_barn`, `roof_shed`, `roof_cottage`, prisms in `placeholder_models.json`, `rotation_y` support added); house, shed and cottage have a south window that glows at night (group `night_windows`). (e) The gate and arrival cart are `NamedModel`s ("gate", "cart"); hedges are 1.1 m green blocks; the fence is a thin rail. (f) Camera limits: focus kept within (4, −26)–(46, 30). (g) `Building.DoorOutside` / `DoorInside` / `Interior` are now metres on the ground (`Interior` as an XZ `Rect2`).
+- **Handoff to Task 1.16:** Level `res://scenes/world/FarmLevel.tscn` (3D; tables in `FarmLevel.cs`; `Tufts` MultiMesh). `Building`: `SizeTiles`, `Door`, `RoofModel`, `WallColor`, `FloorColor`, `HasWindow`, `Roof` (NamedModel), `Zone`, `DoorOutside`, `DoorInside`, `Interior`, `Bounds`, `RoofFaded`, `WallFaded(normal)`, `SetKitInside`, `FinishFades()`; `Fader` for anything else that must fade. `IndoorZone` (Area3D, mask 1). `SleepSequence` uses `CameraRig.Snap()` and turns Kit to face Down on waking. `IInteractable` and `IToolTarget` take `Vector3` / `Node3D`.
+
+---
+
+### Task 1.16 — Garden Tiles in 3D
+
+**Artifact:** The 8 × 6 front garden in 3D: clear, till, plant, water, grow, yellow, lose and harvest, with the tile in front highlighted.
+
+**Scope:**
+- Split `FarmGrid` into the **rules** (unchanged logic and cell API: `Get`, `UseTool`, `EndDay`, signals, `CropTile` save shape) on a plain `Node`, and **views**: the existing 2D drawing (kept until Task 1.20) and a new `FarmGridView3D`
+- `FarmGridView3D`: soil per state (`soil_weeds/clear/tilled/wet`) and crops per stage (`crop_carrot_seed/sprout/growing/ready/yellow`, Sun Sprout stages) drawn with one `MultiMeshInstance3D` per placeholder name, rebuilt on `TileChanged`
+- Highlight of the tile in front (a flat outline on the tile); ready-crop sparkle, wrong-tool puff with the tool needed, and can icons over dry beds as small camera-facing billboards
+- Tool use: A / Space with no interactable in reach uses the active tool on the 4-way front tile; a mouse click on a garden tile (camera ray → cell) within reach works it at once, a farther one walks Kit beside it first (Task 1.5 rules, `FeetFreeAt` on the XZ plane); `IToolTarget` takes 3D points
+- Nothing changes in crop rules, data or saves
+
+**Acceptance criteria:**
+- The full cycle clear → till → plant → water → grow → harvest works in 3D with gamepad, keyboard and mouse
+- Yellow crops are clearly visible from the camera; a lost crop disappears and the tile stays tilled
+- A saved garden from the 2D build loads into the 3D garden unchanged (same `farm` section)
+
+**Team Preparation:**
+- None (primitives only)
+
+**Tests:**
+- **Software:** port the Task 1.5 in-game checks to 3D (tool order, hoe on weeds, front tile with A / Space, click within reach vs walk-then-work, growth via `DayEnded`, yellow at 2, gone at 3, harvest to the bag); MultiMesh instance counts match the tiles per state after each change; the rule tests unchanged; budget check with the whole garden planted; 2D suite still green
+- **Human:** yellow reads as "needs water" from above; the highlighted tile is easy to see; clicking a tile hits the tile you meant at this camera angle
+
+**AI assistance:** Prompt for "Godot 4.x C# farm tile grid view in 3D using MultiMeshInstance3D per soil state and crop stage, with a highlighted front tile and mouse picking through a camera ray onto grid cells."
+
+**Dependencies:** Task 1.15.
+
+**Notes & learnings:**
+- **Outcome / status:** 2026-11-21 — **Done — pending human playtest.** Built in the same pass as 1.15. Software tests: PASS — `tools/verify.sh`: `dotnet build` 0 warnings/0 errors, import, `Main.tscn` (now 3D) boots 120 frames with no errors, `TestRunner` **749/749** (groups `rules` + `game`; every 2D in-game check ported to 3D, none dropped). Ported here: the full Task 1.5 garden run in 3D — the white frame on the tile in front; gamepad A with hands / Space with the hoe / A with the seed bag / A with the can clears → tills → plants → waters; a mouse click on a far weed tile walks Kit beside it and pulls the weeds; a tile within reach is dug at once with Kit turning to it (no walking); a far corner tile is walked to and dug; no interactable over any garden tile; a night grows the watered carrot; every garden rule test unchanged. · Human playtest: **PENDING** (yellow reads as "needs water" from above; the highlighted tile is easy to see; a click hits the tile you meant at this camera angle).
+- **What worked well:** `FarmGrid`'s rules and cell API stayed exactly as they were; only the coordinate helpers (`WorldToCell(Vector3)`, `CellCenter` → ground point) and the drawing changed. Drawing = one `MultiMeshInstance3D` per placeholder part of each model name in use (`ModelLibrary.PlaceholderMeshes`), rebuilt when a tile changes — a handful of draw calls for the whole garden, and it scales to 992 tiles. Keeping the 2D method name `QueueRedraw()` meant none of the rule code had to change.
+- **Problems & fixes:** (1) A click within reach first left Kit 2 px away in 2D; in 3D the check is "Kit did not move" (< 3 cm) — `WalkToTile` cancels any walk before working the tile. (2) The garden tiles are flat, so they cast no shadow (saves a pass; budget).
+- **Deviations from scope or plan:** (a) The garden keeps one class (`FarmGrid : Node3D`) instead of splitting rules and a separate `FarmGridView3D`: with the 2D view gone there is nothing to share, and the rule tests already run on a private grid with `ListenToClock = false`. (b) Soil and crops are new placeholder models (`soil_weeds/clear/tilled/wet`, `crop_carrot_*`, `crop_flower_*` — flat tiles with a couple of cones for weeds, cones/cylinders growing taller per stage, yellow cone when dry). (c) The wrong-tool puff, ready sparkles and morning can icons are `WorldPin`s above the tile; `WaterHintCount` and `HintShowing` were added for tests. (d) A low wooden border frames the garden.
+- **Handoff to Task 1.17:** `FarmGrid` (`FrontGarden` at (16, 0, 1)): `WorldToCell(Vector3)`, `CellCenter(cell)` (ground point), `ContainsPoint`, `TileCenterAt`, `UseToolAt(tool, Vector3)`, `HighlightedCell`, `DrawnCounts`, `WaterHints`, `WaterHintCount`, `HintShowing`; signals unchanged. Kit: `PlayerController.WalkToTile(target, groundPoint)`, `TileReach` 1.5 m, `StandBeside` 0.875 m, `FeetFreeAt(Vector3)`.
+
+---
+
+### Task 1.17 — Props, NPCs & On-Screen Prompts in 3D
+
+**Artifact:** Everything Kit talks to or uses (except the animals) in 3D, with button prompts above them and the guided-start arrow.
+
+**Scope:**
+- `Prop3D` base: `StaticBody3D` + `NamedModel` + box collider + click `Area3D` (layer 8) + approach point + `WorldPrompt3D` (the `ButtonPrompt` glyph and icon as a camera-facing billboard that is never hidden behind geometry); `IInteractable` reach measured on the XZ plane
+- 3D versions of Marlow, Ada, Ledger, BerryBush (full / bare models), OrderBoard, ShopCounter (closed sign), Phone, FeedBin (amount label), Bed (moves onto `Prop3D`), the arrival cart; placed from `FarmLayout` like the 2D level
+- `GuideArrow3D`: the bouncing arrow over the current onboarding target; `OnboardingDirector` points it at 3D targets
+- All screens (picture bubble, board, shop, bag, pause) are reused as they are
+
+**Acceptance criteria:**
+- The guided start runs in 3D up to the animal step: front door, weeds, seeds, watering, Marlow's first order, berries, paying, the board, Marlow's carrot order
+- Shop hours, phone deliveries and the ledger work as in 2D
+- Prompts sit above the right object and stay readable; interactables still win over tiles
+
+**Team Preparation:**
+- None (primitives only; Marlow and Ada get clearly different colours and heights from Kit — Task 1.13 advice 4)
+
+**Tests:**
+- **Software:** port the in-game checks of Tasks 1.6, 1.7, 1.8 and the non-animal parts of 1.12 to 3D (talk prompt only near, A / Space / click to talk, bubble holds the clock, first order paid once, bushes regrow, board and shop flows, phone at home, arrow targets per step); 2D suite still green
+- **Human:** a 6-year-old can tell Kit, Marlow and Ada apart; prompts are readable; clicking an object hits the object you meant
+
+**AI assistance:** Prompt for "Godot 4.x C# reusable 3D interactable prop base with an Area3D click target on a dedicated physics layer, a camera-facing button-prompt billboard that ignores depth, and reach checks on the ground plane."
+
+**Dependencies:** Task 1.16.
+
+**Notes & learnings:**
+- **Outcome / status:** 2026-11-21 — **Done — pending human playtest.** Built in the same pass as 1.15. Software tests: PASS — `tools/verify.sh`: `dotnet build` 0 warnings/0 errors, import, `Main.tscn` (now 3D) boots 120 frames with no errors, `TestRunner` **749/749** (groups `rules` + `game`; every 2D in-game check ported to 3D, none dropped). Ported here: lane, Marlow and the first order (talk prompt only when near, A / Space / click, bubble holds the clock and freezes Kit, the order paid once, the board appears, bushes go bare and regrow, the ledger page), the order board and repeat orders, the seed-shop counter (hours, closed sign, buying, refusals) and the phone (feed packs, next-Dawn deliveries), and the guided start up to the board (front door → weeds → seeds → water → Marlow → berries → paying → board, with the arrow on each target and the hint chip). · Human playtest: **PENDING** (a 6-year-old tells Kit, Marlow and Ada apart; prompts readable; a click hits the object you meant).
+- **What worked well:** Every prop subclass (Marlow, Ada, Ledger, BerryBush, OrderBoard, ShopCounter, Phone, FeedBin, Bed) kept its logic; only its constructor sizes changed to metres and `Interact` takes a `Node3D`. The base `Prop` builds the look (`NamedModel`), body, click `Area3D` (layer 8) and a pinned prompt from exports, so props stay one-line scenes. `WorldPin` (screen UI following a 3D point) solved prompts, the guide arrow and every icon in one place, at one readable size and never hidden by a roof.
+- **Problems & fixes:** (1) A pinned prompt hides itself when its point is behind the camera; logic must set `WorldPin.Shown`, never `Visible` (the pin sets `Visible` every frame). (2) Mouse clicks on props now use a camera ray against the click areas (`PlayerController.InteractableAt(screenPos)`), so tests click on a point above the prop (`ScreenOf(position + up)`), not on its feet.
+- **Deviations from scope or plan:** (a) Prop sizes became metres: `BodySize`/`ClickSize` are boxes (x, height, z), `ApproachOffset` is on the ground, `Reach` in metres (2D 72 px → 1.125 m), plus `PromptHeight`. `SpriteName` stays the 2D picture used in bubbles; the 3D look is `ModelName`. (b) The bed became a `Prop` (its 2D scene had its own reach area and prompt). (c) Ada "waves" by swaying her model. (d) New placeholders: `marlow` (green, shorter, hat), `ada` (purple), `bed`, `phone`, `ledger`, `shop_counter`, `order_board`, `berry_bush` / `berry_bush_empty`, `feed_bin_grain` / `feed_bin_hay`, `cart`, `gate`. (e) `GuideArrow` is a `Node3D` with a pinned arrow; `Point(Vector3?)`, `Showing`; the morning egg/milk markers are pinned icons above the roof.
+- **Handoff to Task 1.18:** `Prop` exports: `ModelName`, `SpriteName`, `BodySize`, `BodyOffset`, `ClickSize`, `ApproachOffset`, `Reach`, `PromptSprite`, `PromptHeight`; `Model`, `ApproachPoint`, `PromptVisible`, `UnderRoof` (true inside a building whose roof is on — pinned UI hides, like the 2D roof covered it). `WorldPin`: `Anchor`, `WorldOffset`, `ScreenOffset`, `Shown`, `ScreenPosition`. `OnboardingDirector.GuideTarget()` returns `Vector3?`.
+
+---
+
+### Task 1.18 — Hens & Cow in 3D
+
+**Artifact:** The 5 hens and the cow in 3D in the old coop and barn, with feeding, products, warnings and the loss rule.
+
+**Scope:**
+- `FarmAnimal3D`: hen (white sphere body + small head) and cow (box body + head) placeholders spawned by `AnimalHouse` per animal; gentle idle wander inside the building floor by setting positions (no physics bodies, project-structure.md §16)
+- Heart bar and need icon as small billboards above each animal; egg / milk marker when a product waits; collect with A / Space / click; feed with the scoop at the bin as in 2D
+- Loss: the animal's model is removed; the gravestone card and the hungry warning are the existing UI
+- `AnimalHouse` rules, feed, products and saves unchanged
+
+**Acceptance criteria:**
+- Task 1.9 behaviour works in 3D (feed, eggs and milk next morning, need icon, warning after 2 unfed days, gone after 3 with the gentle card)
+- The whole guided start completes in 3D (feeding step and the phone order end it)
+
+**Team Preparation:**
+- None (primitives only)
+
+**Tests:**
+- **Software:** port the in-game checks of Task 1.9 and the animal steps and nudges of Task 1.12 to 3D; animals stay inside their building; budget check with all animals in view; 2D suite still green
+- **Human:** hearts and need icons are readable from the camera; the hens look friendly even as spheres
+
+**AI assistance:** Prompt for "Godot 4.x C# simple 3D farm animals that wander inside a rectangle without physics, with billboard heart bars and need icons."
+
+**Dependencies:** Task 1.17.
+
+**Notes & learnings:**
+- **Outcome / status:** 2026-11-21 — **Done — pending human playtest.** Built in the same pass as 1.15. Software tests: PASS — `tools/verify.sh`: `dotnet build` 0 warnings/0 errors, import, `Main.tscn` (now 3D) boots 120 frames with no errors, `TestRunner` **749/749** (groups `rules` + `game`; every 2D in-game check ported to 3D, none dropped). Ported here: the full Task 1.9 run (5 hens in the coop and the cow in the barn, inside the walls; scoop at the bin feeds all; A at the cow feeds her; next morning eggs and milk — shown once Kit is inside the coop / barn, with hearts; A collects; a missed day → need icons and ⅔ hearts; 2 days → the warning; 3 → gone, 6 gentle cards one after another) and the rest of the guided start (feed the animals → "feed lasts 7 days" → a phone order ends it), plus every animal rule test. · Human playtest: **PENDING** (hearts and need icons readable from the camera; the hens look friendly as placeholder spheres).
+- **What worked well:** `AnimalHouse` only needed `Node3D` and metre offsets; feeding, products, loss and saves are untouched. Animals have no physics body and amble by moving their position (budget rule 4).
+- **Problems & fixes:** (1) Pinned hearts and icons showed through the coop roof from outside → they now show only when the roof is faded (`Prop.UnderRoof`), matching the 2D build where the roof covered them; two ported checks now walk Kit into the coop/barn before looking at the icons, and a new one checks they stay hidden while Kit is in the house. (2) The feed-bin count is a pinned label with the same rule.
+- **Deviations from scope or plan:** (a) Hens: white sphere body, head, red comb, beak (`hen`); cow: box body, dark head and patch, four legs (`cow`). (b) Amble: each animal strolls to a random point within 0.3 m of its spot, rests 1.5–4 s, and turns to where it walks (seeded by its name, so runs repeat). (c) Spots and bin offsets are metres (`Vector3`), converted from the 2D pixels.
+- **Handoff to Task 1.19:** `FarmAnimal`: `Data`, `House`, `NeedVisible`, `ProductVisible`, `HeartsVisible`, `Home`, `WanderRadius`; `HeartBar` draws the hearts. The day/night light already replaced the 2D tint in this pass (`DayNightView` in `World/Effects/DayNight`, driving the `Sun` and `WorldEnvironment`; windows in group `night_windows`) — Task 1.19 checks the look and tunes it.
+
+---
+
+### Task 1.19 — Day/Night Lighting in 3D
+
+**Artifact:** The world's light follows the day phases in 3D: sun angle, colour and brightness, sky and ambient light, glowing windows at night.
+
+**Scope:**
+- `DayNight3D` in `World/Effects` (replaces the 2D `CanvasModulate` overlay in the 3D build): per day phase, a table of sun direction, colour and energy, ambient and sky colour; smooth blends between phases; follows `GameClock` (and stops while it is stopped)
+- Windows of the house, cottage and shed glow (emissive material) from dusk; at most a few small unshadowed lights (project-structure.md §16)
+- Night stays readable: a minimum brightness so crops, tools and prompts are always visible (the 2D rule "night ≥ 50 % bright")
+- Shadow settings per the §16 PC and handheld profiles; no shadow acne or flicker when the sun moves
+
+**Acceptance criteria:**
+- Each played phase reaches its light values; midday looks like the Task 1.14 default; night is dim but readable
+- Frame budget held with shadows on at every phase
+
+**Team Preparation:**
+- None
+
+**Tests:**
+- **Software:** port the Task 1.11 tint checks to 3D (each phase's sun / ambient values reached, midday neutral, night above the minimum brightness, light frozen while paused); window glow on from dusk; budget numbers with shadows; 2D suite still green
+- **Human:** night is dim but readable (re-asks the Task 1.11 question in 3D); morning and evening feel warm
+
+**AI assistance:** Prompt for "Godot 4.x C# 3D day/night cycle driving a DirectionalLight3D and WorldEnvironment from a game clock with a per-phase colour table, for the Compatibility renderer."
+
+**Dependencies:** Task 1.18.
+
+**Notes & learnings:**
+- **Outcome / status:** _TBD_
+- **What worked well:** _TBD_
+- **Problems & fixes:** _TBD_
+- **Deviations from scope or plan:** _TBD_
+- **Handoff to Task 1.20:** _TBD_
+
+---
+
+### Task 1.20 — Cut-over to 3D, Save Migration & Performance Check
+
+**Artifact:** The game boots straight into 3D; the 2D world is gone; old saves load; the performance budget is measured. *(The cut-over and the v1 → v2 save migration already landed in Task 1.15; this task keeps the windowed performance check, the doc sync and the playtest hand-over.)*
+
+**Scope:**
+- `Main3D.tscn` becomes `res://scenes/main/Main.tscn` (main scene); the 3D scenes and scripts take the plain names (`Player.tscn`, `PlayerController.cs`, `FarmLevel.tscn`, `Prop.cs`, …)
+- Delete the 2D world files listed in project-structure.md §4 (2D level, player, props, buildings, indoor zone, ground, camera follow, day/night overlay, checker shader) and the `game2d` test group; keep `SpriteLibrary` / `NamedSprite` for UI icons and billboards
+- **Save migration v1 → v2** (`schemaVersion` 2): the player position moves from pixels (x, y) to metres (x, z) (÷ 64); nothing else changes. Old saves keep working; a new save writes v2
+- Performance check script (`tools/`): frame time, draw calls and triangles in the busiest view on the owner's Mac at the PC profile and the handheld profile (720p, 30 fps cap, lower shadows); results against §16 recorded in the Notes
+- Doc sync: project-structure.md tree and file map to the real names, README status, `playtest-001.md` rows for the 3D build, Phase-001 exit criteria
+
+**Acceptance criteria:**
+- F5 starts the 3D game; no 2D world code is left; all tests pass
+- A save made by the 2D build loads in 3D with Kit at the same spot and everything else unchanged
+- The budget is met, or each miss is recorded with a fix plan
+
+**Team Preparation:**
+- Owner: a v1 save from the 2D build to test the migration (or the test makes one)
+- A Windows PC for the frame-rate check if available (exit criterion still open from Task 1.13)
+
+**Tests:**
+- **Software:** the whole suite in one pass (`tools/verify.sh`); v1 → v2 migration on a saved 2D game (whole-snapshot comparison as in Task 1.10, position converted); 50 save/load cycles; no runtime errors; performance check numbers within §16
+- **Human:** the owner plays one full in-game day in 3D; then the Task 1.13 playtest runs on this build
+
+**AI assistance:** Prompt for "Godot 4.x C# versioned JSON save migration (v1 → v2) and a headless performance check that reads draw calls, primitives and frame time from the Performance monitors."
+
+**Dependencies:** Task 1.19.
+
+**Notes & learnings:**
+- **Outcome / status:** _TBD_
+- **What worked well:** _TBD_
+- **Problems & fixes:** _TBD_
+- **Deviations from scope or plan:** _TBD_
+- **Handoff to Task 1.13 playtest and Phase-002:** _TBD_
+
+---
+
 ## 3. Exit Criteria for Milestone 1
 
-- [ ] All 13 session tasks are done
+- [ ] All 20 session tasks are done (1.1–1.13 in 2D, then the 3D migration 1.14–1.20)
+- [ ] The slice runs in **3D** with the fixed angled top-down camera; no 2D world code is left (Task 1.20)
+- [ ] Performance budget met on the PC and the handheld profile (project-structure.md §16; Task 1.20)
 - [ ] A new player (6+) completes the guided start and the first two orders with little or no explanation
 - [ ] Crops grow by day, yellow at 2 dry days, and are lost at 3; hens and the cow are lost at 3 unfed days with the gentle card
 - [ ] Starting hens and cow work (feed, eggs, milk, loss rule); buying seeds at the shed and ordering feed by phone work at economy.md prices
@@ -581,3 +863,8 @@ Phase-002 (planned — docs/PHASE.md §3): the shipping box with seasonal and de
 - **0.40 — 2026-11-21:** **Owner follow-up on Task 1.7 (order variety A–F) and the order premium (none):** scope amended and Deviations (h) added — varied sizes, mixed baskets, daily standing orders, a 5-card board, the baker / allotment neighbour / shopkeeper posting from T1, same-day quick bonuses; first order now 45 coins. Task 1.9's loss-card tip confirmed by the owner. Still pending human playtest.
 - **0.41 — 2026-11-21:** **Selling and house-visit orders (owner decisions 2026-11-21, docs only).** Out-of-scope list and §4 preview: Phase-002 builds the shipping box and house-visit orders; the market stall is deferred (phase not set). New **§4.1 carry-forward code tasks**: shipping box, freshness bonus and order expiry, orders sent through the box, house-visit orders (sign, knock, talk), storage chest, Orders list button, picture-map icons. No Phase-001 code change needed now (no box and no open neighbour houses in the slice).
 - **0.42 — 2026-11-21:** **Owner playtest fix (Task 1.5, hoe):** the hoe digs weeds too, a tile within reach is worked without walking, blocked stand-beside spots are skipped, Ada moved off the garden corner, wrong-tool puff shows the tool needed. Tests 645/645.
+- **0.43 — 2026-11-21:** **3D migration planned (owner decision 2026-11-21, GDD v0.45).** New tasks **1.14–1.20** with ground rules (build beside in `Main3D.tscn` then swap; 1 tile = 1 m on the XZ plane; fixed-angle camera with presets for the owner to pick; 8-way turn with 4-way front; primitive placeholders by name; camera-ray mouse picking; roof + camera-side wall fade and occluder fade; performance budget; test groups): 3D foundation (camera, Kit, model library), farm level and buildings, garden tiles (MultiMesh), props / NPCs / prompts, hens and cow, day/night lighting, cut-over with the v1 → v2 save migration and the performance check. §1 notes the 3D switch; exit criteria add 3D and the budget; Task 1.13's playtest moves to the 3D build. Docs-only.
+- **0.44 — 2026-11-21:** **Diagonal camera (owner decision 2026-11-21, GDD v0.46):** 3D ground rules 2–4 and 7 and Tasks 1.14–1.15 updated: the fixed camera is tilted and turned roughly 45° — not necessarily exact, turn presets in 1.14 — (corner view, tiles as diamonds, grid diagonal on screen; south-east or south-west corner picked in 1.14); movement is screen-relative with a 4-way grid front (nearest grid direction, ties keep the current front); camera limits on a diamond view; both camera-side walls fade; north-facing doors flagged as an owner question for 1.15. Docs-only.
+- **0.45 — 2026-11-21:** **Task 1.14 built — pending human playtest.** Notes & learnings filled: `Main3D.tscn` beside the 2D game, `ModelLibrary`/`NamedModel` with primitive placeholders, capsule Kit with screen-relative movement and a 4-way grid front, the diagonal `CameraRig` with F9–F12 presets, test groups; 754/754 checks; ≈ 120 fps, 64 draw calls, ≈ 18.9k triangles windowed on the M1. Ground rule 4's tie wording corrected to the built rule (otherwise the north / south one).
+- **0.46 — 2026-11-21:** **Task 1.14 owner follow-up:** camera picked (tilt 45°, turn 45°, south-east, perspective) and made the default; new player action `camera_switch` (right stick flick / Q) swaps corners with a glide; number keys 1–4 mirror the F9–F12 debug presets; `Main3D` asks for window focus. Notes updated (problems 4–5, deviation i).
+- **0.47 — 2026-11-21:** **Tasks 1.15–1.18 built in one pass — pending human playtest.** The world is 3D: farm level and buildings with roof/wall fades and the occluder fade, the garden as MultiMesh tiles, props/NPCs with pinned prompts, hens and cow; the cut-over to 3D and the v1 → v2 save migration moved forward from Task 1.20 (choices for review: cut-over now, doors kept facing north). Notes filled; 749/749 checks.

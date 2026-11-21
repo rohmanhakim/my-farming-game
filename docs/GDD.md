@@ -1,15 +1,15 @@
 # Game Design Document
 
 > **Status:** Brainstorming draft — **direction reset 2026-11-19** (see v0.19–v0.20 change log)
-> **Version:** 0.44
+> **Version:** 0.47
 > **Last updated:** 2026-11-21
 > **Purpose:** A living document for shaping the game together. Confirmed owner decisions are marked **decided**; everything else is a proposal, not a commitment.
 
 ## 1. High Concept
 
-A fully 2D, **realistic but kid-friendly, educational** farming-life game for PC. The player is **Kit, a 17-year-old** who has come from the city to look after the family's land on Bramblewick Lane. Kit grows crops, raises animals, stocks a fish pond, fills **orders from the neighbours**, and slowly grows a small, tangled plot into a working farm — the way a *Harvest Moon* farm grows: the challenge rises naturally as the farm gets bigger. **Automation** (sprinklers, feeders, helpers), unlocked later by crafting or buying it, is the game's **key selling point**, followed by **decoration** (owner decision 2026-11-19): first the farm runs itself, then Kit makes it beautiful.
+A **3D, realistic but kid-friendly, educational** farming-life game for PC, seen through a **fixed, angled top-down camera** (owner decision 2026-11-21, replaces "fully 2D"). The player is **Kit, a 17-year-old** who has come from the city to look after the family's land on Bramblewick Lane. Kit grows crops, raises animals, stocks a fish pond, fills **orders from the neighbours**, and slowly grows a small, tangled plot into a working farm — the way a *Harvest Moon* farm grows: the challenge rises naturally as the farm gets bigger. **Automation** (sprinklers, feeders, helpers), unlocked later by crafting or buying it, is the game's **key selling point**, followed by **decoration** (owner decision 2026-11-19): first the farm runs itself, then Kit makes it beautiful.
 
-Farming, community, and exploration are parts of one warm world. Neglect has real but gentle consequences — crops turn yellow and are lost, neglected animals are gone — always shown without anything graphic. There is **one difficulty: realistic but kid-friendly**. The presentation uses illustrated, non-pixel-art graphics.
+Farming, community, and exploration are parts of one warm world. Neglect has real but gentle consequences — crops turn yellow and are lost, neglected animals are gone — always shown without anything graphic. There is **one difficulty: realistic but kid-friendly**. The presentation is **cartoony, colourful 3D** with simple, rounded shapes (§9).
 
 The game takes inspiration from the welcoming farming and community feel of *Stardew Valley* and the farm-growth arc of *Harvest Moon*, with a smaller scope and a teaching-friendly tone.
 
@@ -37,7 +37,7 @@ The game takes inspiration from the welcoming farming and community feel of *Sta
 6. **Many ways to earn, none mandatory:** Neighbour orders are the main income; market sales, contests, foraging and fishing, trading, crafting, and friendship rewards are alternatives. The player chooses how much money to chase — there is no pressure and no debt (§4 *Ways to earn and acquire*).
 7. **Small, satisfying activities:** Short actions produce visible, cheerful results.
 8. **Decoration — the second selling point** (decided 2026-11-19): once automation frees up time, players lay out and decorate the farm (buy, craft, or win decorations; place anywhere), raising **farm charm** that brings visitors and wins contests (progression.md §6.1). Never required to optimise.
-9. **Warm illustrated world:** Expressive characters, clear shapes, and inviting environments.
+9. **Warm, cartoony world:** Expressive characters, clear rounded shapes, and inviting, colourful 3D environments (3D since 2026-11-21, §9).
 10. **Practice everyday social skills:** Through ordinary interactions — greeting, keeping a promise, delivering what was asked, negotiating a trade — players explore communication, reliability, and caring for shared spaces.
 
 ### Learning goals (decided 2026-11-19)
@@ -334,16 +334,18 @@ Movement plus one primary interaction action; simple visual menus for seeds, ord
 
 ## 9. Art Direction
 
-- Fully 2D presentation; no pixel-art style.
-- Colorful, cartoony European comics-inspired illustration, with clear inked outlines, expressive faces, lively poses, and readable scenery. Characters are drawn with **teen and adult proportions** (Kit is 17), friendly and expressive, not chibi.
+- **3D presentation (decided 2026-11-21, owner; replaces "fully 2D"):** a 3D world seen through a **fixed, angled top-down camera** that follows Kit. The player never rotates or zooms the camera. Mood reference named by the owner: *Find Your Words* (3D, top-down, cartoony, colourful) — for mood only, never its assets or exact look.
+- **Cartoony and colourful:** stylised, rounded, slightly chunky shapes; bright, saturated colours; soft, simple (toon-style) shading; expressive faces and lively poses; readable scenery. Characters keep **teen and adult proportions** (Kit is 17, ≈ 5 heads tall), friendly and expressive, not chibi. Whether models get a drawn outline (the earlier "European comics" inked line) is decided in the first art pass (§16 Q17).
+- **Placeholders first:** until real models exist, everything is built from Godot's built-in primitive meshes with flat colours (a capsule for Kit, boxes with a sloped roof for buildings, cylinders for crops, spheres for hens). Real models (free CC0 packs such as Kenney's 3D kits, models made in Blender, or AI-generated 3D with a clear licence) replace them by name with no code change (project-structure.md §9).
+- **Fits a handheld:** low-poly models, few materials, one sun shadow, no heavy effects, so the later Switch version runs smoothly (performance budget: project-structure.md §16).
 - **Kid-friendly consequences:** a yellowing crop reads clearly as "needs water" (drooping, yellow-brown leaves) without looking rotten; an animal loss is shown only as a small, gentle gravestone illustration in a message card.
 - **Palette:** lively, saturated garden colors over earthy, subdued environmental tones.
-- **Camera:** angled top-down / three-quarter view.
+- **Camera (decided 2026-11-21, owner):** fixed, angled and **diagonal** — tilted ≈ 50–55° down (not straight down) and turned **roughly 45°** (owner: it does not have to be exactly 45°; the exact turn is tuned in Phase-001 Task 1.14) so the camera looks across the farm from a corner and tiles show as diamonds; the farm's grid, fields and rows run diagonally across the screen (an isometric-style view, but in real 3D). It follows Kit; the player never rotates it freely or zooms, but **can switch it between two corners** (south-east ↔ south-west, a short glide; owner 2026-11-21) with the right stick or Q. **Owner pick 2026-11-21: tilt 45°, turn 45°, starting at the south-east corner, perspective.** Buildings fade their roof and the two camera-side walls when Kit is inside or hidden behind them.
 - Clear silhouettes; strong contrast between interactive objects and backgrounds.
 
 Develop an original visual identity. Do not copy any particular game's characters, assets, settings, or exact visual style.
 
-**Primary references Pioneers of Olive Town and Harvest Moon: Home Sweet Home; proportions (≈ 5 heads tall — not chibi), palette, and music direction:** [art-audio.md](./art-audio.md). Camera implementation and animation complexity: TBD.
+**Primary references Pioneers of Olive Town and Harvest Moon: Home Sweet Home; proportions (≈ 5 heads tall — not chibi), palette, and music direction:** [art-audio.md](./art-audio.md). Camera: decided above (fixed angled top-down 3D); exact angle, field of view and animation complexity are set in Phase-001 Task 1.14.
 
 ## 10. Story, Dialogue, Audio, and Text
 
@@ -374,7 +376,7 @@ The premise and cast are in [world.md](./world.md). Voice, localisation, and mus
 ## 13. Technical Direction
 
 - **Platform:** **PC first; consoles later** (owner decision 2026-11-20): Windows first, macOS/Linux considered; **Nintendo Switch and PlayStation planned after the PC release**. No mobile or tablet. Console ports need platform SDK access and Godot console-porting support (third-party porting partners); not scheduled yet.
-- **Engine:** Godot 4.x with **C#** (docs/PHASE.md §6). Renderer: **Compatibility (`gl_compatibility`)** — the lightest 2D-friendly renderer with the widest PC hardware support. Assembly name: **`MyFarmingGame`**.
+- **Engine:** Godot 4.x with **C#** (docs/PHASE.md §6). Renderer: **Compatibility (`gl_compatibility`)** — the lightest renderer with the widest PC hardware support; it draws the 3D world too (no global illumination or heavy post effects, which a cartoony look does not need). Revisit with the console porting partner before console work. Physics: **Jolt** (3D, already set in `project.godot`). Assembly name: **`MyFarmingGame`**.
 - The first playable (Phase-001) answers movement, clearing, planting, day-based growth and neglect, orders, buying, chickens, and saving before content production begins.
 
 ### Save system (decided direction 2026-11-19)
@@ -433,7 +435,8 @@ Playtests with children are conducted with appropriate adult supervision and con
 13. **RESOLVED (v0.26, reset v0.29–v0.33):** day length 17 real minutes (04:30 → 21:30, 60 s per in-game hour).
 14. **RESOLVED (v0.26):** 30-day seasons, 120-day year (Harvest Moon).
 15. **✅ DECIDED (2026-11-21, owner) — order pay: sell price + freshness bonus.** First decided as no premium; once the shipping box (normal sell price) was chosen, orders had to pay more. Final: the normal sell price plus **+30 % / +20 % / +10 %** if sent the night Kit takes the order / the next night / the night after; then the order is simply gone. Switched on with the box (Phase-002); Phase-001 keeps its plain price and occasional +20 % same-day bonus. Mixed baskets ×1.1 stack on top (economy.md §2).
-16. **⚠️ OPEN — interior scenes.** Phase-001 enters buildings on the same map (roof fades, §4). Do later buildings need separate interior scenes (a fade to a room map)? Decide in Phase-002 planning; the kitchen upgrade is the first likely case.
+16. **⚠️ OPEN — interior scenes.** Phase-001 enters buildings on the same map (roof fades, §4). Do later buildings need separate interior scenes (a fade to a room map)? Decide in Phase-002 planning; the kitchen upgrade is the first likely case. (The 3D switch keeps same-map buildings: the roof and the camera-side wall fade.)
+17. **⚠️ OPEN — outlines and final art source (2026-11-21).** Do 3D models get a drawn outline (keeps the old comics feel) or plain toon shading? Which source for real models: Kenney CC0 3D packs, Blender by the team, AI-generated 3D, or a mix (one consistent style either way)? Decide at the first art pass; placeholders don't need it.
 
 ## Related documents
 
@@ -503,3 +506,6 @@ Playtests with children are conducted with appropriate adult supervision and con
 - **0.42 — 2026-11-21:** **Q15 decided (owner 2026-11-21):** no order premium; only baskets and quick-bonus orders pay extra.
 - **0.43 — 2026-11-21:** **Selling and house-visit orders (owner decisions 2026-11-21).** Ways to earn: the **shipping box** comes first (take items back out until pickup when Kit sleeps; sells at the normal price); the **market stall is deferred** to a later phase (one sell outlet at a time; if it returns, "set prices and leave it"). Neighbour orders move to **house visits** once a neighbour's house is open: see the sign, visit, talk to the neighbour, take the order, then **send it through the shipping box** (the box fills accepted orders first at the order price, the rest sells at box price). **Q15 decided:** normal sell price + a **freshness bonus** (+30 % same night, +20 % next, +10 % the night after, then the order is simply gone — not a penalty, keeps the list fresh). Marlow's board keeps his own orders and not-yet-open neighbours' orders only. Unsold goods wait in the bag or the storage chest. Day-phase table, later activities and product scope updated.
 - **0.44 — 2026-11-21:** **Freshness bonus and Orders list (owner decisions 2026-11-21).** Neighbour orders pay the sell price + **+30 % / +20 % / +10 %** by the night they are sent (from the day Kit takes them), then are simply gone (no penalty, keeps the list fresh); replaces the flat ×1.2 and the occasional quick bonus; Q15 and the §2 no-deadline wording updated. New **on-screen Orders button** on the HUD listing taken orders (have/need counts, tonight's bonus, nights left, cancel). **Order source:** every order comes from a sign at an open house's door, Marlow included; the baker's, allotment neighbour's and shopkeeper's places open when they arrive in T1 (from Phase-002); only a few houses have a sign each day and some villagers never order; Marlow's board becomes the village noticeboard (no orders).
+- **0.45 — 2026-11-21:** **Switch to 3D (owner decision 2026-11-21).** The game is now 3D with a **fixed, angled top-down camera** (mood reference: *Find Your Words*), replacing "fully 2D". §1 high concept, pillar 9 and §9 art direction rewritten: cartoony, colourful, rounded 3D with soft toon shading and ≈ 5-head proportions kept; placeholder primitive meshes with flat colours, swapped for real models by name; a handheld-friendly budget for the later Switch version. §13: Compatibility renderer kept (draws 3D), Jolt physics. All gameplay rules are unchanged. New open question 17 (outlines, final model source). Migration tasks: Phase-001 Tasks 1.14–1.20.
+- **0.46 — 2026-11-21:** **Diagonal camera (owner decision 2026-11-21):** the fixed 3D camera is tilted ≈ 50–55° (not straight down) **and turned roughly 45° (not necessarily exact)**, looking across the farm from a corner, so the grid runs diagonally on screen; buildings fade the roof and both camera-side walls. Controls stay screen-relative (controls.md v0.15).
+- **0.47 — 2026-11-21:** **Camera pick (owner 2026-11-21, Task 1.14):** tilt 45°, turn 45°, south-east corner, perspective; the player may **switch between the south-east and south-west corners** (right stick left/right on any pad, or Q) — no free rotation or zoom.

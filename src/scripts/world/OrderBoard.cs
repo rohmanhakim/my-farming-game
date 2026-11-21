@@ -13,12 +13,13 @@ public partial class OrderBoard : Prop
 {
     public OrderBoard()
     {
+        ModelName = "order_board";
         SpriteName = "icon_order_board";
-        DisplaySize = new Vector2(72, 72);
         PromptSprite = "icon_order_board";
-        BodySize = new Vector2(56, 20);
-        BodyOffset = new Vector2(0, 26);
-        ApproachOffset = new Vector2(0, 64);
+        BodySize = new Vector3(1.2f, 1.6f, 0.3f);
+        ClickSize = new Vector3(1.3f, 1.8f, 0.6f);
+        ApproachOffset = new Vector3(0, 0, 1.0f);
+        PromptHeight = 2.1f;
     }
 
     public override bool Usable => OrderManager.Instance?.BoardOpen ?? false;
@@ -31,5 +32,5 @@ public partial class OrderBoard : Prop
         base._Process(delta);
     }
 
-    public override void Interact(Node2D player) => OrderBoardView.Find(GetTree())?.Open();
+    public override void Interact(Node3D player) => OrderBoardView.Find(GetTree())?.Open();
 }

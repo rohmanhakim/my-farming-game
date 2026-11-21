@@ -1,7 +1,7 @@
 # Playtest 001 — First Playable (Phase-001 Task 1.13)
 
-> **Status:** Ready to run — no sessions held yet
-> **Version:** 0.2
+> **Status:** Ready to run — no sessions held yet. **Run it on the 3D build after Phase-001 Task 1.20** (owner switched to 3D, 2026-11-21); the rows below still apply, with "roof" meaning the faded roof and camera-side wall
+> **Version:** 0.3
 > **Last updated:** 2026-11-21
 > **Purpose:** The checklist for playtesting the Phase-001 vertical slice: how to set up a run, what to try for each task (1.5–1.12), and the observation sheet with the GDD §14 questions. Findings go back into `Phase-001.md` Task 1.13 *Playtest findings*.
 
@@ -54,3 +54,4 @@ Anything that crashed, froze or looked wrong: ______
 
 - **0.1 — 2026-11-21:** New document (Task 1.13): session setup (F5, deleting the save, debug keys), what to try for Tasks 1.5–1.12, and the observation sheet with the GDD §14 questions.
 - **0.2 — 2026-11-21:** Order board row updated for the order variety (sizes, baskets, quick bonus, daily orders, new neighbours) and the 45-coin first order (no premium).
+- **0.3 — 2026-11-21:** Status: the playtest now runs on the 3D build after Task 1.20 (owner switched to 3D); Task 1.20 updates the rows to the 3D build.

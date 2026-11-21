@@ -1,13 +1,13 @@
 # PHASE.md — Development Roadmap: Prototype to Production
 
 > **Status:** Planning draft — **re-planned for the direction reset 2026-11-19**
-> **Version:** 0.8  
+> **Version:** 0.9  
 > **Last updated:** 2026-11-21  
 > **Purpose:** High-level overview of development from the first playable prototype to a final, production-ready game. Each phase document expands this roadmap — `docs/Phase-001.md` exists today; Phase-002 through Release are **planned** documents to be written when their phase is scheduled.
 
 ## 1. Vision
 
-A fully 2D, **realistic but kid-friendly, educational** farming game for **PC**. Kit, a 17-year-old, grows a tangled family plot into a working farm by filling neighbours' orders, investing in animals, buildings, and land, and finally **automating** the farm — the key selling point. Neglect has gentle but real consequences; challenge rises naturally with the farm (money first, land last). There is **one difficulty mode: realistic but kid-friendly**. Audience: **ages 6+**.
+A **3D, realistic but kid-friendly, educational** farming game for **PC**, seen through a fixed, angled top-down camera with a cartoony, colourful look (owner decision 2026-11-21, replaces "fully 2D"). Kit, a 17-year-old, grows a tangled family plot into a working farm by filling neighbours' orders, investing in animals, buildings, and land, and finally **automating** the farm — the key selling point. Neglect has gentle but real consequences; challenge rises naturally with the farm (money first, land last). There is **one difficulty mode: realistic but kid-friendly**. Audience: **ages 6+**.
 
 ## 2. Guiding Principles (apply to all phases)
 
@@ -23,7 +23,7 @@ A fully 2D, **realistic but kid-friendly, educational** farming game for **PC**.
 
 | Phase | Document | Goal | Platform |
 |-------|----------|------|----------|
-| **Phase 001** | `docs/Phase-001.md` | **First playable (vertical slice):** day clock, clearing, day-based growth and neglect, foraging, first orders, order board, seed shop, coop + hens with the loss rule, versioned save, short onboarding | PC |
+| **Phase 001** | `docs/Phase-001.md` | **First playable (vertical slice):** day clock, clearing, day-based growth and neglect, foraging, first orders, order board, seed shop, coop + hens with the loss rule, versioned save, short onboarding — built in 2D (Tasks 1.1–1.13), then **moved to 3D** with placeholder primitive meshes (Tasks 1.14–1.20, owner 2026-11-21) | PC |
 | **Phase 002** | `docs/Phase-002.md` (planned) | Economy depth: **shipping box** (take items back out until pickup at sleep), seasonal/demand pricing, the order freshness bonus over the box (+30/+20/+10 %, then the order is gone), the storage chest, **house-visit orders** (sign at the door, talk to take the order, send it through the box; every order incl. Marlow's; the baker's, allotment neighbour's and shopkeeper's places open in T1 when they arrive), Marlow's board → village noticeboard, the on-screen Orders list, rain, clearing the back fields (scythe/hammer/axe), sheep or beehive, stickers | PC |
 | **Phase 003** | `docs/Phase-003.md` (planned) | Farm growth: barn (cow, sheep), **fish pond**, kitchen processing (jam, bread, cheese, pie), workshop & blueprints, more neighbours, **local co-op with dynamic split screen** | PC |
 | **Phase 004** | `docs/Phase-004.md` (planned) | **Automation**: sprinklers, auto-feeders, pond auto-feeder, helpers, silo, greenhouse; fishing at the brook, travelling merchant, optional Butterfly Garden request | PC |
@@ -37,7 +37,7 @@ A fully 2D, **realistic but kid-friendly, educational** farming game for **PC**.
 
 **Goal:** a vertical slice of the money loop: Kit clears and plants, waters daily, forages berries for Marlow's first order, grows carrots for the second, saves up for a coop and hens, feeds them daily, and fills egg orders — with crops and hens lost after 3 days of neglect.
 
-**Scope:** Front garden, the lane's berry bushes, Mr. Marlow's seed shed (order board + shop). Single-player. Spring only. See docs/Phase-001.md for the 13 tasks and the deferred list.
+**Scope:** Front garden, the lane's berry bushes, Mr. Marlow's seed shed (order board + shop). Single-player. Spring only. See docs/Phase-001.md for the tasks and the deferred list: Tasks 1.1–1.13 built the slice in 2D; **Tasks 1.14–1.20 move it to 3D** (fixed angled top-down camera, primitive placeholder meshes) keeping all game logic, then the Task 1.13 playtest runs on the 3D build.
 
 **Exit criteria:** a new player (6+) finishes the ≈ 5-minute guided start and the first two orders without help, buys hens, keeps them fed, and understands the 3-days rule from the warnings.
 
@@ -49,7 +49,7 @@ Each `docs/Phase-00N.md` breaks its milestone into **session tasks**. One task =
 
 - **Team:** Two people, with AI assistance.
 - **Engine:** Godot 4.x with **C#**; renderer **Compatibility (`gl_compatibility`)**; assembly **`MyFarmingGame`**.
-- **Art:** Placeholder art for prototypes; final European comics-style art swapped in later without code changes.
+- **Art:** **3D, cartoony and colourful** (owner 2026-11-21). Placeholder primitive meshes with flat colours for prototypes; real low-poly models (Kenney CC0, Blender, AI 3D — GDD Q17) swapped in later by name without code changes. Every phase stays inside the handheld performance budget (project-structure.md §16) so the Switch version needs no art redo.
 - **Audio:** Free royalty-free assets; licenses recorded.
 - **Save format:** One save slot, auto-save, human-readable JSON for debugging.
 
@@ -75,3 +75,4 @@ Each `docs/Phase-00N.md` breaks its milestone into **session tasks**. One task =
 - **0.6 — 2026-11-20:** World map redesigned as **Bramblewick Vale** (owner decision, places.md v0.10): the "lane does not grow" principle and guardrail replaced by "the valley is fixed — five areas plus Kit's farm"; village buildings and outer areas arrive in the phase whose features need them.
 - **0.7 — 2026-11-20:** Windmill/pump dropped from Phase 004 (owner decision: sprinklers need no water source; flour comes from the village watermill).
 - **0.8 — 2026-11-21:** **Selling and house-visit orders (owner decisions 2026-11-21).** Phase 002 builds the **shipping box** first and **house-visit orders** as neighbours' places open, plus the order **freshness bonus** over the box (orders can expire; guardrail reworded: nothing lost besides the missed money); **Kit's market stall deferred** (phase not set).
+- **0.9 — 2026-11-21:** **Switch to 3D (owner decision 2026-11-21):** vision and §6 art updated (fixed angled top-down 3D camera, cartoony colourful look, primitive placeholders, handheld performance budget); Phase 001 row and §4 add the 3D migration (Tasks 1.14–1.20) before the playtest.

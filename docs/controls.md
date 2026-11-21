@@ -1,7 +1,7 @@
 # Controls
 
 > **Status:** Brainstorming draft
-> **Version:** 0.13
+> **Version:** 0.16
 > **Last updated:** 2026-11-21
 > **Purpose:** Control schemes (gamepad and keyboard + mouse) for this kind of game, adjusted to the scope of the game described in the GDD. **PC first, consoles (Switch, PlayStation) later; no touch/mobile.** Tables use XBOX button names, but any modern controller works by position (see §2 *Any controller*). All mappings are tentative (see GDD open question Q5) and subject to playtesting.
 
@@ -31,13 +31,14 @@
 | Pause menu / calendar & settings | Start | Opens pause: day/night indicator, season calendar, Collection Book, sticker book, settings (volume, read-aloud, nudges, break reminder), save, quit. |
 | Open / close the Orders list *(owner 2026-11-21, Phase-002)* | Back (Select) — View on Xbox, Create/touchpad on PlayStation, − on Switch *(proposed)* | Same as the on-screen Orders button on the HUD: picture cards of every taken order (GDD §4). B or Back closes it. |
 | Help tooltip / inspect | *(needs a new button — proposed: hold LT)* | Shows a contextual hint or spoken/visual cue for the highlighted object. **Deferred — no Phase-001 task builds it** (the hint ladder in characters.md §8 covers help for now). Back/Select moved to the Orders list (2026-11-21). |
+| Switch camera corner *(owner 2026-11-21, 3D)* | Right Stick flick left or right | Swaps the diagonal camera between the south-east and south-west corners with a short glide; one switch per flick; not while a menu is open. Same position on every pad. |
 | Reserved (unassigned in prototype) | LT / RT | Held for future tools or camera options if needed. |
 
 ---
 
 ### Movement feel (decided 2026-11-20, built in Task 1.2)
 
-- Kit **walks in 8 directions** with smooth starts and stops, but **faces and uses tools in 4 directions** (up, down, left, right), Harvest Moon / Stardew style. On a diagonal Kit keeps facing the way they already faced, so the sprite doesn't flicker.
+- Kit **walks in 8 directions** with smooth starts and stops, but **faces and uses tools in 4 directions** (up, down, left, right), Harvest Moon / Stardew style. On a diagonal Kit keeps facing the way they already faced, so the sprite doesn't flicker. **In 3D (owner 2026-11-21, Phase-001 Tasks 1.14–1.20):** stick, D-pad and keys move Kit relative to the screen (up = up the screen) under the fixed **diagonal** camera (owner 2026-11-21: the grid runs diagonally on screen). Kit's model turns smoothly towards the walking direction, but the tool / interaction front stays one of the 4 grid directions so the tile in front is always a whole tile: the grid direction nearest to the walking direction; straight up / down / left / right on screen lies between two, and then Kit keeps the current front (proposal, playtested in Phase-001 Task 1.14). The highlighted tile shows what A will hit.
 - A half-tilted stick walks slower; diagonals are as fast as straight lines.
 
 ### Any controller (decided 2026-11-20)
@@ -74,6 +75,7 @@ Two ways to do everything, available at the same time, exactly as DST does it: *
 | Open / close the bag | **On-screen bag button** (bottom right); close with right-click, Esc or the Close button. No keyboard key (owner decision 2026-11-20). |
 | Open / close the Orders list *(Phase-002)* | **On-screen Orders button** next to the bag button; close like the bag. No keyboard key, matching the bag. |
 | Pause / calendar & settings | **ESC** key or on-screen pause button |
+| Switch camera corner *(owner 2026-11-21, 3D)* | **Q** |
 
 **Deliberately not carried over from DST:** combat keys (F), camera rotation (Q/E — our camera is fixed), all Ctrl/Alt/Shift modifiers (control goals forbid memory-heavy combos), number hotbar (tool belt is cycled instead; revisit if the belt grows long), map key (the valley map is a page in the pause menu — places.md §5 — so it needs no key of its own).
 
@@ -100,7 +102,7 @@ Two ways to do everything, available at the same time, exactly as DST does it: *
 ## 7. Excluded from controls
 
 - Rapid or memory-heavy button sequences and quick-time events. (Simple two-button inputs like LB+RB and short holds are fine.)
-- Camera rotation or 3D camera controls (fixed angled top-down / three-quarter view per GDD).
+- Free camera rotation, zoom or any other camera control (the 3D camera is fixed at an angled top-down view per GDD §9; it follows Kit). The only exception is the **corner switch** (south-east ↔ south-west; owner 2026-11-21).
 - Inventory sorting or weight management.
 - Voice commands (optional spoken prompts may be added for accessibility, but not required to play).
 - Care or growth timers that run while the game is closed.
@@ -132,3 +134,6 @@ Two ways to do everything, available at the same time, exactly as DST does it: *
 - **0.11 — 2026-11-20:** The map-key note now points to the pause-menu picture map of Bramblewick Vale (places.md v0.10); no new binding.
 - **0.12 — 2026-11-20:** Task 1.4 built: Y / on-screen bag button opens the simple bag (no keyboard key, owner decision); gamepad A/B confirm and go back on focused menu buttons on every pad; belt slots are clickable.
 - **0.13 — 2026-11-21:** **Orders list (owner decision 2026-11-21):** new on-screen **Orders button** next to the bag (Phase-002); gamepad **Back/Select** opens it (proposed). The deferred help tooltip loses Back/Select (proposed: hold LT).
+- **0.14 — 2026-11-21:** **3D switch (owner decision 2026-11-21, GDD v0.45):** movement is camera-relative under the fixed 3D camera, Kit's model turns 8-way while the tool front stays 4-way; mouse clicks pick through a camera ray (objects first, then the ground); still no camera control of any kind. No binding changes.
+- **0.15 — 2026-11-21:** **Diagonal camera (owner decision 2026-11-21):** movement stays screen-relative; the 4-way tool front follows the grid (diagonal on screen) with a tie rule for straight screen directions. No binding changes.
+- **0.16 — 2026-11-21:** **Camera corner switch (owner 2026-11-21):** right stick flick left/right (any pad) or Q swaps the 3D camera between the south-east and south-west corners; free rotation and zoom stay excluded.

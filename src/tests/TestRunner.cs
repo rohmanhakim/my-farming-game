@@ -36,39 +36,62 @@ public partial class TestRunner : Node
         GetTree().Quit(_failures == 0 ? 0 : 1);
     }
 
+    /// <summary>Test groups (Task 1.14): <c>rules</c> (no scene) and <c>game</c> (the real Main.tscn, 3D
+    /// since Task 1.15). Pick with <c>-- --group=rules</c>; none = all.</summary>
+    public static readonly string[] Groups = { "rules", "game" };
+
+    private System.Collections.Generic.HashSet<string> _groups;
+
+    private bool Want(string group)
+    {
+        if (_groups == null)
+        {
+            _groups = new System.Collections.Generic.HashSet<string>();
+            foreach (var arg in OS.GetCmdlineUserArgs())
+                if (arg.StartsWith("--group="))
+                    foreach (var g in arg.Substring("--group=".Length).Split(','))
+                        if (g.Trim().Length > 0) _groups.Add(g.Trim());
+            if (_groups.Count == 0) foreach (var g in Groups) _groups.Add(g);
+            GD.Print($"[TestRunner] groups: {string.Join(", ", _groups)}");
+        }
+        return _groups.Contains(group);
+    }
+
     private async Task RunAll()
     {
         // Tests never read or write the player's real save (Task 1.10).
         if (SaveGame.Instance != null) SaveGame.Instance.Enabled = false;
         GameSettings.Nudges = false;
-        CheckProjectSettings();
-        CheckInputMap();
-        CheckSprites();
-        CheckMainScene();
-        CheckFacingRules();
-        await CheckMovement();
-        CheckClockRules();
-        CheckClockDial();
-        await CheckClockPause();
-        await CheckSleepInGame();
-        CheckToolBeltRules();
-        CheckInventoryRules();
-        CheckWalletRules();
-        await CheckBeltBagWalletInGame();
-        CheckFarmRules();
-        await CheckFarmInGame();
-        CheckLaneRules();
-        await CheckLaneInGame();
-        CheckOrderRules();
-        await CheckBoardInGame();
-        CheckShopRules();
-        await CheckShopInGame();
-        CheckAnimalRules();
-        await CheckAnimalsInGame();
-        await CheckSaveLoad();
-        await CheckPauseAndLight();
-        CheckOnboardingRules();
-        await CheckOnboardingInGame();
+        if (Want("rules")) CheckProjectSettings();
+        if (Want("rules")) CheckInputMap();
+        if (Want("rules")) CheckSprites();
+                if (Want("rules")) CheckFacingRules();
+        if (Want("rules")) CheckModelLibraryRules();
+        if (Want("rules")) CheckCameraRigRules();
+        if (Want("game")) CheckMainScene();
+        if (Want("game")) await CheckMovement3D();
+                if (Want("rules")) CheckClockRules();
+        if (Want("rules")) CheckClockDial();
+        if (Want("game")) await CheckClockPause();
+        if (Want("game")) await CheckSleepInGame();
+        if (Want("rules")) CheckToolBeltRules();
+        if (Want("rules")) CheckInventoryRules();
+        if (Want("rules")) CheckWalletRules();
+        if (Want("game")) await CheckBeltBagWalletInGame();
+        if (Want("rules")) CheckFarmRules();
+        if (Want("game")) await CheckFarmInGame();
+        if (Want("rules")) CheckLaneRules();
+        if (Want("game")) await CheckLaneInGame();
+        if (Want("rules")) CheckOrderRules();
+        if (Want("game")) await CheckBoardInGame();
+        if (Want("rules")) CheckShopRules();
+        if (Want("game")) await CheckShopInGame();
+        if (Want("rules")) CheckAnimalRules();
+        if (Want("game")) await CheckAnimalsInGame();
+        if (Want("game")) await CheckSaveLoad();
+        if (Want("game")) await CheckPauseAndLight();
+        if (Want("rules")) CheckOnboardingRules();
+        if (Want("game")) await CheckOnboardingInGame();
     }
 
     private void Check(bool ok, string what)
@@ -94,7 +117,7 @@ public partial class TestRunner : Node
         string[] actions =
         {
             "move_left", "move_right", "move_up", "move_down",
-            "interact", "cancel", "cycle_tool_next", "cycle_tool_prev", "pause", "open_inventory",
+            "interact", "cancel", "cycle_tool_next", "cycle_tool_prev", "pause", "open_inventory", "camera_switch",
         };
         foreach (var a in actions)
             Check(InputMap.HasAction(a) && InputMap.ActionGetEvents(a).Count > 0, $"input action '{a}' bound");
@@ -125,62 +148,6 @@ public partial class TestRunner : Node
         Check(cl != null && cl.Layer == layer, $"{path} CanvasLayer is layer {layer}");
     }
 
-    private void CheckMainScene()
-    {
-        var packed = ResourceLoader.Load<PackedScene>("res://scenes/main/Main.tscn");
-        Check(packed != null, "Main.tscn loads");
-        if (packed == null) return;
-
-        var main = packed.Instantiate();
-        AddChild(main);
-
-        // Scene-architecture standard (project-structure.md §4): node types and process modes.
-        CheckNode<Node>(main, ".", ProcessModeEnum.Always);
-        CheckNode<Node>(main, "Systems", ProcessModeEnum.Inherit);
-        CheckNode<Node2D>(main, "World", ProcessModeEnum.Pausable);
-        CheckNode<Node>(main, "World/Level", ProcessModeEnum.Inherit);
-        CheckNode<Node2D>(main, "World/Entities", ProcessModeEnum.Inherit);
-        CheckNode<Node2D>(main, "World/Effects", ProcessModeEnum.Inherit);
-        CheckNode<Node>(main, "Audio", ProcessModeEnum.Always);
-        CheckNode<CanvasLayer>(main, "HUD", ProcessModeEnum.Pausable);
-        CheckNode<CanvasLayer>(main, "Pause", ProcessModeEnum.WhenPaused);
-        CheckNode<CanvasLayer>(main, "Transition", ProcessModeEnum.Always);
-        CheckNode<CanvasLayer>(main, "Debug", ProcessModeEnum.Always);
-        Check(main.GetNode("World") is not CanvasLayer, "World is a plain Node2D, not a CanvasLayer");
-
-        CheckLayer(main, "HUD", UILayers.Hud);
-        CheckLayer(main, "Pause", UILayers.PauseMenu);
-        CheckLayer(main, "Transition", UILayers.Transition);
-        CheckLayer(main, "Debug", UILayers.Debug);
-
-        Check(main.GetNode("World/Level").GetChildCount() == 1, "exactly one level under World/Level");
-        var level = main.GetNode("World/Level").GetChildOrNull<Node>(0);
-        Check(level?.GetNodeOrNull<Marker2D>("PlayerSpawn") != null, "level exposes a PlayerSpawn marker");
-        var bg = level?.GetNodeOrNull<ColorRect>("Background");
-        Check(bg != null, "level has a coloured Background");
-        // World/Level is a plain Node, so level art is a separate top-level canvas item: it must sit
-        // below Entities by z_index or it covers the player (found in Task 1.1).
-        Check(bg != null && bg.ZIndex < 0, "level Background draws below entities (z_index < 0)");
-        Check(level?.FindChild("Player", true, false) == null && level?.FindChild("Camera2D", true, false) == null,
-            "level contains no player or camera");
-        Check(main.GetNodeOrNull<Camera2D>("World/Entities/Camera2D") != null, "Camera2D lives in World/Entities");
-        Check(main.GetNodeOrNull<Control>("HUD/UI") != null, "UI.tscn is instanced into HUD");
-
-        // Task 1.3 nodes.
-        Check(main.GetNodeOrNull<ClockDialView>("HUD/UI/ClockDial") != null, "HUD has the ClockDial");
-        Check(main.GetNodeOrNull<SleepPromptView>("HUD/UI/SleepPrompt") != null, "HUD has the SleepPrompt");
-        Check(main.GetNodeOrNull<DayTransitionView>("Transition/DayTransition") != null, "Transition layer has DayTransition");
-        Check(main.GetNodeOrNull<SleepSequence>("Systems/SleepSequence") != null, "Systems has SleepSequence");
-        var bed = level?.FindChild("Bed", true, false) as Bed;
-        Check(bed != null && bed.IsInGroup(Bed.Group) && bed.IsInGroup(IInteractable.Group), "level has a Bed in groups beds + interactables");
-        Check(bed != null && bed.ZIndex < 0, "bed draws below Kit (z_index < 0)");
-
-        var sprite = main.GetNodeOrNull<NamedSprite>("World/Entities/Player/Sprite");
-        Check(sprite != null, "Player has NamedSprite");
-        Check(sprite?.Texture != null && sprite.Visible, "player sprite has a texture and is visible");
-        main.QueueFree();
-    }
-
     // ---- Task 1.2: movement, facing, animation, camera -------------------------------------
 
     private void CheckFacingRules()
@@ -197,8 +164,7 @@ public partial class TestRunner : Node
         Check(PlayerController.FacingFor(Vector2.Zero, Facing.Left) == Facing.Left, "facing: no input keeps facing");
     }
 
-    private PlayerController _player;
-
+    
     private async Task Frames(int n)
     {
         for (int i = 0; i < n; i++)
@@ -206,18 +172,6 @@ public partial class TestRunner : Node
         // ...and one rendered frame, so _Process and queued input have run too (a busy machine can
         // run several physics frames per rendered frame — found in Task 1.10).
         await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
-    }
-
-    /// <summary>Applies <paramref name="press"/>, waits, releases, returns the displacement.</summary>
-    private async Task<Vector2> Drive(Action press, Action release, int frames = 30)
-    {
-        await Frames(15); // let the previous move come to a stop first
-        Vector2 start = _player.GlobalPosition;
-        press();
-        await Frames(frames);
-        Vector2 moved = _player.GlobalPosition - start;
-        release();
-        return moved;
     }
 
     private static void Key(Key k, bool down) =>
@@ -229,118 +183,23 @@ public partial class TestRunner : Node
     private static void Pad(JoyButton b, bool down) =>
         Input.ParseInputEvent(new InputEventJoypadButton { Device = 0, ButtonIndex = b, Pressed = down });
 
-    private void CheckDirection(Vector2 moved, Vector2 dir, string what, float minPx = 40)
+    // ---- 3D helpers (Tasks 1.14–1.20) ----------------------------------------------------
+
+    /// <summary>A 2D-build position in pixels as a 3D ground point in metres (64 px = 1 m) — keeps
+    /// the ported checks readable against the old notes.</summary>
+    private static Vector3 M(float xPx, float yPx) => new(xPx / 64f, 0, yPx / 64f);
+
+    /// <summary>Where the current camera shows a world point.</summary>
+    private Vector2 ScreenOf(Vector3 world) => GetViewport().GetCamera3D().UnprojectPosition(world);
+
+    /// <summary>Pushes a left (or other) click at the screen position of a world point.</summary>
+    private void ClickWorld(Vector3 world, MouseButton button = MouseButton.Left)
     {
-        Check(moved.Length() > minPx && moved.Normalized().Dot(dir.Normalized()) > 0.98f,
-            $"{what} moves {dir} (moved {moved.Round()})");
-    }
-
-    private async Task CheckMovement()
-    {
-        var main = ResourceLoader.Load<PackedScene>("res://scenes/main/Main.tscn").Instantiate();
-        AddChild(main);
-        _player = main.GetNodeOrNull<PlayerController>("World/Entities/Player");
-        Check(_player != null, "Player root has PlayerController");
-        if (_player == null) { main.QueueFree(); return; }
-        // Start in the open yard between the coop and the house (the new-game spawn is by the cart,
-        // where walking right runs into the coop — Task 1.12).
-        _player.GlobalPosition = new Vector2(1600, 440);
-        var anim = _player.GetNodeOrNull<AnimationPlayer>("AnimationPlayer");
-        var sprite = _player.GetNode<NamedSprite>("Sprite");
-        Check(anim != null, "Player has AnimationPlayer");
-        foreach (var state in new[] { "idle", "walk" })
-            foreach (var d in new[] { "down", "up", "left", "right" })
-                Check(anim != null && anim.HasAnimation($"{state}_{d}"), $"animation '{state}_{d}' exists");
-        await Frames(2);
-
-        // Keyboard (WASD + arrows), 4 directions with facing + animation.
-        Vector2 moved = await Drive(() => Key(Godot.Key.D, true), () => { }, 30);
-        CheckDirection(moved, Vector2.Right, "keyboard D");
-        Check(_player.Facing == Facing.Right && anim.CurrentAnimation.ToString() == "walk_right" && !sprite.FlipH,
-            $"keyboard D: faces Right, plays walk_right ({anim.CurrentAnimation.ToString()})");
-        Key(Godot.Key.D, false);
-        await Frames(20);
-        Check(anim.CurrentAnimation.ToString() == "idle_right", $"after release: idle_right ({anim.CurrentAnimation.ToString()})");
-
-        moved = await Drive(() => Key(Godot.Key.Left, true), () => Key(Godot.Key.Left, false));
-        CheckDirection(moved, Vector2.Left, "arrow Left");
-        Check(_player.Facing == Facing.Left && sprite.FlipH, "arrow Left: faces Left, sprite flipped");
-        moved = await Drive(() => Key(Godot.Key.W, true), () => Key(Godot.Key.W, false));
-        CheckDirection(moved, Vector2.Up, "keyboard W");
-        Check(_player.Facing == Facing.Up, "keyboard W: faces Up");
-        moved = await Drive(() => Key(Godot.Key.Down, true), () => Key(Godot.Key.Down, false));
-        CheckDirection(moved, Vector2.Down, "arrow Down");
-        Check(_player.Facing == Facing.Down, "arrow Down: faces Down");
-        await Frames(20);
-
-        // 8-way: diagonals move diagonally at the same speed as straight lines; facing stays 4-way.
-        Vector2 straight = await Drive(() => Key(Godot.Key.D, true), () => Key(Godot.Key.D, false), 40);
-        await Frames(20);
-        Vector2 diag = await Drive(() => { Key(Godot.Key.W, true); Key(Godot.Key.D, true); },
-            () => { Key(Godot.Key.W, false); Key(Godot.Key.D, false); }, 40);
-        CheckDirection(diag, new Vector2(1, -1), "keyboard W+D (diagonal)");
-        Check(Mathf.Abs(diag.Length() - straight.Length()) < 0.05f * straight.Length(),
-            $"diagonal speed equals straight speed ({diag.Length():0} vs {straight.Length():0})");
-        Check(_player.Facing is Facing.Up or Facing.Right, $"diagonal keeps a 4-way facing ({_player.Facing})");
-        await Frames(20);
-
-        // Gamepad: left stick (full and half tilt) and D-pad. SDL layout = Xbox / PlayStation / Switch Pro.
-        moved = await Drive(() => Stick(JoyAxis.LeftX, -1f), () => Stick(JoyAxis.LeftX, 0f));
-        CheckDirection(moved, Vector2.Left, "gamepad left stick");
-        Check(_player.Facing == Facing.Left, "gamepad stick: faces Left");
-        await Frames(20);
-        Vector2 half = await Drive(() => Stick(JoyAxis.LeftY, 0.5f), () => Stick(JoyAxis.LeftY, 0f));
-        CheckDirection(half, Vector2.Down, "gamepad half-tilted stick", 15);
-        Check(half.Length() < 0.75f * straight.Length() * 30 / 40,
-            $"half tilt walks slower ({half.Length():0} px vs full {straight.Length() * 30 / 40:0} px)");
-        await Frames(20);
-        moved = await Drive(() => Pad(JoyButton.DpadUp, true), () => Pad(JoyButton.DpadUp, false));
-        CheckDirection(moved, Vector2.Up, "gamepad D-pad Up");
-        moved = await Drive(() => Pad(JoyButton.DpadRight, true), () => Pad(JoyButton.DpadRight, false));
-        CheckDirection(moved, Vector2.Right, "gamepad D-pad Right");
-        await Frames(20);
-
-        // Click-to-move / walk-to-then-act.
-        bool arrived = false;
-        Vector2 goal = _player.GlobalPosition + new Vector2(-120, 60);
-        _player.WalkTo(goal, () => arrived = true);
-        await Frames(90);
-        Check(arrived && _player.GlobalPosition.DistanceTo(goal) <= _player.ArriveDistance + 0.5f,
-            $"WalkTo reaches the target and runs the act callback (off by {_player.GlobalPosition.DistanceTo(goal):0.0})");
-        Check(!_player.HasMoveTarget && anim.CurrentAnimation.ToString().StartsWith("idle_"), "after arriving Kit stands idle");
-
-        _player.WalkTo(_player.GlobalPosition + new Vector2(500, 0));
-        await Frames(5);
-        Key(Godot.Key.S, true);
-        await Frames(2);
-        Key(Godot.Key.S, false);
-        Check(!_player.HasMoveTarget, "keyboard movement cancels a click target");
-        await Frames(20);
-
-        // A real left-click on the ground sets a walk target under the cursor.
         var vp = GetViewport();
-        Vector2 screen = vp.GetCanvasTransform() * (_player.GlobalPosition + new Vector2(150, 0));
+        Vector2 screen = ScreenOf(world);
         vp.PushInput(new InputEventMouseMotion { Position = screen, GlobalPosition = screen }, true);
-        vp.PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = true, Position = screen, GlobalPosition = screen }, true);
-        vp.PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = false, Position = screen, GlobalPosition = screen }, true);
-        Vector2 before = _player.GlobalPosition;
-        Check(_player.HasMoveTarget, "left-click on the ground starts click-to-move");
-        await Frames(60);
-        CheckDirection(_player.GlobalPosition - before, Vector2.Right, "left-click right of Kit");
-
-        // Camera: lags behind while walking (smooth lerp), then settles on Kit.
-        var cam = main.GetNode<Camera2D>("World/Entities/Camera2D");
-        Check(cam.IsCurrent(), "follow camera is the current camera");
-        Key(Godot.Key.D, true);
-        await Frames(45);
-        float lag = cam.GetScreenCenterPosition().DistanceTo(_player.GlobalPosition);
-        Key(Godot.Key.D, false);
-        Check(lag > 2f && lag < 150f, $"camera trails Kit while walking (lag {lag:0.0} px)");
-        await Frames(150);
-        float settle = cam.GetScreenCenterPosition().DistanceTo(_player.GlobalPosition);
-        Check(settle < 1.5f, $"camera settles on Kit after stopping ({settle:0.0} px)");
-
-        main.QueueFree();
+        vp.PushInput(new InputEventMouseButton { ButtonIndex = button, Pressed = true, Position = screen, GlobalPosition = screen }, true);
+        vp.PushInput(new InputEventMouseButton { ButtonIndex = button, Pressed = false, Position = screen, GlobalPosition = screen }, true);
     }
 
     // ---- Task 1.3: day clock, dial, sleep, bedtime, pause --------------------------------
@@ -594,16 +453,14 @@ public partial class TestRunner : Node
         Check(!clock.IsAsking && !prompt.Visible, "gamepad B closes the question");
 
         // Click the bed from a distance: Kit walks there, then the question opens.
-        player.GlobalPosition = bed.WakePoint + new Vector2(200, 30);
+        player.GlobalPosition = bed.WakePoint + new Vector3(3.1f, 0, 0.3f);
         await Frames(15);
-        var vp = GetViewport();
-        Vector2 screen = vp.GetCanvasTransform() * bed.GlobalPosition;
-        Check(player.InteractableAt(bed.GlobalPosition) == bed, "a click on the bed sprite finds the bed");
-        vp.PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = true, Position = screen, GlobalPosition = screen }, true);
-        vp.PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = false, Position = screen, GlobalPosition = screen }, true);
+        Vector3 bedTop = bed.GlobalPosition + new Vector3(0, 0.4f, 0);
+        Check(player.InteractableAt(ScreenOf(bedTop)) == bed, "a click on the bed finds the bed (camera ray, click layer 8)");
+        ClickWorld(bedTop);
         Check(player.HasMoveTarget, "clicking the bed makes Kit walk to it");
         bool askedByClick = await WaitUntil(() => clock.IsAsking, 240);
-        Check(askedByClick && player.GlobalPosition.DistanceTo(bed.WakePoint) < 6, "Kit arrives at the bed and the question opens");
+        Check(askedByClick && player.Feet.DistanceTo(bed.WakePoint) < 0.1f, "Kit arrives at the bed and the question opens");
 
         // Sleep → fade → Day 2 at 04:30, signals once, Kit beside the bed.
         prompt.Confirm(true);
@@ -615,7 +472,7 @@ public partial class TestRunner : Node
         Check(!player.Frozen && !fade.Visible, "Kit can move again and the fade is gone");
 
         // 21:30 bedtime far from home: Kit goes home and sleeps, no penalty.
-        player.GlobalPosition = level.GetNode<Marker2D>("PlayerSpawn").GlobalPosition;
+        player.GlobalPosition = level.GetNode<Marker3D>("PlayerSpawn").GlobalPosition;
         await Frames(5);
         Check(!clock.IsIndoors && clock.IsRunning, "Kit outside the house: the clock runs");
         clock.SetTime(clock.Day, GameClock.PlayableMinutes - 1);
@@ -623,10 +480,10 @@ public partial class TestRunner : Node
         bool slept = await WaitUntil(() => clock.Day == 3 && !clock.IsSleeping && !seq.IsRunning, 900);
         Check(slept && clock.LastSleepReason == SleepReason.Bedtime, "21:30 bedtime starts the next day");
         Check(ended == 2 && started == 2, $"bedtime rollover fires DayEnded/DayStarted once ({ended}/{started})");
-        Check(clock.ShownTime == "04:30" && player.GlobalPosition.DistanceTo(bed.WakePoint) < 1, "Kit wakes at home at 04:30");
-        var cam = main.GetNode<Camera2D>("World/Entities/Camera2D");
+        Check(clock.ShownTime == "04:30" && player.Feet.DistanceTo(bed.WakePoint) < 0.02f && player.Facing == Facing.Down, "Kit wakes at home at 04:30, facing out of bed");
+        var rigAfter = main.GetNode<CameraRig>("World/Entities/CameraRig");
         await Frames(2);
-        Check(cam.GetScreenCenterPosition().DistanceTo(player.GlobalPosition) < 2, "camera snapped to Kit after waking");
+        Check(rigAfter.Focus.DistanceTo(player.Feet) < 0.05f, "camera snapped to Kit after waking");
 
         clock.DayEnded -= OnEnded;
         clock.DayStarted -= OnStarted;
@@ -851,12 +708,12 @@ public partial class TestRunner : Node
         // Clicking a slot picks it; the wheel over the belt itself also cycles.
         var can = beltView.SlotButtons[Tool.WateringCan];
         var canCenter = can.GetGlobalRect().GetCenter();
-        Vector2 playerBefore = player.GlobalPosition;
+        Vector3 playerBefore = player.GlobalPosition;
         vp.PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = true, Position = canCenter, GlobalPosition = canCenter }, true);
         vp.PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = false, Position = canCenter, GlobalPosition = canCenter }, true);
         await Frames(3);
         Check(belt.Active == Tool.WateringCan, "clicking the watering-can slot selects it");
-        Check(!player.HasMoveTarget && player.GlobalPosition.DistanceTo(playerBefore) < 1, "a belt click is not a ground click (Kit stays)");
+        Check(!player.HasMoveTarget && player.GlobalPosition.DistanceTo(playerBefore) < 0.02f, "a belt click is not a ground click (Kit stays)");
         await Wheel(MouseButton.WheelDown, canCenter);
         Check(belt.Active == Tool.SeedBag, "mouse wheel over the belt also cycles");
 

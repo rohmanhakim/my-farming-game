@@ -7,8 +7,9 @@ public partial class Hen : FarmAnimal
 {
     public Hen()
     {
+        ModelName = "hen";
         SpriteName = "hen";
-        DisplaySize = new Vector2(40, 40);
-        ClickSize = new Vector2(40, 40);
+        ClickSize = new Vector3(0.6f, 0.7f, 0.6f);
+        PromptHeight = 0.9f;
     }
 }

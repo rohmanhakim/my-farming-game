@@ -1,7 +1,7 @@
 # Project Structure
 
 > **Status:** Proposal for team agreement — input to Phase-001 Task 1.1 ("Team agrees on project folder structure and naming conventions")
-> **Version:** 0.24
+> **Version:** 0.29
 > **Last updated:** 2026-11-21
 > **Purpose:** The repository layout, Godot folder structure, naming rules, input/autoload registries, asset pipeline, and verification commands that every development session follows when adding code or assets under `src/`. It is a *technical* contract only — it never overrides a gameplay decision.
 
@@ -193,6 +193,17 @@ src/
 └── .godot/                    # generated — gitignored, never committed
 ```
 
+> **3D since Tasks 1.14–1.18 (owner decision 2026-11-21).** The tree above still lists some 2D-era descriptions; the 3D files now are:
+>
+> - `scenes/main/Main.tscn` + `scripts/main/Main.cs` — the 3D main scene (built as `Main3D` in 1.14, renamed at the 1.15 cut-over): `World`, `Entities`, `Effects` are `Node3D`; `Entities` holds `Player` and `CameraRig`; `Effects` holds `WorldEnvironment`, `Sun` (DirectionalLight3D) and `DayNight`; `Systems` holds `SleepSequence`, `SaveBinder`, `OnboardingDirector`.
+> - `scenes/player/Player.tscn` + `scripts/player/PlayerController.cs` — Kit: `CharacterBody3D` (floating, y = 0), capsule collider, child `Model` = `NamedModel` "kit"; the `Facing` enum lives here.
+> - `scripts/main/CameraRig.cs` — the fixed diagonal camera (owner pick 45° / 45° / south-east) with the corner switch; `debug/CameraDebugKeys.cs` (1–4 / F9–F12 presets, debug builds).
+> - `scripts/core/{ModelLibrary,NamedModel,WorldPin}.cs`, `data/placeholder_models.json` — 3D load-by-name (§9) and screen UI pinned to 3D points (prompts, hearts, icons, guide arrow).
+> - `scenes/world/FarmLevel.tscn` + `scripts/world/FarmLevel.cs` (ground, tufts MultiMesh, fence, blockers from the layout tables), `scripts/world/{Building,IndoorZone}.cs` (walls, roof model, `Fader`, occluder fade), `FarmGrid.cs` (garden MultiMesh tiles), `Prop.cs` (3D base for Bed, Marlow, Ada, Ledger, BerryBush, OrderBoard, ShopCounter, Phone, FeedBin, FarmAnimal/Hen/Cow), `GuideArrow.cs`, `AnimalHouse.cs`.
+> - `scripts/ui/DayNightView.cs` — now drives the 3D sun, sky and ambient light and the glowing windows (Task 1.19), not a CanvasModulate.
+> - `assets/models/{characters,world,items}/` (with a README) — real `.glb` models by name; empty until real models arrive.
+> - **Deleted at the 1.15 cut-over:** `CameraFollow.cs`, `FarmGround.cs`, `NamedSprite.cs`, `TestGround3D`, `Main3D`/`Player3D` (renamed), `scenes/ui/DayNightOverlay.tscn`, `shaders/placeholder_checker.gdshader`. `SpriteLibrary` stays for every 2D picture (HUD, bubbles, cards, pinned icons).
+
 > **Configured in Task 1.1:** `application/run/main_scene` = `res://scenes/main/Main.tscn`; window 1280×720; default canvas texture filter Nearest (for the pixel placeholders — revisit with final art). Godot 4.7 writes `*.cs.uid` sidecars next to scripts — commit them.
 
 ### Structural rules (apply to every task)
@@ -244,6 +255,8 @@ Main (Node)                            process_mode = Always
 
 World draws at the default layer 0 as a plain `Node2D`.
 
+> **3D (since the Task 1.15 cut-over):** `World`, `World/Entities` and `World/Effects` are `Node3D`; the `Camera3D` lives in `World/Entities/CameraRig`; the sun and `WorldEnvironment` live in `World/Effects`; levels expose `Marker3D`s (`PlayerSpawn`, `CameraLimits` as two corner markers). **Units: 1 tile = 1 m; the ground is the XZ plane at y = 0; map north is −Z.** The camera is diagonal (turned roughly 45°, exact value picked in Task 1.14; owner 2026-11-21), so screen-up is not map north: input is turned by the camera's yaw (`CameraRig` exposes it) before moving Kit, and the tool front snaps to the nearest grid axis. A 2D tile `(x, y)` maps to the 3D tile centre `(x + 0.5, 0, y + 0.5)`. UI CanvasLayers and their numbers do not change. The 2D draw-order gotcha below no longer applies in 3D (depth sorting is automatic).
+
 > **Draw-order gotcha (found in Task 1.1):** because `World/Level` is a plain `Node`, a level's root `Node2D` is a separate top-level canvas item drawn after `World/Entities` and will cover the player. Give level ground art (backgrounds, ground `TileMapLayer`s) a negative `z_index`; `TestRunner` checks this for the placeholder level.
 
 **Process modes — set these explicitly**
@@ -290,6 +303,13 @@ Quick lookup so a session knows where its artifact belongs. Scope still comes fr
 | 1.11 Pause & Day/Night | `scenes/ui/PauseMenu.tscn` + `scripts/ui/{PauseMenuView,PauseButton}.cs`, `scenes/ui/DayNightOverlay.tscn` + `scripts/ui/DayNightView.cs`, `scripts/core/GameSettings.cs`, action `pause` (bound since 1.1) ✅ built |
 | 1.12 Onboarding | `scripts/autoloads/Onboarding.cs`, `scripts/main/OnboardingDirector.cs`, `scenes/ui/Nudge.tscn` + `scripts/ui/NudgeView.cs`, `scenes/world/Ada.tscn` + `scripts/world/{Ada,GuideArrow}.cs` ✅ built |
 | 1.13 Playtest & Iterate | fixes only — no new top-level folders |
+| 1.14 3D Foundation | `scenes/main/Main3D.tscn` + `scripts/main/Main3D.cs`, `scenes/player/Player3D.tscn`, `scripts/player/PlayerController3D.cs`, `scripts/main/CameraRig.cs`, `debug/CameraDebugKeys.cs`, `scripts/core/{ModelLibrary,NamedModel}.cs`, `data/placeholder_models.json`, `assets/models/` + README, `scenes/world/TestGround3D.tscn` + `scripts/world/TestGround3D.cs`, `tests/Tests3D.cs`; `TestRunner` groups; `tools/verify.sh` boots Main3D ✅ built |
+| 1.15 Farm Level & Buildings in 3D | the cut-over: `Main.tscn`/`Main.cs`, `Player.tscn`/`PlayerController.cs` (3D), `FarmLevel.tscn`/`FarmLevel.cs`, `Building.cs` (+ `Fader`), `IndoorZone.cs`, `Bed` as a Prop, `SleepSequence`/`SaveBinder` in 3D, `SaveGame` schemaVersion 2 (moved forward from 1.20), roof placeholders ✅ built |
+| 1.16 Garden Tiles in 3D | `FarmGrid.cs` as `Node3D` with MultiMesh tiles (no separate view class), soil/crop placeholders ✅ built |
+| 1.17 Props, NPCs & Prompts in 3D | `Prop.cs` (3D base), `scripts/core/WorldPin.cs`, `GuideArrow.cs`, 3D prop scenes (same names), prop placeholders ✅ built |
+| 1.18 Hens & Cow in 3D | `FarmAnimal.cs` (+ `HeartBar`), `AnimalHouse.cs` in metres, hen/cow placeholders ✅ built |
+| 1.19 Day/Night Lighting in 3D (planned) | `scenes/world/Sun.tscn`, `scripts/world/DayNight3D.cs` |
+| 1.20 Save Migration & Performance Check (planned; the cut-over already happened in 1.15) | renames the 3D scenes over the 2D ones, deletes the 2D world files, `SaveGame` schemaVersion 2 migration, `tools/perf_check` (frame budget) |
 
 ---
 
@@ -325,6 +345,7 @@ Defined once in `project.godot → [input]`, bound for **both** gamepad and keyb
 | `cancel` | B | right-click | bind by 1.6 (decline/back); earlier is fine |
 | `cycle_tool_next` / `cycle_tool_prev` | RB or X / LB | mouse wheel down/up, or click a belt slot | 1.4 |
 | `pause` | Start | Esc | 1.11 |
+| `camera_switch` | Right stick flick left or right (axis 2, deadzone 0.6) | Q | 1.14 (owner 2026-11-21) |
 | `open_inventory` | Y | on-screen bag button (no key) | 1.4 (simple bag) |
 | `open_care_menu` | RS click | on-screen icon only | deferred (Phase-002) |
 | `open_orders` | Back/Select *(proposed)* | on-screen Orders button (no key) | deferred (Phase-002; owner 2026-11-21) |
@@ -370,9 +391,10 @@ Adding an autoload is a structural decision that must be recorded here plus in t
 - **Game assets live only in `src/assets/`** so Godot imports them (`*.import` sidecars are generated next to the source file).
 - **Placeholders first, always.** Prefer in-scene `ColorRect` / `PlaceholderTexture2D` over image files. When an image file *is* the placeholder, its file name starts with `ph_` and it is marked temporary — final art swaps in with **no code changes** (same node paths, same region sizes where practical).
 - **Licensing:** every asset that is not `ph_` gets a row in `src/assets/LICENSES.md` (name, source, license, date). Royalty-free only; record it at the moment the file lands, not later.
-- **Art style guardrail:** non-pixel-art, European comics-style look; original designs only (docs/PHASE.md §7). Never copy existing characters/assets.
+- **Art style guardrail:** cartoony, colourful 3D (GDD §9, since 2026-11-21; the 2D build's sprites were non-pixel-art placeholders); original designs only (docs/PHASE.md §7). Never copy existing characters/assets.
 - **Placeholder folder (decided in Task 1.1):** image placeholders live in `src/assets/placeholder/<source>/ph_<sprite name>.png` (today: `kenney/`, Kenney CC0 Tiny Town + Tiny Dungeon; and since Task 1.3 `handmade/`, simple icons drawn for this project). They are licensed in `LICENSES.md` too, because they are third-party files.
-- **Load art by name, never by path:** scenes use a `NamedSprite` node (`SpriteName`, `DisplaySize`); code calls `SpriteLibrary.Get("<name>")`. Lookup order: `assets/art/{characters,world,ui,items,vfx}/<name>.png` → `assets/placeholder/{kenney,handmade}/ph_<name>.png` → coloured square. Dropping final art in with the same name replaces the placeholder with no code or scene change.
+- **3D models (from Task 1.14):** world objects use a `NamedModel` node (`ModelName`); code calls `ModelLibrary.Instantiate("<name>")`. Lookup order: `assets/models/{characters,world,items}/<name>.glb` (or `.tscn`) → a **placeholder primitive** from `data/placeholder_models.json` (shape `box` / `capsule` / `cylinder` / `sphere` / `prism`, size in metres, flat colour, offset; several parts per name allowed, e.g. walls + roof) → a magenta box. Dropping a real model in with the same name replaces the placeholder with no code or scene change. A real model's origin sits at its **feet / ground centre**, faces **−Z** (north), 1 unit = 1 m. Materials are cached by colour so equal colours share one material (§16). Every model file gets a `LICENSES.md` row (Kenney CC0, team-made in Blender, or AI-generated with its licence terms).
+- **Load 2D pictures by name, never by path** (HUD, bubbles, cards, pinned icons; the 2D world's `NamedSprite` node was removed at the 3D cut-over): code calls `SpriteLibrary.Get("<name>")`. Lookup order: `assets/art/{characters,world,ui,items,vfx}/<name>.png` → `assets/placeholder/{kenney,handmade}/ph_<name>.png` → coloured square. Dropping final art in with the same name replaces the placeholder with no code or scene change.
 
 ---
 
@@ -412,7 +434,10 @@ godot --headless --path src --quit-after 120          # main scene boots and run
 godot --path src --write-movie /tmp/shot.png --quit-after 5   # windowed: writes frame PNGs for a visual check
 dotnet build src/MyFarmingGame.csproj                # C# compiles (needs §14.2)
 godot --headless --path src res://tests/TestRunner.tscn          # exit code 0 = all checks pass
+godot --headless --path src res://tests/TestRunner.tscn -- --group=rules          # only some groups (Task 1.14)
 ```
+
+**Test groups (Task 1.14; 2D group removed at the 1.15 cut-over):** `rules` (no scene: data, rules, maths) and `game` (the real 3D `Main.tscn`). No argument = both, in the original order. `tools/verify.sh rules` passes the list through. Headless runs draw nothing, so the §16 draw-call check only bites in a windowed run (Task 1.20 adds a windowed measurement).
 
 **Test layout:** `src/tests/TestRunner.tscn` + `TestRunner.cs` — a `Node` that runs small checks (scene instantiates, action exists, state machine transitions, save round-trip), prints each failure, and calls `GetTree().Quit(failCount == 0 ? 0 : 1)` so CI/headless runs go red on failure. Adapt the pattern from the `godot-gdscript-headless-testing` skill to C#; never leave a test scene in `Main.tscn`'s path.
 
@@ -444,6 +469,8 @@ Restore after cloning: `npx skills experimental_install` · Update: `npx skills 
 | `save-systems` | Task 1.9 — JSON save schema, atomic write, versioned migration |
 | `godot-gdscript-headless-testing` | §11 — headless runner / CI exit-code pattern (adapt to C#) |
 | `godot-export` | first PC export / `export_presets.cfg` (later phase) |
+
+**3D note (2026-11-21):** after Task 1.20, `godot-2d-movement` and `godot-tilemap` no longer apply; the other skills do. No 3D-specific skill is installed yet — installing one (3D character controller, camera, `MultiMeshInstance3D`) before Task 1.14 is optional team prep.
 
 **Skills are advisory.** They run with agent permissions: review before trusting, and they never override `AGENTS.md`, the GDD, or a phase task.
 
@@ -483,7 +510,33 @@ Restore after cloning: `npx skills experimental_install` · Update: `npx skills 
 
 ---
 
-## 16. Change log
+## 16. Performance budget (3D, Switch later) — proposal 2026-11-21
+
+The game ships on PC first, but Switch and PlayStation follow (GDD §2). Every 3D task stays inside this budget so the console versions need no redo. The original Switch is the low bar. Numbers are a starting proposal; Task 1.14 adds a check that measures them and Task 1.20 records the real values.
+
+| Item | PC target | Handheld profile (Switch-like) |
+|---|---|---|
+| Frame rate / resolution | 60 fps at 1080p on integrated graphics (M1 Mac, Intel Iris Xe) | 30 fps at 720p (tested on the Mac with the low profile until a devkit exists) |
+| Draw calls per frame | ≤ 300 (aim ≤ 150) | ≤ 150 |
+| Triangles on screen | ≤ 150k (aim ≤ 100k) | ≤ 100k |
+| Shadows | one `DirectionalLight3D` with shadows, 2 splits, ≈ 30 m distance | 1 split, ≈ 20 m, lower resolution |
+| Other lights | ≤ 4 small unshadowed lights on screen at night; prefer glowing (emissive) windows to lights | same |
+| Anti-aliasing / effects | MSAA 2×; no SSAO / SSR / SDFGI / volumetric fog / glow (Compatibility lacks most anyway) | MSAA off or FXAA |
+| Models | Kit ≈ 3–5k triangles, props ≤ 1–2k, a building ≤ 3k (art-audio.md §1b) | same models |
+| Textures | ≤ 1024², atlases or plain colours | same |
+
+Rules:
+
+1. **Repeated things are one `MultiMeshInstance3D`** (soil tiles, crops per stage, weeds, overgrown grass, fence posts), never one node per tile — the farm grows to 992 tiles.
+2. **Share materials:** one material per colour or model, never a unique material per instance; `ModelLibrary` caches them.
+3. **Transparency only while fading:** roofs and walls fade, then are hidden; no permanently transparent meshes.
+4. **Simple physics:** box/capsule colliders only; Kit is the only `CharacterBody3D`; animals move by setting positions inside their house.
+5. **Measure, don't guess:** read `Performance.Monitor.RenderTotalDrawCallsInFrame` and `RenderTotalPrimitivesInFrame` in the busiest view (the whole front garden planted, all animals in view) in a repeatable check; a task that breaks the budget records why in its Notes.
+6. Renderer stays **Compatibility** for PC; confirm renderer support with the console porting partner before any console work (GDD §13).
+
+---
+
+## 17. Change log
 
 - **0.1 — 2026-11-18:** Initial structure plan: repository and `src/` layout, task→file map for Phase-001, naming conventions, InputMap and autoload registries, placeholder/licence asset pipeline, version-control rules, intended headless verification commands, the 17 installed Godot/game-dev skills with when-to-load guidance, session checklist, and five open decisions/blockers (missing Godot binary, missing `.csproj`, spaced assembly name, `*.import` conflict, mobile renderer preset).
 - **0.2 — 2026-11-19:** Owner decisions applied (PC only): §14 items 3–5 **resolved** — assembly renamed `MyFarmingGame`, `.import` sidecars committed with only `.godot/` ignored, renderer switched to Compatibility. §2, §4, §10, §11 updated to match; `android/` ignore and the `grown_up_menu` input action removed; art guardrail wording updated. Flagged that `.agents/skills/` is committed despite being described as gitignored.
@@ -509,3 +562,8 @@ Restore after cloning: `npx skills experimental_install` · Update: `npx skills 
 - **0.22 — 2026-11-21:** Task 1.12 built: Onboarding autoload, OnboardingDirector, NudgeView, Ada, GuideArrow; file map and autoload registry updated.
 - **0.23 — 2026-11-21:** Owner order-variety follow-up: `core/Neighbours.cs`, `ui/StandingOrdersView.cs` (HUD/UI/StandingOrders); `OrderPremium` now 1.0.
 - **0.24 — 2026-11-21:** InputMap registry: `open_orders` (Back/Select proposed, on-screen Orders button) added for Phase-002; `help_inspect` loses Back/Select (controls.md v0.13). Docs-only.
+- **0.25 — 2026-11-21:** **Switch to 3D planned (owner decision 2026-11-21, GDD v0.45).** §4 lists the planned 3D files for Phase-001 Tasks 1.14–1.20 (parallel `Main3D.tscn` until the 1.20 cut-over, `Player3D`, `CameraRig`, `ModelLibrary`/`NamedModel` + `data/placeholder_models.json`, `FarmLayout`, `FarmLevel3D`, `Building3D`, `FarmGridView3D`, `Prop3D`, `FarmAnimal3D`, `DayNight3D`, `assets/models/`) and the 2D files deleted at cut-over; scene architecture records 3D units (1 tile = 1 m, XZ ground, north = −Z) and node types; §5 task map rows 1.14–1.20; §9 3D load-by-name pipeline and model conventions; §12 3D note; new **§16 performance budget** (Switch later); change log renumbered to §17. Docs-only.
+- **0.26 — 2026-11-21:** Scene architecture note: diagonal camera (owner 2026-11-21) — map north stays −Z, input turned by the camera yaw, tool front snaps to grid axes. Docs-only.
+- **0.27 — 2026-11-21:** Task 1.14 built: §4 marks the 3D foundation files built (`Main3D` + `Main3D.cs`, `Player3D`, `CameraRig`, `CameraDebugKeys`, `ModelLibrary`/`NamedModel`, `placeholder_models.json`, `TestGround3D`, `Tests3D.cs`); §5 row 1.14; §11 test groups and the Main3D boot command.
+- **0.28 — 2026-11-21:** InputMap registry: `camera_switch` (right stick flick / Q) for the owner's camera corner switch (Task 1.14). Gotcha recorded in Phase-001 Task 1.14: one action bound to both stick directions matches either sign, so `CameraRig` detects the flick itself.
+- **0.29 — 2026-11-21:** Tasks 1.15–1.18 built and the **cut-over to 3D done in Task 1.15** (not 1.20): §4 lists the 3D files and the deleted 2D ones, the scene-architecture 3D note is now permanent, §5 rows 1.15–1.18 (and 1.20 renamed), §9 notes `NamedSprite` is gone (SpriteLibrary stays for 2D pictures), §11 test groups `rules` + `game`; `tools/verify.sh` boots the 3D `Main.tscn`.

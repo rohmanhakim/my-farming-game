@@ -5,78 +5,114 @@ using MyFarmingGame.Core;
 
 namespace MyFarmingGame.Player;
 
-/// <summary>Where Kit looks. Kit walks in 8 directions but faces and uses tools in these 4.</summary>
+/// <summary>Where Kit's tools point: one of the 4 grid directions. Up = north (−Z), Down = south (+Z),
+/// Left = west (−X), Right = east (+X). Kit walks in any direction but faces and uses tools in these 4.</summary>
 public enum Facing { Down, Up, Left, Right }
 
 /// <summary>
-/// Kit's movement (Task 1.2, controls.md §2 and §4).
+/// Kit (Task 1.2; 3D since Tasks 1.14–1.15, controls.md §2 and §4).
 ///
-/// * Walks smoothly in 8 directions: left stick / D-pad (any SDL gamepad: Xbox, PlayStation,
-///   Switch Pro) or WASD / arrows. Partial stick tilt walks slower.
-/// * Faces 4 directions (Harvest Moon / Stardew style). On an exact diagonal the current facing is
-///   kept if it is one of the two directions involved, so diagonal walking does not flicker.
-/// * Click-to-move (DST style): left-click the ground walks there; holding the button keeps walking
-///   toward the cursor. Any stick/key movement cancels the click target.
-/// * <see cref="WalkTo"/> is the "walk to it, then act" hook for later tasks: they pass a callback
-///   that runs on arrival (for example "use the active tool on this tile").
-/// * Interactables (Task 1.3, <see cref="IInteractable"/>): <c>interact</c> (A / Space) uses the
-///   nearest one in reach; left-clicking one walks to it, then uses it.
-/// * Tools on the ground (Task 1.5, <see cref="IToolTarget"/>): with nothing to interact with in
-///   reach, <c>interact</c> uses the active tool on the tile in front of Kit (<see cref="FrontPoint"/>);
-///   left-clicking a tile walks Kit beside it, turns Kit to face it and uses the tool there.
-/// * <see cref="Frozen"/> stops all movement and input (prompts, sleeping).
+/// * Walks smoothly in 8 directions <b>relative to the screen</b> under the fixed diagonal camera:
+///   left stick / D-pad (any SDL gamepad: Xbox, PlayStation, Switch Pro) or WASD / arrows; up = up
+///   the screen. Partial tilt walks slower; diagonals are as fast as straight lines.
+/// * The model (child <see cref="NamedModel"/> "Model") turns smoothly towards the walking direction;
+///   <see cref="Facing"/> (the tool and interaction front) is the grid direction nearest to the walk
+///   and keeps the current one near an exact diagonal (<see cref="FacingFor(Vector2, Facing)"/>).
+/// * Click-to-move (DST style): left-click the ground (camera ray onto y = 0) walks there; holding
+///   keeps walking towards the cursor; any stick/key input cancels. <see cref="WalkTo"/> is the
+///   "walk there, then act" hook.
+/// * Interactables (<see cref="IInteractable"/>): <c>interact</c> (A / Space) uses the nearest one in
+///   reach; a left-click on one (click areas on physics layer 8) walks to it, then uses it.
+/// * Tools on the ground (<see cref="IToolTarget"/>): with nothing to interact with in reach,
+///   <c>interact</c> uses the active tool on the tile in front (<see cref="FrontPoint"/>); a click on
+///   a tile within <see cref="TileReach"/> works it at once, a farther one walks Kit beside it first.
+/// * <see cref="Frozen"/> stops all movement and input (menus, sleeping).
+/// Units: metres (1 tile = 1 m). The body origin is Kit's feet; Kit stays at y = 0.
 /// </summary>
-public partial class PlayerController : CharacterBody2D
+public partial class PlayerController : CharacterBody3D
 {
-    /// <summary>Walking speed in pixels per second (the sprite is 64 px tall). Tune in playtest.</summary>
-    [Export] public float MoveSpeed { get; set; } = 160f;
+    /// <summary>Walking speed (the 2D build's 160 px/s ÷ 64). Tune in playtest.</summary>
+    [Export] public float MoveSpeed { get; set; } = 2.5f;
+    /// <summary>m/s² (the 2D 1400 px/s² ÷ 64).</summary>
+    [Export] public float Acceleration { get; set; } = 22f;
+    [Export] public float ArriveDistance { get; set; } = 0.06f;
+    /// <summary>How fast the model turns to the walking direction (higher = snappier).</summary>
+    [Export] public float TurnSpeed { get; set; } = 14f;
 
-    /// <summary>How fast Kit reaches full speed and stops (px/s²). High = snappy, low = floaty.</summary>
-    [Export] public float Acceleration { get; set; } = 1400f;
-
-    /// <summary>Distance at which a click target counts as reached.</summary>
-    [Export] public float ArriveDistance { get; set; } = 4f;
-
-    /// <summary>Speed below which Kit counts as standing (idle animation).</summary>
-    public const float IdleSpeed = 5f;
-
+    public const float IdleSpeed = 0.08f;
     /// <summary>Stick/key input smaller than this is ignored (matches the move_* action deadzones).</summary>
     public const float InputDeadzone = 0.2f;
-
-    /// <summary>Physics frames of no progress toward a click target before giving up (blocked).</summary>
+    /// <summary>Distance from Kit's feet to the point the tile in front is picked from.</summary>
+    public const float FrontReach = 0.7f;
+    /// <summary>A clicked tile whose centre is this close to Kit's feet is worked without walking:
+    /// the tile Kit stands on and the tiles touching it, diagonals included (2D: 96 px).</summary>
+    public const float TileReach = 1.5f;
+    /// <summary>How far beside a tile Kit stands to work it (2D: 56 px).</summary>
+    public const float StandBeside = 0.875f;
     private const int StuckFrameLimit = 12;
-
-    public Facing Facing { get; private set; } = Facing.Down;
-
-    /// <summary>Kit's feet relative to the body origin (the collision box sits at the feet).</summary>
-    public static readonly Vector2 FeetOffset = new(0, 20);
-
-    /// <summary>How far in front of Kit's feet the "tile in front" is picked.</summary>
-    public const float FrontReach = 44f;
-
-    /// <summary>Unit vector of a facing.</summary>
-    public static Vector2 FacingVector(Facing f) => f switch
-    {
-        Facing.Up => Vector2.Up,
-        Facing.Left => Vector2.Left,
-        Facing.Right => Vector2.Right,
-        _ => Vector2.Down,
-    };
-
-    /// <summary>The point the tile in front of Kit is picked from (world coordinates).</summary>
-    public Vector2 FrontPoint => GlobalPosition + FeetOffset + FacingVector(Facing) * FrontReach;
-
-    /// <summary>Turns Kit to <paramref name="f"/> (after a click-walk to a tile).</summary>
-    public void Face(Facing f)
-    {
-        if (f == Facing) return;
-        Facing = f;
-        EmitSignal(SignalName.FacingChanged, (int)f);
-        PlayAnimation();
-    }
 
     /// <summary>Group the player joins (interactables use it to notice Kit).</summary>
     public const string Group = "player";
+
+    public Facing Facing { get; private set; } = Facing.Down;
+
+    /// <summary>The look (child "Model", a <see cref="NamedModel"/> "kit"). It turns; the body does not.</summary>
+    public NamedModel Model { get; private set; }
+
+    /// <summary>Model yaw in radians (0 = facing −Z / north).</summary>
+    public float ModelYaw => Model?.Rotation.Y ?? 0f;
+
+    [Signal] public delegate void FacingChangedEventHandler(int facing);
+
+    /// <summary>Unit ground vector of a grid facing.</summary>
+    public static Vector3 FacingVector(Facing f) => f switch
+    {
+        Facing.Up => Vector3.Forward,   // −Z, north
+        Facing.Left => Vector3.Left,     // −X, west
+        Facing.Right => Vector3.Right,   // +X, east
+        _ => Vector3.Back,               // +Z, south
+    };
+
+    /// <summary>Picks one of the 4 facings from a direction on the ground as (x, z) — y of the
+    /// Vector2 is z (south positive). Within ~10° of an exact diagonal the current facing is kept if
+    /// it is one of the two directions involved, so diagonal walking does not flicker; otherwise an
+    /// exact tie picks the north/south one.</summary>
+    public static Facing FacingFor(Vector2 dir, Facing current)
+    {
+        if (dir.LengthSquared() < 0.0001f)
+            return current;
+        float ax = Mathf.Abs(dir.X), ay = Mathf.Abs(dir.Y);
+        Facing horizontal = dir.X < 0 ? Facing.Left : Facing.Right;
+        Facing vertical = dir.Y < 0 ? Facing.Up : Facing.Down;
+        if (Mathf.Abs(ax - ay) <= 0.18f * Mathf.Max(ax, ay) && (current == horizontal || current == vertical))
+            return current;
+        return ax > ay ? horizontal : vertical;
+    }
+
+    /// <summary>Grid facing for a ground direction (keeps <paramref name="current"/> near a diagonal).</summary>
+    public static Facing FacingFor(Vector3 groundDir, Facing current) =>
+        FacingFor(new Vector2(groundDir.X, groundDir.Z), current);
+
+    /// <summary>Model yaw (radians) that looks along a ground direction; 0 = −Z (north).</summary>
+    public static float YawFor(Vector3 dir) => Mathf.Atan2(-dir.X, -dir.Z);
+
+    /// <summary>Kit's feet on the ground (the body origin sits at the feet).</summary>
+    public Vector3 Feet => new(GlobalPosition.X, 0, GlobalPosition.Z);
+
+    /// <summary>The point the tile in front of Kit is picked from.</summary>
+    public Vector3 FrontPoint => Feet + FacingVector(Facing) * FrontReach;
+
+    /// <summary>The whole tile in front of Kit (1 tile = 1 m; tile (x, y) covers x..x+1, z = y..y+1).</summary>
+    public Vector2I FrontCell => new(Mathf.FloorToInt(FrontPoint.X), Mathf.FloorToInt(FrontPoint.Z));
+
+    /// <summary>Turns Kit to <paramref name="f"/> (after a click-walk to a tile); the model turns too.</summary>
+    public void Face(Facing f)
+    {
+        if (Model != null) Model.Rotation = new Vector3(0, YawFor(FacingVector(f)), 0);
+        if (f == Facing) return;
+        Facing = f;
+        EmitSignal(SignalName.FacingChanged, (int)f);
+    }
 
     private bool _frozen;
 
@@ -87,34 +123,49 @@ public partial class PlayerController : CharacterBody2D
         set
         {
             _frozen = value;
-            if (value)
-            {
-                CancelWalkTo();
-                Velocity = Vector2.Zero;
-            }
+            if (value) { CancelWalkTo(); Velocity = Vector3.Zero; }
         }
     }
 
     /// <summary>True while walking toward a clicked point or a <see cref="WalkTo"/> target.</summary>
     public bool HasMoveTarget => _target.HasValue;
 
-    /// <summary>Emitted when the facing changes. Argument is the new <see cref="Player.Facing"/> as int.</summary>
-    [Signal] public delegate void FacingChangedEventHandler(int facing);
+    /// <summary>Test hook: used instead of the move_* actions (screen space, like Input.GetVector).</summary>
+    public Vector2? InputOverride { get; set; }
 
-    private Vector2? _target;
+    private Vector3? _target;
     private Action _onArrived;
     private bool _mouseHeld;
     private int _stuckFrames;
-    private AnimationPlayer _anim;
-
-    /// <summary>Test hook: when set, used instead of reading the move_* actions.</summary>
-    public Vector2? InputOverride { get; set; }
 
     public override void _Ready()
     {
-        _anim = GetNodeOrNull<AnimationPlayer>("AnimationPlayer");
+        MotionMode = MotionModeEnum.Floating; // top-down: no gravity or floor logic, Kit stays at y = 0
+        Model = GetNodeOrNull<NamedModel>("Model");
+        if (Model != null) // start looking the way Kit faces
+            Model.Rotation = new Vector3(0, YawFor(FacingVector(Facing)), 0);
         AddToGroup(Group);
-        PlayAnimation();
+    }
+
+    /// <summary>The camera rig in use, if any (screen ↔ ground directions).</summary>
+    private CameraRig Rig => GetViewport()?.GetCamera3D()?.GetParent() as CameraRig;
+
+    /// <summary>Screen-space direction (x right, y down) → ground direction, using the current camera.</summary>
+    public Vector3 ScreenToGround(Vector2 screen) =>
+        Rig?.ScreenToGround(screen) ?? new Vector3(screen.X, 0, screen.Y);
+
+    /// <summary>The ground point (y = 0) under a screen position, or null if the ray misses the ground.</summary>
+    public Vector3? GroundAt(Vector2 screenPos)
+    {
+        var cam = GetViewport()?.GetCamera3D();
+        if (cam == null) return null;
+        Vector3 origin = cam.ProjectRayOrigin(screenPos);
+        Vector3 dir = cam.ProjectRayNormal(screenPos);
+        if (Mathf.Abs(dir.Y) < 0.0001f) return null;
+        float t = -origin.Y / dir.Y;
+        if (t < 0) return null;
+        Vector3 p = origin + dir * t;
+        return p.IsFinite() ? new Vector3(p.X, 0, p.Z) : null;
     }
 
     public override void _UnhandledInput(InputEvent e)
@@ -128,30 +179,25 @@ public partial class PlayerController : CharacterBody2D
         if (e is InputEventMouseButton mb && mb.ButtonIndex == MouseButton.Left)
         {
             _mouseHeld = mb.Pressed;
-            if (mb.Pressed)
+            if (!mb.Pressed) return;
+            var clicked = InteractableAt(mb.Position);
+            if (clicked != null)
             {
-                // Use the click's own position (not the polled cursor) so the target is exactly
-                // where the click happened, also for injected events.
-                Vector2 world = GetViewport().GetCanvasTransform().AffineInverse() * mb.Position;
-                var clicked = InteractableAt(world);
-                if (clicked != null)
+                // Object click: walk to it, then use it. No hold-to-follow.
+                _mouseHeld = false;
+                WalkTo(clicked.ApproachPoint, () => { if (clicked.CanInteract) clicked.Interact(this); });
+            }
+            else if (GroundAt(mb.Position) is Vector3 ground)
+            {
+                if (ToolTargetAt(ground) is IToolTarget target)
                 {
-                    // Object click: walk to it, then use it. No hold-to-follow.
                     _mouseHeld = false;
-                    WalkTo(clicked.ApproachPoint, () => { if (clicked.CanInteract) clicked.Interact(this); });
-                }
-                else if (ToolTargetAt(world) is IToolTarget target)
-                {
-                    // Tile click: walk beside it, face it, use the active tool on it.
-                    _mouseHeld = false;
-                    WalkToTile(target, world);
+                    WalkToTile(target, ground);
                 }
                 else
-                {
-                    WalkTo(world); // ground click
-                }
-                GetViewport().SetInputAsHandled();
+                    WalkTo(ground); // ground click
             }
+            GetViewport().SetInputAsHandled();
             return;
         }
         // Space / gamepad A (the mouse part of "interact" is handled above).
@@ -165,20 +211,18 @@ public partial class PlayerController : CharacterBody2D
                 GetViewport().SetInputAsHandled();
             }
             else if (UseToolInFront())
-            {
                 GetViewport().SetInputAsHandled();
-            }
         }
     }
 
     /// <summary>True when Kit may use tools now (no menu, prompt or night).</summary>
     private static bool ToolsAllowed => GameClock.Instance?.IsPlayable ?? true;
 
-    /// <summary>The tool target (garden) whose tile is under <paramref name="worldPoint"/>, if any.</summary>
-    public IToolTarget ToolTargetAt(Vector2 worldPoint)
+    /// <summary>The tool target (garden) whose tile is under <paramref name="groundPoint"/>, if any.</summary>
+    public IToolTarget ToolTargetAt(Vector3 groundPoint)
     {
         foreach (Node n in GetTree().GetNodesInGroup(IToolTarget.Group))
-            if (n is IToolTarget t && t.ContainsPoint(worldPoint))
+            if (n is IToolTarget t && t.ContainsPoint(groundPoint))
                 return t;
         return null;
     }
@@ -194,30 +238,26 @@ public partial class PlayerController : CharacterBody2D
         return true;
     }
 
-    /// <summary>Walks next to the tile under <paramref name="worldPoint"/>, then faces it and uses the
-    /// active tool on it (the mouse "walk to it, then act" for tiles).</summary>
-    public void WalkToTile(IToolTarget target, Vector2 worldPoint)
+    /// <summary>Works the tile under <paramref name="groundPoint"/>: at once when it is within
+    /// <see cref="TileReach"/> (turn and use the tool), otherwise walk beside it first.</summary>
+    public void WalkToTile(IToolTarget target, Vector3 groundPoint)
     {
-        Vector2 center = target.TileCenterAt(worldPoint);
-        Vector2 feet = GlobalPosition + FeetOffset;
-        Vector2 d = feet - center;
-        // Owner playtest 2026-11-21: a tile within reach is worked at once (turn and use the tool);
-        // only a tile further away is walked to first.
+        Vector3 center = target.TileCenterAt(groundPoint);
+        Vector3 d = Feet - center;
         if (d.Length() <= TileReach)
         {
             CancelWalkTo();
-            if (d.LengthSquared() > 1f) Face(FacingFor(-d, Facing));
+            if (d.LengthSquared() > 0.0003f) Face(FacingFor(-d, Facing));
             if (ToolsAllowed)
                 target.UseToolAt(ToolBelt.Instance?.Active ?? Tool.Hands, center);
             return;
         }
-        // Stand beside the tile on Kit's side; if that spot is blocked (a wall, the fence, an
-        // overgrown field), try the other sides.
-        Vector2 first = Mathf.Abs(d.X) > Mathf.Abs(d.Y) ? new Vector2(Mathf.Sign(d.X), 0) : new Vector2(0, d.Y < 0 ? -1 : 1);
-        Vector2 side = first;
-        foreach (var s in new[] { first, new Vector2(first.Y, first.X), new Vector2(-first.Y, -first.X), -first })
-            if (FeetFreeAt(center + s * 56f)) { side = s; break; }
-        Vector2 approach = center + side * 56f - FeetOffset;
+        // Stand beside the tile on Kit's side; if that spot is blocked, try the other sides.
+        Vector3 first = Mathf.Abs(d.X) > Mathf.Abs(d.Z) ? new Vector3(Mathf.Sign(d.X), 0, 0) : new Vector3(0, 0, d.Z < 0 ? -1 : 1);
+        Vector3 side = first;
+        foreach (var s in new[] { first, new Vector3(first.Z, 0, first.X), new Vector3(-first.Z, 0, -first.X), -first })
+            if (FeetFreeAt(center + s * StandBeside)) { side = s; break; }
+        Vector3 approach = center + side * StandBeside;
         Facing face = FacingFor(-side, Facing);
         WalkTo(approach, () =>
         {
@@ -227,38 +267,34 @@ public partial class PlayerController : CharacterBody2D
         });
     }
 
-    /// <summary>How close (feet to tile centre) a clicked tile must be to be worked without walking:
-    /// the tile Kit stands on and the tiles touching it, diagonals included.</summary>
-    public const float TileReach = 96f;
-
-    /// <summary>True when Kit's feet could stand at <paramref name="feetPoint"/> (no solid body there).</summary>
-    public bool FeetFreeAt(Vector2 feetPoint)
+    /// <summary>True when Kit could stand at <paramref name="feetPoint"/> (no solid body there).</summary>
+    public bool FeetFreeAt(Vector3 feetPoint)
     {
-        var shape = new RectangleShape2D { Size = new Vector2(36, 20) };
-        var q = new PhysicsShapeQueryParameters2D
+        var q = new PhysicsShapeQueryParameters3D
         {
-            Shape = shape, Transform = new Transform2D(0, feetPoint), CollideWithBodies = true, CollideWithAreas = false,
-            CollisionMask = CollisionMask, Exclude = new Godot.Collections.Array<Rid> { GetRid() },
+            Shape = new CapsuleShape3D { Radius = 0.28f, Height = 1.6f },
+            Transform = new Transform3D(Basis.Identity, new Vector3(feetPoint.X, 0.85f, feetPoint.Z)),
+            CollideWithBodies = true, CollideWithAreas = false, CollisionMask = CollisionMask,
+            Exclude = new Godot.Collections.Array<Rid> { GetRid() },
         };
-        return GetWorld2D().DirectSpaceState.IntersectShape(q, 1).Count == 0;
+        return GetWorld3D().DirectSpaceState.IntersectShape(q, 1).Count == 0;
     }
 
-    /// <summary>The interactable whose click area is under <paramref name="worldPoint"/>, if any.</summary>
-    public IInteractable InteractableAt(Vector2 worldPoint)
+    /// <summary>The interactable whose click area is under the screen position, if any.</summary>
+    public IInteractable InteractableAt(Vector2 screenPos)
     {
-        var query = new PhysicsPointQueryParameters2D
-        {
-            Position = worldPoint,
-            CollideWithAreas = true,
-            CollideWithBodies = false,
-            CollisionMask = IInteractable.ClickLayer,
-        };
-        foreach (var hit in GetWorld2D().DirectSpaceState.IntersectPoint(query, 8))
-        {
-            for (Node n = hit["collider"].As<Node>(); n != null; n = n.GetParent())
-                if (n is IInteractable it)
-                    return it;
-        }
+        var cam = GetViewport()?.GetCamera3D();
+        if (cam == null) return null;
+        Vector3 from = cam.ProjectRayOrigin(screenPos);
+        Vector3 to = from + cam.ProjectRayNormal(screenPos) * cam.Far;
+        var q = PhysicsRayQueryParameters3D.Create(from, to, IInteractable.ClickLayer);
+        q.CollideWithAreas = true;
+        q.CollideWithBodies = false;
+        var hit = GetWorld3D().DirectSpaceState.IntersectRay(q);
+        if (hit.Count == 0) return null;
+        for (Node n = hit["collider"].As<Node>(); n != null; n = n.GetParent())
+            if (n is IInteractable it)
+                return it;
         return null;
     }
 
@@ -271,19 +307,18 @@ public partial class PlayerController : CharacterBody2D
         {
             if (n is not IInteractable it || !it.CanInteract || !it.IsInReach(this))
                 continue;
-            float d = GlobalPosition.DistanceSquaredTo(it.ApproachPoint);
+            float d = Feet.DistanceSquaredTo(it.ApproachPoint);
             if (d < bestDist) { bestDist = d; best = it; }
         }
         return best;
     }
 
-    /// <summary>Walks toward <paramref name="target"/>; runs <paramref name="onArrived"/> on arrival.
-    /// Cancelled (callback not run) by stick/key movement or when Kit is blocked.</summary>
-    public void WalkTo(Vector2 target, Action onArrived = null)
+    /// <summary>Walks towards <paramref name="target"/> (ground point); runs <paramref name="onArrived"/>
+    /// on arrival. Cancelled (callback not run) by stick/key movement or when Kit is blocked.</summary>
+    public void WalkTo(Vector3 target, Action onArrived = null)
     {
-        if (!target.IsFinite())
-            return; // a bad cursor transform must never send Kit (and the camera) to NaN
-        _target = target;
+        if (!target.IsFinite()) return; // a bad cursor ray must never send Kit (and the camera) to NaN
+        _target = new Vector3(target.X, 0, target.Z);
         _onArrived = onArrived;
         _stuckFrames = 0;
     }
@@ -295,67 +330,74 @@ public partial class PlayerController : CharacterBody2D
         _mouseHeld = false;
     }
 
-    public override void _PhysicsProcess(double delta)
-    {
-        Step((float)delta);
-    }
+    public override void _PhysicsProcess(double delta) => Step((float)delta);
 
-    /// <summary>One movement step. Public so tests can drive it with a fixed delta.</summary>
+    /// <summary>One movement step (public so tests can drive it).</summary>
     public void Step(float delta)
     {
         Vector2 input = InputOverride ?? Input.GetVector("move_left", "move_right", "move_up", "move_down", InputDeadzone);
-        if (_frozen)
-        {
-            input = Vector2.Zero;
-            Velocity = Vector2.Zero;
-        }
+        if (_frozen) { input = Vector2.Zero; Velocity = Vector3.Zero; }
 
         if (input != Vector2.Zero)
             CancelWalkTo();
-        else if (_mouseHeld && InputOverride == null && GetGlobalMousePosition().IsFinite())
-            _target = GetGlobalMousePosition();
+        else if (_mouseHeld && InputOverride == null && GroundAt(GetViewport().GetMousePosition()) is Vector3 cursor)
+            _target = cursor;
 
-        Vector2 desired = input * MoveSpeed;
+        Vector3 desired = ScreenToGround(input) * MoveSpeed;
         if (_target.HasValue)
         {
-            Vector2 to = _target.Value - GlobalPosition;
+            Vector3 to = _target.Value - Feet;
             if (to.Length() <= ArriveDistance)
             {
                 Arrive();
-                desired = Vector2.Zero;
+                desired = Vector3.Zero;
             }
             else
             {
-                // Slow down over the last few pixels so Kit does not overshoot the point.
                 float speed = Mathf.Min(MoveSpeed, to.Length() / Math.Max(delta, 0.0001f));
                 desired = to.Normalized() * speed;
             }
         }
 
         Velocity = Velocity.MoveToward(desired, Acceleration * delta);
-        if (_target.HasValue && desired != Vector2.Zero)
+        if (_target.HasValue && desired != Vector3.Zero)
             Velocity = desired; // click-walks start at full speed so short clicks feel responsive
+        Velocity = new Vector3(Velocity.X, 0, Velocity.Z);
 
         if (!Velocity.IsFinite())
         {
             GD.PushError($"[PlayerController] non-finite velocity {Velocity}; stopping Kit");
-            Velocity = Vector2.Zero;
+            Velocity = Vector3.Zero;
             CancelWalkTo();
         }
 
-        Vector2 before = GlobalPosition;
+        Vector3 before = GlobalPosition;
         MoveAndSlide();
+        GlobalPosition = new Vector3(GlobalPosition.X, 0, GlobalPosition.Z);
 
         if (_target.HasValue)
         {
-            bool progressed = (GlobalPosition - before).Length() > 0.25f;
+            bool progressed = (GlobalPosition - before).Length() > 0.004f;
             _stuckFrames = progressed ? 0 : _stuckFrames + 1;
             if (_stuckFrames >= StuckFrameLimit && !_mouseHeld)
                 CancelWalkTo();
         }
 
-        UpdateFacing(desired);
-        PlayAnimation();
+        var next = FacingFor(desired, Facing);
+        if (next != Facing)
+        {
+            Facing = next;
+            EmitSignal(SignalName.FacingChanged, (int)next);
+        }
+        TurnModel(desired, delta);
+    }
+
+    /// <summary>Turns the model smoothly towards the walking direction (any angle).</summary>
+    private void TurnModel(Vector3 dir, float delta)
+    {
+        if (Model == null || dir.LengthSquared() < 0.0001f) return;
+        float yaw = Mathf.LerpAngle(Model.Rotation.Y, YawFor(dir), 1f - Mathf.Exp(-TurnSpeed * delta));
+        Model.Rotation = new Vector3(0, yaw, 0);
     }
 
     private void Arrive()
@@ -363,43 +405,13 @@ public partial class PlayerController : CharacterBody2D
         var cb = _onArrived;
         _target = null;
         _onArrived = null;
-        Velocity = Vector2.Zero;
+        Velocity = Vector3.Zero;
         cb?.Invoke();
     }
 
-    /// <summary>Picks one of 4 facings from an 8-way direction (keeps the current one on ties).</summary>
-    public static Facing FacingFor(Vector2 dir, Facing current)
-    {
-        if (dir.LengthSquared() < 0.0001f)
-            return current;
-        float ax = Mathf.Abs(dir.X), ay = Mathf.Abs(dir.Y);
-        Facing horizontal = dir.X < 0 ? Facing.Left : Facing.Right;
-        Facing vertical = dir.Y < 0 ? Facing.Up : Facing.Down;
-        // Within ~10° of a perfect diagonal: keep the current facing if it is one of the two parts.
-        if (Mathf.Abs(ax - ay) <= 0.18f * Mathf.Max(ax, ay) && (current == horizontal || current == vertical))
-            return current;
-        return ax > ay ? horizontal : vertical;
-    }
+    /// <summary>True while Kit is walking (idle below <see cref="IdleSpeed"/>).</summary>
+    public bool IsWalking => new Vector2(Velocity.X, Velocity.Z).Length() > IdleSpeed;
 
-    private void UpdateFacing(Vector2 dir)
-    {
-        var next = FacingFor(dir, Facing);
-        if (next == Facing)
-            return;
-        Facing = next;
-        EmitSignal(SignalName.FacingChanged, (int)next);
-    }
-
-    /// <summary>Animation name for the current state, e.g. "walk_left" or "idle_down".</summary>
-    public string CurrentAnimationName =>
-        (Velocity.Length() > IdleSpeed ? "walk_" : "idle_") + Facing.ToString().ToLowerInvariant();
-
-    private void PlayAnimation()
-    {
-        if (_anim == null)
-            return;
-        string name = CurrentAnimationName;
-        if (_anim.CurrentAnimation != name && _anim.HasAnimation(name))
-            _anim.Play(name);
-    }
+    /// <summary>"walk" or "idle" plus the facing, e.g. "walk_left" (animations come with real models).</summary>
+    public string CurrentAnimationName => (IsWalking ? "walk_" : "idle_") + Facing.ToString().ToLowerInvariant();
 }

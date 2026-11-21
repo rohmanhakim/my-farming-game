@@ -1,7 +1,7 @@
 # Places
 
 > **Status:** Brainstorming draft — **world map redesigned 2026-11-20 (Bramblewick Vale)**
-> **Version:** 0.13
+> **Version:** 0.15
 > **Last updated:** 2026-11-21
 > **Purpose:** The places the player can explore. The lane is now the road into **Bramblewick Vale**, a small valley of **five areas plus Kit's farm** (owner decision 2026-11-20, replaces "one lane, eight places, no map"). Sizes, layout, unlocks, and navigation rules live here; the story of each place lives in [world.md](./world.md). All names are tentative and every element is a proposal pending playtesting.
 
@@ -23,7 +23,7 @@
 
 ## 2. Areas
 
-Scale: **1 tile = 64 px ≈ 1 m** (the Task 1.2 ground checker). The camera shows about **20 × 11 tiles** at 1280 × 720 (one "screen").
+Scale: **1 tile = 1 m** (64 px in the 2D build; in 3D since 2026-11-21 one tile is one metre on the ground plane). The fixed camera shows about **20 × 11 tiles** at 1280 × 720 (one "screen"), the framing target for the 3D camera too (Phase-001 Task 1.14). The 3D camera is **diagonal** (owner 2026-11-21), so map north points up-and-to-the-side on screen and the house and barn doors (facing north) are on the far side from the camera — whether to turn them is an owner question for Task 1.15.
 
 | Area | Size (tiles) | Tiles | ≈ Screens | Opens | What it's for |
 |---|---|---|---|---|---|
@@ -171,3 +171,5 @@ A round trip to the farthest spot costs about **1.2 in-game hours** of Kit's 04:
 - **0.11 — 2026-11-20:** **Farmhands first, machines later (owner decision 2026-11-20):** the villagers' cottages open at T2; farmhands walk to the farm and back each day.
 - **0.12 — 2026-11-20:** **Windmill / water pump removed (owner decision 2026-11-20):** the carpenter no longer sells it.
 - **0.13 — 2026-11-21:** **Selling and house-visit orders (owner decisions 2026-11-21).** Kit's market stall deferred to a later phase (the market stand stays for the travelling merchant); the **shipping box** placed beside the farmhouse door (§3); new navigation rule: **order signs** — a basket with a picture note on a neighbour's doorstep shows a house that wants something; Kit knocks and talks to the neighbour, and sends the goods through the shipping box. The bakery, allotments and general store open in T1 when their neighbour arrives; Marlow's board becomes the village noticeboard (no orders).
+- **0.14 — 2026-11-21:** Scale note for the **3D switch** (owner decision 2026-11-21): 1 tile = 1 m on the 3D ground; the 20 × 11-tile screen stays the camera's framing target. Sizes and walking times unchanged.
+- **0.15 — 2026-11-21:** Diagonal 3D camera (owner 2026-11-21): map north is no longer screen-up; north-facing doors flagged for Task 1.15. Layout unchanged.

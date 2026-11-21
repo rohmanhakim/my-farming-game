@@ -26,7 +26,7 @@ public partial class SaveGame : Node
 {
     public static SaveGame Instance { get; private set; }
 
-    public const int SchemaVersion = 1;
+    public const int SchemaVersion = 2;
     public const string DefaultPath = "user://savegame.json";
 
     /// <summary>When false nothing is loaded or saved (tests).</summary>
@@ -43,8 +43,32 @@ public partial class SaveGame : Node
 
     private readonly Dictionary<string, (Func<Godot.Collections.Dictionary> Save, Action<Godot.Collections.Dictionary> Load)> _sections = new();
 
-    /// <summary>Upgrade steps: version N → N+1. A no-op chain is ready for v1 → v2.</summary>
-    public static readonly Dictionary<int, Func<Godot.Collections.Dictionary, Godot.Collections.Dictionary>> Migrations = new();
+    /// <summary>Upgrade steps: version N → N+1.
+    /// v1 → v2 (Task 1.20, the switch to 3D): the player's position moves from pixels (x, y) on the
+    /// 2D map to metres (x, z) on the 3D ground (64 px = 1 m); nothing else changes.</summary>
+    public static readonly Dictionary<int, Func<Godot.Collections.Dictionary, Godot.Collections.Dictionary>> Migrations = new()
+    {
+        { 1, MigratePlayerTo3D },
+    };
+
+    /// <summary>Pixels per metre in the 2D build (1 tile = 64 px = 1 m).</summary>
+    public const double PixelsPerMetre = 64.0;
+
+    /// <summary>v1 → v2: player x/y in pixels → x/z in metres.</summary>
+    public static Godot.Collections.Dictionary MigratePlayerTo3D(Godot.Collections.Dictionary root)
+    {
+        if (root.TryGetValue("player", out var pv) && pv.VariantType == Variant.Type.Dictionary)
+        {
+            var p = pv.AsGodotDictionary();
+            if (p.ContainsKey("x") && p.ContainsKey("y") && !p.ContainsKey("z"))
+            {
+                p["x"] = p["x"].AsDouble() / PixelsPerMetre;
+                p["z"] = p["y"].AsDouble() / PixelsPerMetre;
+                p.Remove("y");
+            }
+        }
+        return root;
+    }
 
     /// <summary>How many migration steps ran on the last load (tests).</summary>
     public int MigrationsRun { get; private set; }
