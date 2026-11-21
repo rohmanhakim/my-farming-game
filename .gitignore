@@ -2,3 +2,6 @@
 # Godot 4+ generated cache — the only Godot output kept out of git.
 # *.import sidecars ARE committed (Godot's recommendation).
 src/.godot/
+
+# Export output (Phase-001 export for the owner, 2026-11-21)
+build/

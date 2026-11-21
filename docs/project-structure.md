@@ -1,7 +1,7 @@
 # Project Structure
 
 > **Status:** Proposal for team agreement — input to Phase-001 Task 1.1 ("Team agrees on project folder structure and naming conventions")
-> **Version:** 0.30
+> **Version:** 0.32
 > **Last updated:** 2026-11-21
 > **Purpose:** The repository layout, Godot folder structure, naming rules, input/autoload registries, asset pipeline, and verification commands that every development session follows when adding code or assets under `src/`. It is a *technical* contract only — it never overrides a gameplay decision.
 
@@ -406,7 +406,7 @@ Adding an autoload is a structural decision that must be recorded here plus in t
 src/.godot/
 ```
 
-No `android/` entry (PC first, consoles later; no mobile). Export output, if ever produced inside the repo, goes to a `build/` folder added to `.gitignore` in the task that first exports.
+No `android/` entry (PC first, consoles later; no mobile). **First export 2026-11-21 (owner request):** `build/` is now in `.gitignore`; `src/export_presets.cfg` has a **macOS** preset (universal x86_64 + arm64, ad-hoc signed, release, `tests/*` excluded) writing `build/macos/Fields & Sunshine.zip`; `src/MyFarmingGame.sln` exists (C# export needs it, with the Debug / ExportDebug / ExportRelease configurations); `rendering/textures/vram_compression/import_etc2_astc=true` (required for arm64 / universal Mac exports). Export templates: Godot 4.7.2 mono, only `macos.zip` installed in `~/Library/Application Support/Godot/export_templates/4.7.2.stable.mono/`. **Export with `tools/export_mac.sh`** → `build/macos/Fields & Sunshine (Mac).zip`: Godot 4.7.2 writes the "&" of the game name unescaped into the Info.plist, which breaks the signature ("cannot be opened / move to trash" on other Macs); the script escapes it, ad-hoc signs the whole bundle again, verifies it and zips with `ditto` (owner confirmed the fixed app opens on another Mac, 2026-11-21). On the other Mac: `xattr -cr` the app, then right-click → Open. Web export is not possible for C# projects in Godot 4.
 
 Root `.gitignore` (repo-wide, current):
 
@@ -572,3 +572,5 @@ Rules:
 - **0.28 — 2026-11-21:** InputMap registry: `camera_switch` (right stick flick / Q) for the owner's camera corner switch (Task 1.14). Gotcha recorded in Phase-001 Task 1.14: one action bound to both stick directions matches either sign, so `CameraRig` detects the flick itself.
 - **0.29 — 2026-11-21:** Tasks 1.15–1.18 built and the **cut-over to 3D done in Task 1.15** (not 1.20): §4 lists the 3D files and the deleted 2D ones, the scene-architecture 3D note is now permanent, §5 rows 1.15–1.18 (and 1.20 renamed), §9 notes `NamedSprite` is gone (SpriteLibrary stays for 2D pictures), §11 test groups `rules` + `game`; `tools/verify.sh` boots the 3D `Main.tscn`.
 - **0.30 — 2026-11-21:** Task 1.20: §16 records the measured values and revises the handheld draw-call line to 250 (HUD ≈ 84), adds the baking rule; §11 `tools/perf_check.sh`; §5 row 1.20 built.
+- **0.31 — 2026-11-21:** §10: first export (macOS universal app) — `build/` ignored, macOS preset, `.sln`, ETC2/ASTC import setting, export command; no web export for C#.
+- **0.32 — 2026-11-21:** §10: `tools/export_mac.sh` (plist fix, re-sign, verify, ditto zip) after the first export would not open on another Mac.
