@@ -11,5 +11,6 @@ public partial class Hen : FarmAnimal
         SpriteName = "hen";
         ClickSize = new Vector3(0.6f, 0.7f, 0.6f);
         PromptHeight = 0.9f;
+        CastsShadow = false; // five tiny shadows cost five shadow-pass draws (budget §16)
     }
 }

@@ -32,6 +32,7 @@ public partial class BerryBush : Prop
         BodySize = new Vector3(0.62f, 0.8f, 0.4f);
         ClickSize = new Vector3(1f, 1f, 1f);
         PromptHeight = 1.2f;
+        CastsShadow = false;
     }
 
     public override void _Ready()

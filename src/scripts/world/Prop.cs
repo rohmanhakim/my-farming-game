@@ -35,6 +35,8 @@ public abstract partial class Prop : StaticBody3D, IInteractable
     [Export] public string PromptSprite { get; set; } = "";
     /// <summary>How high above the origin the prompt floats (metres).</summary>
     [Export] public float PromptHeight { get; set; } = 1.6f;
+    /// <summary>False for small props whose shadow is not worth a shadow-pass draw (hens).</summary>
+    [Export] public bool CastsShadow { get; set; } = true;
 
     public NamedModel Model { get; private set; }
     private WorldPin _prompt;
@@ -64,6 +66,9 @@ public abstract partial class Prop : StaticBody3D, IInteractable
         {
             Model = new NamedModel { Name = "Model", ModelName = ModelName };
             AddChild(Model);
+            if (!CastsShadow)
+                foreach (var g in Model.FindChildren("*", "GeometryInstance3D", true, false))
+                    ((GeometryInstance3D)g).CastShadow = GeometryInstance3D.ShadowCastingSetting.Off;
         }
         if (BodySize.X > 0 && BodySize.Z > 0)
             AddChild(new CollisionShape3D

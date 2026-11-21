@@ -1,7 +1,7 @@
 # Project Structure
 
 > **Status:** Proposal for team agreement — input to Phase-001 Task 1.1 ("Team agrees on project folder structure and naming conventions")
-> **Version:** 0.29
+> **Version:** 0.30
 > **Last updated:** 2026-11-21
 > **Purpose:** The repository layout, Godot folder structure, naming rules, input/autoload registries, asset pipeline, and verification commands that every development session follows when adding code or assets under `src/`. It is a *technical* contract only — it never overrides a gameplay decision.
 
@@ -309,7 +309,7 @@ Quick lookup so a session knows where its artifact belongs. Scope still comes fr
 | 1.17 Props, NPCs & Prompts in 3D | `Prop.cs` (3D base), `scripts/core/WorldPin.cs`, `GuideArrow.cs`, 3D prop scenes (same names), prop placeholders ✅ built |
 | 1.18 Hens & Cow in 3D | `FarmAnimal.cs` (+ `HeartBar`), `AnimalHouse.cs` in metres, hen/cow placeholders ✅ built |
 | 1.19 Day/Night Lighting in 3D (planned) | `scenes/world/Sun.tscn`, `scripts/world/DayNight3D.cs` |
-| 1.20 Save Migration & Performance Check (planned; the cut-over already happened in 1.15) | renames the 3D scenes over the 2D ones, deletes the 2D world files, `SaveGame` schemaVersion 2 migration, `tools/perf_check` (frame budget) |
+| 1.20 Save Migration & Performance Check (the cut-over and migration landed in 1.15) | `debug/PerfCheck.tscn` + `PerfCheck.cs`, `tools/perf_check.sh`, `ModelLibrary.BakedMesh`/`BakeBoxes` ✅ built |
 
 ---
 
@@ -435,6 +435,7 @@ godot --path src --write-movie /tmp/shot.png --quit-after 5   # windowed: writes
 dotnet build src/MyFarmingGame.csproj                # C# compiles (needs §14.2)
 godot --headless --path src res://tests/TestRunner.tscn          # exit code 0 = all checks pass
 godot --headless --path src res://tests/TestRunner.tscn -- --group=rules          # only some groups (Task 1.14)
+tools/perf_check.sh                                    # windowed frame budget, pc + handheld profiles (Task 1.20)
 ```
 
 **Test groups (Task 1.14; 2D group removed at the 1.15 cut-over):** `rules` (no scene: data, rules, maths) and `game` (the real 3D `Main.tscn`). No argument = both, in the original order. `tools/verify.sh rules` passes the list through. Headless runs draw nothing, so the §16 draw-call check only bites in a windowed run (Task 1.20 adds a windowed measurement).
@@ -512,12 +513,14 @@ Restore after cloning: `npx skills experimental_install` · Update: `npx skills 
 
 ## 16. Performance budget (3D, Switch later) — proposal 2026-11-21
 
-The game ships on PC first, but Switch and PlayStation follow (GDD §2). Every 3D task stays inside this budget so the console versions need no redo. The original Switch is the low bar. Numbers are a starting proposal; Task 1.14 adds a check that measures them and Task 1.20 records the real values.
+The game ships on PC first, but Switch and PlayStation follow (GDD §2). Every 3D task stays inside this budget so the console versions need no redo. The original Switch is the low bar. Numbers started as a proposal; `tools/perf_check.sh` (Task 1.20) measures them windowed for both profiles.
+
+**Measured 2026-11-21 (Task 1.20, owner's M1 MacBook Air, Compatibility, busiest view: full garden, house, coop, fields, midday):** ≈ 11.4 ms per frame (≈ 88 fps uncapped), **242 draw calls** (3D world ≈ 158, HUD ≈ 84, shadows ≈ 23), ≈ 67k triangles, both profiles. Known issue: one ≈ 145 ms first-sight shader-compile hitch per run (warm-up / shader baking to do). Next target: the HUD's draw calls.
 
 | Item | PC target | Handheld profile (Switch-like) |
 |---|---|---|
 | Frame rate / resolution | 60 fps at 1080p on integrated graphics (M1 Mac, Intel Iris Xe) | 30 fps at 720p (tested on the Mac with the low profile until a devkit exists) |
-| Draw calls per frame | ≤ 300 (aim ≤ 150) | ≤ 150 |
+| Draw calls per frame (HUD included) | ≤ 300 (aim ≤ 150) | ≤ 250 (revised from 150 in Task 1.20: the HUD alone is ≈ 84) |
 | Triangles on screen | ≤ 150k (aim ≤ 100k) | ≤ 100k |
 | Shadows | one `DirectionalLight3D` with shadows, 2 splits, ≈ 30 m distance | 1 split, ≈ 20 m, lower resolution |
 | Other lights | ≤ 4 small unshadowed lights on screen at night; prefer glowing (emissive) windows to lights | same |
@@ -531,8 +534,9 @@ Rules:
 2. **Share materials:** one material per colour or model, never a unique material per instance; `ModelLibrary` caches them.
 3. **Transparency only while fading:** roofs and walls fade, then are hidden; no permanently transparent meshes.
 4. **Simple physics:** box/capsule colliders only; Kit is the only `CharacterBody3D`; animals move by setting positions inside their house.
-5. **Measure, don't guess:** read `Performance.Monitor.RenderTotalDrawCallsInFrame` and `RenderTotalPrimitivesInFrame` in the busiest view (the whole front garden planted, all animals in view) in a repeatable check; a task that breaks the budget records why in its Notes.
-6. Renderer stays **Compatibility** for PC; confirm renderer support with the console porting partner before any console work (GDD §13).
+5. **Placeholders are baked:** `ModelLibrary` merges each placeholder's parts into one vertex-coloured mesh with one shared material; static scenery is baked with `ModelLibrary.BakeBoxes`. Small props set `Prop.CastsShadow = false`.
+6. **Measure, don't guess:** read `Performance.Monitor.RenderTotalDrawCallsInFrame` and `RenderTotalPrimitivesInFrame` in the busiest view (the whole front garden planted, all animals in view) in a repeatable check; a task that breaks the budget records why in its Notes.
+7. Renderer stays **Compatibility** for PC; confirm renderer support with the console porting partner before any console work (GDD §13).
 
 ---
 
@@ -567,3 +571,4 @@ Rules:
 - **0.27 — 2026-11-21:** Task 1.14 built: §4 marks the 3D foundation files built (`Main3D` + `Main3D.cs`, `Player3D`, `CameraRig`, `CameraDebugKeys`, `ModelLibrary`/`NamedModel`, `placeholder_models.json`, `TestGround3D`, `Tests3D.cs`); §5 row 1.14; §11 test groups and the Main3D boot command.
 - **0.28 — 2026-11-21:** InputMap registry: `camera_switch` (right stick flick / Q) for the owner's camera corner switch (Task 1.14). Gotcha recorded in Phase-001 Task 1.14: one action bound to both stick directions matches either sign, so `CameraRig` detects the flick itself.
 - **0.29 — 2026-11-21:** Tasks 1.15–1.18 built and the **cut-over to 3D done in Task 1.15** (not 1.20): §4 lists the 3D files and the deleted 2D ones, the scene-architecture 3D note is now permanent, §5 rows 1.15–1.18 (and 1.20 renamed), §9 notes `NamedSprite` is gone (SpriteLibrary stays for 2D pictures), §11 test groups `rules` + `game`; `tools/verify.sh` boots the 3D `Main.tscn`.
+- **0.30 — 2026-11-21:** Task 1.20: §16 records the measured values and revises the handheld draw-call line to 250 (HUD ≈ 84), adds the baking rule; §11 `tools/perf_check.sh`; §5 row 1.20 built.

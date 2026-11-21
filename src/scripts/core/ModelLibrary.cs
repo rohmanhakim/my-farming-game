@@ -12,8 +12,9 @@ namespace MyFarmingGame.Core;
 ///   2. Placeholder: primitive mesh parts from res://data/placeholder_models.json
 ///   3. Fallback:    a 1 m magenta box (a missing model is obvious but never crashes)
 ///
-/// Placeholder meshes and materials are cached and shared: equal colours use one material and equal
-/// shapes one mesh (performance budget, project-structure.md §16).
+/// Placeholder parts are baked into <b>one mesh per name</b> with the part colours as vertex colours
+/// and one shared material, so a placeholder costs one draw call however many parts it has
+/// (Task 1.20, performance budget project-structure.md §16); meshes are cached per name.
 /// </summary>
 public static class ModelLibrary
 {
@@ -63,8 +64,7 @@ public static class ModelLibrary
         if (Table.TryGetValue(name ?? "", out var parts) && parts.Count > 0)
         {
             source = Source.Placeholder;
-            for (int i = 0; i < parts.Count; i++)
-                root.AddChild(MakePart(parts[i], $"Part{i}"));
+            root.AddChild(new MeshInstance3D { Name = "Mesh", Mesh = BakedMesh(name, parts), MaterialOverride = VertexColorMaterial });
         }
         else
         {
@@ -96,16 +96,64 @@ public static class ModelLibrary
         return m;
     }
 
-    /// <summary>Mesh, shared material and placement of each placeholder part (for MultiMesh drawing,
-    /// e.g. the garden tiles). Null when the name has no placeholder.</summary>
+    /// <summary>The baked placeholder mesh and its shared material for MultiMesh drawing (garden
+    /// tiles, tufts): one entry, already placed relative to the model origin. Null when the name has
+    /// no placeholder.</summary>
     public static List<(Mesh Mesh, Material Material, Transform3D Local)> PlaceholderMeshes(string name)
     {
         if (!Table.TryGetValue(name ?? "", out var parts)) return null;
-        var list = new List<(Mesh, Material, Transform3D)>();
+        return new List<(Mesh, Material, Transform3D)> { (BakedMesh(name, parts), VertexColorMaterial, Transform3D.Identity) };
+    }
+
+    /// <summary>One material for every baked placeholder: the vertex colour is the albedo.</summary>
+    public static readonly StandardMaterial3D VertexColorMaterial = new() { VertexColorUseAsAlbedo = true, Roughness = 0.9f };
+
+    private static readonly Dictionary<string, ArrayMesh> Baked = new();
+
+    /// <summary>Bakes coloured boxes (centre, size, colour) into one mesh with vertex colours — for
+    /// static scenery such as ground pieces and fences (one draw call for all of them).</summary>
+    public static ArrayMesh BakeBoxes(IEnumerable<(Vector3 Center, Vector3 Size, Color Color)> boxes)
+    {
+        var parts = new List<Part>();
+        foreach (var (c, size, col) in boxes) parts.Add(new Part("box", size, col, c));
+        string key = "__boxes" + System.Guid.NewGuid();
+        var mesh = BakedMesh(key, parts);
+        Baked.Remove(key); // one-off: not cached by name
+        return mesh;
+    }
+
+    /// <summary>All parts of a placeholder merged into one surface with per-part vertex colours.</summary>
+    public static ArrayMesh BakedMesh(string name, IReadOnlyList<Part> parts)
+    {
+        if (Baked.TryGetValue(name, out var cached)) return cached;
+        var verts = new List<Vector3>(); var norms = new List<Vector3>(); var cols = new List<Color>(); var idx = new List<int>();
         foreach (var p in parts)
-            list.Add((MeshFor(p.Shape, p.Size), MaterialFor(p.Color),
-                new Transform3D(Basis.FromEuler(new Vector3(0, Mathf.DegToRad(p.RotationY), 0)), p.Offset)));
-        return list;
+        {
+            var src = MeshFor(p.Shape, p.Size).SurfaceGetArrays(0);
+            var xf = new Transform3D(Basis.FromEuler(new Vector3(0, Mathf.DegToRad(p.RotationY), 0)), p.Offset);
+            var v = src[(int)Mesh.ArrayType.Vertex].AsVector3Array();
+            var n = src[(int)Mesh.ArrayType.Normal].AsVector3Array();
+            var ix = src[(int)Mesh.ArrayType.Index].AsInt32Array();
+            int start = verts.Count;
+            for (int i = 0; i < v.Length; i++)
+            {
+                verts.Add(xf * v[i]);
+                norms.Add(i < n.Length ? (xf.Basis * n[i]).Normalized() : Vector3.Up);
+                cols.Add(p.Color);
+            }
+            if (ix.Length > 0) foreach (var i in ix) idx.Add(start + i);
+            else for (int i = 0; i < v.Length; i++) idx.Add(start + i);
+        }
+        var arrays = new Godot.Collections.Array();
+        arrays.Resize((int)Mesh.ArrayType.Max);
+        arrays[(int)Mesh.ArrayType.Vertex] = verts.ToArray();
+        arrays[(int)Mesh.ArrayType.Normal] = norms.ToArray();
+        arrays[(int)Mesh.ArrayType.Color] = cols.ToArray();
+        arrays[(int)Mesh.ArrayType.Index] = idx.ToArray();
+        var mesh = new ArrayMesh();
+        mesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Triangles, arrays);
+        Baked[name] = mesh;
+        return mesh;
     }
 
     private static MeshInstance3D MakePart(Part p, string nodeName) => new()
@@ -139,7 +187,7 @@ public static class ModelLibrary
     private static Dictionary<string, List<Part>> Table => _table ??= LoadTable();
 
     /// <summary>Forgets the cached table (tests, or after editing the JSON while the game runs).</summary>
-    public static void ReloadTable() => _table = null;
+    public static void ReloadTable() { _table = null; Baked.Clear(); }
 
     private static Dictionary<string, List<Part>> LoadTable()
     {

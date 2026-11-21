@@ -82,6 +82,10 @@ public partial class FarmLevel : Node3D
     private static readonly Color FieldColor = new("#6f8f3e");
     private static readonly Color HedgeColor = new("#3f6b2c");
 
+    // Static scenery is collected here and baked into two meshes (budget §16: one draw call each).
+    private readonly System.Collections.Generic.List<(Vector3, Vector3, Color)> _flat = new();
+    private readonly System.Collections.Generic.List<(Vector3, Vector3, Color)> _solid = new();
+
     public override void _Ready()
     {
         BuildGround();
@@ -112,6 +116,13 @@ public partial class FarmLevel : Node3D
         }
         if (GateClosed)
             AddBlock(blockers, new Rect2(gate.Position.X, farm.Position.Y - t, gate.Size.X, t));
+
+        AddChild(new MeshInstance3D
+        {
+            Name = "Ground", Mesh = ModelLibrary.BakeBoxes(_flat), MaterialOverride = ModelLibrary.VertexColorMaterial,
+            CastShadow = GeometryInstance3D.ShadowCastingSetting.Off,
+        });
+        AddChild(new MeshInstance3D { Name = "Hedges", Mesh = ModelLibrary.BakeBoxes(_solid), MaterialOverride = ModelLibrary.VertexColorMaterial });
     }
 
     /// <summary>Grass everywhere, paths on top, overgrown fields and hedges as tufts (one MultiMesh).</summary>
@@ -158,23 +169,13 @@ public partial class FarmLevel : Node3D
         return node;
     }
 
-    private void AddPlane(string name, Rect2 r, float y, Color c) => AddChild(new MeshInstance3D
-    {
-        Name = name,
-        Mesh = new PlaneMesh { Size = r.Size },
-        MaterialOverride = ModelLibrary.MaterialFor(c),
-        Position = new Vector3(r.GetCenter().X, y, r.GetCenter().Y),
-        CastShadow = GeometryInstance3D.ShadowCastingSetting.Off,
-    });
+    /// <summary>A flat ground piece (no shadow); y lifts paths above fields above grass.</summary>
+    private void AddPlane(string name, Rect2 r, float y, Color c) =>
+        _flat.Add((new Vector3(r.GetCenter().X, y - 0.01f, r.GetCenter().Y), new Vector3(r.Size.X, 0.02f, r.Size.Y), c));
 
-    private void AddBox(string name, Rect2 r, float y, float h, Color c) => AddChild(new MeshInstance3D
-    {
-        CastShadow = name == "Fence" ? GeometryInstance3D.ShadowCastingSetting.Off : GeometryInstance3D.ShadowCastingSetting.On,
-        Name = name,
-        Mesh = new BoxMesh { Size = new Vector3(r.Size.X, h, r.Size.Y) },
-        MaterialOverride = ModelLibrary.MaterialFor(c),
-        Position = new Vector3(r.GetCenter().X, y + h / 2f, r.GetCenter().Y),
-    });
+    /// <summary>A raised piece: hedges cast shadows, the thin fence rail does not.</summary>
+    private void AddBox(string name, Rect2 r, float y, float h, Color c) =>
+        (name == "Fence" ? _flat : _solid).Add((new Vector3(r.GetCenter().X, y + h / 2f, r.GetCenter().Y), new Vector3(r.Size.X, h, r.Size.Y), c));
 
     private static void AddBlock(StaticBody3D body, Rect2 r) =>
         body.AddChild(new CollisionShape3D

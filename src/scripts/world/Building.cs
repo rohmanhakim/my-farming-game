@@ -75,6 +75,7 @@ public partial class Building : Node3D
         {
             Name = "Floor", Mesh = new BoxMesh { Size = new Vector3(w, 0.04f, d) },
             MaterialOverride = ModelLibrary.MaterialFor(FloorColor), Position = new Vector3(w / 2, 0.02f, d / 2),
+            CastShadow = GeometryInstance3D.ShadowCastingSetting.Off, // flat: nothing to cast
         };
         AddChild(floor);
 

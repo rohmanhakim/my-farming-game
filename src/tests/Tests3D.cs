@@ -31,9 +31,11 @@ public partial class TestRunner
             Check(ModelLibrary.PlaceholderParts(name).Count > 0, $"models: '{name}' has at least one part");
 
         var kit = ModelLibrary.Instantiate("kit", out var src);
-        Check(src == ModelLibrary.Source.Placeholder && kit.GetChildCount() == ModelLibrary.PlaceholderParts("kit").Count
-              && kit.GetChildren().All(c => c is MeshInstance3D { Mesh: not null }),
-            $"models: kit builds from placeholder parts ({src}, {kit.GetChildCount()} parts)");
+        var kitMesh = kit.GetChildOrNull<MeshInstance3D>(0);
+        Check(src == ModelLibrary.Source.Placeholder && kit.GetChildCount() == 1 && kitMesh?.Mesh is ArrayMesh am
+              && am.GetSurfaceCount() == 1 && am.SurfaceGetArrays(0)[(int)Mesh.ArrayType.Color].AsColorArray().Length > 0,
+            $"models: kit's {ModelLibrary.PlaceholderParts("kit").Count} placeholder parts are baked into one mesh with vertex colours (one draw call)");
+        Check(kitMesh?.MaterialOverride == ModelLibrary.VertexColorMaterial, "models: baked placeholders share one vertex-colour material");
         var parts = ModelLibrary.PlaceholderParts("kit");
         Check(parts[0].Shape == "capsule" && Mathf.IsEqualApprox(parts[0].Size.Y, 1.7f) && Mathf.IsEqualApprox(parts[0].Offset.Y, 0.85f),
             "models: kit body is a 1.7 m capsule standing on the origin (feet)");

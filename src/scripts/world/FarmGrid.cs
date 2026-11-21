@@ -372,7 +372,7 @@ public partial class FarmGrid : Node3D, IToolTarget
             (new Vector3(w / 2, 0.06f, -0.03f), new Vector3(w + 0.1f, 0.12f, 0.06f)), (new Vector3(w / 2, 0.06f, d + 0.03f), new Vector3(w + 0.1f, 0.12f, 0.06f)),
             (new Vector3(-0.03f, 0.06f, d / 2), new Vector3(0.06f, 0.12f, d)), (new Vector3(w + 0.03f, 0.06f, d / 2), new Vector3(0.06f, 0.12f, d)),
         })
-            AddChild(new MeshInstance3D { Name = "Border", Mesh = new BoxMesh { Size = size }, MaterialOverride = wood, Position = pos });
+            AddChild(new MeshInstance3D { Name = "Border", Mesh = new BoxMesh { Size = size }, MaterialOverride = wood, Position = pos, CastShadow = GeometryInstance3D.ShadowCastingSetting.Off });
         _hintIcon = new TextureRect
         {
             Size = new Vector2(36, 36), Position = new Vector2(-18, -60), ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize,
