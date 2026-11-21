@@ -82,15 +82,16 @@ public partial class TestRunner
         var bush = new BerryBush();
         AddChild(bush);
         int before = Inventory.Instance.Count(ItemIds.Berries);
+        Check(bush.HasBerries && bush.BerriesVisible, "a full bush shows its berries");
         bush.Interact(null);
-        Check(!bush.HasBerries && Inventory.Instance.Count(ItemIds.Berries) == before + 1 && bush.Model.ModelName == "berry_bush_empty",
-            "picking a bush: one handful into the bag, bush bare");
+        Check(!bush.HasBerries && Inventory.Instance.Count(ItemIds.Berries) == before + 1 && !bush.BerriesVisible,
+            "picking a bush: one handful into the bag, berries gone");
         bush.Interact(null);
         Check(Inventory.Instance.Count(ItemIds.Berries) == before + 1 && !bush.CanInteract, "a bare bush gives nothing");
         bush.NewDay(2);
         Check(!bush.HasBerries, "still bare the next day");
         bush.NewDay(3);
-        Check(bush.HasBerries && bush.Model.ModelName == "berry_bush", "berries regrow after 2 days");
+        Check(bush.HasBerries && bush.BerriesVisible, "berries regrow after 2 days");
         bush.QueueFree();
         ResetTask14State();
     }
