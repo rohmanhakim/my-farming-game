@@ -1,8 +1,8 @@
 # PHASE.md — Development Roadmap: Prototype to Production
 
 > **Status:** Planning draft — **re-planned for the direction reset 2026-11-19**
-> **Version:** 0.7  
-> **Last updated:** 2026-11-20  
+> **Version:** 0.8  
+> **Last updated:** 2026-11-21  
 > **Purpose:** High-level overview of development from the first playable prototype to a final, production-ready game. Each phase document expands this roadmap — `docs/Phase-001.md` exists today; Phase-002 through Release are **planned** documents to be written when their phase is scheduled.
 
 ## 1. Vision
@@ -14,7 +14,7 @@ A fully 2D, **realistic but kid-friendly, educational** farming game for **PC**.
 - **One mode:** realistic but kid-friendly; challenge comes from the farm growing (challenge-layers.md).
 - **A fixed valley, a growing farm:** the world is Bramblewick Vale — Kit's farm plus five areas around a village hub (places.md). All of Kit's land (992 tiles) is owned from the start but overgrown and cleared over time. Each village building and outer area is built in the phase whose features need it, not before.
 - **Consequences, kindly shown:** crops yellow then are lost; neglected animals and fish are gone (gravestone message card). No sickness, vet, gore, or on-screen death. Nothing changes while the game is closed.
-- **Optional economy:** orders and every other way to earn are optional; no debt, no deadline penalties.
+- **Optional economy:** orders and every other way to earn are optional; no debt, no deadline penalties. An unsent neighbour order may simply expire (owner 2026-11-21), but nothing is ever lost besides the missed money.
 - **Automation is the payoff:** unlocked by crafting or buying, once the farm is big enough to need it.
 - **Presenter-like storytelling:** characters address the player, pause for an answer, and respond to what happened.
 - **PC first, consoles later.** PC release first; Nintendo Switch and PlayStation planned after it (decided 2026-11-20). No mobile or tablet versions. Until console work is scheduled, every task keeps controls gamepad-complete and button prompts abstract (no hard-coded Xbox letters).
@@ -24,10 +24,11 @@ A fully 2D, **realistic but kid-friendly, educational** farming game for **PC**.
 | Phase | Document | Goal | Platform |
 |-------|----------|------|----------|
 | **Phase 001** | `docs/Phase-001.md` | **First playable (vertical slice):** day clock, clearing, day-based growth and neglect, foraging, first orders, order board, seed shop, coop + hens with the loss rule, versioned save, short onboarding | PC |
-| **Phase 002** | `docs/Phase-002.md` (planned) | Economy depth: market stall, shipping box, seasonal/demand pricing, rain, clearing the back fields (scythe/hammer/axe), more neighbours (baker), sheep or beehive, stickers | PC |
+| **Phase 002** | `docs/Phase-002.md` (planned) | Economy depth: **shipping box** (take items back out until pickup at sleep), seasonal/demand pricing, the order freshness bonus over the box (+30/+20/+10 %, then the order is gone), the storage chest, **house-visit orders** (sign at the door, talk to take the order, send it through the box; every order incl. Marlow's; the baker's, allotment neighbour's and shopkeeper's places open in T1 when they arrive), Marlow's board → village noticeboard, the on-screen Orders list, rain, clearing the back fields (scythe/hammer/axe), sheep or beehive, stickers | PC |
 | **Phase 003** | `docs/Phase-003.md` (planned) | Farm growth: barn (cow, sheep), **fish pond**, kitchen processing (jam, bread, cheese, pie), workshop & blueprints, more neighbours, **local co-op with dynamic split screen** | PC |
 | **Phase 004** | `docs/Phase-004.md` (planned) | **Automation**: sprinklers, auto-feeders, pond auto-feeder, helpers, silo, greenhouse; fishing at the brook, travelling merchant, optional Butterfly Garden request | PC |
 | **Phase 005** | `docs/Phase-005.md` (planned) | Long-term goals: festivals & contests, quality products, farm charm & decorations, collections, hydroponics, farm shop, lane restoration, showcase, mastery | PC |
+| *Deferred, phase not set* | — | **Kit's market stall** (owner 2026-11-21: one way to sell at a time, the shipping box first; if the stall returns it is "set prices and leave it") | PC |
 | **Release** | `docs/Release.md` (planned) | Production-ready, polished, localised, age-rated PC release | PC (Windows first; macOS/Linux considered); consoles (Switch, PlayStation) after the PC release |
 
 > **⚠️ Re-plan note:** the previous plan sequenced phases by the child's age stage (preschool → 5th grade) and introduced tablets from Phase-003. Both are retired. The table above is a **proposal** following the farm-growth tiers in progression.md §3; confirm before Phase-002 is written.
@@ -54,7 +55,7 @@ Each `docs/Phase-00N.md` breaks its milestone into **session tasks**. One task =
 
 ## 7. Guardrails (never change across phases)
 
-- No antagonist, threat, or hard deadline. The only losses come from the player's own neglect, are always warned first, and never happen while the game is closed.
+- No antagonist, threat, or hard deadline. Orders can expire (owner 2026-11-21), but an expired order costs nothing besides the missed money: no fee, no relationship loss, Kit keeps the goods. The only losses come from the player's own neglect, are always warned first, and never happen while the game is closed.
 - Losses are shown kindly: crops yellow then disappear; an animal loss is a short message with a gravestone picture. No on-screen death, sickness, vet, or gore.
 - No disappointment or scolding from Mr. Marlow, ever.
 - No debt, loans, or real-money purchases.
@@ -73,3 +74,4 @@ Each `docs/Phase-00N.md` breaks its milestone into **session tasks**. One task =
 - **0.5 — 2026-11-20:** Platform changed from "PC only" to **PC first, consoles later** (Switch, PlayStation after the PC release; owner decision). Vision bullet and Release row updated.
 - **0.6 — 2026-11-20:** World map redesigned as **Bramblewick Vale** (owner decision, places.md v0.10): the "lane does not grow" principle and guardrail replaced by "the valley is fixed — five areas plus Kit's farm"; village buildings and outer areas arrive in the phase whose features need them.
 - **0.7 — 2026-11-20:** Windmill/pump dropped from Phase 004 (owner decision: sprinklers need no water source; flour comes from the village watermill).
+- **0.8 — 2026-11-21:** **Selling and house-visit orders (owner decisions 2026-11-21).** Phase 002 builds the **shipping box** first and **house-visit orders** as neighbours' places open, plus the order **freshness bonus** over the box (orders can expire; guardrail reworded: nothing lost besides the missed money); **Kit's market stall deferred** (phase not set).

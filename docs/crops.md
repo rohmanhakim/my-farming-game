@@ -1,8 +1,8 @@
 # Crops
 
 > **Status:** Brainstorming draft
-> **Version:** 0.10
-> **Last updated:** 2026-11-20
+> **Version:** 0.11
+> **Last updated:** 2026-11-21
 > **Purpose:** Crops in the game, their seasons, growth days, uses, and the watering/neglect rule. All names are tentative; every element is a proposal pending playtesting. Prices live in [economy.md](./economy.md).
 
 ---
@@ -85,7 +85,7 @@ Golden pumpkin, giant variants, merchant-only seeds — progression.md §6.2.
 | Use | Description |
 |---|---|
 | **Orders** | Delivered to neighbours (main income). |
-| **Sell** | Market stall, shipping box, farm shop. |
+| **Sell** | Shipping box (Phase-002), farm shop (T5); neighbour orders pay more. Market stall deferred to a later phase. |
 | **Process** | Kitchen and the village watermill: jam, flour, bread, pie. |
 | **Feed** | Hay and wheat → silo → feeders. |
 | **Decoration / gift** | Flower borders; gifts. |
@@ -117,3 +117,4 @@ Golden pumpkin, giant variants, merchant-only seeds — progression.md §6.2.
 - **0.8 — 2026-11-20:** Bedtime reference corrected to midnight (GDD v0.30).
 - **0.9 — 2026-11-20:** Bedtime reference updated to 21:30 (GDD v0.31).
 - **0.10 — 2026-11-20:** **Windmill / water pump removed (owner decision 2026-11-20):** flour is milled at the village watermill.
+- **0.11 — 2026-11-21:** Sell row: shipping box first, market stall deferred (owner decision 2026-11-21); neighbour orders pay more than the box.

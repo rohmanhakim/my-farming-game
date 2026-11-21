@@ -1,8 +1,8 @@
 # Items
 
 > **Status:** Brainstorming draft — **updated for the direction reset 2026-11-19**
-> **Version:** 0.9
-> **Last updated:** 2026-11-20
+> **Version:** 0.10
+> **Last updated:** 2026-11-21
 > **Purpose:** Items the player can obtain: tools, produce, processed goods, building and automation items, decorations, and rare items. All names are tentative; every element is a proposal pending playtesting.
 
 ---
@@ -66,7 +66,7 @@ Recipes are bought, given by friends, or won (GDD §4).
 | **Wood, stone, fibre** | Clearing land, foraging, shop | Building and crafting materials |
 | **Sprinkler** (basic/quality/deluxe) | Craft or buy | Auto-watering |
 | **Auto-feeder / pond auto-feeder** | Craft or buy | Auto-feeding |
-| **Help wanted card** | Order board (T2) | Hire a farmhand for one day (500 coins) |
+| **Help wanted card** | Village noticeboard at the seed shed (T2) | Hire a farmhand for one day (500 coins) |
 | **Animal feed** (grain, hay) | Grow → silo, or buy | Feeding |
 
 ## 7. Decorations
@@ -85,7 +85,7 @@ Rare seeds, rare breeds, legendary fish, contest ribbons and trophies, fossils/s
 | **Ledger** | Mr. Marlow | Picture pages recording promises and completed tasks; never carried. |
 | **Old meadow sketch / pressed flowers** | Ledger | Visual mystery and memories. |
 | **Unlit lantern** | Lantern Hill | World object; relit during lane restoration (progression.md §6.4). |
-| **Order board** | Seed shed | Lists open neighbour orders. |
+| **Order board / village noticeboard** | Seed shed | Phase-001: lists open neighbour orders. From Phase-002 (owner 2026-11-21): help wanted, festivals, community projects — orders come from signs at neighbours' doors instead. |
 
 ## 10. Exclusions
 
@@ -119,3 +119,4 @@ Rare seeds, rare breeds, legendary fish, contest ribbons and trophies, fossils/s
 - **0.7 — 2026-11-20:** **Farmhands first, machines later (owner decision 2026-11-20):** "Helper contract / helper post" replaced by a one-day "help wanted" card on the order board.
 - **0.8 — 2026-11-20:** **Windmill / water pump removed (owner decision 2026-11-20):** flour is milled at the village watermill.
 - **0.9 — 2026-11-20:** Starting loadout synced with Phase-001 v0.28: "seed box" renamed **seed bag** with one carrot packet (9 seeds, owner decision; was "two or three seeds"), and the **feed scoop** added (the starting animals need it from Day 1).
+- **0.10 — 2026-11-21:** Order board becomes the **village noticeboard** from Phase-002 (owner 2026-11-21): orders come from signs at neighbours' doors; help-wanted cards stay on the noticeboard.

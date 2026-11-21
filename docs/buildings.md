@@ -1,8 +1,8 @@
 # Buildings & Farm Structures
 
 > **Status:** Brainstorming draft
-> **Version:** 0.10
-> **Last updated:** 2026-11-20
+> **Version:** 0.11
+> **Last updated:** 2026-11-21
 > **Purpose:** Everything Kit can build on the farm — cost, footprint, capacity, when it unlocks, what it teaches, and how it fits the land. Sized against the farm map below so the land is a real, countable limit. Costs come from [economy.md](./economy.md) (≈ half the real Australian price). All numbers are proposals pending playtesting.
 
 ---
@@ -46,7 +46,8 @@ Cost tiers: see economy.md for exact numbers (coins). Footprint in tiles (width 
 | **Beehive** | Honey; pollinates crops within 5 tiles | 1,750 | 1 × 1 | 1 colony | T2 | Pollination | Up to 8 hives = an apiary (8 tiles). No feeding; needs flowers nearby. |
 | **Workshop** | Craft tools, fences, decorations, sprinklers, feeders | 30,000 | 4 × 3 = 12 | — | T2 | Making and repairing | Required to craft automation. |
 | **Kitchen** (house upgrade) | Jam, bread, cheese, pie, smoked fish | 40,000 | 0 (in house) | — | T2 | Where food comes from | Processed goods earn more per tile. |
-| **Market stall** | Sell to passers-by on the lane | 2,500 | 0 (on the lane) | — | T2 | Pricing, demand | A helper can stock it. |
+| **Shipping box** *(owner 2026-11-21)* | Sell anything: put goods in, take them out again until pickup; what is in it when Kit sleeps sells at the normal price | free — the family's old box, on the farm from the start *(proposed)* | 1 × 1 (beside the front door) | any amount | Start (built in Phase-002) | Choosing what to sell and what to keep | A farmhand can fill it. |
+| **Market stall** — *deferred to a later phase (owner 2026-11-21)* | Set prices and leave it; passers-by buy while Kit does other things | 2,500 | 0 (on the green) | — | later phase | Pricing, demand | A helper can stock it. |
 | **Small barn** | Houses cows and sheep. **One old barn is on the farm from the start** (edge of Field A, ground around it cleared); extra barns cost | 140,000 | 6 × 5 = 30 | **5 stalls** | T3 | Large animals' needs | Fits auto-feeders. |
 | **Big barn** (upgrade) | More stalls | +100,000 | 8 × 6 = 48 | **10 stalls** | T3 | Scaling up | — |
 | **Fish pond (water tiles)** | Stock, feed, harvest fish | **250 per tile** (wide water) | any shape, at least 2 tiles wide to hold fish | **≈ 2 fish per 3 tiles** (4 × 4 = 10, 6 × 6 = 24, 8 × 8 = 42) | T3 | Water ecosystems | Must connect to the farm's water (§3.1). Pond auto-feeder covers the whole connected pond. |
@@ -91,7 +92,7 @@ If a player wants three barns, a second greenhouse, and a big orchard, something
 
 ## 5. Placement rules
 
-- Every building except the kitchen and market stall uses farm tiles, and can only be placed on **cleared** land.
+- Every building except the kitchen and market stall uses farm tiles (the shipping box takes 1 path tile by the door), and can only be placed on **cleared** land.
 - **Feed bins:** every coop, barn, and pond has a built-in feed bin; home-ordered feed is delivered into it at Dawn (economy.md §2). Once a **silo** (coop/barn feed) or a **pond auto-feeder** (fish food) exists, orders go there instead and the auto-feeders draw from it, so Kit only tops up about once a month.
 - **Starting buildings (owner decision 2026-11-19):** the old coop (with 5 hens) and old barn (with 1 cow) are free and usable as they are; they can be upgraded (big coop / big barn) or moved like any other building.
 - Buildings can be **moved** for free and **sold back** for half what Kit paid.
@@ -128,3 +129,4 @@ If a player wants three barns, a second greenhouse, and a big orchard, something
 - **0.8 — 2026-11-20:** **Farmhands first, machines later (owner decision 2026-11-20):** **farmhand cottage removed** — farmhands are villagers hired by the day (GDD §4). §4 example: 16 more tiles for crops (~430).
 - **0.9 — 2026-11-20:** **Machines simplified (owner decision 2026-11-20):** sprinklers need **no water source** (hidden pipes, priced in: 400 / 1,200 / 2,500); water tiles and the windmill no longer feed sprinklers (windmill mills flour and powers hydroponics). Silo and pond auto-feeder hopper are filled straight from phone orders and harvests; auto-feeders last weeks, with a low-feed warning.
 - **0.10 — 2026-11-20:** **Windmill / water pump removed (owner decision 2026-11-20):** sprinklers no longer need it, flour comes from the restored village watermill (T4), and hydroponics needs no power. §4 example: 9 more crop tiles (~439).
+- **0.11 — 2026-11-21:** **Selling (owner decision 2026-11-21):** added the **shipping box** (free family box by the front door, proposed; built in Phase-002); the **market stall is deferred** to a later phase and, if it returns, works as "set prices and leave it".

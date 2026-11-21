@@ -1,7 +1,7 @@
 # Economy & Balance Sheet
 
 > **Status:** First draft for owner review — new document
-> **Version:** 0.15
+> **Version:** 0.16
 > **Last updated:** 2026-11-21
 > **Purpose:** Prices, income, and costs, plus a balance check showing how long each goal takes. Owner rule (2026-11-19): **what Kit sells ≈ real-world price; what Kit buys ≈ half the real price** (the kid-friendly part). **Real prices are Australian (owner decision 2026-11-20)**: a big-farm country with cheap animals and hay, which keeps hens and sheep worth buying. The full price list is the spreadsheet **[`data/economy.csv`](./data/economy.csv)** (79 items; opens in Excel/Sheets). Most real prices are estimates and must be checked before they are final (§6).
 
@@ -20,12 +20,12 @@
 
 | Rule | Value |
 |---|---|
-| **Sell price** (market stall, shipping box) | ≈ real Australian retail price × 10 coins per A$ |
+| **Sell price** (shipping box; the market stall is deferred to a later phase) | ≈ real Australian retail price × 10 coins per A$. **Shipping box (owner 2026-11-21):** whatever is in the box when Kit sleeps sells at this price (with quality, seasonal and demand rules); items can be taken back out until then |
 | **Buy price** (seeds, animals, feed, tools, buildings, automation) | ≈ **half** real Australian price (A$ × 5) |
 | **Quality** | ★ ×1 · ★★ ×1.25 · ★★★ ×1.5 sell price |
 | **Seasonal price** | Out-of-season produce sells at ×1.5 (e.g. greenhouse tomatoes in winter) |
 | **Demand price** | Each item sold beyond 20 per day drops its price 2 % (to at most −30 %); recovers overnight |
-| **Neighbour orders** *(decided 2026-11-21, owner)* | Pay **the sell price** — **no premium** on normal orders (the ×1.25 proposal was dropped). **Mixed baskets** pay ×1.1 on top of their lines; a **quick-bonus** order adds +20 % if delivered the same day (never less if later); **daily standing orders** pay the order price each delivered day (owner 2026-11-21, built in Phase-001) |
+| **Neighbour orders** *(decided 2026-11-21, owner)* | **Sell price + freshness bonus** (every order is taken at a neighbour's door from Phase-002), counted from the day Kit takes the order: sent in that night's box **+30 %**, next night **+20 %**, the night after **+10 %**; after that the order is simply gone (Kit keeps the goods, no other cost). Switched on with the shipping box in Phase-002; orders are sent through the box, which fills accepted orders first and sells the rest at the box price. Phase-001 has no box: plain sell price (`PriceTable.OrderPremium` 1.0) with its occasional +20 % same-day quick bonus. **Mixed baskets** pay ×1.1 on top of their lines; **daily standing orders** pay the order price each delivered day (owner 2026-11-21, built in Phase-001) |
 | **Farmhand wage** | **500 coins/day** per farmhand, hired by the day from T2 (owner decision 2026-11-20). A **game wage**, below half-real (≈ 1,200), so hiring is worth it on a busy field; garden sprites are free |
 | **Subscription orders** | Paid at the order price each delivered day |
 | **Sell-back** | Buildings and tools sell back for half what Kit paid |
@@ -80,7 +80,7 @@
 
 ## 5. Balance check
 
-All figures sell the raw product at ★ quality, with bought feed and no order premium. Processing (kitchen, T2), quality, orders, and home-grown feed all shorten paybacks: e.g. a cow whose milk becomes cheese nets ≈ 455/day instead of 375.
+All figures sell the raw product at ★ quality through the shipping box, with bought feed and no order premium. Processing (kitchen, T2), quality, orders, and home-grown feed all shorten paybacks: e.g. a cow whose milk becomes cheese nets ≈ 455/day instead of 375.
 
 ### 5.1 Profit per crop tile per day (before quality and orders)
 
@@ -124,7 +124,7 @@ All figures sell the raw product at ★ quality, with bought feed and no order p
 ## 6. Balance risks (for owner review)
 
 1. **The starting cow earns a lot — kept on purpose (owner decision 2026-11-19).** 4 milk cans a day ≈ 375 coins net from Day 1 is a generous start; crops produce nothing for the first few days, so animals carry the early income. Starting money stays 500.
-2. **Animal payback.** Every animal pays back within ≈ 1–4 months (a year is 120 days). **Sheep are the fastest (≈ 23 days)** because Australian sheep and hay are cheap and wool sells well; they may become the obvious first buy. Extra buildings are slower (≈ 4 months), which fits the late game. Normal orders pay the plain sell price (owner 2026-11-21), so these paybacks hold for orders too; only baskets (×1.1) and same-day quick bonuses (+20 %) pay a little more.
+2. **Animal payback.** Every animal pays back within ≈ 1–4 months (a year is 120 days). **Sheep are the fastest (≈ 23 days)** because Australian sheep and hay are cheap and wool sells well; they may become the obvious first buy. Extra buildings are slower (≈ 4 months), which fits the late game. These paybacks use the shipping-box price; neighbour orders pay +10–30 % more (freshness bonus, plus baskets ×1.1), so a farm that sends orders quickly pays back ≈ 20–25 % sooner.
 3. **Flowers and berries out-earn vegetables**, because real cut-flower and berry prices are high. Fine for realism; orders can steer variety by asking for vegetables.
 4. **Processing is very profitable** (a pie sells for about 3.3× its ingredients). That matches real bakeries and rewards the kitchen — keep, but watch it doesn't make raw selling pointless.
 5. **Season and day length are now set** (30 days, ≈ 15 minutes): a Year-1 is ≈ 120 days ≈ 30 hours of play. Re-check the timeline in the first playtest.
@@ -161,3 +161,4 @@ All figures sell the raw product at ★ quality, with bought feed and no order p
 - **0.13 — 2026-11-20:** §5.3 heading corrected to 17-minute days (GDD §4, Harvest Moon pace); the timeline counts days, so no figure changes.
 - **0.14 — 2026-11-21:** Order pricing row: mixed baskets ×1.1, same-day quick bonus +20 %, daily standing orders (owner order-variety decision 2026-11-21). The ×1.25 premium is still awaiting the owner's decision.
 - **0.15 — 2026-11-21:** **Order premium decided (owner 2026-11-21): none.** Normal orders pay the sell price; only mixed baskets (×1.1) and same-day quick-bonus orders (+20 %) pay extra. The paybacks in §5 were already computed without a premium, so they stand.
+- **0.16 — 2026-11-21:** **Shipping box and house-visit orders (owner decisions 2026-11-21).** Sell price now names the **shipping box** (sells what is in it when Kit sleeps; items can be taken back out until then); the **market stall is deferred** to a later phase. Neighbour orders pay the sell price plus a **freshness bonus** (+30 % / +20 % / +10 % by night sent, then the order is gone; owner), switched on in Phase-002 with the box; orders are sent through the box. Balance-check notes say paybacks are box prices.

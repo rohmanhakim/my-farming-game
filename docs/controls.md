@@ -1,8 +1,8 @@
 # Controls
 
 > **Status:** Brainstorming draft
-> **Version:** 0.12
-> **Last updated:** 2026-11-20
+> **Version:** 0.13
+> **Last updated:** 2026-11-21
 > **Purpose:** Control schemes (gamepad and keyboard + mouse) for this kind of game, adjusted to the scope of the game described in the GDD. **PC first, consoles (Switch, PlayStation) later; no touch/mobile.** Tables use XBOX button names, but any modern controller works by position (see §2 *Any controller*). All mappings are tentative (see GDD open question Q5) and subject to playtesting.
 
 ---
@@ -29,7 +29,8 @@
 | Open collectathon inventory | Y | Opens the collectathon slot grid. Picture-based, no reading required. (The Collection Book lives in the pause menu.) **Phase-001 (Task 1.4):** Y opens the simple bag (auto-stacked items + wallet); Y or B closes it. |
 | Open care menu | Right Stick (RS) click, or on-screen care icon | Dedicated button — the D-pad stays reserved for movement. Shows care meters for every animal and the fish pond, and which need attention. Picture icons. |
 | Pause menu / calendar & settings | Start | Opens pause: day/night indicator, season calendar, Collection Book, sticker book, settings (volume, read-aloud, nudges, break reminder), save, quit. |
-| Help tooltip / inspect | Back (Select) | Shows a contextual hint or spoken/visual cue for the highlighted object. **Deferred — no Phase-001 task builds it** (the hint ladder in characters.md §8 covers help for now). |
+| Open / close the Orders list *(owner 2026-11-21, Phase-002)* | Back (Select) — View on Xbox, Create/touchpad on PlayStation, − on Switch *(proposed)* | Same as the on-screen Orders button on the HUD: picture cards of every taken order (GDD §4). B or Back closes it. |
+| Help tooltip / inspect | *(needs a new button — proposed: hold LT)* | Shows a contextual hint or spoken/visual cue for the highlighted object. **Deferred — no Phase-001 task builds it** (the hint ladder in characters.md §8 covers help for now). Back/Select moved to the Orders list (2026-11-21). |
 | Reserved (unassigned in prototype) | LT / RT | Held for future tools or camera options if needed. |
 
 ---
@@ -71,6 +72,7 @@ Two ways to do everything, available at the same time, exactly as DST does it: *
 | Cancel / back (decline a bubble, exit a menu) | **Right-click**, or a visible on-screen cancel button |
 | Cycle tool belt | **Mouse wheel** or dedicated on-screen belt buttons (click a slot) |
 | Open / close the bag | **On-screen bag button** (bottom right); close with right-click, Esc or the Close button. No keyboard key (owner decision 2026-11-20). |
+| Open / close the Orders list *(Phase-002)* | **On-screen Orders button** next to the bag button; close like the bag. No keyboard key, matching the bag. |
 | Pause / calendar & settings | **ESC** key or on-screen pause button |
 
 **Deliberately not carried over from DST:** combat keys (F), camera rotation (Q/E — our camera is fixed), all Ctrl/Alt/Shift modifiers (control goals forbid memory-heavy combos), number hotbar (tool belt is cycled instead; revisit if the belt grows long), map key (the valley map is a page in the pause menu — places.md §5 — so it needs no key of its own).
@@ -129,3 +131,4 @@ Two ways to do everything, available at the same time, exactly as DST does it: *
 - **0.10 — 2026-11-20:** HUD clock readout ticks every 15 in-game minutes (owner, GDD v0.32); the dial marker still jumps per 3-hour phase.
 - **0.11 — 2026-11-20:** The map-key note now points to the pause-menu picture map of Bramblewick Vale (places.md v0.10); no new binding.
 - **0.12 — 2026-11-20:** Task 1.4 built: Y / on-screen bag button opens the simple bag (no keyboard key, owner decision); gamepad A/B confirm and go back on focused menu buttons on every pad; belt slots are clickable.
+- **0.13 — 2026-11-21:** **Orders list (owner decision 2026-11-21):** new on-screen **Orders button** next to the bag (Phase-002); gamepad **Back/Select** opens it (proposed). The deferred help tooltip loses Back/Select (proposed: hold LT).

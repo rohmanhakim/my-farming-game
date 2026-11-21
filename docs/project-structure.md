@@ -1,7 +1,7 @@
 # Project Structure
 
 > **Status:** Proposal for team agreement — input to Phase-001 Task 1.1 ("Team agrees on project folder structure and naming conventions")
-> **Version:** 0.23
+> **Version:** 0.24
 > **Last updated:** 2026-11-21
 > **Purpose:** The repository layout, Godot folder structure, naming rules, input/autoload registries, asset pipeline, and verification commands that every development session follows when adding code or assets under `src/`. It is a *technical* contract only — it never overrides a gameplay decision.
 
@@ -327,7 +327,8 @@ Defined once in `project.godot → [input]`, bound for **both** gamepad and keyb
 | `pause` | Start | Esc | 1.11 |
 | `open_inventory` | Y | on-screen bag button (no key) | 1.4 (simple bag) |
 | `open_care_menu` | RS click | on-screen icon only | deferred (Phase-002) |
-| `help_inspect` | Back/Select | — | **deferred, explicitly out of Phase-001** |
+| `open_orders` | Back/Select *(proposed)* | on-screen Orders button (no key) | deferred (Phase-002; owner 2026-11-21) |
+| `help_inspect` | *(new button needed; proposed hold LT)* | — | **deferred, explicitly out of Phase-001** |
 
 **Bound in Task 1.1** (all Phase-001 rows above except the deferred ones). Keyboard uses physical keycodes. `cycle_tool_next` = X, RB, wheel down; `cycle_tool_prev` = LB, wheel up (InputMap cannot express the LB+RB chord). `interact` includes left mouse, so click-to-move (Task 1.2) must split ground clicks from object clicks in code.
 
@@ -507,3 +508,4 @@ Restore after cloning: `npx skills experimental_install` · Update: `npx skills 
 - **0.21 — 2026-11-21:** Task 1.11 built: PauseMenu (Main/Pause), PauseButton, DayNightOverlay (Main/World/Effects), GameSettings; settings file written by SaveGame.
 - **0.22 — 2026-11-21:** Task 1.12 built: Onboarding autoload, OnboardingDirector, NudgeView, Ada, GuideArrow; file map and autoload registry updated.
 - **0.23 — 2026-11-21:** Owner order-variety follow-up: `core/Neighbours.cs`, `ui/StandingOrdersView.cs` (HUD/UI/StandingOrders); `OrderPremium` now 1.0.
+- **0.24 — 2026-11-21:** InputMap registry: `open_orders` (Back/Select proposed, on-screen Orders button) added for Phase-002; `help_inspect` loses Back/Select (controls.md v0.13). Docs-only.

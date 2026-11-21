@@ -1,8 +1,8 @@
 # Places
 
 > **Status:** Brainstorming draft — **world map redesigned 2026-11-20 (Bramblewick Vale)**
-> **Version:** 0.12
-> **Last updated:** 2026-11-20
+> **Version:** 0.13
+> **Last updated:** 2026-11-21
 > **Purpose:** The places the player can explore. The lane is now the road into **Bramblewick Vale**, a small valley of **five areas plus Kit's farm** (owner decision 2026-11-20, replaces "one lane, eight places, no map"). Sizes, layout, unlocks, and navigation rules live here; the story of each place lives in [world.md](./world.md). All names are tentative and every element is a proposal pending playtesting.
 
 ---
@@ -40,12 +40,12 @@ The lane runs north from Kit's farm gate past Mr. Marlow's cottage, then opens o
 
 | Place | Who | What Kit does there | Opens |
 |---|---|---|---|
-| **Mr. Marlow's cottage + seed shed** (on the lane) | Mr. Marlow | Seeds and saplings, the **order board**, the ledger, the early building catalogue | Day 1 |
+| **Mr. Marlow's cottage + seed shed** (on the lane) | Mr. Marlow | Seeds and saplings, the **village noticeboard** (help wanted, festivals, community projects — no orders from Phase-002; Marlow's own orders come from a sign on his cottage door, 2026-11-21), the ledger, the early building catalogue | Day 1 |
 | **Berry bushes along the lane** | — | The first order (wild berries) | Day 1 |
-| **Market stand** | Travelling merchant on visit days | Selling produce (seasonal and demand pricing); Kit's own stall | Visible Day 1; Kit's stall T2 |
-| **Allotments** | The allotment neighbour | Shared beds; vegetable orders | Visible Day 1; neighbour T2 |
-| **Bakery** | The baker | Egg, flour, and fruit orders; bread and pie recipes | T2 |
-| **General store** *(new)* | The shopkeeper | Kitchen ingredients (sugar, salt, jars), bag upgrades, decorations. Seeds stay at Marlow's; feed is still ordered by phone (economy.md §2) | T2 |
+| **Market stand** | Travelling merchant on visit days | Trading and rare goods on visit days. **Kit's own stall is deferred to a later phase** (owner 2026-11-21: one way to sell at a time — the shipping box first; if the stall returns, Kit sets prices and leaves it) | Visible Day 1; Kit's stall later |
+| **Allotments** | The allotment neighbour | Shared beds; vegetable orders | Visible Day 1; opens after the first crop order (T1, owner 2026-11-21) |
+| **Bakery** | The baker | Egg, flour, and fruit orders; bread and pie recipes | After Kit's first eggs (T1, owner 2026-11-21) |
+| **General store** *(new)* | The shopkeeper | Kitchen ingredients (sugar, salt, jars), bag upgrades, decorations. Seeds stay at Marlow's; feed is still ordered by phone (economy.md §2) | After five delivered orders (T1, owner 2026-11-21) |
 | **Village hall** *(new)* | Everyone | Festivals and contests (Spring Bloom, Harvest), winter events, the meeting place for each lane restoration project | T2 (first festival) |
 | **Smithy** *(new)* | The smith | Tool upgrades, paid with coins and the stone and wood from clearing | T3 |
 | **Friend's family cottage** *(new)* | The friend of Kit's age and their parents | Friendship, festivals, contests | T3 |
@@ -99,6 +99,7 @@ The farm keeps exactly the land in buildings.md §2 — front garden plus Fields
 - **Bottom row:** Field E along the brook (west) with the **natural pond**, Field A directly **behind the house** with the **old barn** at its back edge, Field B (east).
 - **One cross-shaped path** (2 tiles wide) joins every field to the front door. Most beds are within 25 tiles (≈ 10 s) of the door; the farthest corner of Field E is ≈ 40 tiles (≈ 16 s).
 - **Animal yard:** a 12 × 6 strip beside the old barn, free from the start, fits a second barn (6 × 5) and a big coop (6 × 4) side by side.
+- **Shipping box** (Phase-002, owner 2026-11-21): beside the front door, 1 × 1 on the front-garden path, so filling it is on the way to bed; picked up when Kit sleeps (mechanics.md §5).
 - Fields are fixed in size and place; **what goes inside them is flexible** — once cleared, any tile can hold beds or buildings, and buildings move freely (buildings.md §5).
 - **Water:** the natural pond in Field E is fed by the brook; new water must connect to it (buildings.md §3.1).
 
@@ -125,6 +126,7 @@ A round trip to the farthest spot costs about **1.2 in-game hours** of Kit's 04:
 - **Picture signs.** Every exit and shop has a picture sign (fish, mushroom, lantern, loaf, red cross) in the same place on screen; no reading needed.
 - **One loop per area.** No mazes, dead ends, or dark caves; side paths return to the main path.
 - **Picture map in the pause menu.** A painted map of the valley with Kit's face and icons for where today's orders go; closed areas show as gentle fog. No separate map button (controls.md).
+- **Order signs at the door (owner 2026-11-21).** A neighbour's house that wants something shows a **basket on the doorstep with a picture note**, visible from the path. Only a few houses have a sign on any day, and some never order. Kit visits houses one by one; walking the green's ring path passes every door. Knocking brings the neighbour to the door to talk and give the order; the goods are sent later through the shipping box.
 - **Same controls everywhere.** Leaving an area is walking off its edge; nothing new to press on any gamepad.
 - **Nothing far is required.** Orders only ask for things from areas already open; the farm alone is enough to play the whole game.
 
@@ -168,3 +170,4 @@ A round trip to the farthest spot costs about **1.2 in-game hours** of Kit's 04:
 - **0.10 — 2026-11-20:** **World map redesigned as Bramblewick Vale (owner decision).** "One lane, eight places, no map" replaced by a hub-and-spokes valley: Bramblewick Green (village + lane, 64 × 44, the biggest area) with a bakery, general store, village hall, smithy, clinic (no sickness), carpenter, library, inn, cottages, duck pond and playground; Brookside & Mill Pond (west), Hazel Wood (east), Lantern Hill & Old Quarry (north). Area sizes, unlock tiers, walking times (60 s per in-game hour), navigation rules for ages 6+, and a pause-menu picture map added. Kit's farm repacked to 50 × 32 around the house (same 992 tiles) with an animal yard. To-scale map in `assets/map/bramblewick-vale.svg`. Market stand moved to the green.
 - **0.11 — 2026-11-20:** **Farmhands first, machines later (owner decision 2026-11-20):** the villagers' cottages open at T2; farmhands walk to the farm and back each day.
 - **0.12 — 2026-11-20:** **Windmill / water pump removed (owner decision 2026-11-20):** the carpenter no longer sells it.
+- **0.13 — 2026-11-21:** **Selling and house-visit orders (owner decisions 2026-11-21).** Kit's market stall deferred to a later phase (the market stand stays for the travelling merchant); the **shipping box** placed beside the farmhouse door (§3); new navigation rule: **order signs** — a basket with a picture note on a neighbour's doorstep shows a house that wants something; Kit knocks and talks to the neighbour, and sends the goods through the shipping box. The bakery, allotments and general store open in T1 when their neighbour arrives; Marlow's board becomes the village noticeboard (no orders).

@@ -1,8 +1,8 @@
 # Events
 
 > **Status:** Brainstorming draft — **updated for the direction reset 2026-11-19**
-> **Version:** 0.11
-> **Last updated:** 2026-11-20
+> **Version:** 0.12
+> **Last updated:** 2026-11-21
 > **Purpose:** Events during a playthrough, driven by calendar, season, day phase, and the farm's growth. All names tentative; every element is a proposal pending playtesting.
 
 ---
@@ -31,9 +31,10 @@ Time-of-day triggers are day phases (mechanics.md §2).
 | Event | Trigger | What happens | Scope |
 |---|---|---|---|
 | **New orders** | Dawn | Board refreshes with orders matched to what Kit can produce | Phase-001 |
+| **Order signs** *(owner 2026-11-21)* | Dawn | Only **a few** open houses that want something (Marlow's cottage included) put a **basket with a picture note** at the door; Kit spots them while walking round | Phase-002 |
 | **Rain** | Some mornings (≈ 1 in 5 in Spring/Autumn) | Rain waters every outdoor crop for the day | Phase-002 |
 | **Sprinklers run** | Dawn | Sprinkled beds are watered (splash animation) | Phase-004 |
-| **Shipping payout** | Sleep | Money for goods left in the shipping box | Phase-002 |
+| **Shipping payout** | Sleep | Money for whatever is in the shipping box at that moment (items taken out before sleeping don't sell): it fills accepted orders first (sell price + freshness bonus), then the rest sells; any accepted order on its third night unsent is simply gone, with a kind line from the neighbour; a morning note shows which orders went out and what sold | Phase-002 |
 | **Watering feedback** | Water a bed | Soil darkens, sparkle and sound | Prototype |
 | **Crop dry** | Soil dries | Cracked-soil look; growth pauses | Prototype |
 | **Crop yellow (warning)** | 2 dry days in a row | Leaves droop and yellow | Prototype |
@@ -50,15 +51,15 @@ Time-of-day triggers are day phases (mechanics.md §2).
 | Arrival | Trigger | Introduces | Tier |
 |---|---|---|---|
 | **Mr. Marlow** | Day one at the seed shed gate | Mr. Marlow | T1 |
-| **The allotment neighbour** | First crop sold or delivered | Allotment neighbour (first veg order) | T2 |
-| **The baker** | First eggs collected | Baker (egg and flour orders) | T2 |
-| **The shopkeeper** | First kitchen recipe needs an ingredient Kit can't grow | Shopkeeper (general store) | T2 |
+| **The allotment neighbour** | First crop order delivered | Allotment neighbour (first veg order); the allotments open (owner 2026-11-21) | T1 |
+| **The baker** | First eggs collected | Baker (egg and flour orders); the bakery opens (owner 2026-11-21) | T1 |
+| **The shopkeeper** | Five orders delivered (characters.md §10) | Shopkeeper (general store); the store opens (owner 2026-11-21) | T1 |
 | **The brook keeper** | First visit to the far bank once the footbridge is repaired | Brook keeper (gives fishing rod) | T3 |
 | **The smith** | First debris Kit's tools can't clear | Smith (tool upgrades) | T3 |
 | **A friend of Kit's age** | Two neighbour tasks + brook visit | Friend (friendship, festivals) | T3 |
 | **Travelling merchant** | Field A cleared | Merchant (trades, rarities) | T3 |
 | **The carpenter** | First T4 building wanted | Carpenter (late buildings, house upgrades) | T4 |
-| **The village nurse** | First healthy-food order on the board | Nurse (clinic; healthy-food orders) | T4 |
+| **The village nurse** | Clinic opens (T4) with a healthy-food order sign | Nurse (clinic; healthy-food orders) | T4 |
 | **The librarian** | Ten forage or fish finds in the Collection Book | Librarian (picture books) | T4 |
 | **The innkeeper** | Lane restoration reaches the stile | Innkeeper (catering orders) | T5 |
 | **The Hill Visitor** | Lane restoration reaches Lantern Hill, winter | Hill Visitor | T5 |
@@ -87,7 +88,7 @@ Contests are optional; entries are judged on quality, never on reflexes.
 | **First order delivered** | First order | Neighbour thanks Kit; first sticker |
 | **Repeat order** | Several orders for one neighbour | Neighbour offers a weekly order |
 | **Subscription offered** | Many happy deliveries to one neighbour | Neighbour offers a standing daily order (item, amount, time); Kit may subscribe |
-| **Subscription reminder** | Each morning a subscription is due | HUD + board reminder until delivered; missed day = unpaid only |
+| **Subscription reminder** | Each morning a subscription is due | HUD reminder (Orders list from Phase-002) until sent; missed day = unpaid only |
 | **Bigger order** | Relationship grows | Bulk or catering order offered |
 | **Recipe gift** | High relationship | Neighbour shares a recipe or blueprint |
 | **Ledger page fills** | Completed tasks | Pressed flower or sketch in Marlow's ledger |
@@ -124,3 +125,4 @@ Contests are optional; entries are judged on quality, never on reflexes.
 - **0.9 — 2026-11-19:** Owner picks: first core events are now the **first orders** (berries, carrots, Phase-001); Butterfly Garden optional and later; crop yellow/lost triggers set to 2/3 dry days (single mode); merchant arrives when Field A is cleared.
 - **0.10 — 2026-11-19:** Added subscription-offered and daily subscription-reminder events.
 - **0.11 — 2026-11-20:** **Bramblewick Vale (places.md v0.10).** Arrivals added for the new villagers (shopkeeper T2, smith T3, carpenter/nurse/librarian T4, innkeeper T5); brook keeper now met on the far bank after the footbridge repair; festivals placed on the green, at the village hall, and at the inn; restoration steps now open areas; new "Area opens" event clears the pause-map fog.
+- **0.12 — 2026-11-21:** **Selling and house-visit orders (owner decisions 2026-11-21):** new Dawn **order signs** event (only a few open houses each day); baker, allotment neighbour and shopkeeper arrive in T1 and their places open then (shopkeeper trigger synced to five delivered orders, characters.md); shipping payout sells only what is in the box at sleep, with a morning note.

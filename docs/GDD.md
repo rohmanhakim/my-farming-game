@@ -1,7 +1,7 @@
 # Game Design Document
 
 > **Status:** Brainstorming draft — **direction reset 2026-11-19** (see v0.19–v0.20 change log)
-> **Version:** 0.42
+> **Version:** 0.44
 > **Last updated:** 2026-11-21
 > **Purpose:** A living document for shaping the game together. Confirmed owner decisions are marked **decided**; everything else is a proposal, not a commitment.
 
@@ -78,7 +78,7 @@ The shared pattern is that the player wants something and helps another person t
 3. The player chooses whether to accept and completes it, or leaves it.
 4. On completion, the NPC responds and gives the promised reward.
 
-Requests and orders are **optional and have no deadline penalty**. An unaccepted order simply waits or is replaced by a new one; an accepted order stays open until it is delivered or the player cancels it, with no loss. NPCs remember kindly: "We didn't finish that last time. Would you like to try it now?"
+Requests and orders are **optional and have no deadline penalty**. An unaccepted order simply waits or is replaced by a new one. An accepted neighbour order earns a shrinking **freshness bonus** and, if it hasn't been sent after three nights, is **simply gone** — Kit keeps the goods and loses nothing but the missed money (owner decision 2026-11-21, §4 *Neighbour orders*); other requests stay open until done or cancelled. NPCs remember kindly: "We didn't finish that last time. Would you like to try it now?"
 
 ### First want-task-reward beat: The First Order (decided 2026-11-19)
 
@@ -143,12 +143,18 @@ Track a separate relationship value per NPC, changed by delivered orders, comple
 
 - Neighbours order farm output: **eggs, milk, fruit, vegetables, fish, pies, jam, seasonal baskets, and bulk orders**.
 - **Orders only ask for what Kit can actually produce** right now — an order generator draws from crops, animals, and recipes the player has unlocked, at quantities their farm size can supply.
-- **Optional, no pressure:** orders have no deadline penalty; ignoring them costs nothing but the missed money.
+- **Optional, no pressure:** orders have no deadline penalty; ignoring them, or letting one run out, costs nothing but the missed money.
+- **Freshness bonus (owner decision 2026-11-21):** a neighbour order pays the **normal sell price plus a bonus that shrinks each night**, counted from the day Kit takes it: sent in that night's shipping-box pickup **+30 %**, the next night **+20 %**, the night after **+10 %**. If it still hasn't gone out, the order is **simply gone**: the neighbour says something kind ("No worries, maybe next time"), Kit keeps the goods, and nothing else changes (no relationship loss, no fee). Not a penalty — it keeps the order list short and free of old orders.
+- **Orders list (owner decision 2026-11-21):** an **on-screen Orders button** on the HUD (next to the bag; not in the pause menu) opens the list of taken orders — one picture card per order Kit has taken: the neighbour's face, each item with a **have / need** count (bag + box, e.g. 🥚 4/6), the bonus if sent tonight ("+30 % tonight"), **dots for the nights left** before it is gone, and a cancel button. Gamepad: Back/Select (proposed, controls.md §2). Time stops while it is open, like the bag (and the shipping box screen). An order Kit hasn't taken waits at the door and doesn't count down. Mixed baskets add ×1.1 on top; daily standing orders keep their own rule (once a day, never run out). This replaces the flat ×1.2 premium and the occasional same-day quick bonus.
 - **Variety:** different neighbours have different tastes (Marlow likes herbs and honey; a baker wants eggs and wheat; a family wants a weekly basket).
 - **Growth:** satisfied neighbours send **repeat orders** and, as the relationship grows, **bigger orders** (bulk, mixed baskets, festival catering).
-- **Variety from the start (owner decision 2026-11-21):** even on a small farm the board mixes **varied sizes** (the same item can be wanted twice in different amounts), occasional **mixed baskets** (2–3 items, a small basket bonus), **daily standing orders** once a neighbour knows Kit, and **quick-bonus orders** that pay a little extra if delivered the same day — a bonus only, never a penalty, so "no deadline penalty" still holds. The **baker, the allotment neighbour and the shopkeeper** start posting on Marlow's board during the first tier, one at a time after Kit's first eggs, first delivered crop order and fifth delivered order (characters.md §10); their village buildings still open at T2.
-- **Subscription orders (owner request 2026-11-19):** a satisfied neighbour can offer a **standing daily order** — e.g. "6 eggs every morning by 10:00" or "a milk can every day". Kit chooses to subscribe; a **reminder** shows on the HUD and the order board each morning until it is delivered; Kit can **cancel any time** with no penalty. A missed day simply isn't paid (no fine, no relationship loss); a helper can take over the daily delivery later.
-- **Where:** the **order board** at the seed shed, plus hand-delivered requests when talking to a neighbour. Delivery is by hand or, later, via a delivery helper.
+- **Variety from the start (owner decision 2026-11-21):** even on a small farm the board mixes **varied sizes** (the same item can be wanted twice in different amounts), occasional **mixed baskets** (2–3 items, a small basket bonus), **daily standing orders** once a neighbour knows Kit (the occasional same-day **quick-bonus orders** of Phase-001 become the freshness bonus on every order from Phase-002, below). The **baker, the allotment neighbour and the shopkeeper** arrive during the first tier, one at a time after Kit's first eggs, first delivered crop order and fifth delivered order (characters.md §10). **From Phase-002 their place opens at that moment** (owner 2026-11-21) and they order from their own door; in Phase-001, which has no village yet, they pin orders on Marlow's board.
+- **Subscription orders (owner request 2026-11-19):** a satisfied neighbour can offer a **standing daily order** — e.g. "6 eggs every day" or "a milk can every day" (sent through the shipping box each night once it exists; Phase-001 hands them in at the board). Kit chooses to subscribe; a **reminder** shows on the HUD and the order board each morning until it is delivered; Kit can **cancel any time** with no penalty. A missed day simply isn't paid (no fine, no relationship loss); a helper can take over the daily delivery later.
+- **Where — house visits (owner decision 2026-11-21):** once a neighbour's house is open, that neighbour's orders are taken **at their house**, not from the board. The flow: walk round the village, see a **sign** on a house that wants something (a basket with a picture note at the door), visit the house, **talk to the neighbour** (they come to the door when Kit knocks, so there is no hunting for people), and take the order or leave it. Kit **sends** an accepted order by putting the goods in the **shipping box**: at pickup the box fills accepted orders first, and each order it can fill completely is paid at the order price; whatever is left sells at the normal box price. The box screen marks which accepted orders the current contents will fill, so Kit can check before bed. The ring path passes every door (places.md §2.1). A same-day quick bonus counts if the order goes out in that night's pickup; daily standing orders are filled from the box each night. A farmhand can fill the box later.
+- **Order pay vs. the shipping box (owner decision 2026-11-21):** neighbour orders **pay more than the shipping box** (+10 % to +30 % through the freshness bonus above), so visiting is worth the walk. Switched on with the shipping box — economy.md §2, Q15.
+- **One rule for every order (owner decision 2026-11-21, from Phase-002):** a neighbour gives orders **only once their house is open**, and **only from a sign at their door** — Marlow included (his sign goes on his cottage door on the lane). No orders are passed on by anyone else and none are pinned on a board.
+- **Not every neighbour has an order (owner 2026-11-21):** each Dawn only **a few** open houses put a sign out, and which ones changes from day to day, so the walk round is a small discovery rather than a checklist. Some villagers never order at all (the farmhands' cottages, the travelling merchant, the friend's family).
+- **Marlow's board becomes the village noticeboard** (2026-11-21): help-wanted cards for hiring farmhands, festival notices and community-project lists — **no orders**. (Phase-001 still uses it as the order board until Phase-002 builds the village.)
 
 ### Ways to earn and acquire (decided 2026-11-19 — all optional)
 
@@ -157,7 +163,7 @@ Orders are the main income, but **none of these is mandatory**: the player decid
 | Way | What it gives | Notes |
 |---|---|---|
 | **Neighbour orders** | Money, relationship, repeat/bigger orders | Main income (above). |
-| **Market stall / shipping box** | Money | Sell any produce. **Seasonal pricing** (out-of-season goods pay more) and **demand pricing** (selling lots of one thing lowers its price for a while). Prices in economy.md. |
+| **Shipping box** *(owner decision 2026-11-21)* | Money | A box beside the house. Kit chooses what goes in and can **take items back out until pickup** (when Kit sleeps); only what is in the box at pickup sells, at the **normal sell price** (quality, seasonal and demand pricing as in economy.md). Pays less than neighbour orders, and is also how accepted orders are sent (above). Kit never has to sell everything: what stays out of the box waits in the bag or the **storage chest** at the house (inventory.md §4), and harvested goods never spoil. **The market stall is deferred to a later phase** — one way to sell at a time; if it returns it is "set prices and leave it", so Kit is free to do other things. |
 | **Town board & festival contests** | Money, ribbons, unique items | Board posts one-off jobs (e.g. "fix the fence"); seasonal festivals hold produce and animal contests judged on quality. |
 | **Foraging, fishing & exploring** | Wild goods to use, sell, or deliver | Berries, mushrooms, herbs along the lane; fishing at the brook; finds while exploring. |
 | **Travelling merchants** | Trades, rare seeds, rare items | Visit on certain days; trade goods for goods, or buy rarities. |
@@ -203,11 +209,11 @@ One rule for everything that lives on the farm: **3 days in a row without care �
 
 | # | Phase | Clock | Light | What is true in this phase |
 |---|---|---|---|---|
-| 1 | **Dawn** | 04:30–07:30 | First light, soft pink | Morning greeting; new orders appear on the board |
+| 1 | **Dawn** | 04:30–07:30 | First light, soft pink | Morning greeting; order signs go up on a few neighbours' doors (Phase-001: new orders on the board) |
 | 2 | **Morning** | 07:30–10:30 | Bright, clear | Mr. Marlow at the gate; seed shed open; butterflies visit flowers |
-| 3 | **Midday** | 10:30–13:30 | Highest, brightest | Neighbours out and about; market stall busiest |
+| 3 | **Midday** | 10:30–13:30 | Highest, brightest | Neighbours out and about (a good time for house visits) |
 | 4 | **Afternoon** | 13:30–16:30 | Long light | Brook keeper on warm afternoons; travelling merchant on visiting days |
-| 5 | **Evening** | 16:30–19:30 | Gold → amber | Shops close; shipping box collected at the end of the day |
+| 5 | **Evening** | 16:30–19:30 | Gold → amber | Shops close; last chance to change what is in the shipping box (picked up when Kit sleeps) |
 | 6 | **Dusk** | 19:30–22:30 | Lane darkens | Fireflies in season; Marlow may be indoors |
 | 7 | **Night** | 22:30–01:30 | Dark, quiet palette | Seed shed lit; Moon Petal glows |
 | 8 | **Small hours** | 01:30–04:30 | Deepest dark | Quiet only |
@@ -262,7 +268,7 @@ Short sessions are satisfying; long sessions are possible. There is no required 
 
 ### Later activities (product scope)
 
-- Market stall and shipping box.
+- Shipping box (Phase-002) and house-visit orders as each neighbour's house opens; the market stall later.
 - More animals (sheep, cow, beehive), fish pond, and buildings.
 - Clearing the back fields and farm layout.
 - Kitchen/workshop processing and crafting; blueprints.
@@ -279,7 +285,7 @@ Short sessions are satisfying; long sessions are possible. There is no required 
 - No debt, loans, or bankruptcy; money never goes below zero.
 - Nothing changes while the game is closed.
 - Every loss is warned visibly for two days first, and is replaceable with money.
-- Orders and requests are optional with no deadline penalty.
+- Orders and requests are optional with no deadline penalty; an unsent neighbour order is simply gone after three nights, costing only the missed bonus money.
 - Do not require fast reactions or precise timing.
 - Keep inventory small and understandable: auto-stacking picture slots, no manual sorting.
 - Early rewards should introduce new ways to play, not only bigger numbers.
@@ -406,7 +412,7 @@ Playtests with children are conducted with appropriate adult supervision and con
 
 ## 15. Product Scope
 
-**In product scope (delivered across phases — docs/PHASE.md):** neighbour orders and money; market stall and shipping box with seasonal/demand pricing; four animal species (chicken, sheep, cow, beehive) with care meters and quality products; fish pond; buildings; clearing the overgrown fields; kitchen/workshop processing; blueprints and crafting; automation (sprinklers, feeders, pond auto-feeders, helpers); foraging and fishing; travelling merchants; festivals and contests; relationships, recipes; long-term goals (charm, collections, lane restoration); sticker/achievement book.
+**In product scope (delivered across phases — docs/PHASE.md):** neighbour orders (house visits) and money; shipping box with seasonal/demand pricing (market stall deferred to a later phase); four animal species (chicken, sheep, cow, beehive) with care meters and quality products; fish pond; buildings; clearing the overgrown fields; kitchen/workshop processing; blueprints and crafting; automation (sprinklers, feeders, pond auto-feeders, helpers); foraging and fishing; travelling merchants; festivals and contests; relationships, recipes; long-term goals (charm, collections, lane restoration); sticker/achievement book.
 
 **Not planned:** mobile/tablet versions; online multiplayer; combat; sickness/vet systems; debt or loans; real-money purchases.
 
@@ -426,7 +432,7 @@ Playtests with children are conducted with appropriate adult supervision and con
 12. **RESOLVED (v0.20):** the first beat is a first order; the Butterfly Garden is optional and later (§3).
 13. **RESOLVED (v0.26, reset v0.29–v0.33):** day length 17 real minutes (04:30 → 21:30, 60 s per in-game hour).
 14. **RESOLVED (v0.26):** 30-day seasons, 120-day year (Harvest Moon).
-15. **✅ DECIDED (2026-11-21, owner) — order premium: none.** Normal orders pay the plain sell price; only mixed baskets (×1.1) and same-day quick-bonus orders (+20 %) pay extra (economy.md §3).
+15. **✅ DECIDED (2026-11-21, owner) — order pay: sell price + freshness bonus.** First decided as no premium; once the shipping box (normal sell price) was chosen, orders had to pay more. Final: the normal sell price plus **+30 % / +20 % / +10 %** if sent the night Kit takes the order / the next night / the night after; then the order is simply gone. Switched on with the box (Phase-002); Phase-001 keeps its plain price and occasional +20 % same-day bonus. Mixed baskets ×1.1 stack on top (economy.md §2).
 16. **⚠️ OPEN — interior scenes.** Phase-001 enters buildings on the same map (roof fades, §4). Do later buildings need separate interior scenes (a fade to a room map)? Decide in Phase-002 planning; the kitchen upgrade is the first likely case.
 
 ## Related documents
@@ -495,3 +501,5 @@ Playtests with children are conducted with appropriate adult supervision and con
 - **0.40 — 2026-11-20:** §4 *When time stops* notes that Phase-001 enters buildings on the same map (roof fades, clock stops) with no separate interior scenes (owner); new open question 16 on interior scenes for Phase-002.
 - **0.41 — 2026-11-21:** **Order variety (owner decision 2026-11-21):** §4 *Neighbour orders* adds varied sizes, occasional mixed baskets, daily standing orders and same-day quick bonuses (bonus only, never a penalty) from the first tier, and the baker, allotment neighbour and shopkeeper posting on Marlow's board in T1.
 - **0.42 — 2026-11-21:** **Q15 decided (owner 2026-11-21):** no order premium; only baskets and quick-bonus orders pay extra.
+- **0.43 — 2026-11-21:** **Selling and house-visit orders (owner decisions 2026-11-21).** Ways to earn: the **shipping box** comes first (take items back out until pickup when Kit sleeps; sells at the normal price); the **market stall is deferred** to a later phase (one sell outlet at a time; if it returns, "set prices and leave it"). Neighbour orders move to **house visits** once a neighbour's house is open: see the sign, visit, talk to the neighbour, take the order, then **send it through the shipping box** (the box fills accepted orders first at the order price, the rest sells at box price). **Q15 decided:** normal sell price + a **freshness bonus** (+30 % same night, +20 % next, +10 % the night after, then the order is simply gone — not a penalty, keeps the list fresh). Marlow's board keeps his own orders and not-yet-open neighbours' orders only. Unsold goods wait in the bag or the storage chest. Day-phase table, later activities and product scope updated.
+- **0.44 — 2026-11-21:** **Freshness bonus and Orders list (owner decisions 2026-11-21).** Neighbour orders pay the sell price + **+30 % / +20 % / +10 %** by the night they are sent (from the day Kit takes them), then are simply gone (no penalty, keeps the list fresh); replaces the flat ×1.2 and the occasional quick bonus; Q15 and the §2 no-deadline wording updated. New **on-screen Orders button** on the HUD listing taken orders (have/need counts, tonight's bonus, nights left, cancel). **Order source:** every order comes from a sign at an open house's door, Marlow included; the baker's, allotment neighbour's and shopkeeper's places open when they arrive in T1 (from Phase-002); only a few houses have a sign each day and some villagers never order; Marlow's board becomes the village noticeboard (no orders).

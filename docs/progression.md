@@ -1,7 +1,7 @@
 # Progression: Farm Growth, Automation, and Long-Term Goals
 
 > **Status:** Design draft — **restructured 2026-11-19**
-> **Version:** 0.12
+> **Version:** 0.13
 > **Last updated:** 2026-11-21
 > **Purpose:** How the farm grows from a tangled plot to a full, automated farm (*Harvest Moon*-style), what limits it at each point, and what there is to chase once it runs well. Replaces the old parent-controlled layers and five-stage age map. Everything after the core farm loop is **optional**.
 
@@ -43,7 +43,7 @@ Tiers are reached by **what the farm is**, not by time played or age. They gate 
 | Tier | Reached when | Typical limit | What opens | Order size |
 |---|---|---|---|---|
 | **T1 — Small plot** | Start of game | **Money** (500 coins, 3 cleared beds) | Seeds, clearing the front garden, compost bin, **5 hens + 1 cow already in the old coop and barn**, feed, the order board (first order on Day 1) | 1–6 items in varied sizes; occasional mixed baskets, daily standing orders and quick-bonus orders (owner 2026-11-21) |
-| **T2 — Growing farm** | First 10 orders delivered | **Money** | Big coop, beehive, workshop, kitchen (processing), market stall, **farmhands hired by the day**, first blueprints, scythe/hammer/axe, brush, fishing rod | 3–10 items, mixed |
+| **T2 — Growing farm** | First 10 orders delivered | **Money** | Big coop, beehive, workshop, kitchen (processing), more houses giving orders at their door, **farmhands hired by the day**, first blueprints, scythe/hammer/axe, brush, fishing rod | 3–10 items, mixed |
 | **T3 — Working farm** | First back field (Field A) fully cleared | **Money + time** (hand-tending and clearing get busy) | Cows and sheep for the **old starting barn**, extra/bigger barns, silo, fish pond, orchard, travelling merchant visits, festivals & contests | Baskets, weekly repeats |
 | **T4 — Automated farm** | First sprinkler or auto-feeder placed | **Land** begins to bite | Sprinklers (all grades), auto-feeders, pond auto-feeder, greenhouse, garden sprites | Bulk orders, catering |
 | **T5 — Full land** | All five back fields cleared | **Land only** | Hydroponics, farm shop, lane restoration, endgame goals (§6) | Standing orders, festival catering |
@@ -80,9 +80,10 @@ Tiers are reached by **what the farm is**, not by time played or age. They gate 
 | Seasonal basket | "A winter basket: herbs, cheese, jam." | Seasons, storage, greenhouse |
 | Bulk | "Forty eggs for the festival." | Scaling up, automation |
 | Repeat / standing | "A basket every week." | Reliable supply, relationships |
-| **Subscription (daily)** | "6 eggs every morning by 10:00." Reminder each day; cancel any time | Routine, reliability, steady income |
+| **Subscription (daily)** | "6 eggs every day." Reminder each day; cancel any time | Routine, reliability, steady income |
+| **House visit** *(owner 2026-11-21)* | A basket sign at the bakery; Kit knocks and the baker asks for "4 eggs, please." Kit sends them in the shipping box that night for the biggest bonus | Planning a route; orders pay up to 30 % more than the box if sent quickly, so the walk is worth it |
 
-Orders always match what Kit can produce right now (GDD §4) and never carry a deadline penalty.
+Orders always match what Kit can produce right now (GDD §4) and never carry a deadline penalty; an unsent order is simply gone after three nights, so the list stays fresh. Anything Kit grows but no one has ordered can go in the **shipping box** (normal sell price); the market stall is deferred to a later phase.
 
 ## 6. After the Farm Is Running — Long-Term Goals (all optional)
 
@@ -94,7 +95,7 @@ When the land is full and automation runs the chores, there is still plenty to c
 - **Get them by:** buying (shops, travelling merchants), crafting (workshop blueprints), or **winning** them (contests, friendship gifts, collections).
 - **Place anywhere** on the farm; move freely.
 - **Farm charm:** a visible charm rating (shown as a row of flowers, not a number) that rises with decorations, tidy paths, flower variety, and well-kept animals.
-  - **Why it matters:** higher charm brings **more visitors to the farm shop and market stall**, unlocks **special neighbour visits and photo moments**, and counts in the **"Prettiest Farm" festival contest**.
+  - **Why it matters:** higher charm brings **more visitors to the farm shop (and the market stall, if it returns)**, unlocks **special neighbour visits and photo moments**, and counts in the **"Prettiest Farm" festival contest**.
   - **Trade-off:** decorations use land that could grow crops — beauty versus production is a choice, not a rule.
 
 ### 6.2 Collections
@@ -115,7 +116,7 @@ Seasonal festivals hold contests — biggest pumpkin, best eggs, finest wool, be
 
 ### 6.4 Restoring the lane
 
-The lane's long-arc story (world.md §4.3), now spread across the late game as a **ladder of three community projects** (2026-11-20, Bramblewick Vale). Each is planned at the village hall, has its own order list at Marlow's board (money and produce, plus materials from clearing), and visibly changes the valley by opening an area (places.md §2):
+The lane's long-arc story (world.md §4.3), now spread across the late game as a **ladder of three community projects** (2026-11-20, Bramblewick Vale). Each is planned at the village hall, has its own list on Marlow's noticeboard (money and produce, plus materials from clearing), and visibly changes the valley by opening an area (places.md §2):
 
 | Step | Tier | Project | Opens |
 |---|---|---|---|
@@ -141,7 +142,7 @@ Very rare items for players who want them: golden watering can, prize-winning br
 
 | Tier | Characters | Introduction |
 |---|---|---|
-| T1 | Mr. Marlow, Ada; then the baker, the allotment neighbour, the shopkeeper (orders on the board) | Day one; Marlow gives the first order (wild berries), then a carrot order and the order board. **Owner 2026-11-21:** the baker (after the first eggs), the allotment neighbour (after the first crop order) and the shopkeeper (after five orders) start pinning orders on the board, one at a time. The Butterfly Garden is an optional later request. |
+| T1 | Mr. Marlow, Ada; then the baker, the allotment neighbour, the shopkeeper | Day one; Marlow gives the first order (wild berries), then a carrot order and the order board. **Owner 2026-11-21:** the baker (after the first eggs), the allotment neighbour (after the first crop order) and the shopkeeper (after five orders) arrive one at a time. **From Phase-002 each one's place opens right then** and they order from a sign at their door (owner 2026-11-21); in Phase-001, which has no village, they pin orders on Marlow's board. The Butterfly Garden is an optional later request. |
 | T2 | (the baker, the allotment neighbour, the shopkeeper met in person) | Their bakery, allotments and general store open; trace first where a building is new. |
 | T3 | The brook keeper, a friend of Kit's age, the smith (+ the travelling merchant, a visitor) | Brook keeper on the far bank after the footbridge repair; merchant after Field A is cleared, then on visiting days. |
 | T4 | The carpenter, the village nurse, the librarian | Trace first, then a first order (characters.md §10). Farmhands are hired, not counted. |
@@ -196,3 +197,4 @@ Missing a mystery means waiting for it to return next year.
 - **0.10 — 2026-11-20:** **Farmhands first, machines later (owner decision 2026-11-20):** farmhands hired by the day from T2 (no cottage); T4 helpers are now garden sprites; the villagers' cottages open at T2.
 - **0.11 — 2026-11-20:** **Windmill / water pump removed (owner decision 2026-11-20):** dropped from T4 unlocks; flour comes from the restored watermill (§6.4); the rare weathervane now sits on the barn.
 - **0.12 — 2026-11-21:** **Order variety (owner decision 2026-11-21):** T1 orders vary in size and include occasional baskets, daily standing orders and quick bonuses; the baker, allotment neighbour and shopkeeper post on the board from T1 (§7).
+- **0.13 — 2026-11-21:** **Selling and house-visit orders (owner decisions 2026-11-21).** T2 no longer opens the market stall (deferred to a later phase); it opens **house-visit orders** as neighbours' places open (orders come from signs at open houses' doors and are sent through the shipping box; the baker's, allotment neighbour's and shopkeeper's places open in T1 when they arrive). §5 gains the house-visit stage (freshness bonus, orders simply gone after three nights) and notes the shipping box for unordered goods.

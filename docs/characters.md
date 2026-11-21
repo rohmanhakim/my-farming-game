@@ -1,7 +1,7 @@
 # Characters
 
 > **Status:** Finalized for prototype (design v0.5) — **updated for the direction reset 2026-11-19**
-> **Version:** 0.16
+> **Version:** 0.17
 > **Last updated:** 2026-11-21
 > **Purpose:** The final cast for the prototype, plus clearly-marked future cast. Names below are locked for the prototype unless playtesting proves otherwise. Backgrounds are brief and adjustable.
 
@@ -115,7 +115,7 @@ Ada has no authority over Kit's day. Co-play is real-time collaboration on one P
 | **Age feel** | Elderly, unhurried, a little deaf in one ear, bad knees, excellent memory for plants and poor one for years. |
 | **Home** | The cottage and seed shed on the lane, between Kit's gate and the village green; always there, always reachable. |
 | **Voice** | Short sentences, warm, curious, mildly funny. "Ah. Now that's a thing worth looking at." |
-| **Background (adjustable)** | Mr. Marlow has kept the lane's seed shed for longer than anyone can remember. He knows every plant and story on the lane, but his knees no longer let him kneel and his hands are too stiff for small seeds, so he waits at his gate with a seed packet and lets Kit do the doing. He also keeps the lane's **order board** at the seed shed and sells seeds, and he likes herbs and honey in his own orders. |
+| **Background (adjustable)** | Mr. Marlow has kept the lane's seed shed for longer than anyone can remember. He knows every plant and story on the lane, but his knees no longer let him kneel and his hands are too stiff for small seeds, so he waits at his gate with a seed packet and lets Kit do the doing. He also keeps the lane's **order board** at the seed shed (from Phase-002 a village noticeboard — help wanted, festivals, projects; his own orders come from a sign on his cottage door like everyone's, 2026-11-21) and sells seeds, and he likes herbs and honey in his own orders. |
 
 #### Memorable formula (Mr. Marlow)
 
@@ -176,14 +176,14 @@ The valley is fixed (places.md §1); it fills with people. Homes are in places.m
 
 | Tentative name | Role | Task theme | Introduction trigger |
 |---|---|---|---|
-| **The allotment neighbour** | A quieter character tending shared beds. | Sharing; vegetable orders. | First crop order delivered (**T1, orders on Marlow's board** — owner 2026-11-21; met in person when the allotments open, T2). |
-| **The baker** | Runs the village bakery. | Egg, flour, and fruit orders; bread and pie recipes. | First eggs collected (**T1, orders on Marlow's board** — owner 2026-11-21; the bakery opens at T2). |
+| **The allotment neighbour** | A quieter character tending shared beds. | Sharing; vegetable orders. | First crop order delivered (T1; from Phase-002 the allotments open then and orders come from a sign at the gate — owner 2026-11-21; Phase-001 pins them on Marlow's board). |
+| **The baker** | Runs the village bakery. | Egg, flour, and fruit orders; bread and pie recipes. | First eggs collected (T1; from Phase-002 the bakery opens then and orders come from a sign at its door — owner 2026-11-21; Phase-001 pins them on Marlow's board). |
 | **The brook keeper** | Concerned with the water and reeds; lives on the far bank. | Caring for the brook; fishing (gives the rod). | First visit to the far bank once the footbridge is repaired (T3). |
 | **A friend of Kit's age** | A teen peer on the lane (replaces "a child of the lane"). | Friendship, festivals, contests. | Two neighbour tasks + brook visit (T3). |
 | **The travelling merchant** *(new)* | Visits on set days. | Trades, rare seeds and breeds. | Field A cleared (T3). |
-| **The shopkeeper** *(2026-11-20)* | Runs the general store. | Kitchen ingredients, bag upgrades, decorations; small household orders. | Five orders delivered (**T1, orders on Marlow's board** — owner 2026-11-21); the general store opens at T2. |
+| **The shopkeeper** *(2026-11-20)* | Runs the general store. | Kitchen ingredients, bag upgrades, decorations; small household orders. | Five orders delivered (T1; from Phase-002 the general store opens then and orders come from a sign at its door — owner 2026-11-21; Phase-001 pins them on Marlow's board). |
 | **The smith** *(2026-11-20)* | Works the village smithy. | Tool upgrades; stone and wood orders from clearing. | First debris Kit's tools can't clear (T3). |
-| **The village nurse** *(2026-11-20)* | Runs the clinic; nobody gets sick. | Healthy-food orders (fruit, herbal tea, honey, soup); picture lessons on eating well. | First healthy-food order on the board (T4). |
+| **The village nurse** *(2026-11-20)* | Runs the clinic; nobody gets sick. | Healthy-food orders (fruit, herbal tea, honey, soup); picture lessons on eating well. | Clinic opens with a healthy-food order sign at its door (T4). |
 | **The carpenter** *(2026-11-20)* | Runs the carpenter's yard. | House upgrades; builds the big late buildings (greenhouse, farm shop). | First T4 building wanted (T4). |
 | **The librarian** *(2026-11-20)* | Keeps the library and schoolroom. | Picture books that add Collection Book pages; questions about crops and animals. | Ten forage or fish finds in the Collection Book (T4). |
 | **The innkeeper** *(2026-11-20)* | Runs the inn where visitors stay. | Catering orders; hosts the merchant, the Hill Visitor, and festival guests. | Lane restoration reaches the stile (T5). |
@@ -284,3 +284,4 @@ Implementation notes:
 - **0.14 — 2026-11-20:** **Farmhands first, machines later (owner decision 2026-11-20):** farmhands hired by the day from the order board at T2; no farmhand cottage.
 - **0.15 — 2026-11-20:** **Windmill / water pump removed (owner decision 2026-11-20):** the carpenter no longer builds it.
 - **0.16 — 2026-11-21:** **Order variety (owner decision 2026-11-21):** the baker (first eggs), the allotment neighbour (first crop order delivered) and the shopkeeper (five orders delivered) start posting orders on Marlow's board in T1; their buildings still open at T2.
+- **0.17 — 2026-11-21:** **House-visit orders (owner decision 2026-11-21):** once a neighbour's place opens, their orders come from a **basket sign at their door** instead of Marlow's board (baker, allotment neighbour, shopkeeper rows); Kit knocks and talks to the neighbour to take the order and sends the goods through the shipping box. Every order comes from an open house's door, Marlow included; the baker's, allotment neighbour's and shopkeeper's places open when they arrive (T1); only a few houses have a sign each day and some villagers never order; Marlow's board becomes the village noticeboard.

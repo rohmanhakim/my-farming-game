@@ -1,8 +1,8 @@
 # Mechanics
 
 > **Status:** Brainstorming draft — **updated for the direction reset 2026-11-19**
-> **Version:** 0.22
-> **Last updated:** 2026-11-20
+> **Version:** 0.23
+> **Last updated:** 2026-11-21
 > **Purpose:** Player verbs and systems. Every element is a proposal pending playtesting. The GDD remains authoritative for gameplay, audience, and project decisions.
 
 ---
@@ -26,18 +26,18 @@ The game is a realistic but kid-friendly, educational farm sim for PC (GDD §1�
 
 | # | Phase | Clock | What is true |
 |---|---|---|---|
-| 1 | Dawn | 04:30–07:30 | New orders on the board; sprinklers run |
+| 1 | Dawn | 04:30–07:30 | Order signs on a few neighbours' doors (Phase-001: new orders on the board); sprinklers run |
 | 2 | Morning | 07:30–10:30 | Marlow at the gate; seed shed open |
 | 3 | Midday | 10:30–13:30 | Neighbours out; market busiest |
 | 4 | Afternoon | 13:30–16:30 | Brook keeper; travelling merchant on visit days |
-| 5 | Evening | 16:30–19:30 | Shops close; shipping box collected at day's end |
+| 5 | Evening | 16:30–19:30 | Shops close; the shipping box is picked up when Kit sleeps |
 | 6 | Dusk | 19:30–22:30 | Fireflies in season |
 | 7 | Night | 22:30–01:30 | Seed shed lit; Moon Petal glows |
 | 8 | Small hours | 01:30–04:30 | Quiet |
 
 - **Time stops** while a menu, conversation or shop screen is open, and **also indoors** (owner 2026-11-20, kid tolerance, GDD §4).
 - **HUD clock:** a corner dial with sun/moon marker (per phase) plus a digital readout ticking every 15 in-game minutes.
-- **Sleep/rest:** ends the day, pays out the shipping box, resets the clock to Dawn. No penalty for when you sleep.
+- **Sleep/rest:** ends the day, picks up and pays out the shipping box (only what is in it at that moment), resets the clock to Dawn. No penalty for when you sleep.
 - The clock drives light, presence, shop hours, order refresh, and shipping payout. Day rollover (sleep or the 21:30 bedtime) advances crop growth and the watering/feeding counts (§6, animals.md §3).
 
 ---
@@ -75,10 +75,10 @@ Seasons decide what sprouts, which fish and creatures appear, festival dates, an
 
 | Verb | What it does | Notes |
 |---|---|---|
-| **Take order** | Accept an order from the board or a neighbour. | Optional; no deadline penalty; cancel any time. |
-| **Subscribe / cancel** | Accept a standing daily order (e.g. 6 eggs by 10:00) or cancel it. | Daily HUD reminder; missed day = unpaid, no penalty; a helper can deliver it. |
+| **Take order** | Accept an order **at a neighbour's house** (from Phase-002; Phase-001 uses Marlow's board): spot the sign (basket with a picture note) while walking round, knock, talk to the neighbour, take the order (owner 2026-11-21). | Optional; cancel any time. **Send** it by putting the goods in the shipping box; at pickup the box fills accepted orders first. Freshness bonus +30 % / +20 % / +10 % by the night it goes out; unsent after three nights it is simply gone, nothing else lost (economy.md §2). |
+| **Subscribe / cancel** | Accept a standing daily order (e.g. 6 eggs every day; sent through the shipping box from Phase-002) or cancel it. | Daily HUD reminder; missed day = unpaid, no penalty; a helper can deliver it. |
 | **Hire / dismiss** | Hire a farmhand for a job and area, or let them go. | Daily wage from the wallet; unpaid = day off, never debt. |
-| **Sell** | Sell at the market stall, shipping box, or farm shop. | Seasonal and demand pricing (economy.md). |
+| **Sell** | Put goods in the **shipping box** beside the house (owner 2026-11-21). Kit can take them back out any time before pickup; whatever is in the box when Kit sleeps fills accepted orders first, then the rest sells. Goods Kit keeps stay in the bag or the **storage chest** at the house and never spoil. Later: the farm shop (T5). The **market stall is deferred** to a later phase (if it returns: set prices and leave it). | Normal sell price with quality, seasonal and demand pricing (economy.md). A morning note shows what sold. |
 | **Buy** | Seeds, animals, tools, buildings, blueprints, automation (at the seed shed). | Money never goes below zero. |
 | **Order feed** | Phone the feed seller from home (the parents left the number) for grain, hay, or fish food. | Before 18:00 → delivered to the feed bins at Dawn next day; later → the day after; no fee. |
 | **Trade** | Swap goods with the travelling merchant. | Rare seeds, breeds, decorations. |
@@ -108,7 +108,7 @@ Seasons decide what sprouts, which fish and creatures appear, festival dates, an
 | **Sprinklers** (basic / quality / deluxe) | Watering | Blueprint (craft) or buy; T4 (basic earlier via a reward) | No water source needed (hidden pipes); shows its coverage before placing. |
 | **Auto-feeder** | Feeding coop/barn animals | Craft or buy; T4 | Draws feed from the silo; phone orders and harvests fill the silo; low-feed warning. |
 | **Pond auto-feeder** | Feeding fish | Craft or buy; T4 | Draws fish food from storage. |
-| **Helpers** — hired farmhands (daily wage) or befriended garden sprites (free, few jobs/day) | Watering, feeding, harvesting, collecting, brushing, clearing, delivering subscription orders, stall-keeping | Farmhands: "help wanted" card on the order board, by the day, T2. Sprites: friendship, T4 | Each covers an area; friendly characters or creatures. |
+| **Helpers** — hired farmhands (daily wage) or befriended garden sprites (free, few jobs/day) | Watering, feeding, harvesting, collecting, brushing, clearing, delivering subscription orders, filling the shipping box (stall-keeping if the market stall returns) | Farmhands: "help wanted" card on the order board, by the day, T2. Sprites: friendship, T4 | Each covers an area; friendly characters or creatures. |
 
 Automation never removes manual verbs. It is unlocked by **crafting or buying** at a point in progression, and every unit uses land.
 
@@ -191,3 +191,4 @@ Optional long-term systems — decoration and farm charm, collections, contests,
 - **0.20 — 2026-11-20:** **Farmhands first, machines later (owner decision 2026-11-20):** farmhands hired by the day from the order board at T2 (no cottage); sprites stay T4.
 - **0.21 — 2026-11-20:** **Machines simplified (owner decision 2026-11-20):** sprinklers need no water source; silo filled by phone orders and harvests; windmill no longer extends water reach.
 - **0.22 — 2026-11-20:** **Windmill / water pump removed (owner decision 2026-11-20):** row dropped; flour is milled at the village watermill.
+- **0.23 — 2026-11-21:** **Selling and house-visit orders (owner decisions 2026-11-21).** Sell verb: the **shipping box** first (take items back out until pickup when Kit sleeps; only what is in it then sells); the **market stall deferred**. Take-order verb: orders also come from **neighbours' houses** (spot the sign, knock, talk, take the order) and are **sent through the shipping box** with a freshness bonus (+30/+20/+10 %, then simply gone). Day phases, sleep and helper jobs updated. Every order comes from an open house's door (Marlow included); the board holds no orders from Phase-002.
