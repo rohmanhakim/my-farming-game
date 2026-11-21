@@ -29,7 +29,7 @@ public partial class BerryBush : Prop
         ModelName = "berry_bush";
         SpriteName = "berry_bush";
         PromptSprite = "item_berries";
-        BodySize = new Vector3(0.62f, 0.8f, 0.4f);
+        BodySize = new Vector3(1.1f, 0.8f, 1.1f); // KayKit bush is ~1.2 m wide (License.txt in assets/models/world)
         ClickSize = new Vector3(1f, 1f, 1f);
         PromptHeight = 1.2f;
         CastsShadow = false;
