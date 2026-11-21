@@ -113,12 +113,24 @@ public partial class TestRunner
         fade.FadeSeconds = 0.05f;
         fade.HoldSeconds = 0.05f;
         await Frames(3); // houses freed by the rule tests leave the group first
-        var hens = AnimalHouse.For(GetTree(), "hen");
-        var cows = AnimalHouse.For(GetTree(), "cow");
-        Check(hens.Entities.Count == 5 && hens.Entities.All(e => e is Hen) && cows.Entities.Count == 1 && cows.Entities[0] is Cow,
-            "5 hens stand in the coop, the cow in the barn");
-        var coop = level.GetNode<Building>("Coop");
-        Check(hens.Entities.All(e => coop.Interior.HasPoint(new Vector2(e.GlobalPosition.X, e.GlobalPosition.Z))), "the hens are inside the coop walls");
+        // Phase-002 Task 2.2: the coop and barn are room scenes; their animals live on in FarmState.
+        var mainNode = (Main)main;
+        var herdH = FarmState.Instance.Herd("hen");
+        var herdC = FarmState.Instance.Herd("cow");
+        const string coopScene = "res://scenes/world/rooms/CoopRoom.tscn";
+        const string barnScene = "res://scenes/world/rooms/BarnRoom.tscn";
+        Check(AnimalHouse.For(GetTree(), "hen") == null && herdH.Animals.Count == 5 && herdC.Animals.Count == 1,
+            "on the farm no coop room is loaded, but the 5 hens and the cow live on in FarmState");
+        async Task<AnimalHouse> Into(string scene, string kind)
+        {
+            mainNode.LoadLevelNow(scene, Building.EntryMarker);
+            await Frames(5);
+            return AnimalHouse.For(GetTree(), kind);
+        }
+        var hens = await Into(coopScene, "hen");
+        var coop = mainNode.CurrentRoom;
+        Check(hens != null && hens.State == herdH && hens.Entities.Count == 5 && hens.Entities.All(e => e is Hen), "5 hens stand in the coop room");
+        Check(hens.Entities.All(e => coop.Contains(e.GlobalPosition)), "the hens are inside the coop walls");
 
         async Task Sleep()
         {
@@ -128,8 +140,8 @@ public partial class TestRunner
         }
 
         // Owner playtest 2026-11-21: one trough slot per animal; the bin alone feeds nobody.
-        Check(hens.Slots.Count == 5 && cows.Slots.Count == 5, "the coop and the barn each have a trough with 5 slots");
-        Check(hens.Slots.All(sl => coop.Interior.HasPoint(new Vector2(sl.ApproachPoint.X, sl.ApproachPoint.Z))), "every coop slot can be reached from inside");
+        Check(hens.Slots.Count == 5, "the coop has a trough with 5 slots");
+        Check(hens.Slots.All(sl => coop.Contains(sl.ApproachPoint)), "every coop slot can be reached from inside");
         ToolBelt.Instance.Select(Tool.FeedScoop);
         await Frames(2);
         Check(player.Hand.Visible && player.Hand.ModelName == "tool_feed_scoop", "Kit holds the feed scoop");
@@ -155,57 +167,59 @@ public partial class TestRunner
         Check(player.UseCount >= uses + 5, "Kit plays the use motion for every slot");
         await Tap(JoyButton.A);
         Check(hens.Feed == 30, "a full slot takes no more feed");
-        // Feed the cow at her slot.
-        var cow = cows.Entities[0];
+        // Feed the cow at her slot, in the barn room.
+        var cows = await Into(barnScene, "cow");
+        Check(cows != null && cows.Entities.Count == 1 && cows.Entities[0] is Cow && cows.Slots.Count == 5, "the cow stands in the barn room, with a 5-slot trough");
         var cowSlot = cows.Slots[0];
         player.GlobalPosition = cowSlot.ApproachPoint;
         await Frames(5);
         await Tap(JoyButton.A);
-        Check(cows.Animals[0].FedToday && cows.Feed == 6 && cowSlot.HasFood, "feed scoop + A at the cow's slot feeds her (hay shows)");
+        Check(herdC.Animals[0].FedToday && herdC.Feed == 6 && cowSlot.HasFood, "feed scoop + A at the cow's slot feeds her (hay shows)");
         Check(cows.Slots.Skip(1).All(sl => !sl.HasFood && !sl.WantsFood), "slots without an animal stay empty");
         await Sleep();
-        Check(hens.Slots.All(sl => !sl.HasFood) && !cowSlot.HasFood, "overnight the animals eat: every slot is empty in the morning");
-        Check(hens.Animals.All(a => a.ProductReady == 1) && cows.Animals[0].ProductReady == 4, "next morning: an egg per hen, 4 milk cans");
-        Check(!hens.Entities[0].ProductVisible, "with Kit in the house, the coop's roof hides the hens' egg icons (as in 2D)");
-        player.GlobalPosition = coop.DoorInside;
-        await Frames(20);
-        bool eggsShow = hens.Entities[0].ProductVisible && !hens.Entities[0].NeedVisible && hens.Entities[0].HeartsVisible;
-        var barnB = cows.GetParent<Building>();
-        player.GlobalPosition = barnB.DoorInside;
-        await Frames(20);
-        Check(eggsShow && cow.ProductVisible, "inside the coop and barn, eggs and milk show on the animals (with their hearts)");
+        Check(mainNode.CurrentLevelPath == Main.HouseRoomScene, "Kit wakes in the house room");
+        Check(herdH.Animals.All(a => a.ProductReady == 1 && !a.FedToday) && herdC.Animals[0].ProductReady == 4,
+            "next morning: an egg per hen, 4 milk cans, every slot empty (the animals ate while their rooms were not loaded)");
+        hens = await Into(coopScene, "hen");
+        await Frames(15);
+        Check(hens.Slots.All(sl => !sl.HasFood) && hens.Entities[0].ProductVisible && !hens.Entities[0].NeedVisible && hens.Entities[0].HeartsVisible,
+            "in the coop: empty slots, eggs and hearts show on the hens");
         ToolBelt.Instance.Select(Tool.Hands);
-        player.GlobalPosition = cow.ApproachPoint;
-        await Frames(5);
-        await Tap(JoyButton.A);
-        Check(Inventory.Instance.Count(ItemIds.Milk) == 4 && cows.Animals[0].ProductReady == 0, "A at the cow collects 4 milk cans");
         var hen0 = hens.Entities[0];
         player.GlobalPosition = hen0.ApproachPoint;
         await Frames(5);
         await Tap(JoyButton.A);
         Check(Inventory.Instance.Count(ItemIds.Egg) >= 1, "A at a hen collects her egg");
+        cows = await Into(barnScene, "cow");
+        await Frames(15);
+        var cow = cows.Entities[0];
+        Check(cow.ProductVisible, "in the barn the milk shows on the cow");
+        player.GlobalPosition = cow.ApproachPoint;
+        await Frames(5);
+        await Tap(JoyButton.A);
+        Check(Inventory.Instance.Count(ItemIds.Milk) == 4 && herdC.Animals[0].ProductReady == 0, "A at the cow collects 4 milk cans");
 
         // Neglect: 1 day → need icons; 2 → flashing + a neighbour's warning; 3 → loss cards.
-        player.GlobalPosition = level.GetNode<Marker3D>("PlayerSpawn").GlobalPosition;
         await Sleep();
-        player.GlobalPosition = coop.DoorInside;
-        await Frames(20);
-        Check(hens.Entities.All(e => e.NeedVisible) && hens.Animals.All(a => a.Hearts == 2), "after a missed day: need icons, hearts ⅔");
-        player.GlobalPosition = level.GetNode<Marker3D>("PlayerSpawn").GlobalPosition;
+        hens = await Into(coopScene, "hen");
+        await Frames(15);
+        Check(hens.Entities.All(e => e.NeedVisible) && herdH.Animals.All(a => a.Hearts == 2), "after a missed day: need icons, hearts ⅔");
+        mainNode.LoadLevelNow(Main.FarmScene, "Door_Coop");
         await Frames(5);
         await Sleep();
         Check(notices.WarningsShown >= 1 && bubble.IsOpen && bubble.Portrait == CareNoticeView.WarningPortrait && bubble.Line.Contains("hungry"),
-            "after 2 missed days a neighbour mentions the hungry animals when Kit wakes");
+            "after 2 missed days a neighbour mentions the hungry animals when Kit wakes (rooms not loaded)");
         while (bubble.IsOpen) { bubble.PressCancel(); await Frames(1); }
         await Sleep();
-        Check(hens.Animals.Count == 0 && cows.Animals.Count == 0 && hens.Entities.Count == 0, "after 3 missed days the hens and the cow are gone");
+        Check(herdH.Animals.Count == 0 && herdC.Animals.Count == 0, "after 3 missed days the hens and the cow are gone");
         Check(notices.LossCardsShown == 6, $"one loss card per animal ({notices.LossCardsShown})");
         Check(bubble.IsOpen && bubble.Chips[0].Sprite == "gravestone" && bubble.Line.Contains("is gone") && bubble.Buttons.Count == 1,
             "the loss card: gravestone picture, name, one line, one button");
         int cards = 0;
         while (bubble.IsOpen && cards < 10) { cards++; bubble.PressCancel(); await Frames(1); }
         Check(cards == 6 && notices.Pending == 0, "each card shows once, one after another");
-        Check(hens.Feed > 0 && level.GetNodeOrNull<Building>("Coop") != null && hens.HasRoom, "the coop, barn and feed stay");
+        hens = await Into(coopScene, "hen");
+        Check(herdH.Feed > 0 && hens.Entities.Count == 0 && herdH.HasRoom, "the coop, its trough and the feed stay; the coop is empty");
 
         main.QueueFree();
         await Frames(2);

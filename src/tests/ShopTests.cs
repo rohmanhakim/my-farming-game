@@ -44,17 +44,26 @@ public partial class TestRunner
         var fade = main.GetNode<DayTransitionView>("Transition/DayTransition");
         fade.FadeSeconds = 0.05f;
         fade.HoldSeconds = 0.05f;
-        var counter = level.FindChild("ShopCounter", true, false) as ShopCounter;
-        var phone = level.FindChild("Phone", true, false) as Phone;
-        var hens = AnimalHouse.For(GetTree(), "hen");
-        var cows = AnimalHouse.For(GetTree(), "cow");
+        // Phase-002 Task 2.2: the counter is in the shed room, the phone in the house room, the
+        // animals' state in FarmState (their rooms need not be loaded).
+        var mainNode = (Main)main;
+        var hens = FarmState.Instance.Herd("hen");
+        var cows = FarmState.Instance.Herd("cow");
         await Frames(3);
-        Check(counter?.GetParent()?.Name == "SeedShed" && phone?.GetParent()?.Name == "House", "the counter is in the seed shed, the phone in the house");
-        Check(hens != null && hens.GetParent().Name == "Coop" && hens.Animals.Count == 5 && hens.Capacity == 5 && hens.Feed == 35 && hens.FeedItem == ItemIds.ChickenFeed,
+        Check(hens.Animals.Count == 5 && hens.Capacity == 5 && hens.Feed == 35 && hens.FeedItem == ItemIds.ChickenFeed,
             "old coop: 5 hens, room for 5, 35 portions of chicken feed (≈ 7 days)");
-        Check(cows != null && cows.GetParent().Name == "Barn" && cows.Animals.Count == 1 && cows.Capacity == 5 && cows.Feed == 7 && cows.FeedItem == ItemIds.Hay,
+        Check(cows.Animals.Count == 1 && cows.Capacity == 5 && cows.Feed == 7 && cows.FeedItem == ItemIds.Hay,
             "old barn: 1 cow, 5 stalls, 7 portions of hay");
-        Check(hens.Bin != null && hens.Bin.CountText == "35" && cows.Bin.CountText == "7", "feed bins show 35 and 7");
+        mainNode.LoadLevelNow("res://scenes/world/rooms/CoopRoom.tscn", World.Building.EntryMarker);
+        await Frames(3);
+        string coopBin = AnimalHouse.For(GetTree(), "hen")?.Bin?.CountText;
+        mainNode.LoadLevelNow("res://scenes/world/rooms/BarnRoom.tscn", World.Building.EntryMarker);
+        await Frames(3);
+        Check(coopBin == "35" && AnimalHouse.For(GetTree(), "cow")?.Bin?.CountText == "7", "feed bins show 35 and 7");
+        mainNode.LoadLevelNow("res://scenes/world/rooms/ShedRoom.tscn", World.Building.EntryMarker);
+        await Frames(3);
+        var counter = mainNode.Level.FindChild("ShopCounter", true, false) as ShopCounter;
+        Check(counter != null && mainNode.CurrentRoom?.Name == "ShedRoom", "the counter is in the seed shed's room");
 
         // Closed at 04:30: the closed sign and the opening time.
         player.GlobalPosition = counter.ApproachPoint;
@@ -95,13 +104,17 @@ public partial class TestRunner
         bag.SeedButton(ItemIds.FlowerSeeds).EmitSignal(BaseButton.SignalName.Pressed);
         Check(ToolBelt.Instance.SelectedSeed == ItemIds.FlowerSeeds && bag.PlantingSeed == ItemIds.FlowerSeeds, "pressing the flower packet makes the seed bag plant flowers");
         bag.Close();
-        var grid = level.GetNode<FarmGrid>("FrontGarden");
+        var grid = FarmState.Instance.Garden;
         grid.UseTool(Tool.SeedBag, new Vector2I(5, 3));
         Check(grid.Get(new Vector2I(5, 3)).CropId == "sun_sprout" && Inventory.Instance.Count(ItemIds.FlowerSeeds) == 8, "the seed bag plants a Sun Sprout");
 
         // Phone at home: feed before 18:00 → bins at the next Dawn.
         Wallet.Instance.SetCoins(500);
         clock.SetTime(1, 17 * 60 - GameClock.DayStartMinute);
+        mainNode.LoadLevelNow(Main.HouseRoomScene, World.Building.EntryMarker);
+        await Frames(3);
+        var phone = mainNode.Level.FindChild("Phone", true, false) as Phone;
+        Check(phone != null, "the phone is in the house room");
         player.GlobalPosition = phone.ApproachPoint;
         await Frames(5);
         Check(clock.IsIndoors, "the phone is indoors (clock stopped)");
@@ -113,7 +126,7 @@ public partial class TestRunner
         Check(hens.Feed == 35 && cows.Feed == 7, "nothing arrives the same day");
         clock.BeginSleep(SleepReason.Bed);
         await WaitUntil(() => !clock.IsSleeping && !main.GetNode<SleepSequence>("Systems/SleepSequence").IsRunning, 600);
-        Check(hens.Feed == 70 && cows.Feed == 8 && hens.Bin.CountText == "70", "next Dawn: grain into the coop bin, hay into the barn bin");
+        Check(hens.Feed == 70 && cows.Feed == 8, "next Dawn: grain into the coop bin, hay into the barn bin (their rooms not loaded)");
         // After 18:00 → the day after.
         clock.SetTime(clock.Day, 19 * 60 - GameClock.DayStartMinute);
         player.GlobalPosition = phone.ApproachPoint;

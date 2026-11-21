@@ -1,0 +1,24 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/world/Building.cs" id="1_building"]
+[ext_resource type="PackedScene" path="res://scenes/world/Bed.tscn" id="2_bed"]
+[ext_resource type="PackedScene" path="res://scenes/world/Phone.tscn" id="3_phone"]
+
+[node name="HouseRoom" type="Node3D"]
+script = ExtResource("1_building")
+SizeTiles = Vector2i(8, 4)
+Door = 0
+ZoneName = "house"
+RoofModel = ""
+WallColor = Color(0.94, 0.88, 0.76, 1)
+FloorColor = Color(0.62, 0.45, 0.3, 1)
+IsRoom = true
+CameraDistance = 9
+ExitScene = "res://scenes/world/FarmLevel.tscn"
+ExitMarker = "Door_House"
+
+[node name="Bed" parent="." instance=ExtResource("2_bed")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.25, 0, 1.25)
+
+[node name="Phone" parent="." instance=ExtResource("3_phone")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.56, 0, 0.94)

@@ -19,9 +19,13 @@ public partial class BerryBush : Prop
     public const string Group = "berry_bushes";
     public const int RegrowDays = 2;
 
-    public bool HasBerries { get; private set; } = true;
+    /// <summary>The bush's state: shared in <see cref="FarmState"/> when the bush is in a level (so it
+    /// regrows while the farm scene is not loaded, Phase-002 Task 2.2), private otherwise (rule tests).</summary>
+    private FarmState.BushRecord _rec = new();
+
+    public bool HasBerries { get => _rec.HasBerries; private set => _rec.HasBerries = value; }
     /// <summary>Day the berries were picked (0 = never).</summary>
-    public int PickedOnDay { get; private set; }
+    public int PickedOnDay { get => _rec.PickedOnDay; private set => _rec.PickedOnDay = value; }
 
     /// <summary>True while the berry spheres are on the bush (tests, later feedback).</summary>
     public bool BerriesVisible => _berries != null && _berries.Visible;
@@ -70,9 +74,14 @@ public partial class BerryBush : Prop
     {
         base._Ready();
         AddToGroup(Group);
+        bool inLevel = false;
+        for (Node n = GetParent(); n != null; n = n.GetParent()) if (n is FarmLevel) { inLevel = true; break; }
+        if (inLevel && FarmState.Instance != null)
+            _rec = FarmState.Instance.Bush(Name); // regrowth and berry supply are handled there
+        else
+            Production.Register(this, () => new[] { (ItemIds.Berries, 1) });
         _clock = GameClock.Instance;
         if (_clock != null) _clock.DayStarted += OnDayStarted;
-        Production.Register(this, () => new[] { (ItemIds.Berries, 1) });
         _berries = BuildBerries();
         AddChild(_berries);
         Refresh();
@@ -95,7 +104,7 @@ public partial class BerryBush : Prop
         EmitSignal(SignalName.Picked);
     }
 
-    private void OnDayStarted(int day) => NewDay(day);
+    private void OnDayStarted(int day) { NewDay(day); Refresh(); }
 
     /// <summary>Regrows once <see cref="RegrowDays"/> days have passed since picking.</summary>
     public void NewDay(int day)

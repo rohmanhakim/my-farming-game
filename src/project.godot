@@ -24,6 +24,7 @@ Wallet="*res://scripts/autoloads/Wallet.cs"
 OrderManager="*res://scripts/autoloads/OrderManager.cs"
 SaveGame="*res://scripts/autoloads/SaveGame.cs"
 Onboarding="*res://scripts/autoloads/Onboarding.cs"
+FarmState="*res://scripts/autoloads/FarmState.cs"
 
 [display]
 

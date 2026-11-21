@@ -139,28 +139,53 @@ public partial class TestRunner
         var bed = level.FindChild("Bed", true, false) as Bed;
         Check(house != null && coop != null && barn != null && grid != null, "farm has house, old coop, old barn and front garden");
         Check(coop.SizeTiles == new Vector2I(4, 3) && barn.SizeTiles == new Vector2I(6, 5), "old coop 4×3, old barn 6×5 (buildings.md)");
-        Check(bed != null && bed.GetParent() == house && house.Interior.HasPoint(new Vector2(bed.WakePoint.X, bed.WakePoint.Z)), "the bed is inside Kit's house");
+        Check(house.RoomScene == Main.HouseRoomScene && coop.RoomScene.EndsWith("CoopRoom.tscn") && barn.RoomScene.EndsWith("BarnRoom.tscn")
+              && level.GetNodeOrNull<Building>("SeedShed")?.RoomScene.EndsWith("ShedRoom.tscn") == true && bed == null,
+            "the house, coop, barn and seed shed each lead into their own room scene; the bed is not on the farm (Phase-002 Task 2.2)");
         Check(house.Roof != null && house.Roof.Source != ModelLibrary.Source.Fallback && house.Bounds.Size.Y > Building.WallHeight,
             "the house has walls and a roof (model 'roof_house')");
         Check(((FarmLevel)level).Tufts?.Multimesh.InstanceCount > 900, $"overgrown fields are drawn as one MultiMesh of tufts ({((FarmLevel)level).Tufts?.Multimesh.InstanceCount})");
         await Frames(5);
         Check(!clock.IsIndoors && clock.IsRunning, "new game: Kit starts outside and the clock runs");
 
-        // Into the house: roof fades, clock stops; out again: roof back, clock runs.
+        // Owner 2026-11-21: walk into the doorway → a short fade → the room's own scene; walk out the same way.
         clock.TimeScale = 60;
-        player.GlobalPosition = house.DoorInside;
-        await Frames(30);
+        var rig = main.GetNode<CameraRig>("World/Entities/CameraRig");
+        var mainNode = (Main)main;
+        void Refetch()
+        {
+            level = mainNode.Level;
+            house = level.GetNodeOrNull<Building>("House");
+            coop = level.GetNodeOrNull<Building>("Coop");
+            barn = level.GetNodeOrNull<Building>("Barn");
+            grid = level.GetNodeOrNull<FarmGrid>("FrontGarden");
+        }
+        player.GlobalPosition = house.DoorOutside + new Vector3(0, 0, -1.2f);
+        await Frames(10);
+        int levelChanges = 0;
+        mainNode.LevelChanged += _ => levelChanges++;
+        player.WalkTo(house.DoorPoint + new Vector3(0, 0, 0.5f));
+        Check(await WaitUntil(() => mainNode.CurrentLevelPath == Main.HouseRoomScene && !mainNode.Teleporting, 300),
+            "walking into the house's doorway loads the house room scene");
+        var houseRoom = mainNode.CurrentRoom;
+        await Frames(10);
         double m = clock.MinutesIntoDay;
         await Frames(20);
-        Check(clock.IsIndoors && house.Zone.PlayerInside && clock.MinutesIntoDay == m, "inside the house the clock stops");
-        Check(house.RoofFaded && !house.Roof.Visible, "inside the house the roof fades out (and is hidden)");
-        var rig = main.GetNode<CameraRig>("World/Entities/CameraRig");
-        Check(house.WallFaded(Vector3.Back) && house.WallFaded(rig.BackDirection.X > 0 ? Vector3.Right : Vector3.Left)
-              && !house.WallFaded(Vector3.Forward), "inside, the two walls facing the camera fade; the far wall stays");
-        player.GlobalPosition = house.DoorOutside + new Vector3(0, 0, -3); // out, and clear of the house
-        await Frames(30);
-        Check(!clock.IsIndoors && clock.MinutesIntoDay > m && !house.RoofFaded && house.Roof.Visible && !house.WallFaded(Vector3.Back),
-            "outside again: roof and walls back, clock runs");
+        Check(levelChanges == 1 && houseRoom != null && mainNode.Level == houseRoom && mainNode.GetNode("World/Level").GetChildCount() == 1,
+            "exactly one level is loaded (the farm was freed; LevelChanged once)");
+        Check(clock.IsIndoors && clock.MinutesIntoDay == m && houseRoom.Zone.PlayerInside, "inside the room the clock stops");
+        Check(houseRoom.Contains(player.Feet) && player.Feet.DistanceTo(houseRoom.DoorInside) < 0.3f && player.Facing == Facing.Down,
+            "Kit stands just inside the room's door, facing in");
+        Check(Mathf.IsEqualApprox(rig.Distance, mainNode.RoomCameraDistance) && rig.Focus.DistanceTo(player.Feet) < 1.5f, "the camera frames the room (closer)");
+        Check(houseRoom.Roof == null && houseRoom.WallFaded(Vector3.Back) && !houseRoom.WallFaded(Vector3.Forward), "the room has no roof; the walls facing the camera are faded");
+        Check(houseRoom.FindChild("Bed", true, false) is Bed b0 && houseRoom.Contains(b0.WakePoint), "the bed is in the house room");
+        player.WalkTo(houseRoom.DoorPoint + new Vector3(0, 0, -0.5f));
+        Check(await WaitUntil(() => mainNode.CurrentLevelPath == Main.FarmScene && !mainNode.Teleporting, 300), "walking into the room's doorway goes back to the farm scene");
+        await Frames(10);
+        Refetch();
+        Check(!clock.IsIndoors && clock.MinutesIntoDay > m && player.Feet.DistanceTo(house.DoorOutside) < 0.3f && player.Facing == Facing.Up
+              && Mathf.IsEqualApprox(rig.Distance, 13f), "outside again at the front door: clock runs, camera back to the farm");
+        Check(house.Zone == null, "the house itself is not entered on the map");
         // Behind the house (north of it, seen from the south): the house fades so Kit stays visible.
         player.GlobalPosition = house.GlobalPosition + new Vector3(house.Size.X / 2 + 1.5f, 0, -0.4f);
         await Frames(30);
@@ -168,15 +193,16 @@ public partial class TestRunner
         player.GlobalPosition = house.DoorOutside + new Vector3(0, 0, -3);
         await Frames(30);
         Check(!house.RoofFaded, "Kit in the open again: the roof comes back");
-        foreach (var b in new[] { coop, barn })
+        foreach (var (scene, door) in new[] { (coop.RoomScene, coop.DoorMarkerName), (barn.RoomScene, barn.DoorMarkerName) })
         {
-            player.GlobalPosition = b.DoorInside;
+            mainNode.LoadLevelNow(scene, Building.EntryMarker);
             await Frames(5);
-            Check(clock.IsIndoors && b.Zone.PlayerInside, $"the {b.ZoneName} also stops the clock");
-            player.GlobalPosition = b.DoorOutside;
+            Check(clock.IsIndoors && mainNode.CurrentRoom?.Zone.PlayerInside == true, $"the {mainNode.CurrentRoom?.ZoneName} room also stops the clock");
+            mainNode.LoadLevelNow(Main.FarmScene, door);
             await Frames(5);
-            Check(!clock.IsIndoors, $"leaving the {b.ZoneName} restarts the clock");
+            Check(!clock.IsIndoors, "back on the farm the clock runs again");
         }
+        Refetch();
         clock.TimeScale = 1;
 
         // Walk from the house to the gate, and around the house to the barn.
@@ -189,7 +215,14 @@ public partial class TestRunner
         bool toBarn = await WalkLeg(player, M(1290, 440)) && await WalkLeg(player, M(1290, 830))
                       && await WalkLeg(player, M(1600, 830)) && await WalkLeg(player, barn.DoorOutside);
         Check(toBarn, "Kit walks around the house and down the path to the old barn");
-        Check(await WalkLeg(player, barn.DoorInside), "Kit walks into the barn");
+        string barnDoor = barn.DoorMarkerName;
+        player.WalkTo(barn.DoorPoint + new Vector3(0, 0, 0.5f));
+        Check(await WaitUntil(() => mainNode.CurrentLevelPath.EndsWith("BarnRoom.tscn") && !mainNode.Teleporting, 300), "Kit walks into the barn (its room scene)");
+        mainNode.LoadLevelNow(Main.FarmScene, barnDoor);
+        await Frames(5);
+        Refetch();
+        player.GlobalPosition = barn.DoorOutside + new Vector3(0, 0, -1f);
+        await Frames(5);
         Check(!await WalkLeg(player, M(1200, 1100), 200), "overgrown Field A is blocked");
 
         // Gamepad A on the tile in front of Kit: clear → till → plant → water.
@@ -246,8 +279,10 @@ public partial class TestRunner
         // The night grows the watered carrot (DayEnded hook).
         clock.BeginSleep(SleepReason.Bed);
         await WaitUntil(() => !clock.IsSleeping && !main.GetNode<SleepSequence>("Systems/SleepSequence").IsRunning, 900);
-        Check(clock.Day == 2 && grid.Get(cell).DaysGrown == 1 && !grid.Get(cell).Watered, "after a night the watered carrot grew one day");
-        Check(clock.IsIndoors, "Kit wakes in the house (clock stopped until Kit goes out)");
+        var gardenState = FarmState.Instance.Garden;
+        Check(clock.Day == 2 && gardenState.Get(cell).DaysGrown == 1 && !gardenState.Get(cell).Watered,
+            "after a night the watered carrot grew one day (the garden kept growing while its scene was not loaded)");
+        Check(clock.IsIndoors && mainNode.CurrentLevelPath == Main.HouseRoomScene, "Kit wakes in the house room (clock stopped until Kit goes out)");
 
         main.QueueFree();
         await Frames(2);

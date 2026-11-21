@@ -43,6 +43,29 @@ public partial class DayTransitionView : Control
         await ToSignal(t, Tween.SignalName.Finished);
     }
 
+    /// <summary>Seconds for the quick door fade (Phase-002 Task 2.2).</summary>
+    [Export] public float DoorFadeSeconds { get; set; } = 0.15f;
+
+    /// <summary>A quick plain fade to black for walking through a door (no icon, no text).</summary>
+    public async Task Cover()
+    {
+        Visible = true;
+        _label.Text = "";
+        _icon.Modulate = _label.Modulate = Colors.Transparent;
+        var t = CreateTween();
+        t.TweenProperty(_shade, "color:a", 1.0, DoorFadeSeconds);
+        await ToSignal(t, Tween.SignalName.Finished);
+    }
+
+    /// <summary>Fades the quick door cover away again.</summary>
+    public async Task Uncover()
+    {
+        var t = CreateTween();
+        t.TweenProperty(_shade, "color:a", 0.0, DoorFadeSeconds);
+        await ToSignal(t, Tween.SignalName.Finished);
+        Visible = false;
+    }
+
     /// <summary>Shows the new day, holds it briefly, then fades the game back in.</summary>
     public async Task ShowDayAndFadeIn(Season season, int dayOfSeason)
     {

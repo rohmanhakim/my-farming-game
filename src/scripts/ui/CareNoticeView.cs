@@ -23,7 +23,7 @@ public partial class CareNoticeView : Node
     public static string WarningPortrait { get; set; } = "npc_marlow";
 
     private readonly Queue<(string Portrait, string Line, BubbleChip[] Chips)> _queue = new();
-    private readonly List<AnimalHouse> _houses = new();
+    private readonly List<HerdState> _houses = new();
     private GameClock _clock;
 
     /// <summary>Loss cards shown so far (tests).</summary>
@@ -34,7 +34,9 @@ public partial class CareNoticeView : Node
     public override void _Ready()
     {
         AddToGroup(Group);
-        foreach (var h in GetTree().GetNodesInGroup(AnimalHouse.Group).OfType<AnimalHouse>())
+        // The herds live in FarmState (Phase-002 Task 2.2), so warnings and loss cards arrive even
+        // while the coop's and barn's rooms are not loaded.
+        foreach (var h in FarmState.Instance?.Herds ?? System.Linq.Enumerable.Empty<HerdState>())
         {
             h.AnimalLost += OnLost;
             h.HungryWarning += OnHungry;

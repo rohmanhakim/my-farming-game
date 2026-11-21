@@ -41,88 +41,79 @@ public partial class FarmGrid : Node3D, IToolTarget
     /// <summary>A tool did something (Task 1.12 onboarding counts it). Arguments: <see cref="TileAction"/>, cell.</summary>
     [Signal] public delegate void ToolUsedEventHandler(int action, Vector2I cell);
 
-    private bool _waterHints;
-
-    /// <summary>Task 1.12 nudge "morning after planting": a watering-can icon over every dry bed.</summary>
+    /// <summary>Task 1.12 nudge "morning after planting": a watering-can icon over every dry bed
+    /// (the flag lives in the garden state, so it survives scene changes).</summary>
     public bool WaterHints
     {
-        get => _waterHints;
-        set { _waterHints = value; QueueRedraw(); }
+        get => S.WaterHints;
+        set { S.WaterHints = value; QueueRedraw(); }
     }
+    private bool _waterHints => S.WaterHints;
 
     private float _sparkle;
-
-    private CropTile[] _tiles;
-    private GameClock _clock;
     private Vector2I? _highlight;
 
-    public CropTile Get(Vector2I cell) => InBounds(cell) ? Tiles[cell.Y * Columns + cell.X] : null;
+    /// <summary>The garden this view shows: the shared one in <see cref="FarmState"/>, or a private
+    /// one when <see cref="ListenToClock"/> is false (rule tests). Phase-002 Task 2.2.</summary>
+    public GardenState State { get; private set; }
 
-    public bool InBounds(Vector2I cell) => cell.X >= 0 && cell.Y >= 0 && cell.X < Columns && cell.Y < Rows;
-
-    private CropTile[] Tiles
+    private GardenState S
     {
         get
         {
-            if (_tiles == null) ResetForNewGame();
-            return _tiles;
+            if (State == null) Bind();
+            return State;
         }
     }
 
-    /// <summary>All tiles with their cells, row by row.</summary>
-    public IEnumerable<(Vector2I Cell, CropTile Tile)> AllTiles()
+    private void Bind()
     {
-        for (int y = 0; y < Rows; y++)
-            for (int x = 0; x < Columns; x++)
-                yield return (new Vector2I(x, y), Tiles[y * Columns + x]);
+        if (State != null) return;
+        if (ListenToClock && FarmState.Instance != null)
+            State = FarmState.Instance.Garden;
+        else
+        {
+            State = new GardenState { Name = "Garden", Columns = Columns, Rows = Rows, StartingBeds = StartingBeds, ListenToClock = false };
+            AddChild(State);
+        }
+        State.TileChanged += OnTileChanged;
+        State.CropLost += OnCropLost;
+        State.CropHarvested += OnCropHarvested;
+        State.ToolUsed += OnToolUsed;
+        State.Changed += QueueRedraw;
     }
+
+    private void OnTileChanged(Vector2I c) { QueueRedraw(); EmitSignal(SignalName.TileChanged, c); }
+    private void OnCropLost(Vector2I c) { QueueRedraw(); EmitSignal(SignalName.CropLost, c); }
+    private void OnCropHarvested(Vector2I c, string item) => EmitSignal(SignalName.CropHarvested, c, item);
+    private void OnToolUsed(int a, Vector2I c) => EmitSignal(SignalName.ToolUsed, a, c);
+
+    public CropTile Get(Vector2I cell) => S.Get(cell);
+    public bool InBounds(Vector2I cell) => S.InBounds(cell);
+    public IEnumerable<(Vector2I Cell, CropTile Tile)> AllTiles() => S.AllTiles();
 
     public override void _Ready()
     {
         AddToGroup(IToolTarget.Group);
+        Bind();
+        if (State.GetParent() != this) State.WorldOrigin = GlobalPosition;
         BuildDecor();
-        _ = Tiles;
         QueueRedraw();
-        if (ListenToClock && GameClock.Instance != null)
-        {
-            _clock = GameClock.Instance;
-            _clock.DayEnded += OnDayEnded;
-            Production.Register(this, SupplyForOrders);
-        }
-    }
-
-    /// <summary>Carrots the garden can supply for an order: one per bed that is clear of weeds
-    /// (at least the 3 starting beds), Task 1.7.</summary>
-    private IEnumerable<(string, int)> SupplyForOrders()
-    {
-        int beds = 0;
-        foreach (var (_, t) in AllTiles())
-            if (t.Soil != Soil.Weeds) beds++;
-        foreach (var r in CropCatalog.Default.Crops)
-            if (r is CropDefinition c && Inventory.Instance != null)
-                yield return (c.HarvestItem, beds);
     }
 
     public override void _ExitTree()
     {
-        if (_clock != null && IsInstanceValid(_clock))
-            _clock.DayEnded -= OnDayEnded;
-        Production.Unregister(this);
+        if (State == null || !IsInstanceValid(State)) return;
+        State.TileChanged -= OnTileChanged;
+        State.CropLost -= OnCropLost;
+        State.CropHarvested -= OnCropHarvested;
+        State.ToolUsed -= OnToolUsed;
+        State.Changed -= QueueRedraw;
+        if (State.GetParent() != this) State = null;
     }
-
-    private void OnDayEnded(int day) => EndDay();
 
     /// <summary>New game: weeds everywhere except the starting beds (tilled, empty).</summary>
-    public void ResetForNewGame()
-    {
-        _tiles = new CropTile[Columns * Rows];
-        for (int i = 0; i < _tiles.Length; i++)
-            _tiles[i] = new CropTile();
-        foreach (var b in StartingBeds)
-            if (InBounds(b))
-                _tiles[b.Y * Columns + b.X].Soil = Soil.Tilled;
-        QueueRedraw();
-    }
+    public void ResetForNewGame() => S.ResetForNewGame();
 
     // ---- Coordinates ----------------------------------------------------------------------
     /// <summary>The cell under a world point (its height is ignored).</summary>
@@ -142,53 +133,15 @@ public partial class FarmGrid : Node3D, IToolTarget
     public bool UseToolAt(Tool tool, Vector3 worldPoint) => UseTool(tool, WorldToCell(worldPoint)) != TileAction.Nothing;
 
     // ---- Rules ----------------------------------------------------------------------------
-    /// <summary>Uses <paramref name="tool"/> on <paramref name="cell"/> and returns what happened.</summary>
+    /// <summary>Uses <paramref name="tool"/> on <paramref name="cell"/> (rules in <see cref="GardenState"/>),
+    /// then shows what happened: a puff, or the tool this tile needs.</summary>
     public TileAction UseTool(Tool tool, Vector2I cell)
     {
         var t = Get(cell);
-        if (t == null)
-            return TileAction.Nothing;
-        TileAction done = TileAction.Nothing;
-        if (t.IsReady)
-            done = Harvest(cell, t); // any tool picks a ready crop (kid-friendly)
-        else
-        {
-            switch (tool)
-            {
-                case Tool.Hands when t.Soil == Soil.Weeds:
-                    t.Soil = Soil.Clear;
-                    done = TileAction.Cleared;
-                    break;
-                case Tool.Hoe when t.Soil == Soil.Clear:
-                    t.Soil = Soil.Tilled;
-                    done = TileAction.Tilled;
-                    break;
-                case Tool.Hoe when t.Soil == Soil.Weeds:
-                    // Owner playtest 2026-11-21: the hoe digs weedy ground too — it turns the weeds
-                    // under and tills in one stroke (counts as a weed pulled for the guided start).
-                    t.Soil = Soil.Tilled;
-                    EmitSignal(SignalName.ToolUsed, (int)TileAction.Cleared, cell);
-                    done = TileAction.Tilled;
-                    break;
-                case Tool.SeedBag when t.Soil == Soil.Tilled && !t.HasCrop:
-                    done = Plant(t);
-                    break;
-                case Tool.WateringCan when t.Soil == Soil.Tilled:
-                    t.Watered = true;
-                    t.DryDays = 0; // a yellow crop recovers at once
-                    done = TileAction.Watered;
-                    break;
-            }
-        }
-        if (done != TileAction.Nothing)
-        {
-            ShowActionPuff(done, cell);
-            EmitSignal(SignalName.TileChanged, cell);
-            EmitSignal(SignalName.ToolUsed, (int)done, cell);
-            QueueRedraw();
-        }
-        else
-            ShowHint(cell, HintFor(t)); // a soft puff and the tool this tile needs (hint ladder step 1)
+        if (t == null) return TileAction.Nothing;
+        var done = S.UseTool(tool, cell);
+        if (done != TileAction.Nothing) ShowActionPuff(done, cell);
+        else ShowHint(cell, HintFor(t)); // a soft puff and the tool this tile needs (hint ladder step 1)
         return done;
     }
 
@@ -211,70 +164,11 @@ public partial class FarmGrid : Node3D, IToolTarget
     /// <summary>The last action that showed a puff (tests).</summary>
     public TileAction LastPuff { get; private set; } = TileAction.Nothing;
 
-    private static TileAction Plant(CropTile t)
-    {
-        var inv = Inventory.Instance;
-        if (inv == null)
-            return TileAction.Nothing;
-        var stacks = new List<ItemStack>(inv.Stacks);
-        string chosen = ToolBelt.Instance?.SelectedSeed ?? "";
-        stacks.Sort((a, b) => (b.Id == chosen ? 1 : 0) - (a.Id == chosen ? 1 : 0)); // chosen packet first
-        foreach (var stack in stacks)
-        {
-            var crop = CropCatalog.Default.BySeed(stack.Id);
-            if (crop == null || !inv.Remove(stack.Id, 1, stack.Quality))
-                continue;
-            t.CropId = crop.Id;
-            t.DaysToHarvest = Mathf.Max(1, crop.DaysToHarvest);
-            t.DaysGrown = 0;
-            t.DryDays = 0;
-            return TileAction.Planted;
-        }
-        return TileAction.Nothing; // no seeds in the bag
-    }
+    /// <summary>The night's growth and neglect (rules in <see cref="GardenState.EndDay"/>).</summary>
+    public void EndDay() => S.EndDay();
 
-    private TileAction Harvest(Vector2I cell, CropTile t)
-    {
-        var crop = CropCatalog.Default.Get(t.CropId);
-        string item = crop?.HarvestItem ?? t.CropId;
-        Inventory.Instance?.Add(item, crop?.HarvestCount ?? 1);
-        OrderManager.Instance?.NoteProduced(item);
-        t.ClearCrop();
-        EmitSignal(SignalName.CropHarvested, cell, item);
-        return TileAction.Harvested;
-    }
-
-    /// <summary>The night's growth and neglect (crops.md §2). Called once per <see cref="GameClock.DayEnded"/>.</summary>
-    public void EndDay()
-    {
-        foreach (var (cell, t) in AllTiles())
-        {
-            if (t.HasCrop && !t.IsReady)
-            {
-                if (t.Watered)
-                {
-                    t.DaysGrown++;
-                    t.DryDays = 0;
-                }
-                else if (++t.DryDays >= CropTile.LostAfterDryDays)
-                {
-                    t.ClearCrop(); // gone; the tile stays tilled
-                    EmitSignal(SignalName.CropLost, cell);
-                }
-            }
-            t.Watered = false;
-        }
-        QueueRedraw();
-    }
-
-    /// <summary>Replaces every tile (save/load). Missing tiles become weeds.</summary>
-    public void SetTiles(IList<CropTile> tiles)
-    {
-        _tiles = new CropTile[Columns * Rows];
-        for (int i = 0; i < _tiles.Length; i++)
-            _tiles[i] = i < tiles.Count && tiles[i] != null ? tiles[i] : new CropTile();
-        QueueRedraw();
-    }
+    /// <summary>Replaces every tile (save/load).</summary>
+    public void SetTiles(IList<CropTile> tiles) => S.SetTiles(tiles);
 
     // ---- Wrong-tool feedback -----------------------------------------------------------------
     /// <summary>Seconds the "try this tool" puff stays on a tile.</summary>
@@ -287,13 +181,7 @@ public partial class FarmGrid : Node3D, IToolTarget
     public string LastHint { get; private set; } = "";
 
     /// <summary>Which tool a tile needs next (null = nothing to do here today).</summary>
-    public static string HintFor(CropTile t)
-    {
-        if (t.Soil != Soil.Tilled) return "tool_hoe";
-        if (!t.HasCrop) return "tool_seed_bag";
-        if (!t.Watered) return "tool_watering_can";
-        return null;
-    }
+    public static string HintFor(CropTile t) => GardenState.HintFor(t);
 
     private void ShowHint(Vector2I cell, string sprite)
     {
@@ -306,20 +194,8 @@ public partial class FarmGrid : Node3D, IToolTarget
     }
 
     // ---- Drawing --------------------------------------------------------------------------
-    public static string SoilSprite(CropTile t) => t.Soil switch
-    {
-        Soil.Weeds => "soil_weeds",
-        Soil.Clear => "soil_clear",
-        _ => t.Watered ? "soil_wet" : "soil_tilled",
-    };
-
-    public static string CropSprite(CropTile t)
-    {
-        if (!t.HasCrop) return null;
-        string prefix = CropCatalog.Default.Get(t.CropId)?.SpritePrefix ?? "crop_" + t.CropId;
-        if (t.IsYellow) return prefix + "_yellow";
-        return prefix + t.Stage switch { 0 => "_seed", 1 => "_sprout", 2 => "_growing", _ => "_ready" };
-    }
+    public static string SoilSprite(CropTile t) => GardenState.SoilSprite(t);
+    public static string CropSprite(CropTile t) => GardenState.CropSprite(t);
 
     public override void _Process(double delta)
     {
@@ -342,14 +218,7 @@ public partial class FarmGrid : Node3D, IToolTarget
         UpdatePins();
     }
 
-    public bool AnyReady
-    {
-        get
-        {
-            foreach (var (_, t) in AllTiles()) if (t.IsReady) return true;
-            return false;
-        }
-    }
+    public bool AnyReady => S.AnyReady;
 
     /// <summary>The tile highlighted in front of Kit (tests).</summary>
     public Vector2I? HighlightedCell => _highlight;

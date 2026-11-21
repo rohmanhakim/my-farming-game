@@ -79,20 +79,22 @@ public partial class SleepSequence : Node
         IsRunning = false;
     }
 
-    /// <summary>Kit wakes up beside the bed ("goes home" at 21:30).</summary>
+    /// <summary>Kit wakes up beside the bed in the house room ("goes home" at 21:30), Phase-002 Task 2.2.</summary>
     private void MoveKitToBed()
     {
-        if (_player == null)
-            return;
-        foreach (Node n in GetTree().GetNodesInGroup(Bed.Group))
+        if (_player == null) return;
+        if (GetParent()?.GetParent() is Main main)
         {
+            main.PutKitInBed();
+            return;
+        }
+        foreach (Node n in GetTree().GetNodesInGroup(Bed.Group))
             if (n is Bed bed && bed.IsInsideTree())
             {
                 _player.GlobalPosition = bed.WakePoint;
                 _player.Face(Facing.Down);
                 break;
             }
-        }
         _camera?.Snap();
     }
 }

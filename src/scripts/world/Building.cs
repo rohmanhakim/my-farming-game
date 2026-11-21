@@ -34,6 +34,35 @@ public partial class Building : Node3D
     /// <summary>Adds a window on the south wall that glows at night (group night_windows).</summary>
     [Export] public bool HasWindow { get; set; }
 
+    /// <summary>A real room scene (Phase-002 Task 2.2, owner 2026-11-21: a separate scene for each room):
+    /// no roof, dark surroundings, the walls facing the camera always faded while Kit is inside, an
+    /// "Entry" marker just inside the door, and an exit doorway to <see cref="ExitScene"/>.</summary>
+    [Export] public bool IsRoom { get; set; }
+
+    /// <summary>For a room: how far the camera stands inside it (0 = Main's default). Small rooms
+    /// come closer so they fill the screen (owner 2026-11-21).</summary>
+    [Export] public float CameraDistance { get; set; }
+
+    /// <summary>For a building outside: the room scene its doorway leads into ("" = not enterable
+    /// from here; without it the building is entered on the map as in Phase-001).</summary>
+    [Export] public string RoomScene { get; set; } = "";
+
+    /// <summary>For a room: the scene its doorway leads back to, and the marker Kit lands on there.</summary>
+    [Export] public string ExitScene { get; set; } = "";
+    [Export] public string ExitMarker { get; set; } = "";
+
+    /// <summary>Name of the marker outside a building's door (where Kit comes out of its room).</summary>
+    public string DoorMarkerName => "Door_" + Name;
+
+    /// <summary>Marker name just inside a room's door.</summary>
+    public const string EntryMarker = "Entry";
+
+    /// <summary>The doorway Kit walks into (into the room outside, out of it inside).</summary>
+    public DoorTrigger Doorway { get; private set; }
+
+    /// <summary>Group of buildings that are rooms (Main adjusts the camera inside them).</summary>
+    public const string RoomGroup = "rooms";
+
     public IndoorZone Zone { get; private set; }
     public NamedModel Roof { get; private set; }
 
@@ -51,6 +80,12 @@ public partial class Building : Node3D
     /// <summary>A point just inside the door (on the ground).</summary>
     public Vector3 DoorInside => GlobalPosition + new Vector3(Size.X / 2, 0, Door == DoorSide.Top ? 0.75f : Size.Y - 1.0f);
 
+    /// <summary>The middle of the door gap on the wall line (on the ground).</summary>
+    public Vector3 DoorPoint => GlobalPosition + new Vector3(Size.X / 2, 0, Door == DoorSide.Top ? 0.1f : Size.Y - 0.1f);
+
+    /// <summary>True when a ground point lies on this building's floor.</summary>
+    public bool Contains(Vector3 p) => Interior.HasPoint(new Vector2(p.X, p.Z));
+
     /// <summary>The floor inside the walls as (x, z, width, depth) on the ground.</summary>
     public Rect2 Interior => new(GlobalPosition.X + WallThickness, GlobalPosition.Z + WallThickness, Size.X - 2 * WallThickness, Size.Y - 2 * WallThickness);
 
@@ -58,7 +93,7 @@ public partial class Building : Node3D
     public Aabb Bounds => new(GlobalPosition, new Vector3(Size.X, WallHeight + 1.6f, Size.Y));
 
     /// <summary>True while the roof is faded (Kit inside or hidden behind it).</summary>
-    public bool RoofFaded => _roofFader?.Target < 0.5f;
+    public bool RoofFaded => _roofFader == null || _roofFader.Target < 0.5f;
 
     /// <summary>True when the wall facing <paramref name="normal"/> (e.g. Vector3.Back = south) is faded.</summary>
     public bool WallFaded(Vector3 normal)
@@ -87,9 +122,23 @@ public partial class Building : Node3D
         AddWallSide(walls, "WallWest", Vector3.Left, 0, d: d, along: t, z: 0, hasDoor: false);
         AddWallSide(walls, "WallEast", Vector3.Right, w - t, d: d, along: t, z: 0, hasDoor: false);
 
-        Roof = new NamedModel { Name = "Roof", ModelName = RoofModel, Position = new Vector3(w / 2, 0, d / 2) };
-        AddChild(Roof);
-        _roofFader = new Fader(Roof);
+        if (!string.IsNullOrEmpty(RoofModel))
+        {
+            Roof = new NamedModel { Name = "Roof", ModelName = RoofModel, Position = new Vector3(w / 2, 0, d / 2) };
+            AddChild(Roof);
+            _roofFader = new Fader(Roof);
+        }
+        if (IsRoom)
+        {
+            AddToGroup(RoomGroup);
+            // Dark surroundings so the room reads as "inside", not as a box floating in the sky.
+            AddChild(new MeshInstance3D
+            {
+                Name = "Dark", Mesh = new BoxMesh { Size = new Vector3(40, 0.02f, 40) },
+                MaterialOverride = ModelLibrary.MaterialFor(new Color(0.08f, 0.07f, 0.06f)),
+                Position = new Vector3(w / 2, -0.03f, d / 2), CastShadow = GeometryInstance3D.ShadowCastingSetting.Off,
+            });
+        }
 
         if (HasWindow)
         {
@@ -107,8 +156,25 @@ public partial class Building : Node3D
             if (south >= 0) _walls[south].Refresh();
         }
 
-        // Inside = the floor between the walls (a building without a door can't be entered).
         if (Door == DoorSide.None) return;
+        float doorZ = Door == DoorSide.Top ? 0 : d;
+        float outZ = Door == DoorSide.Top ? -0.625f : d + 0.625f;
+        float inZ = Door == DoorSide.Top ? 0.75f : d - 1.0f;
+        if (IsRoom)
+        {
+            AddChild(new Marker3D { Name = EntryMarker, Position = new Vector3(w / 2, 0, inZ) });
+            if (!string.IsNullOrEmpty(ExitScene))
+                Doorway = MakeDoorway(ExitScene, ExitMarker, Door == DoorSide.Top ? Player.Facing.Up : Player.Facing.Down);
+        }
+        else if (!string.IsNullOrEmpty(RoomScene))
+        {
+            // Entered through its room scene, not on the map: a doorway and a marker for coming back out.
+            AddChild(new Marker3D { Name = DoorMarkerName, Position = new Vector3(w / 2, 0, outZ) });
+            Doorway = MakeDoorway(RoomScene, EntryMarker, Door == DoorSide.Top ? Player.Facing.Down : Player.Facing.Up);
+            return;
+        }
+
+        // Inside = the floor between the walls.
         Zone = new IndoorZone { Name = "IndoorZone", ZoneName = ZoneName, Building = this };
         Zone.AddChild(new CollisionShape3D
         {
@@ -116,6 +182,16 @@ public partial class Building : Node3D
             Position = new Vector3(w / 2, 1f, d / 2),
         });
         AddChild(Zone);
+    }
+
+    /// <summary>The doorway box across this building's door gap, leading to another scene.</summary>
+    private DoorTrigger MakeDoorway(string scene, string marker, Player.Facing facing)
+    {
+        var t = new DoorTrigger { Name = "Doorway", TargetScene = scene, TargetMarker = marker, Facing = facing };
+        float z = Door == DoorSide.Top ? 0.1f : Size.Y - 0.1f;
+        t.AddChild(new CollisionShape3D { Shape = new BoxShape3D { Size = new Vector3(DoorTiles - 0.2f, 2f, 0.4f) }, Position = new Vector3(Size.X / 2, 1f, z) });
+        AddChild(t);
+        return t;
     }
 
     /// <summary>One wall side: a solid body and a look (split around the door gap when it has one).</summary>
@@ -177,7 +253,7 @@ public partial class Building : Node3D
     {
         bool hiding = false;
         var cam = GetViewport()?.GetCamera3D();
-        if (!_kitInside && cam != null && GetTree().GetFirstNodeInGroup(PlayerController.Group) is Node3D kit)
+        if (!_kitInside && !IsRoom && cam != null && GetTree().GetFirstNodeInGroup(PlayerController.Group) is Node3D kit)
         {
             // Kit's chest → camera: does the segment pass through the building?
             Vector3 chest = kit.GlobalPosition + new Vector3(0, 0.9f, 0);
@@ -185,7 +261,7 @@ public partial class Building : Node3D
         }
         if (hiding != _hidingKit) { _hidingKit = hiding; UpdateFades(); }
         else if (_kitInside || _hidingKit) UpdateFades(); // the camera corner may switch
-        _roofFader.Step((float)delta);
+        _roofFader?.Step((float)delta);
         foreach (var f in _walls) f.Step((float)delta);
     }
 
@@ -193,7 +269,7 @@ public partial class Building : Node3D
     private void UpdateFades()
     {
         bool open = _kitInside || _hidingKit;
-        _roofFader.Target = open ? 0f : 1f;
+        if (_roofFader != null) _roofFader.Target = open ? 0f : 1f;
         Vector3? side = CameraSide();
         for (int i = 0; i < _walls.Count; i++)
         {
@@ -205,7 +281,7 @@ public partial class Building : Node3D
     /// <summary>Instant fades (tests, waking up).</summary>
     public void FinishFades()
     {
-        _roofFader.Step(10f);
+        _roofFader?.Step(10f);
         foreach (var f in _walls) f.Step(10f);
     }
 }

@@ -26,7 +26,7 @@ public partial class SaveGame : Node
 {
     public static SaveGame Instance { get; private set; }
 
-    public const int SchemaVersion = 2;
+    public const int SchemaVersion = 3;
     public const string DefaultPath = "user://savegame.json";
 
     /// <summary>When false nothing is loaded or saved (tests).</summary>
@@ -49,7 +49,20 @@ public partial class SaveGame : Node
     public static readonly Dictionary<int, Func<Godot.Collections.Dictionary, Godot.Collections.Dictionary>> Migrations = new()
     {
         { 1, MigratePlayerTo3D },
+        { 2, MigrateAddLevel },
     };
+
+    /// <summary>v2 → v3 (Phase-002 Task 2.2): rooms are separate scenes, so the player section says
+    /// which scene Kit is in; older saves were always on the farm.</summary>
+    public static Godot.Collections.Dictionary MigrateAddLevel(Godot.Collections.Dictionary root)
+    {
+        if (root.TryGetValue("player", out var pv) && pv.VariantType == Variant.Type.Dictionary)
+        {
+            var p = pv.AsGodotDictionary();
+            if (!p.ContainsKey("level")) p["level"] = "res://scenes/world/FarmLevel.tscn";
+        }
+        return root;
+    }
 
     /// <summary>Pixels per metre in the 2D build (1 tile = 64 px = 1 m).</summary>
     public const double PixelsPerMetre = 64.0;

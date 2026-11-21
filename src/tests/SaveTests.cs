@@ -29,7 +29,7 @@ public partial class TestRunner
         var save = SaveGame.Instance;
         Check(save != null && save.GetParent() == GetTree().Root && save.ProcessMode == ProcessModeEnum.Always, "autoload SaveGame registered and Always");
         if (save == null) return;
-        Check(SaveGame.SchemaVersion == 2 && SaveGame.DefaultPath == "user://savegame.json", "save: user://savegame.json, schemaVersion 2 (3D, Task 1.20)");
+        Check(SaveGame.SchemaVersion == 3 && SaveGame.DefaultPath == "user://savegame.json", "save: user://savegame.json, schemaVersion 3 (rooms as scenes, Phase-002 Task 2.2)");
         ResetTask14State();
         save.SavePath = TestSavePath;
         save.DeleteSave();
@@ -62,7 +62,7 @@ public partial class TestRunner
         Inventory.Instance.Add(ItemIds.Berries, 3);
         om.Deliver(OrderManager.FirstOrderId);
         om.Accept(OrderManager.SecondOrderId);
-        var hens = AnimalHouse.For(GetTree(), "hen");
+        var hens = FarmState.Instance.Herd("hen"); // Phase-002 Task 2.2: the herd outlives the coop scene
         hens.FeedOne(hens.Animals[0]);
         hens.EndDay();
         hens.TakeFeed(3);
@@ -76,10 +76,10 @@ public partial class TestRunner
         Check(before.Contains("\"schemaVersion\"") && coins == 1279 && before.Contains("1279"), "snapshot is JSON with schemaVersion and the state");
         Check(save.Save() && FileAccess.FileExists(TestSavePath) && !FileAccess.FileExists(save.TempPath), "save writes the file (temp file renamed away)");
         var onDisk = SaveGame.Read(TestSavePath);
-        Check(onDisk != null && onDisk["schemaVersion"].AsInt32() == 2 && onDisk.ContainsKey("farm") && onDisk.ContainsKey("animals"),
-            "the file on disk is readable JSON with schemaVersion 2 and every section");
+        Check(onDisk != null && onDisk["schemaVersion"].AsInt32() == 3 && onDisk.ContainsKey("farm") && onDisk.ContainsKey("animals"),
+            "the file on disk is readable JSON with schemaVersion 3 and every section");
         var pl = onDisk["player"].AsGodotDictionary();
-        Check(pl.ContainsKey("z") && !pl.ContainsKey("y") && Mathf.IsEqualApprox((float)pl["x"].AsDouble(), 1700f / 64f),
+        Check(pl.ContainsKey("z") && !pl.ContainsKey("y") && Mathf.IsEqualApprox((float)pl["x"].AsDouble(), 1700f / 64f) && pl["level"].AsString() == Main.FarmScene,
             $"the player is saved in metres on the ground (x, z) ({pl["x"]}, {pl["z"]})");
 
         // Restart: a fresh game, then load.
@@ -95,7 +95,7 @@ public partial class TestRunner
         Check(after == before, "round-trip: everything restored exactly (position, day, tiles, crops, dry counts, bag, belt, coins, orders, animals, hunger, feed bins, deliveries, bushes, ledger)");
         level = main.GetNode("World/Level").GetChild(0);
         grid = level.GetNode<FarmGrid>("FrontGarden");
-        hens = AnimalHouse.For(GetTree(), "hen");
+        hens = FarmState.Instance.Herd("hen");
         Check(clock.Day == 4 && grid.Get(new Vector2I(0, 0)).DaysGrown == 1 && grid.Get(new Vector2I(5, 3)).DryDays == 1
               && Wallet.Instance.Coins == 1279 && Inventory.Instance.Count(ItemIds.Carrot, 2) == 2 && ToolBelt.Instance.Active == Tool.WateringCan,
             "spot checks: Day 4, crop growth and dry count, coins, ★★ carrots, active tool");
@@ -126,15 +126,15 @@ public partial class TestRunner
         SaveGame.Migrations[0] = d => { ran++; return d; };
         var old = new Godot.Collections.Dictionary { { "schemaVersion", 0 } };
         var up = save.Migrate(old);
-        Check(ran == 1 && save.MigrationsRun == 2 && up["schemaVersion"].AsInt32() == SaveGame.SchemaVersion, "migration hooks run in order (v0 → v1 → v2)");
+        Check(ran == 1 && save.MigrationsRun == 3 && up["schemaVersion"].AsInt32() == SaveGame.SchemaVersion, "migration hooks run in order (v0 → v1 → v2 → v3)");
         SaveGame.Migrations.Remove(0);
-        save.Migrate(new Godot.Collections.Dictionary { { "schemaVersion", 2 } });
-        Check(save.MigrationsRun == 0, "a current (v2) save needs no migration");
+        save.Migrate(new Godot.Collections.Dictionary { { "schemaVersion", 3 } });
+        Check(save.MigrationsRun == 0, "a current (v3) save needs no migration");
         var v1 = new Godot.Collections.Dictionary { { "schemaVersion", 1 },
             { "player", new Godot.Collections.Dictionary { { "x", 1600.0 }, { "y", 200.0 }, { "facing", "Up" } } } };
         var v2 = save.Migrate(v1)["player"].AsGodotDictionary();
-        Check(save.MigrationsRun == 1 && Mathf.IsEqualApprox((float)v2["x"].AsDouble(), 25f) && Mathf.IsEqualApprox((float)v2["z"].AsDouble(), 3.125f)
-              && !v2.ContainsKey("y") && v2["facing"].AsString() == "Up", "v1 → v2: the player's pixels (1600, 200) become metres (25, 3.125)");
+        Check(save.MigrationsRun == 2 && Mathf.IsEqualApprox((float)v2["x"].AsDouble(), 25f) && Mathf.IsEqualApprox((float)v2["z"].AsDouble(), 3.125f)
+              && !v2.ContainsKey("y") && v2["facing"].AsString() == "Up" && v2["level"].AsString() == Main.FarmScene, "v1 → v3: the player's pixels (1600, 200) become metres (25, 3.125) on the farm");
 
         // A save written by the 2D build (v1) loads into the 3D game with Kit on the same spot.
         var asV1 = SaveGame.Read(TestSavePath);
@@ -143,13 +143,14 @@ public partial class TestRunner
         p1["y"] = p1["z"].AsDouble() * 64.0;
         p1["x"] = p1["x"].AsDouble() * 64.0;
         p1.Remove("z");
+        p1.Remove("level"); // v1 saves had no scene
         using (var f1 = FileAccess.Open(TestSavePath, FileAccess.ModeFlags.Write)) f1.StoreString(Json.Stringify(asV1, "  "));
         var kitNow = main.GetNode<PlayerController>("World/Entities/Player"); // the restarted Main's Kit
         kitNow.GlobalPosition = Vector3.Zero;
         Wallet.Instance.SetCoins(1);
-        Check(save.Load() && save.MigrationsRun == 1 && kitNow.GlobalPosition.DistanceTo(M(1700, 300)) < 0.01f && Wallet.Instance.Coins == 1279,
+        Check(save.Load() && save.MigrationsRun == 2 && kitNow.GlobalPosition.DistanceTo(M(1700, 300)) < 0.01f && Wallet.Instance.Coins == 1279,
             $"an old 2D (v1) save loads with Kit at the same spot ({kitNow.GlobalPosition}) and everything else unchanged");
-        Check(Snap() == before, "after the v1 → v2 load the whole save matches the original snapshot");
+        Check(Snap() == before, "after the v1 → v3 load the whole save matches the original snapshot");
         save.Save();
 
         // Auto-save: at the rollover, after a purchase, after a delivery.
@@ -163,6 +164,17 @@ public partial class TestRunner
         clock.BeginSleep(SleepReason.Bed);
         await WaitUntil(() => !clock.IsSleeping && !main.GetNode<SleepSequence>("Systems/SleepSequence").IsRunning, 600);
         Check(saves == 1 && SaveGame.Read(TestSavePath)["clock"].AsGodotDictionary()["day"].AsInt32() == 5, "auto-save after the night (Day 5 on disk)");
+        Check(SaveGame.Read(TestSavePath)["player"].AsGodotDictionary()["level"].AsString() == Main.HouseRoomScene,
+            "Kit woke in the house room, and the save says so (schema 3)");
+        // A restart while in a room comes back to that room.
+        save.Saved -= OnSaved;
+        main.QueueFree();
+        await Frames(2);
+        main = await NewMain();
+        await Frames(2);
+        Check(((Main)main).CurrentLevelPath == Main.HouseRoomScene && ((Main)main).CurrentRoom != null && clock.IsIndoors,
+            "loading a save made in the house room starts Kit in the house room");
+        save.Saved += OnSaved;
         var bubble = main.GetNode<PictureBubbleView>("HUD/UI/PictureBubble");
         while (bubble.IsOpen) { bubble.PressCancel(); await Frames(1); }
         var shop = main.GetNode<ShopView>("HUD/UI/Shop");

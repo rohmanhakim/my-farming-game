@@ -54,8 +54,8 @@ public partial class ShopCounter : Prop
         new ShopEntry { Id = ItemIds.FlowerSeeds, Sprite = ItemIds.SpriteName(ItemIds.FlowerSeeds), Count = SeedsPerPacket,
             Price = PriceTable.Get(ItemIds.FlowerSeeds), OnBuy = () => Inventory.Instance?.Add(ItemIds.FlowerSeeds, SeedsPerPacket) },
         new ShopEntry { Id = "hen", Sprite = "hen", Count = 1, Price = PriceTable.Get("hen"),
-            Blocked = () => AnimalHouse.For(tree, "hen")?.HasRoom == true ? null : "icon_coop_full",
-            OnBuy = () => AnimalHouse.For(tree, "hen")?.AddAnimal() },
+            Blocked = () => (FarmState.Instance?.Herd("hen")?.HasRoom ?? AnimalHouse.For(tree, "hen")?.HasRoom) == true ? null : "icon_coop_full",
+            OnBuy = () => { if (FarmState.Instance?.Herd("hen") is HerdState h) h.AddAnimal(); else AnimalHouse.For(tree, "hen")?.AddAnimal(); } },
     };
 
     public static class Lines

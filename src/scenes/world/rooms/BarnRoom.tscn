@@ -1,0 +1,28 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/world/Building.cs" id="1_building"]
+[ext_resource type="Script" path="res://scripts/world/AnimalHouse.cs" id="2_house"]
+
+[node name="BarnRoom" type="Node3D"]
+script = ExtResource("1_building")
+SizeTiles = Vector2i(6, 5)
+Door = 0
+ZoneName = "barn"
+RoofModel = ""
+WallColor = Color(0.72, 0.28, 0.22, 1)
+FloorColor = Color(0.86, 0.76, 0.46, 1)
+IsRoom = true
+CameraDistance = 9
+ExitScene = "res://scenes/world/FarmLevel.tscn"
+ExitMarker = "Door_Barn"
+
+[node name="Cows" type="Node3D" parent="."]
+script = ExtResource("2_house")
+Kind = "cow"
+FeedItem = "hay"
+StartingFeed = 7
+StartingNames = PackedStringArray("Maple")
+BinOffset = Vector3(0.6, 0, 0.6)
+Spots = [Vector3(3, 0, 2.9), Vector3(1.2, 0, 2.9), Vector3(4.8, 0, 2.9), Vector3(1.2, 0, 1.3), Vector3(4.8, 0, 1.3)]
+SlotSpots = [Vector3(3, 0, 4.5), Vector3(1.2, 0, 4.5), Vector3(4.8, 0, 4.5), Vector3(2.1, 0, 4.5), Vector3(3.9, 0, 4.5)]
+SlotApproach = Vector3(0, 0, -0.6)

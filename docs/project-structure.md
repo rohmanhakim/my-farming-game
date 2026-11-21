@@ -1,7 +1,7 @@
 # Project Structure
 
 > **Status:** Proposal for team agreement — input to Phase-001 Task 1.1 ("Team agrees on project folder structure and naming conventions")
-> **Version:** 0.33
+> **Version:** 0.35
 > **Last updated:** 2026-11-21
 > **Purpose:** The repository layout, Godot folder structure, naming rules, input/autoload registries, asset pipeline, and verification commands that every development session follows when adding code or assets under `src/`. It is a *technical* contract only — it never overrides a gameplay decision.
 
@@ -82,7 +82,8 @@ src/
 │   ├── player/
 │   │   └── Player.tscn        # Kit: CharacterBody3D + capsule collider + NamedModel "kit" (child "Model"; the held tool "Hand" is added in code)
 │   ├── world/                 # the level and everything Kit walks up to (3D)
-│   │   ├── FarmLevel.tscn     # farm + lane + seed shed: ground/fields/fence built by FarmLevel.cs, Buildings (house, coop, barn, shed, cottage), FrontGarden (FarmGrid), props, markers (PlayerSpawn, CameraLimitMin/Max)
+│   │   ├── FarmLevel.tscn     # farm + lane + seed shed: ground/fields/fence built by FarmLevel.cs, Buildings (house, coop, barn, shed, cottage; each with `RoomScene` + a doorway), FrontGarden (FarmGrid view), props, markers
+│   │   ├── rooms/             # Phase-002 Task 2.2 — one scene per room: HouseRoom (bed, phone), CoopRoom (hens view, trough, bin), BarnRoom (cow), ShedRoom (ledger, counter); root = a `Building` with `IsRoom`
 │   │   ├── Bed.tscn, Marlow.tscn, Ada.tscn, Ledger.tscn, BerryBush.tscn, OrderBoard.tscn, ShopCounter.tscn, Phone.tscn
 │   │   │                      # one-node Prop scenes (StaticBody3D + script; the Prop base builds look, body, click area, prompt)
 │   │   ├── Hen.tscn, Cow.tscn # FarmAnimal props spawned by AnimalHouse (feed bin and trough slots are built in code)
@@ -94,20 +95,20 @@ src/
 │       └── PauseMenu.tscn     # instanced into Main/Pause
 │
 ├── scripts/                   # every .cs, grouped by the layer it belongs to
-│   ├── autoloads/             # GameClock, ToolBelt, Inventory, Wallet, OrderManager, SaveGame (schema v2), Onboarding — §8
+│   ├── autoloads/             # GameClock, ToolBelt, Inventory, Wallet, OrderManager, SaveGame (schema v3), Onboarding, FarmState — §8
 │   ├── player/
 │   │   └── PlayerController.cs   # Kit: screen-relative 8-way walk, 4-way grid Facing, click-to-move by camera ray, WalkTo, tool use, held tool + use motion
 │   ├── world/
 │   │   ├── FarmLevel.cs       # layout tables (tiles = metres) → baked ground/fence/hedge meshes, tuft MultiMesh, blockers
-│   │   ├── Building.cs (+ Fader), IndoorZone.cs   # walls, floor, roof model, window; roof/camera-side wall fade inside and when hiding Kit
-│   │   ├── FarmGrid.cs, CropTile.cs   # garden rules + MultiMesh tiles, front-tile frame, hint/sparkle pins, action puffs
+│   │   ├── Building.cs (+ Fader), IndoorZone.cs, DoorTrigger.cs   # walls, floor, roof model, window; occluder fade; rooms (`IsRoom`, Phase-002 Task 2.2) linked to their building, doorways that fade Kit in and out
+│   │   ├── GardenState.cs, FarmGrid.cs, CropTile.cs   # garden rules (persistent, in FarmState) + the view (MultiMesh tiles, front-tile frame, pins, puffs)
 │   │   ├── Prop.cs            # 3D base for usable things (IInteractable, NamedModel look, click Area3D layer 8, WorldPin prompt)
 │   │   ├── Bed, Marlow, Ada, Ledger, BerryBush, OrderBoard, ShopCounter, Phone, FeedBin, TroughSlot (.cs)
-│   │   ├── AnimalHouse.cs, FarmAnimal.cs (+ HeartBar), Hen.cs, Cow.cs   # animals, feed bin, trough slots, loss rule
+│   │   ├── AnimalHouse.cs (AnimalData, HerdState + the AnimalHouse view), FarmAnimal.cs (+ HeartBar), Hen.cs, Cow.cs   # herd rules persistent in FarmState; the room view spawns animals, bin, trough slots
 │   │   └── GuideArrow.cs      # guided-start arrow (WorldPin)
 │   ├── ui/                    # views (state lives in the autoloads); DayNightView.cs drives the 3D sun/sky/windows
 │   ├── main/
-│   │   ├── Main.cs            # coordinator: layers, spawn + camera limits from markers, menus freeze Kit, debug keys
+│   │   ├── Main.cs            # coordinator: layers, `LoadLevelNow` (load_level contract), `Travel` through doorways, `PutKitInBed`, camera framing per level/room, menus freeze Kit, debug keys
 │   │   ├── CameraRig.cs       # fixed diagonal camera (45° / 45° / south-east), corner switch, presets
 │   │   └── SleepSequence.cs, SaveBinder.cs, OnboardingDirector.cs
 │   └── core/                  # shared helpers and data
@@ -217,7 +218,7 @@ A node's default is `Inherit`, and **autoloads inherit from the root (i.e. `Alwa
 | `HUD` | Pausable | clock/HUD freeze with the world |
 | `Pause` | WhenPaused | only runs while paused |
 | `Transition`, `Debug`, `Audio` | Always | fades and music never break |
-| Autoloads `GameClock`, `OrderManager`, `Onboarding` | Pausable | day-driven logic must stop with the game |
+| Autoloads `GameClock`, `OrderManager`, `Onboarding`, `FarmState` | Pausable | day-driven logic must stop with the game |
 | Autoloads `ToolBelt`, `Inventory`, `Wallet` | Pausable (state is event-driven; belt-and-braces) | matters only if `_Process` is ever used |
 | Autoloads `SaveGame`, `EventBus` | Always | saving and event routing must work during pause/transitions |
 
@@ -327,6 +328,7 @@ Rules: D-pad stays reserved for movement (`controls.md` §2); no action may requ
 | `OrderManager` ✅ | `scripts/autoloads/OrderManager.cs` | Task 1.6 (board in 1.7) | order generation (producible items only), accept/deliver, repeat orders | never offers what Kit cannot produce |
 | `SaveGame` ✅ | `scripts/autoloads/SaveGame.cs` | Task 1.10 | versioned JSON save, section registration, backup | nothing else writes `user://` |
 | `Onboarding` ✅ | `scripts/autoloads/Onboarding.cs` | Task 1.12 | guided start + one-time nudges | never blocks play |
+| `FarmState` ✅ | `scripts/autoloads/FarmState.cs` | Phase-002 Task 2.2 | the garden (`GardenState`), the herds (`HerdState`: hens, cow) and the berry bushes, kept alive while their scenes are not loaded; night rules, Dawn deliveries, regrowth, production supply | scenes only *view* this state — never keep farm state in a level node |
 | `EventBus` *(proposed)* | `scripts/autoloads/EventBus.cs` | when first needed | decoupled game events | keep tiny |
 
 Adding an autoload is a structural decision that must be recorded here plus in the task's *Deviations* note. Do not create autoloads for convenience. Each autoload's **process mode** is fixed by the §4 process-mode table — set it in the same session the autoload lands.
@@ -522,3 +524,5 @@ Rules:
 - **0.31 — 2026-11-21:** §10: first export (macOS universal app) — `build/` ignored, macOS preset, `.sln`, ETC2/ASTC import setting, export command; no web export for C#.
 - **0.32 — 2026-11-21:** §10: `tools/export_mac.sh` (plist fix, re-sign, verify, ditto zip) after the first export would not open on another Mac.
 - **0.33 — 2026-11-21:** **Phase-002 Task 2.1 doc sync:** §4 tree rewritten for the 3D project (scenes, scripts, data, debug, tests), 2D-era wording removed from the structural rules, scene architecture and `load_level` contract; §5 rows 1.14 and 1.19 corrected; §7 `open_orders` decided (Back/Select).
+- **0.34 — 2026-11-21:** Phase-002 Task 2.2: rooms in `FarmLevel.tscn`, `DoorTrigger.cs`, `Building` rooms, `Main.Teleport` and the room camera recorded in §4.
+- **0.35 — 2026-11-21:** Phase-002 Task 2.2 rebuilt (owner: a separate scene per room): `FarmState` autoload (§8 registry + process mode), `GardenState`/`HerdState`, room scenes in `scenes/world/rooms/`, `Main.LoadLevelNow`/`Travel`, save schema 3.

@@ -162,7 +162,7 @@ public partial class CameraRig : Node3D
     /// <summary>Places and aims the camera for the current focus, tilt, turn, corner and projection.</summary>
     public void ApplyPose()
     {
-        if (Camera == null) return;
+        if (Camera == null || !Camera.IsInsideTree()) return;
         float tilt = Mathf.DegToRad(Mathf.Clamp(Tilt, 10f, 89f));
         Vector3 offset = BackDirection * Mathf.Cos(tilt) * Distance + Vector3.Up * Mathf.Sin(tilt) * Distance;
         Camera.GlobalPosition = Focus + offset;

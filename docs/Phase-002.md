@@ -1,7 +1,7 @@
 # Phase-002 — Economy Depth (Box, House Orders, Real Rooms)
 
-> **Status:** **Approved by the owner 2026-11-21** — Task 2.1 done; Task 2.2 next
-> **Version:** 0.4
+> **Status:** **Approved by the owner 2026-11-21** — Tasks 2.1–2.2 done; Task 2.3 next
+> **Version:** 0.6
 > **Last updated:** 2026-11-21
 > **Milestone:** 2 — Economy depth
 > **Purpose:** Break Milestone 2 down into session tasks. Each task produces one scoped, playtested artifact that can be created and validated in a single session with AI assistance. Same task shape and rules as Phase-001 (AGENTS.md §3–§4).
@@ -112,12 +112,11 @@ Tasks are ordered by dependency. After each task the game runs and the new artif
 **Dependencies:** Task 2.1.
 
 **Notes & learnings:**
-- **Outcome / status:** _TBD_
-- **What worked well:** _TBD_
-- **Problems & fixes:** _TBD_
-- **Deviations from scope or plan:** _TBD_
-- **Handoff to Task 2.3:** _TBD_
-
+- **Outcome / status:** 2026-11-21 — **Done — pending human playtest.** Rebuilt the same day after the owner asked for **a separate scene for each room** (the first version kept the rooms far away inside the farm scene). Software tests: PASS — `tools/verify.sh` (`dotnet build` 0/0, import, Main boots, `TestRunner` **786/786**), incl.: the house, coop, barn and seed shed each lead into their own room scene and the farm has no bed; **walking into the house's doorway loads the house room** (exactly one level loaded, `LevelChanged` once), Kit lands just inside facing in, the clock stops, the camera frames the room (closer), no roof, camera-side walls faded, the bed is there; walking into the room's doorway loads the farm again with Kit at the front door facing out; the coop and barn rooms stop the clock; walking into the barn's doorway loads its room; **the garden grew, the animals ate and counted hungry days, feed arrived and the bushes regrew while their scenes were not loaded** (FarmState); waking and the 21:30 bedtime load the house room and put Kit at the bed; the hens' warning and loss cards arrive while their room is not loaded; the guided start's arrow points at the right door from outside, at the slot inside, and out of the coop once the hens are fed; morning egg/milk icons wait for the farm scene; **a save made in the house room starts the game in the house room** (schema 3), old saves (v1, v2) load on the farm; the shop, phone, ledger and board work from their scenes. `tools/perf_check.sh`: ≈ 88 fps, 191 draw calls, ≈ 61k triangles, both profiles OK. · Human playtest: **PENDING** (going in and out feels quick and clear; a 6-year-old knows how to leave a room; each room's camera distance feels right).
+- **What worked well:** Splitting each stateful thing into **persistent state + scene view**: `GardenState`, `HerdState` (hens, cow) and bush records live in the new `FarmState` autoload and run the night rules there; `FarmGrid`, `AnimalHouse` and `BerryBush` only bind to them and draw. Views re-emit the state's signals, so the old API (and the rule tests with private state) kept working. `Main.LoadLevelNow` implements the `load_level` contract once (free the level only, instance, markers → camera framing, `LevelChanged`); doorways, sleeping and save loading all use it.
+- **Problems & fixes:** (1) **Night rules depended on nodes in the farm scene** (garden growth, hunger, deliveries, bush regrowth, egg/milk/berry supply for Dawn orders) — Kit sleeps in the house room, so they would have been skipped → moved into `FarmState`. (2) The hunger warning and loss cards listened to the coop/barn nodes → `CareNoticeView` listens to the herds in `FarmState`. (3) Buying a hen at the shed looked up the coop's node (not loaded) → uses the herd. (4) Every ported check that kept a farm node across a scene change crashed with `ObjectDisposedException` → re-fetch nodes after each level change (`Main.Level`). (5) The guide arrow pointed at a door during free play (no target but a different scene) → no target means no arrow. (6) Freeing a level inside the doorway's physics callback is unsafe → `Main.Travel` covers the screen, then swaps the level deferred.
+- **Deviations from scope or plan:** (a) New autoload `FarmState` (Pausable) — project-structure.md §8. (b) Save schema **3**: the player section stores the scene (`level`); v2 → v3 puts older saves on the farm. (c) Room scenes in `scenes/world/rooms/` (HouseRoom, CoopRoom, BarnRoom, ShedRoom), each a `Building` with `IsRoom`, an `Entry` marker, an exit doorway to the farm marker `Door_<Building>`; outside buildings have `RoomScene` and a doorway in their door gap. (d) **Per-room camera distance** (owner 2026-11-21, "ok deal"): house 9 m, coop 7.5 m, barn 9 m, shed 8.5 m (`Building.CameraDistance`). (e) Doorway fade 0.15 s each way; Kit lands 0.75 m inside / 0.625 m outside. (f) The cottage has no room.
+- **Handoff to Task 2.3:** `Main`: `LoadLevelNow(path, marker, facing)`, `Travel(scene, marker, facing)`, `PutKitInBed()`, `CurrentLevelPath`, `CurrentRoom`, `LevelChanged`, `FarmScene`, `HouseRoomScene`. `FarmState`: `Garden`, `Herd(kind)`, `Herds`, `Bush(name)`, `Bushes`, `ResetForNewGame()`. `Building`: `IsRoom`, `RoomScene`, `ExitScene`, `ExitMarker`, `DoorMarkerName`, `EntryMarker`, `CameraDistance`, `Doorway`, `DoorPoint`, `Contains`. The village is another level reached by the same doorway/marker mechanism (an "area doorway" at the top of the lane); anything in it that must change while Kit is away belongs in an autoload state like `FarmState`.
 ---
 
 ### Task 2.3 — Bramblewick Green, First Ring
@@ -512,3 +511,5 @@ Tasks are ordered by dependency. After each task the game runs and the new artif
 - **0.2 — 2026-11-21:** Owner picks: **sheep** for Task 2.10; rooms are entered by **walking into the doorway**.
 - **0.3 — 2026-11-21:** **Plan approved by the owner** ("ok can"); `open_orders` on Back/Select decided; Task 2.1 started.
 - **0.4 — 2026-11-21:** **Task 2.1 done:** Phase-001 closed, docs synced, owner decisions written back; Notes filled.
+- **0.5 — 2026-11-21:** **Task 2.2 built — pending human playtest:** real rooms for the house, coop, barn and seed shed, entered by walking into the doorway; rooms live in the same level (no `load_level` / schema v3 needed yet — choice for review). Notes filled; 774/774; 192 draw calls.
+- **0.6 — 2026-11-21:** **Task 2.2 rebuilt — a separate scene for each room (owner 2026-11-21):** `FarmState` autoload holds the garden, herds and bushes; `Main.LoadLevelNow`/`Travel` implement `load_level`; save schema 3 (scene in the player section); per-room camera distance. Notes rewritten.

@@ -57,11 +57,12 @@ public partial class TestRunner
         var fade = main.GetNode<DayTransitionView>("Transition/DayTransition");
         fade.FadeSeconds = 0.05f;
         fade.HoldSeconds = 0.05f;
-        var grid = level.GetNode<FarmGrid>("FrontGarden");
+        var mainNode = (Main)main;
+        var grid = FarmState.Instance.Garden;   // Phase-002 Task 2.2: state outlives the scenes
         var house = level.GetNode<Building>("House");
         var ada = level.GetNodeOrNull<Ada>("Ada");
-        var hens = AnimalHouse.For(GetTree(), "hen");
-        var cows = AnimalHouse.For(GetTree(), "cow");
+        var hens = FarmState.Instance.Herd("hen");
+        var cows = FarmState.Instance.Herd("cow");
         async Task Sleep()
         {
             clock.BeginSleep(SleepReason.Bed);
@@ -101,11 +102,24 @@ public partial class TestRunner
         Check(await Until(() => ob.Step == OnboardingStep.FirstOrder), "3 handfuls of berries → step 7 (hand them over)");
         om.Deliver(OrderManager.FirstOrderId);
         Check(await Until(() => ob.Step == OnboardingStep.FeedAnimals), "order paid, board up → steps 7–8 done, step 9 (feed the animals)");
-        Check(director.Arrow.Target == hens.Slots[0].GlobalPosition && chip.Text.Contains("Feed"), "the arrow points at the coop's first empty trough slot");
+        var coopB = mainNode.Level.GetNode<Building>("Coop");
+        director.GuideTarget(out string feedScene);
+        Check(feedScene == coopB.RoomScene && chip.Text.Contains("Feed"), "the feeding step is in the coop's room");
+        director.Evaluate();
+        Check(director.Arrow.Target == coopB.DoorOutside, "from the farm, the arrow points at the coop's door first (Phase-002 Task 2.2)");
+        mainNode.LoadLevelNow(coopB.RoomScene, Building.EntryMarker);
+        await Frames(5);
+        var hensView = AnimalHouse.For(GetTree(), "hen");
+        director.Evaluate();
+        Check(director.Arrow.Target == hensView.Slots[0].GlobalPosition, "inside the coop, the arrow points at the first empty trough slot");
         hens.FeedOne(hens.Animals[0]);
-        Check(director.GuideTarget() == hens.Slots[1].GlobalPosition, "…then at the next empty slot");
+        Check(director.GuideTarget() == hensView.Slots[1].GlobalPosition, "…then at the next empty slot");
         hens.FeedAll();
-        Check(director.GuideTarget() == cows.Slots[0].GlobalPosition, "…then at the cow's slot in the barn");
+        director.Evaluate();
+        Check(director.Arrow.Target == mainNode.CurrentRoom.DoorPoint, "the hens are fed: the arrow points out of the coop (the cow is next)");
+        mainNode.LoadLevelNow("res://scenes/world/rooms/BarnRoom.tscn", Building.EntryMarker);
+        await Frames(5);
+        Check(director.GuideTarget() == AnimalHouse.For(GetTree(), "cow").Slots[0].GlobalPosition, "…then at the cow's slot in the barn");
         cows.FeedAll();
         Check(await Until(() => ob.Step == OnboardingStep.FreePlay) && chip.Text.Contains("Feed lasts 7 days"), "all fed → step 10: the free-play goal 'Feed lasts 7 days — earn coins for more'");
         Check(!director.Arrow.Visible, "no arrow in free play");
@@ -128,10 +142,13 @@ public partial class TestRunner
         hens.FeedAll(); cows.FeedAll();
         await Sleep();
         Check(grid.WaterHints && ob.WasShown(Onboarding.WaterMorning), "morning after planting: watering-can icons over the dry beds");
-        Check(director.MorningMarkers.Count == 2 && ob.WasShown(Onboarding.FirstMorning), "first morning: egg and milk icons over the coop and barn");
+        Check(director.PendingMorningMarkers.Count == 2 && ob.WasShown(Onboarding.FirstMorning), "first morning: egg and milk icons wait for the farm scene");
+        mainNode.LoadLevelNow(Main.FarmScene, "Door_House");
+        await Frames(3);
+        Check(director.MorningMarkers.Count == 2, "…and show over the coop and barn once Kit is on the farm");
         int eggOrders = om.BoardOrders.Count(o => o.ItemId == ItemIds.Egg);
         hens.Collect(hens.Animals[0]);
-        Check(director.MorningMarkers.Count == 0 && ob.WasShown(Onboarding.FirstProducts) && om.BoardOrders.Count(o => o.ItemId == ItemIds.Egg) >= 1,
+        Check(director.MorningMarkers.Count == 0 && director.PendingMorningMarkers.Count == 0 && ob.WasShown(Onboarding.FirstProducts) && om.BoardOrders.Count(o => o.ItemId == ItemIds.Egg) >= 1,
             "first eggs: the icons go and an egg order is on the board");
         await CloseBubbles(bubble);
         foreach (var c in beds) grid.UseTool(Tool.WateringCan, c);
@@ -186,7 +203,8 @@ public partial class TestRunner
         // Never blocks play: doing things early skips steps.
         ob.ResetForNewGame();
         ob.WeedsPulled = ob.Planted = ob.Watered = 3;
-        player.GlobalPosition = house.DoorOutside;
+        mainNode.LoadLevelNow(Main.FarmScene, "Door_House");
+        await Frames(3);
         await Until(() => ob.Step > OnboardingStep.SecondOrder);
         Check(ob.Step >= OnboardingStep.FeedAnimals, $"steps already done are skipped at once ({ob.Step})");
         CareNoticeView.WarningPortrait = Ada.Portrait;

@@ -166,7 +166,7 @@ public partial class SaveBinder : Node
     private GDict SaveFeed()
     {
         var bins = new GDict();
-        foreach (var h in InLevel<AnimalHouse>(AnimalHouse.Group)) bins[h.Kind] = h.Feed;
+        foreach (var h in Herds) bins[h.Kind] = h.Feed;
         var pending = new GArray();
         foreach (var p in FeedStore.Pending)
             pending.Add(new GDict { { "item", p.Item }, { "amount", p.Amount }, { "day", p.DeliverOnDay } });
@@ -181,7 +181,7 @@ public partial class SaveBinder : Node
             return new FeedDelivery { Item = p["item"].AsString(), Amount = p["amount"].AsInt32(), DeliverOnDay = p["day"].AsInt32() };
         }).ToList());
         var bins = d["bins"].AsGodotDictionary();
-        foreach (var h in InLevel<AnimalHouse>(AnimalHouse.Group))
+        foreach (var h in Herds)
             if (bins.TryGetValue(h.Kind, out var n))
                 h.Restore(n.AsInt32(), h.Animals.ToList());
     }
@@ -189,7 +189,7 @@ public partial class SaveBinder : Node
     private GDict SaveAnimals()
     {
         var d = new GDict();
-        foreach (var h in InLevel<AnimalHouse>(AnimalHouse.Group))
+        foreach (var h in Herds)
         {
             var list = new GArray();
             foreach (var a in h.Animals) list.Add(a.ToDict());
@@ -200,13 +200,15 @@ public partial class SaveBinder : Node
 
     private void LoadAnimals(GDict d)
     {
-        foreach (var h in InLevel<AnimalHouse>(AnimalHouse.Group))
+        foreach (var h in Herds)
             if (d.TryGetValue(h.Kind, out var list))
                 h.Restore(h.Feed, list.AsGodotArray().Select(v => AnimalData.FromDict(v.AsGodotDictionary())).ToList());
     }
 
     // ---- farm, forage, ledger, player --------------------------------------------------------
-    private FarmGrid Garden => InLevel<FarmGrid>(IToolTarget.Group).FirstOrDefault();
+    // Phase-002 Task 2.2: the garden, herds and bushes live in FarmState, not in a scene.
+    private static GardenState Garden => FarmState.Instance?.Garden;
+    private static IEnumerable<HerdState> Herds => FarmState.Instance?.Herds ?? Enumerable.Empty<HerdState>();
 
     private GDict SaveFarm()
     {
@@ -222,20 +224,23 @@ public partial class SaveBinder : Node
     private GDict SaveForage()
     {
         var bushes = new GDict();
-        foreach (var b in InLevel<BerryBush>(BerryBush.Group))
-            bushes[b.Name.ToString()] = new GDict { { "berries", b.HasBerries }, { "pickedOnDay", b.PickedOnDay } };
+        foreach (var (name, r) in FarmState.Instance?.Bushes ?? new Dictionary<string, FarmState.BushRecord>())
+            bushes[name] = new GDict { { "berries", r.HasBerries }, { "pickedOnDay", r.PickedOnDay } };
         return new GDict { { "bushes", bushes } };
     }
 
     private void LoadForage(GDict d)
     {
         var bushes = d["bushes"].AsGodotDictionary();
-        foreach (var b in InLevel<BerryBush>(BerryBush.Group))
-            if (bushes.TryGetValue(b.Name.ToString(), out var v))
-            {
-                var s = v.AsGodotDictionary();
-                b.SetState(s["berries"].AsBool(), s["pickedOnDay"].AsInt32());
-            }
+        foreach (var (k, v) in bushes)
+        {
+            var s = v.AsGodotDictionary();
+            var r = FarmState.Instance?.Bush(k.AsString());
+            if (r == null) continue;
+            r.HasBerries = s["berries"].AsBool();
+            r.PickedOnDay = s["pickedOnDay"].AsInt32();
+        }
+        foreach (var b in InLevel<BerryBush>(BerryBush.Group)) b.SetState(b.HasBerries, b.PickedOnDay); // redraw
     }
 
     private GDict SaveLedger()
@@ -257,12 +262,16 @@ public partial class SaveBinder : Node
         // Metres on the ground plane since schemaVersion 2 (3D, Task 1.20); v1 stored pixels as x / y.
         var pos = _player?.GlobalPosition ?? Vector3.Zero;
         var facing = (_player as Player.PlayerController)?.Facing ?? Player.Facing.Down;
-        return new GDict { { "x", pos.X }, { "z", pos.Z }, { "facing", facing.ToString() } };
+        // Phase-002 Task 2.2 (schema 3): which scene Kit is in (rooms are separate scenes).
+        string level = (GetParent()?.GetParent() as Main)?.CurrentLevelPath ?? "";
+        return new GDict { { "x", pos.X }, { "z", pos.Z }, { "facing", facing.ToString() }, { "level", level } };
     }
 
     private void LoadPlayer(GDict d)
     {
         if (_player == null) return;
+        if (d.TryGetValue("level", out var lv) && lv.AsString() is { Length: > 0 } level && GetParent()?.GetParent() is Main main)
+            main.LoadLevelNow(level);
         _player.GlobalPosition = new Vector3((float)d["x"].AsDouble(), 0, (float)d["z"].AsDouble());
         if (_player is Player.PlayerController pc && System.Enum.TryParse<Player.Facing>(d["facing"].AsString(), out var f))
             pc.Face(f);

@@ -1,0 +1,24 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/world/Building.cs" id="1_building"]
+[ext_resource type="PackedScene" path="res://scenes/world/Ledger.tscn" id="2_ledger"]
+[ext_resource type="PackedScene" path="res://scenes/world/ShopCounter.tscn" id="3_counter"]
+
+[node name="ShedRoom" type="Node3D"]
+script = ExtResource("1_building")
+SizeTiles = Vector2i(6, 4)
+Door = 1
+ZoneName = "shed"
+RoofModel = ""
+WallColor = Color(0.56, 0.72, 0.5, 1)
+FloorColor = Color(0.62, 0.45, 0.3, 1)
+IsRoom = true
+CameraDistance = 8.5
+ExitScene = "res://scenes/world/FarmLevel.tscn"
+ExitMarker = "Door_SeedShed"
+
+[node name="Ledger" parent="." instance=ExtResource("2_ledger")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.25, 0, 1.125)
+
+[node name="ShopCounter" parent="." instance=ExtResource("3_counter")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.75, 0, 1)

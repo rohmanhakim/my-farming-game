@@ -16,7 +16,7 @@ public partial class TestRunner
     private const string MainPath = "res://scenes/main/Main.tscn";
 
     /// <summary>The open yard between the garden, the coop and the house (movement checks).</summary>
-    private static readonly Vector3 Yard = new(29.5f, 0, 6.5f);
+    private static readonly Vector3 Yard = new(32.6f, 0, 7.0f); // east of the coop, clear of its doorway (Task 2.2)
 
     private static bool Near(Vector3 a, Vector3 b, float eps = 0.01f) => a.DistanceTo(b) <= eps;
 
@@ -193,8 +193,14 @@ public partial class TestRunner
         Check(main.GetNodeOrNull<DayTransitionView>("Transition/DayTransition") != null, "Transition layer has DayTransition");
         Check(main.GetNodeOrNull<SleepSequence>("Systems/SleepSequence") != null && main.GetNodeOrNull<SaveBinder>("Systems/SaveBinder") != null
               && main.GetNodeOrNull<OnboardingDirector>("Systems/OnboardingDirector") != null, "Systems has SleepSequence, SaveBinder and OnboardingDirector");
-        var bedNode = level?.FindChild("Bed", true, false) as Bed;
-        Check(bedNode != null && bedNode.IsInGroup(Bed.Group) && bedNode.IsInGroup(IInteractable.Group), "level has a Bed in groups beds + interactables");
+        var houseScene = ResourceLoader.Load<PackedScene>(Main.HouseRoomScene)?.Instantiate();
+        AddChild(houseScene);
+        var bedNode = houseScene?.FindChild("Bed", true, false) as Bed;
+        Check(houseScene is Building { IsRoom: true } && bedNode != null && bedNode.IsInGroup(Bed.Group) && bedNode.IsInGroup(IInteractable.Group),
+            "the house room scene is a room with a Bed in groups beds + interactables (Phase-002 Task 2.2)");
+        houseScene?.Free();
+        Check(FarmState.Instance != null && FarmState.Instance.Garden != null && FarmState.Instance.Herd("hen") != null && FarmState.Instance.Herd("cow") != null
+              && FarmState.Instance.ProcessMode == ProcessModeEnum.Pausable, "FarmState autoload: garden, hens and cow, Pausable");
         Check(main.GetNodeOrNull<DayNightView>("World/Effects/DayNight") != null, "World/Effects has the DayNight light");
         Check(main.FindChildren("*", "CanvasModulate", true, false).Count == 0 && main.FindChildren("*", "Node2D", true, false).Count == 0,
             "no 2D world nodes are left (no Node2D, no CanvasModulate)");

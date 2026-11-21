@@ -36,9 +36,11 @@ public partial class OnboardingDirector : Node
     private PlayerController _player;
     private Node _level;
     private GameClock _clock;
-    private FarmGrid _garden;
-    private Building _house;
-    private AnimalHouse _hens, _cows;
+    private GardenState _garden;   // persistent (FarmState), Phase-002 Task 2.2
+    private Building _house;       // farm scene only
+    private HerdState _hens, _cows; // persistent (FarmState)
+    private Main _main;
+    private readonly List<string> _pendingMarkers = new(); // morning icons waiting for the farm scene
     private Marlow _marlow;
     private OrderBoard _board;
     private Ada _ada;
@@ -51,6 +53,8 @@ public partial class OnboardingDirector : Node
 
     public GuideArrow Arrow => _arrow;
     public IReadOnlyList<Node3D> MorningMarkers => _morningMarkers;
+    /// <summary>Morning icons waiting to show (they appear when the farm scene is loaded).</summary>
+    public IReadOnlyList<string> PendingMorningMarkers => _pendingMarkers;
     public int PendingBubbles => _pending.Count;
 
     public override void _Ready()
@@ -63,20 +67,14 @@ public partial class OnboardingDirector : Node
         CallDeferred(MethodName.Bind);
     }
 
-    /// <summary>Finds the level's pieces once everything is ready.</summary>
+    /// <summary>Binds to the persistent farm state once, and to the level's pieces on every level change.</summary>
     private void Bind()
     {
         if (_level == null || _ob == null) return;
-        var lvl = _level.GetChildCount() > 0 ? _level.GetChild(0) : null;
-        if (lvl == null) return;
-        _garden = lvl.GetNodeOrNull<FarmGrid>("FrontGarden");
-        _house = lvl.GetNodeOrNull<Building>("House");
-        _marlow = lvl.GetNodeOrNull<Marlow>("Marlow");
-        _board = lvl.GetNodeOrNull<OrderBoard>("OrderBoard");
-        _ada = lvl.FindChild("Ada", true, false) as Ada;
-        _bushes = lvl.GetNodeOrNull("Bushes")?.GetChildren().OfType<BerryBush>().ToList() ?? new List<BerryBush>();
-        _hens = AnimalHouse.For(GetTree(), "hen");
-        _cows = AnimalHouse.For(GetTree(), "cow");
+        _main = GetParent()?.GetParent() as Main;
+        _garden = FarmState.Instance?.Garden;
+        _hens = FarmState.Instance?.Herd("hen");
+        _cows = FarmState.Instance?.Herd("cow");
         var effects = GetNodeOrNull<Node>(EffectsPath);
         _arrow = new GuideArrow { Name = "GuideArrow" };
         effects?.AddChild(_arrow);
@@ -92,7 +90,28 @@ public partial class OnboardingDirector : Node
             _clock.WokeUp += OnWokeUp;
             _clock.StepChanged += OnPhase;
         }
+        if (_main != null) _main.LevelChanged += OnLevelChanged;
+        RefreshLevel();
         Evaluate();
+    }
+
+    private void OnLevelChanged(string path)
+    {
+        RefreshLevel();
+        Evaluate();
+    }
+
+    /// <summary>The current level's pieces (null when Kit is in another scene).</summary>
+    private void RefreshLevel()
+    {
+        var lvl = _level.GetChildCount() > 0 ? _level.GetChild(0) : null;
+        _house = lvl?.GetNodeOrNull<Building>("House");
+        _marlow = lvl?.GetNodeOrNull<Marlow>("Marlow");
+        _board = lvl?.GetNodeOrNull<OrderBoard>("OrderBoard");
+        _ada = lvl?.FindChild("Ada", true, false) as Ada;
+        _bushes = lvl?.GetNodeOrNull("Bushes")?.GetChildren().OfType<BerryBush>().ToList() ?? new List<BerryBush>();
+        _morningMarkers.Clear();
+        foreach (var item in _pendingMarkers) PlaceMorningMarker(item);
     }
 
     public override void _ExitTree()
@@ -101,6 +120,7 @@ public partial class OnboardingDirector : Node
         foreach (var h in new[] { _hens, _cows }.Where(h => h != null && IsInstanceValid(h)))
             h.Collected -= OnCollected;
         if (_clock != null && IsInstanceValid(_clock)) { _clock.WokeUp -= OnWokeUp; _clock.StepChanged -= OnPhase; }
+        if (_main != null && IsInstanceValid(_main)) _main.LevelChanged -= OnLevelChanged;
     }
 
     public override void _Process(double delta)
@@ -140,8 +160,9 @@ public partial class OnboardingDirector : Node
         if (Allowed && !_ob.WasShown(Onboarding.FirstMorning) && (_hens?.Animals.Any(a => a.ProductReady > 0) == true || _cows?.Animals.Any(a => a.ProductReady > 0) == true))
         {
             _ob.MarkShown(Onboarding.FirstMorning);
-            AddMorningMarker(_hens, ItemIds.Egg);
-            AddMorningMarker(_cows, ItemIds.Milk);
+            _pendingMarkers.Add(ItemIds.Egg);
+            _pendingMarkers.Add(ItemIds.Milk);
+            foreach (var item in _pendingMarkers) PlaceMorningMarker(item);
         }
         if (_garden != null)
         {
@@ -168,8 +189,9 @@ public partial class OnboardingDirector : Node
 
     private void OnCollected(string item, int count)
     {
-        foreach (var m in _morningMarkers) m.QueueFree();
+        foreach (var m in _morningMarkers) if (IsInstanceValid(m)) m.QueueFree();
         _morningMarkers.Clear();
+        _pendingMarkers.Clear();
         if (!Allowed || _ob.WasShown(Onboarding.FirstProducts)) return;
         _ob.MarkShown(Onboarding.FirstProducts);
         // "Egg and milk orders appear on the board."
@@ -178,9 +200,11 @@ public partial class OnboardingDirector : Node
             om.AddDailyOrder(item, _clock?.Day ?? 1);
     }
 
-    private void AddMorningMarker(AnimalHouse h, string item)
+    /// <summary>The product icon above the coop (egg) or barn (milk) roof, when the farm scene is loaded.</summary>
+    private void PlaceMorningMarker(string item)
     {
-        if (h == null || h.GetParent() is not Building b) return;
+        var lvl = _level.GetChildCount() > 0 ? _level.GetChild(0) : null;
+        if (lvl?.GetNodeOrNull<Building>(item == ItemIds.Egg ? "Coop" : "Barn") is not Building b) return;
         // A big product icon pinned above the building's roof; freed with the level.
         var m = new Node3D { Name = "MorningMarker", Position = new Vector3(b.Size.X / 2, 0, b.Size.Y / 2) };
         var pin = new WorldPin { WorldOffset = new Vector3(0, Building.WallHeight + 2.0f, 0) };
@@ -237,8 +261,8 @@ public partial class OnboardingDirector : Node
         switch (s)
         {
             case OnboardingStep.Arrival:
-                return _player == null || _house == null || _player.Feet.DistanceTo(_house.DoorOutside) < 1.72f
-                       || _house.Zone?.PlayerInside == true;
+                return _player == null || _main?.CurrentLevelPath == Main.HouseRoomScene
+                       || (_house != null && (_player.Feet.DistanceTo(_house.DoorOutside) < 1.72f || _house.Zone?.PlayerInside == true));
             case OnboardingStep.Garden: return _ob.WeedsPulled >= 3;
             case OnboardingStep.Plant: return _ob.Planted >= 3;
             case OnboardingStep.Water: return _ob.Watered >= 3;
@@ -271,9 +295,14 @@ public partial class OnboardingDirector : Node
         }
     }
 
-    /// <summary>Where the guide arrow points for the current step (null = hidden).</summary>
-    public Vector3? GuideTarget()
+    /// <summary>Where the guide arrow points for the current step, in its own scene (null = hidden or
+    /// that scene is not loaded).</summary>
+    public Vector3? GuideTarget() => GuideTarget(out _);
+
+    /// <summary>The current step's target and the scene it is in (Phase-002 Task 2.2).</summary>
+    public Vector3? GuideTarget(out string scene)
     {
+        scene = Main.FarmScene;
         switch (_ob?.Step)
         {
             case OnboardingStep.Arrival: return _house?.DoorOutside;
@@ -281,16 +310,20 @@ public partial class OnboardingDirector : Node
             case OnboardingStep.Plant: return NearestTile(t => t.Soil == Soil.Tilled && !t.HasCrop);
             case OnboardingStep.Water: return NearestTile(t => t.HasCrop && !t.Watered);
             case OnboardingStep.MeetMarlow:
-            case OnboardingStep.FirstOrder: return _marlow?.GlobalPosition;
+            case OnboardingStep.FirstOrder: return _marlow != null && IsInstanceValid(_marlow) ? _marlow.GlobalPosition : null;
             case OnboardingStep.Forage:
-                var bush = _bushes.Where(b => b.HasBerries).OrderBy(b => _player != null ? b.GlobalPosition.DistanceTo(_player.GlobalPosition) : 0).FirstOrDefault();
+                var bush = _bushes.Where(b => IsInstanceValid(b) && b.HasBerries).OrderBy(b => _player != null ? b.GlobalPosition.DistanceTo(_player.GlobalPosition) : 0).FirstOrDefault();
                 return bush?.GlobalPosition;
-            case OnboardingStep.SecondOrder: return _board?.GlobalPosition;
+            case OnboardingStep.SecondOrder: return _board != null && IsInstanceValid(_board) ? _board.GlobalPosition : null;
             case OnboardingStep.FeedAnimals:
-                var h = new[] { _hens, _cows }.FirstOrDefault(x => x != null && x.Animals.Any(a => !a.FedToday));
-                var slot = h?.Slots.FirstOrDefault(sl => sl.WantsFood);
-                return slot?.GlobalPosition ?? h?.Bin?.GlobalPosition; // the first empty trough slot
-            default: return null;
+                var herd = new[] { _hens, _cows }.FirstOrDefault(x => x != null && x.Animals.Any(a => !a.FedToday));
+                if (herd == null) { scene = null; return null; }
+                scene = herd.Kind == "cow" ? "res://scenes/world/rooms/BarnRoom.tscn" : "res://scenes/world/rooms/CoopRoom.tscn";
+                var view = AnimalHouse.For(GetTree(), herd.Kind);
+                if (view == null || !IsInstanceValid(view)) return null;
+                var slot = view.Slots.FirstOrDefault(sl => sl.WantsFood);
+                return slot?.GlobalPosition ?? view.Bin?.GlobalPosition; // the first empty trough slot
+            default: scene = null; return null; // nothing to point at
         }
     }
 
@@ -303,11 +336,24 @@ public partial class OnboardingDirector : Node
         return best.Tile == null ? null : _garden.CellCenter(best.Cell);
     }
 
+    /// <summary>A target in another scene is reached through a door: from a room, point at its way out;
+    /// from the farm, at the door of the building whose room holds the target.</summary>
+    private Vector3? ThroughDoors(Vector3? target, string scene)
+    {
+        if (scene == null) return null;
+        string here = _main?.CurrentLevelPath ?? Main.FarmScene;
+        if (scene == here) return target;
+        if (_main?.CurrentRoom is Building room) return room.DoorPoint;
+        var lvl = _level.GetChildCount() > 0 ? _level.GetChild(0) : null;
+        var door = lvl?.FindChildren("*", "Node3D", true, false).OfType<Building>().FirstOrDefault(b => b.RoomScene == scene);
+        return door?.DoorOutside;
+    }
+
     private void UpdateGuide()
     {
-        var target = GuideTarget();
+        var target = ThroughDoors(GuideTarget(out string scene), scene);
         if (_arrow != null) _arrow.Point(target);
         NudgeView.Find(GetTree())?.ShowStep(_ob.Step, _ob);
-        _ada?.SetWaving(_ob.Step == OnboardingStep.Arrival);
+        if (_ada != null && IsInstanceValid(_ada)) _ada.SetWaving(_ob.Step == OnboardingStep.Arrival);
     }
 }

@@ -207,6 +207,11 @@ public partial class TestRunner
         await WaitUntil(() => !clock.IsSleeping && !main.GetNode<SleepSequence>("Systems/SleepSequence").IsRunning, 600);
         int cards = om.BoardOrders.Count();
         Check(cards >= 3 && cards <= OrderManager.MaxBoardOffers, $"the next Dawn the board holds up to 5 orders ({cards})");
+        // Kit woke in the house room (Phase-002 Task 2.2): back to the farm, where the board stands.
+        ((Main)main).LoadLevelNow(Main.FarmScene, "Door_House");
+        await Frames(3);
+        boardProp = ((Main)main).Level.GetNodeOrNull<OrderBoard>("OrderBoard");
+        Check(boardProp != null && boardProp.Visible, "back on the farm the board is still up");
         player.GlobalPosition = boardProp.ApproachPoint;
         await Frames(5);
         Check(boardProp.PromptVisible, "board prompt shows when Kit is in front of it");

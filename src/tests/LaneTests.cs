@@ -119,9 +119,10 @@ public partial class TestRunner
         fade.HoldSeconds = 0.05f;
         var marlow = level.GetNodeOrNull<Marlow>("Marlow");
         var shed = level.GetNodeOrNull<Building>("SeedShed");
-        var ledger = level.FindChild("Ledger", true, false) as Ledger;
         var bushes = level.GetNode("Bushes").GetChildren().OfType<BerryBush>().ToList();
-        Check(marlow != null && shed != null && shed.ZoneName == "shed" && ledger?.GetParent() == shed, "lane: Marlow at the seed shed, ledger inside the shed");
+        var bushNames = bushes.Select(b => b.Name.ToString()).ToList();
+        Check(marlow != null && shed != null && shed.ZoneName == "shed" && shed.RoomScene.EndsWith("ShedRoom.tscn") && level.FindChild("Ledger", true, false) == null,
+            "lane: Marlow at the seed shed; the ledger is in the shed's room scene");
         Check(bushes.Count == 5 && bushes.All(b => b.HasBerries), "lane: 5 berry bushes, all full");
         var orders = OrderManager.Instance;
         await Frames(5);
@@ -194,10 +195,12 @@ public partial class TestRunner
         bubble.PressCancel();
         await Frames(2);
 
-        // The ledger inside the shed (clock stopped indoors).
-        player.GlobalPosition = shed.DoorInside;
+        // The ledger inside the shed (clock stopped indoors), Phase-002 Task 2.2: the shed's room scene.
+        var mainNode = (Main)main;
+        mainNode.LoadLevelNow(shed.RoomScene, Building.EntryMarker);
         await Frames(5);
-        Check(clock.IsIndoors && shed.Zone.PlayerInside, "the seed shed stops the clock");
+        var ledger = mainNode.Level.FindChild("Ledger", true, false) as Ledger;
+        Check(clock.IsIndoors && mainNode.CurrentRoom?.Zone.PlayerInside == true && ledger != null, "the seed shed's room stops the clock; the ledger is there");
         player.GlobalPosition = ledger.ApproachPoint;
         await Frames(4);
         await Tap(JoyButton.A);
@@ -208,10 +211,14 @@ public partial class TestRunner
         // Bushes regrow two days after picking.
         clock.BeginSleep(SleepReason.Bed);
         await WaitUntil(() => !clock.IsSleeping && !main.GetNode<SleepSequence>("Systems/SleepSequence").IsRunning, 600);
-        Check(!bushes[0].HasBerries, "picked bushes are bare the next morning");
+        var rec = FarmState.Instance.Bushes;
+        Check(!rec[bushNames[0]].HasBerries, "picked bushes are bare the next morning (their state lives on while the farm scene is not loaded)");
         clock.BeginSleep(SleepReason.Bed);
         await WaitUntil(() => !clock.IsSleeping && !main.GetNode<SleepSequence>("Systems/SleepSequence").IsRunning, 600);
-        Check(bushes.All(b => b.HasBerries), "two days later every bush has berries again");
+        Check(bushNames.All(n => rec[n].HasBerries), "two days later every bush has berries again");
+        mainNode.LoadLevelNow(Main.FarmScene, "Door_House");
+        await Frames(3);
+        Check(mainNode.Level.GetNode("Bushes").GetChildren().OfType<BerryBush>().All(b => b.HasBerries && b.BerriesVisible), "back on the farm the bushes show their berries");
 
         main.QueueFree();
         await Frames(2);

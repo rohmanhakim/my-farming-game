@@ -399,12 +399,16 @@ public partial class TestRunner : Node
     {
         var clock = GameClock.Instance;
         if (clock == null) return;
-        clock.ResetForNewGame();
+        ResetTask14State();
         var main = ResourceLoader.Load<PackedScene>("res://scenes/main/Main.tscn").Instantiate();
         AddChild(main);
         var player = main.GetNode<PlayerController>("World/Entities/Player");
-        var level = main.GetNode("World/Level").GetChild(0);
+        // Phase-002 Task 2.2: the bed is in the house room scene.
+        ((Main)main).LoadLevelNow(Main.HouseRoomScene, World.Building.EntryMarker);
+        await Frames(2);
+        var level = ((Main)main).Level;
         var bed = level.FindChild("Bed", true, false) as Bed;
+        player.GlobalPosition = bed.WakePoint + new Vector3(4.5f, 0, 0.2f); // far side of the room
         var prompt = main.GetNode<SleepPromptView>("HUD/UI/SleepPrompt");
         var fade = main.GetNode<DayTransitionView>("Transition/DayTransition");
         var seq = main.GetNode<SleepSequence>("Systems/SleepSequence");
@@ -453,7 +457,7 @@ public partial class TestRunner : Node
         Check(!clock.IsAsking && !prompt.Visible, "gamepad B closes the question");
 
         // Click the bed from a distance: Kit walks there, then the question opens.
-        player.GlobalPosition = bed.WakePoint + new Vector3(3.1f, 0, 0.3f);
+        player.GlobalPosition = bed.WakePoint + new Vector3(4.5f, 0, 0.2f);
         await Frames(15);
         Vector3 bedTop = bed.GlobalPosition + new Vector3(0, 0.4f, 0);
         Check(player.InteractableAt(ScreenOf(bedTop)) == bed, "a click on the bed finds the bed (camera ray, click layer 8)");
@@ -472,7 +476,8 @@ public partial class TestRunner : Node
         Check(!player.Frozen && !fade.Visible, "Kit can move again and the fade is gone");
 
         // 21:30 bedtime far from home: Kit goes home and sleeps, no penalty.
-        player.GlobalPosition = level.GetNode<Marker3D>("PlayerSpawn").GlobalPosition;
+        ((Main)main).LoadLevelNow(Main.FarmScene, "Door_House");
+        player.GlobalPosition = ((Main)main).Level.GetNode<Marker3D>("PlayerSpawn").GlobalPosition;
         await Frames(5);
         Check(!clock.IsIndoors && clock.IsRunning, "Kit outside the house: the clock runs");
         clock.SetTime(clock.Day, GameClock.PlayableMinutes - 1);
@@ -480,10 +485,13 @@ public partial class TestRunner : Node
         bool slept = await WaitUntil(() => clock.Day == 3 && !clock.IsSleeping && !seq.IsRunning, 900);
         Check(slept && clock.LastSleepReason == SleepReason.Bedtime, "21:30 bedtime starts the next day");
         Check(ended == 2 && started == 2, $"bedtime rollover fires DayEnded/DayStarted once ({ended}/{started})");
-        Check(clock.ShownTime == "04:30" && player.Feet.DistanceTo(bed.WakePoint) < 0.02f && player.Facing == Facing.Down, "Kit wakes at home at 04:30, facing out of bed");
+        var bedNow = ((Main)main).Level.FindChild("Bed", true, false) as Bed;
+        Check(clock.ShownTime == "04:30" && ((Main)main).CurrentLevelPath == Main.HouseRoomScene && bedNow != null
+              && player.Feet.DistanceTo(bedNow.WakePoint) < 0.02f && player.Facing == Facing.Down, "Kit wakes at home (the house room loaded) at 04:30, facing out of bed");
         var rigAfter = main.GetNode<CameraRig>("World/Entities/CameraRig");
         await Frames(2);
-        Check(rigAfter.Focus.DistanceTo(player.Feet) < 0.05f, "camera snapped to Kit after waking");
+        Check(rigAfter.Focus.DistanceTo(player.Feet) < 2.5f && Mathf.IsEqualApprox(rigAfter.Distance, ((Main)main).RoomCameraDistance),
+            "camera snapped to the house room after waking");
 
         clock.DayEnded -= OnEnded;
         clock.DayStarted -= OnStarted;
@@ -625,6 +633,7 @@ public partial class TestRunner : Node
         World.Ledger.Reset();
         FeedStore.Reset();
         Onboarding.Instance?.ResetForNewGame();
+        FarmState.Instance?.ResetForNewGame(); // garden, herds and bushes outlive scenes (Phase-002 Task 2.2)
         GameSettings.Nudges = false; // nudge bubbles only in the onboarding tests
     }
 
