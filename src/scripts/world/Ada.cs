@@ -22,7 +22,7 @@ public partial class Ada : Prop
         PromptSprite = "icon_talk";
         BodySize = new Vector2(36, 20);
         BodyOffset = new Vector2(0, 20);
-        ApproachOffset = new Vector2(56, 20);
+        ApproachOffset = new Vector2(-56, 20);
         Reach = 72f;
     }
 

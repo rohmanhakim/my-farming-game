@@ -201,7 +201,22 @@ public partial class PlayerController : CharacterBody2D
         Vector2 center = target.TileCenterAt(worldPoint);
         Vector2 feet = GlobalPosition + FeetOffset;
         Vector2 d = feet - center;
-        Vector2 side = Mathf.Abs(d.X) > Mathf.Abs(d.Y) ? new Vector2(Mathf.Sign(d.X), 0) : new Vector2(0, d.Y < 0 ? -1 : 1);
+        // Owner playtest 2026-11-21: a tile within reach is worked at once (turn and use the tool);
+        // only a tile further away is walked to first.
+        if (d.Length() <= TileReach)
+        {
+            CancelWalkTo();
+            if (d.LengthSquared() > 1f) Face(FacingFor(-d, Facing));
+            if (ToolsAllowed)
+                target.UseToolAt(ToolBelt.Instance?.Active ?? Tool.Hands, center);
+            return;
+        }
+        // Stand beside the tile on Kit's side; if that spot is blocked (a wall, the fence, an
+        // overgrown field), try the other sides.
+        Vector2 first = Mathf.Abs(d.X) > Mathf.Abs(d.Y) ? new Vector2(Mathf.Sign(d.X), 0) : new Vector2(0, d.Y < 0 ? -1 : 1);
+        Vector2 side = first;
+        foreach (var s in new[] { first, new Vector2(first.Y, first.X), new Vector2(-first.Y, -first.X), -first })
+            if (FeetFreeAt(center + s * 56f)) { side = s; break; }
         Vector2 approach = center + side * 56f - FeetOffset;
         Facing face = FacingFor(-side, Facing);
         WalkTo(approach, () =>
@@ -210,6 +225,22 @@ public partial class PlayerController : CharacterBody2D
             if (ToolsAllowed)
                 target.UseToolAt(ToolBelt.Instance?.Active ?? Tool.Hands, center);
         });
+    }
+
+    /// <summary>How close (feet to tile centre) a clicked tile must be to be worked without walking:
+    /// the tile Kit stands on and the tiles touching it, diagonals included.</summary>
+    public const float TileReach = 96f;
+
+    /// <summary>True when Kit's feet could stand at <paramref name="feetPoint"/> (no solid body there).</summary>
+    public bool FeetFreeAt(Vector2 feetPoint)
+    {
+        var shape = new RectangleShape2D { Size = new Vector2(36, 20) };
+        var q = new PhysicsShapeQueryParameters2D
+        {
+            Shape = shape, Transform = new Transform2D(0, feetPoint), CollideWithBodies = true, CollideWithAreas = false,
+            CollisionMask = CollisionMask, Exclude = new Godot.Collections.Array<Rid> { GetRid() },
+        };
+        return GetWorld2D().DirectSpaceState.IntersectShape(q, 1).Count == 0;
     }
 
     /// <summary>The interactable whose click area is under <paramref name="worldPoint"/>, if any.</summary>

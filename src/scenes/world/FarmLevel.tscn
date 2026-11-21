@@ -137,7 +137,7 @@ position = Vector2(1752, -880)
 position = Vector2(1448, -1060)
 
 [node name="Ada" parent="." instance=ExtResource("15_ada")]
-position = Vector2(1456, 468)
+position = Vector2(1744, 468)
 
 [node name="Cart" type="Sprite2D" parent="."]
 z_index = -1

@@ -36,8 +36,15 @@ public partial class TestRunner
         Check(g.Columns == 8 && g.Rows == 6 && tilled == 3 && weeds == 45, $"front garden 8×6: 3 beds clear, the rest weeds ({tilled}/{weeds})");
 
         var c = new Vector2I(0, 0);
-        Check(g.UseTool(Tool.Hoe, c) == TileAction.Nothing, "hoe on weeds does nothing (pull them first)");
-        Check(g.UseTool(Tool.SeedBag, c) == TileAction.Nothing, "seeds can't go into weeds");
+        Check(g.UseTool(Tool.SeedBag, c) == TileAction.Nothing && g.LastHint == "tool_hoe", "seeds can't go into weeds; a puff shows the hoe instead");
+        var hoed = new Vector2I(1, 0);
+        int cleared = 0;
+        void OnUsed(int action, Vector2I cell) { if ((TileAction)action == TileAction.Cleared) cleared++; }
+        g.ToolUsed += OnUsed;
+        Check(g.UseTool(Tool.Hoe, hoed) == TileAction.Tilled && g.Get(hoed).Soil == Soil.Tilled && cleared == 1,
+            "the hoe digs weedy ground in one stroke (weeds turned under, counted as pulled) — owner playtest 2026-11-21");
+        g.ToolUsed -= OnUsed;
+        Check(g.UseTool(Tool.Hoe, hoed) == TileAction.Nothing && g.LastHint == "tool_seed_bag", "hoeing tilled soil again: a puff shows the seed bag");
         Check(g.UseTool(Tool.Hands, c) == TileAction.Cleared && g.Get(c).Soil == Soil.Clear, "hands pull weeds");
         Check(g.UseTool(Tool.SeedBag, c) == TileAction.Nothing, "seeds can't go into untilled ground");
         Check(g.UseTool(Tool.Hoe, c) == TileAction.Tilled && g.Get(c).Soil == Soil.Tilled, "hoe tills cleared ground");
@@ -202,6 +209,29 @@ public partial class TestRunner
         vp.PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = false, Position = screen, GlobalPosition = screen }, true);
         bool clicked = await WaitUntil(() => grid.Get(target).Soil == Soil.Clear, 300);
         Check(clicked, "clicking a weed tile walks Kit there and pulls the weeds");
+
+        // Owner playtest 2026-11-21: a tile within reach is dug at once; a far one is walked to, then dug.
+        belt.Select(Tool.Hoe);
+        await Frames(15);
+        Vector2 here = player.GlobalPosition;
+        var near = grid.WorldToCell(player.GlobalPosition + PlayerController.FeetOffset + new Vector2(0, -64));
+        Check(grid.InBounds(near) && grid.Get(near).Soil == Soil.Weeds, "a weed tile right beside Kit");
+        screen = vp.GetCanvasTransform() * grid.CellCenter(near);
+        vp.PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = true, Position = screen, GlobalPosition = screen }, true);
+        vp.PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = false, Position = screen, GlobalPosition = screen }, true);
+        await Frames(2);
+        Check(grid.Get(near).Soil == Soil.Tilled && !player.HasMoveTarget && player.GlobalPosition.DistanceTo(here) < 2 && player.Facing == Facing.Up,
+            "clicking a tile within reach with the hoe digs it at once (Kit turns to it, no walking)");
+        var far = new Vector2I(0, 0);
+        screen = vp.GetCanvasTransform() * grid.CellCenter(far);
+        vp.PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = true, Position = screen, GlobalPosition = screen }, true);
+        vp.PushInput(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = false, Position = screen, GlobalPosition = screen }, true);
+        Check(player.HasMoveTarget, "clicking a far tile walks Kit there first");
+        Check(await WaitUntil(() => grid.Get(far).Soil == Soil.Tilled, 400), "…and digs it on arrival (the corner by the field edge too)");
+        bool adaClear = true;
+        foreach (var (tileCell, _) in grid.AllTiles())
+            adaClear &= player.InteractableAt(grid.CellCenter(tileCell)) == null;
+        Check(adaClear, "no interactable (Ada) sits over the garden, so clicks and A always reach the tiles");
 
         // The night grows the watered carrot (DayEnded hook).
         clock.BeginSleep(SleepReason.Bed);

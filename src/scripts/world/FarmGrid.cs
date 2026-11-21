@@ -158,6 +158,13 @@ public partial class FarmGrid : Node2D, IToolTarget
                     t.Soil = Soil.Tilled;
                     done = TileAction.Tilled;
                     break;
+                case Tool.Hoe when t.Soil == Soil.Weeds:
+                    // Owner playtest 2026-11-21: the hoe digs weedy ground too — it turns the weeds
+                    // under and tills in one stroke (counts as a weed pulled for the guided start).
+                    t.Soil = Soil.Tilled;
+                    EmitSignal(SignalName.ToolUsed, (int)TileAction.Cleared, cell);
+                    done = TileAction.Tilled;
+                    break;
                 case Tool.SeedBag when t.Soil == Soil.Tilled && !t.HasCrop:
                     done = Plant(t);
                     break;
@@ -174,6 +181,8 @@ public partial class FarmGrid : Node2D, IToolTarget
             EmitSignal(SignalName.ToolUsed, (int)done, cell);
             QueueRedraw();
         }
+        else
+            ShowHint(cell, HintFor(t)); // a soft puff and the tool this tile needs (hint ladder step 1)
         return done;
     }
 
@@ -242,6 +251,35 @@ public partial class FarmGrid : Node2D, IToolTarget
         QueueRedraw();
     }
 
+    // ---- Wrong-tool feedback -----------------------------------------------------------------
+    /// <summary>Seconds the "try this tool" puff stays on a tile.</summary>
+    public const float HintSeconds = 0.9f;
+    private Vector2I _hintCell;
+    private string _hintSprite;
+    private float _hintLeft;
+
+    /// <summary>The tool picture shown last after a tool did nothing ("" = none; tests).</summary>
+    public string LastHint { get; private set; } = "";
+
+    /// <summary>Which tool a tile needs next (null = nothing to do here today).</summary>
+    public static string HintFor(CropTile t)
+    {
+        if (t.Soil != Soil.Tilled) return "tool_hoe";
+        if (!t.HasCrop) return "tool_seed_bag";
+        if (!t.Watered) return "tool_watering_can";
+        return null;
+    }
+
+    private void ShowHint(Vector2I cell, string sprite)
+    {
+        LastHint = sprite ?? "";
+        if (sprite == null) return;
+        _hintCell = cell;
+        _hintSprite = sprite;
+        _hintLeft = HintSeconds;
+        QueueRedraw();
+    }
+
     // ---- Drawing --------------------------------------------------------------------------
     public static string SoilSprite(CropTile t) => t.Soil switch
     {
@@ -273,7 +311,8 @@ public partial class FarmGrid : Node2D, IToolTarget
             QueueRedraw();
         }
         _sparkle += (float)delta;
-        if (_waterHints || AnyReady) QueueRedraw();
+        if (_hintLeft > 0) _hintLeft -= (float)delta;
+        if (_waterHints || AnyReady || _hintLeft > -0.1f) QueueRedraw();
     }
 
     public bool AnyReady
@@ -314,6 +353,14 @@ public partial class FarmGrid : Node2D, IToolTarget
                 DrawTextureRect(can, new Rect2(c + new Vector2(-14, -48 + Mathf.Sin(_sparkle * 4) * 3), new Vector2(28, 28)), false);
         }
         DrawRect(new Rect2(0, 0, Columns * TileSize, Rows * TileSize), new Color(0.35f, 0.25f, 0.15f), false, 3f);
+        if (_hintLeft > 0 && _hintSprite != null)
+        {
+            float a = Mathf.Clamp(_hintLeft / HintSeconds * 1.5f, 0, 1);
+            var hc = new Vector2((_hintCell.X + 0.5f) * TileSize, (_hintCell.Y + 0.5f) * TileSize);
+            DrawCircle(hc + new Vector2(-12, 6), 10, new Color(1, 1, 1, 0.5f * a));
+            DrawCircle(hc + new Vector2(10, 2), 8, new Color(1, 1, 1, 0.4f * a));
+            DrawTextureRect(SpriteLibrary.Get(_hintSprite), new Rect2(hc + new Vector2(-18, -60), new Vector2(36, 36)), false, new Color(1, 1, 1, a));
+        }
         if (_highlight is Vector2I h)
             DrawRect(new Rect2(h.X * TileSize + 2, h.Y * TileSize + 2, TileSize - 4, TileSize - 4), new Color(1, 1, 1, 0.9f), false, 3f);
     }
