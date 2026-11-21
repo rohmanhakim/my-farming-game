@@ -1,7 +1,7 @@
 # Phase-001 — First Playable (Vertical Slice)
 
-> **Status:** In progress — Tasks 1.1–1.4 and 1.10 done; Tasks 1.5–1.9 and 1.11–1.12 built in 2D, pending human playtest; Task 1.13 software part done, playtest pending; **3D migration (Tasks 1.14–1.20, owner decision 2026-11-21): Tasks 1.14–1.18 built (the slice now runs in 3D; 1.15–1.18 pending human playtest)** — the playtest runs on the 3D build (2026-11-21)  
-> **Version:** 0.47  
+> **Status:** In progress — Tasks 1.1–1.4 and 1.10 done; Tasks 1.5–1.9 and 1.11–1.12 built in 2D, pending human playtest; Task 1.13 software part done, playtest pending; **3D migration (Tasks 1.14–1.20, owner decision 2026-11-21): Tasks 1.14–1.19 built (the slice now runs in 3D; 1.15–1.19 pending human playtest)** — the playtest runs on the 3D build (2026-11-21)  
+> **Version:** 0.48  
 > **Last updated:** 2026-11-21  
 > **Milestone:** 1 — First playable  
 > **Purpose:** Break Milestone 1 down into session tasks. Each task produces one scoped, playtested artifact that can be created and validated in a single session with AI assistance.
@@ -740,12 +740,11 @@ The owner switched the game from 2D three-quarter top-down to **3D with a fixed,
 **Dependencies:** Task 1.18.
 
 **Notes & learnings:**
-- **Outcome / status:** _TBD_
-- **What worked well:** _TBD_
-- **Problems & fixes:** _TBD_
-- **Deviations from scope or plan:** _TBD_
-- **Handoff to Task 1.20:** _TBD_
-
+- **Outcome / status:** 2026-11-21 — **Done — pending human playtest.** The 3D light landed with the cut-over (Task 1.15 pass, commit 8a1197d) because the 2D `CanvasModulate` tint had to go with the 2D world; this task checked and tuned it. Software tests: PASS — `tools/verify.sh` (749/749), incl. the ported Task 1.11 checks: per played phase the sun colour and brightness, the ambient colour and the sky reach that phase's values; the sun climbs to midday (−60°) and sinks towards dusk (−12°); every phase, night and small hours included, is at least half as bright as midday (`DayNightView.BrightnessOf`); the house, shed and cottage windows glow at dusk and stop by day; still exactly one light in the world. Windowed look check on the M1 (temporary capture scene, deleted): midday bright and neutral, 16:30 warm with long shadows, 19:30 dusk dim and purple but every crop, tool, prompt and the guide arrow readable. · Human playtest: **PENDING** (night is dim but readable; morning and evening feel warm).
+- **What worked well:** One table (`DayNightView.LightFor(phase)`: tint, sun energy, sun height, ambient, sky, window glow) blended with a tween, so the 2D colours (`TintFor`) carried over unchanged and the tests read the same table. Windows glow by emission (a material), not by lights — no extra light cost (budget §16).
+- **Problems & fixes:** (1) The first night values (sun 0.45, ambient 0.55) were only 38 % of midday — below the "night ≥ 50 % bright" rule → sun 0.6, ambient 0.8 at night and small hours (≥ 50 %). (2) A look-check screenshot taken 40 frames after a phase change caught the light mid-blend (1.5 s fade) and looked like day; wait for `DayNightView.Settled` (tests) or ≥ 1.5 s (captures).
+- **Deviations from scope or plan:** (a) `DayNightView` keeps its name and file (`scripts/ui/`) but is now a plain `Node` in `World/Effects/DayNight` with `SunPath` / `EnvironmentPath`; no separate `Sun.tscn` / `DayNight3D.cs`. (b) Shadows: one directional shadow, 2 splits, 22 m (the handheld profile's 1 split / 20 m is set by the Task 1.20 check, not by a setting in game yet). (c) The HUD and pinned UI are not tinted at night (as the 2D HUD wasn't).
+- **Handoff to Task 1.20:** `DayNightView`: `LightFor(phase)`, `TintFor(phase)`, `BrightnessOf(light)`, `MinBrightness`, `Current`, `Target`, `TargetTint`, `Settled`, `WindowGroup`. Measure frame time at midday (longest shadows aren't the worst case: the shadow distance is fixed).
 ---
 
 ### Task 1.20 — Cut-over to 3D, Save Migration & Performance Check
@@ -868,3 +867,4 @@ Phase-002 (planned — docs/PHASE.md §3): the shipping box with seasonal and de
 - **0.45 — 2026-11-21:** **Task 1.14 built — pending human playtest.** Notes & learnings filled: `Main3D.tscn` beside the 2D game, `ModelLibrary`/`NamedModel` with primitive placeholders, capsule Kit with screen-relative movement and a 4-way grid front, the diagonal `CameraRig` with F9–F12 presets, test groups; 754/754 checks; ≈ 120 fps, 64 draw calls, ≈ 18.9k triangles windowed on the M1. Ground rule 4's tie wording corrected to the built rule (otherwise the north / south one).
 - **0.46 — 2026-11-21:** **Task 1.14 owner follow-up:** camera picked (tilt 45°, turn 45°, south-east, perspective) and made the default; new player action `camera_switch` (right stick flick / Q) swaps corners with a glide; number keys 1–4 mirror the F9–F12 debug presets; `Main3D` asks for window focus. Notes updated (problems 4–5, deviation i).
 - **0.47 — 2026-11-21:** **Tasks 1.15–1.18 built in one pass — pending human playtest.** The world is 3D: farm level and buildings with roof/wall fades and the occluder fade, the garden as MultiMesh tiles, props/NPCs with pinned prompts, hens and cow; the cut-over to 3D and the v1 → v2 save migration moved forward from Task 1.20 (choices for review: cut-over now, doors kept facing north). Notes filled; 749/749 checks.
+- **0.48 — 2026-11-21:** **Task 1.19 done — pending human playtest.** The 3D day/night light (built in the 1.15 pass) checked and tuned: night and small hours raised to ≥ 50 % of midday; windows glow at dusk; Notes filled.
