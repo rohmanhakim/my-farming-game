@@ -74,9 +74,11 @@ The [Game Design Document](./docs/GDD.md) is the **single source of truth** for 
 - [x] Repository scaffolding (Phase-001 Task 1.1, 2026-11-19) — run checks with `tools/verify.sh`
 - [x] First playable prototype — built 2026-11-21 (Phase-001 Tasks 1.1–1.12), playtest pending
 - [x] **Move the slice to 3D** (owner decision 2026-11-21) — Phase-001 Tasks 1.14–1.20 built 2026-11-21 (playtests pending)
-- [ ] First playtest (on the 3D build)
+- [x] Owner's first playtest of the 3D build (2026-11-21) → feeding/action fix (troughs, tool in hand, puffs)
+- [ ] Playtest with children (Task 1.13)
+- [x] **Phase-002 plan approved** (2026-11-21) — `docs/Phase-002.md`, Task 2.1 in progress
 
-The whole Phase-001 slice is built (Tasks 1.1–1.12): Kit walks with keyboard, any gamepad or click-to-move; a day clock with sleep and a 21:30 bedtime; tool belt, bag and wallet; the farm with an indoor clock stop; clearing, planting, watering and day-based growth with gentle neglect; the lane, Mr. Marlow, berries and the first two orders; the order board with daily and repeat orders; the seed shop and phone feed orders; hens and a cow with eggs, milk and the loss card; a versioned auto-save; a pause menu with settings; and the guided start with Ada. Tasks 1.5–1.9 and 1.11–1.13 still need the owner's playtest (`docs/playtest-001.md`). The current milestone is **Phase-001, the first playable vertical slice** (`docs/Phase-001.md`). The slice was built in 2D; the owner has switched the game to **3D with a fixed angled top-down camera** (2026-11-21), and Tasks 1.14–1.20 move it over with primitive placeholder meshes before the playtest.
+The whole Phase-001 slice is built (Tasks 1.1–1.12): Kit walks with keyboard, any gamepad or click-to-move; a day clock with sleep and a 21:30 bedtime; tool belt, bag and wallet; the farm with an indoor clock stop; clearing, planting, watering and day-based growth with gentle neglect; the lane, Mr. Marlow, berries and the first two orders; the order board with daily and repeat orders; the seed shop and phone feed orders; hens and a cow with eggs, milk and the loss card; a versioned auto-save; a pause menu with settings; and the guided start with Ada. Tasks 1.5–1.9 and 1.11–1.13 still need the owner's playtest (`docs/playtest-001.md`). The current milestone is **Phase-002, economy depth** (`docs/Phase-002.md`); Phase-001, the first playable vertical slice, is built and closed (`docs/Phase-001.md`). The slice was built in 2D; the owner has switched the game to **3D with a fixed angled top-down camera** (2026-11-21), and Tasks 1.14–1.20 move it over with primitive placeholder meshes before the playtest.
 
 ## Roadmap
 

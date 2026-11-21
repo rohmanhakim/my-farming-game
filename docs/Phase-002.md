@@ -1,7 +1,7 @@
 # Phase-002 — Economy Depth (Box, House Orders, Real Rooms)
 
-> **Status:** Planning draft — **for owner approval** (written 2026-11-21 on the owner's request; no task started)
-> **Version:** 0.1
+> **Status:** **Approved by the owner 2026-11-21** — Task 2.1 done; Task 2.2 next
+> **Version:** 0.4
 > **Last updated:** 2026-11-21
 > **Milestone:** 2 — Economy depth
 > **Purpose:** Break Milestone 2 down into session tasks. Each task produces one scoped, playtested artifact that can be created and validated in a single session with AI assistance. Same task shape and rules as Phase-001 (AGENTS.md §3–§4).
@@ -21,7 +21,7 @@
 | Neighbours' places | Bakery (after Kit's first eggs), allotments (after the first crop order), general store (after five delivered orders) open in **T1** | progression.md §5, places.md §2.1 |
 | Finding orders | **Players spot the door signs themselves**; the noticeboard gives no order hints | owner, places.md |
 | Marlow's board | Becomes the **village noticeboard** (help wanted, festivals, projects — no orders) | GDD §4 |
-| Orders list | On-screen **Orders button** next to the bag (`open_orders`, Back/Select proposed) | controls.md §2 |
+| Orders list | On-screen **Orders button** next to the bag; gamepad **Back/Select** (owner 2026-11-21) | controls.md §2 |
 | **Indoors** | **Real rooms you walk into** (owner 2026-11-21; closes GDD open question 16): house, coop, barn, seed shed and the neighbours' places | owner, this plan |
 | Bedtime | 21:30 forced bedtime, 04:30 wake-up — unchanged | GDD §4 |
 | Rain | ≈ 1 morning in 5 in Spring/Autumn; rain waters every outdoor crop for the day | events.md, GDD §4 |
@@ -75,12 +75,11 @@ Tasks are ordered by dependency. After each task the game runs and the new artif
 **Dependencies:** Phase-001 Tasks 1.1–1.20.
 
 **Notes & learnings:**
-- **Outcome / status:** _TBD_
-- **What worked well:** _TBD_
-- **Problems & fixes:** _TBD_
-- **Deviations from scope or plan:** _TBD_
-- **Handoff to Task 2.2:** _TBD_
-
+- **Outcome / status:** 2026-11-21 — **Done** (Human: none required). Docs only; `tools/verify.sh` unchanged and green (768/768 from the last code change, no code touched here). Phase-001 closed for Phase-002 with the child playtest and the Windows frame-rate check still open (owner moved on after playing the 3D build themselves and getting the trough/action fix).
+- **What worked well:** Reading the project chat's earlier answers before asking: the owner had already approved most Phase-001 guesses, so only the doc write-back was needed.
+- **Problems & fixes:** (1) **Re-asking settled questions annoys the owner** — check the docs *and* the project chat first; the Phase-001 guesses (any tool harvests, ripe crops never dry, phone packs, seed choice by packet) had been accepted earlier. (2) progression.md §3 "Where the valley opens" still put the bakery and general store at T2 although the owner opened them in T1 on 2026-11-21 → fixed. (3) project-structure.md §4 still described the 2D tree → rewritten for 3D.
+- **Deviations from scope or plan:** The child playtest was not run before closing Phase-001 (owner's choice); its Task 1.13 status stays pending. Owner decisions written back: shipping box at 18:00 and real rooms (GDD v0.48, economy, mechanics, places, PHASE), trough slots (animals, items, buildings, onboarding), any tool harvests + ripe crops never dry (crops.md v0.12), phone fixed packs and seed packets kept as built, evening hint stays at 16:30, `open_orders` on Back/Select (controls, project-structure), sheep for Task 2.10, rooms entered by walking into the doorway.
+- **Handoff to Task 2.2:** Start from `Main.cs`'s `ApplyLevelMarkers` (spawn + camera limits) and implement `load_level` there; level-local state that must survive swaps today lives in level nodes (`FarmGrid` tiles, `AnimalHouse` animals/feed, `BerryBush` picks) and is saved by `SaveBinder` — move it to autoload-backed state or per-level save data before freeing a level. Buildings' indoor fade (`IndoorZone`, `Building.SetKitInside`) is replaced by door props + room levels; keep `OccluderFade` behaviour (`Building._Process`). Schema is v2; Task 2.2 adds v3 (current level + position).
 ---
 
 ### Task 2.2 — Real Rooms (Interior Scenes)
@@ -102,7 +101,7 @@ Tasks are ordered by dependency. After each task the game runs and the new artif
 - Frame budget held in rooms and outside
 
 **Team Preparation:**
-- Owner: confirm rooms enter by walking into the doorway (proposed) or by pressing A at the door
+- Owner decided: rooms are entered by walking into the doorway
 
 **Tests:**
 - **Software:** port the indoor, sleep, feeding and shop in-game checks to rooms; level-swap checks (state kept, one `LevelChanged`, Kit at the right marker, camera snapped); save/load in each room; v2 → v3 migration
@@ -273,7 +272,7 @@ Tasks are ordered by dependency. After each task the game runs and the new artif
 - Opens and closes with pad, keyboard and mouse; counts update live; cancelling works
 
 **Team Preparation:**
-- Owner: confirm Back/Select for `open_orders`
+- Owner decided: `open_orders` on Back/Select
 
 **Tests:**
 - **Software:** open/close on every input, counts from all three stores, cancel, clock held
@@ -364,16 +363,16 @@ Tasks are ordered by dependency. After each task the game runs and the new artif
 
 **Artifact:** The first new species with its own care and product.
 
-**Scope (owner picks one before the task):**
-- **Sheep** (recommended): bought at the seed shed, lives in the old barn's free stalls (trough slot, hay), brushed when fluffy for better wool; wool sells and fills orders (animals.md §2)
-- **Beehive**: a hive placed near flowers (Sun Sprouts), no feeding; honey; leaves after 3 days without flowers in a warm season (empty-hive picture, animals.md §3)
+**Scope (owner picked sheep, 2026-11-21):**
+- **Sheep**: bought at the seed shed, lives in the old barn's free stalls (trough slot, hay), brushed when fluffy for better wool; wool sells and fills orders (animals.md §2)
+- ~~Beehive~~ (not chosen; stays for a later phase): a hive placed near flowers (Sun Sprouts), no feeding; honey; leaves after 3 days without flowers in a warm season (empty-hive picture, animals.md §3)
 - Same loss rule and kind cards as hens and the cow; orders include the new product once it can be made
 
 **Acceptance criteria:**
 - Buy, care, product, loss rule and orders work like the existing animals
 
 **Team Preparation:**
-- **Owner: pick sheep or beehive**
+- Owner decided: sheep
 
 **Tests:**
 - **Software:** the chosen animal's rules (product timing, brushing or flower check, loss), shop purchase, orders, save/load
@@ -503,10 +502,13 @@ Tasks are ordered by dependency. After each task the game runs and the new artif
 
 ## 4. Open questions for the owner (do not block planning)
 
-1. **Sheep or beehive** for Task 2.10 (sheep recommended: it uses the barn's free stalls and the trough).
-2. **Entering rooms:** walk into the doorway (recommended) or press A at the door?
-3. **`open_orders` on Back/Select** — confirm.
+1. ~~Sheep or beehive~~ — **decided 2026-11-21 (owner): sheep.**
+2. ~~Entering rooms~~ — **decided 2026-11-21 (owner): just walk into the doorway.**
+3. ~~`open_orders` on Back/Select~~ — **decided 2026-11-21 (owner): yes.**
 
 ## 5. Change log
 
 - **0.1 — 2026-11-21:** First draft for owner approval (owner asked to start Phase 2). Built from PHASE.md §3, the Phase-001 §4.1 carry-forward list and the owner's answers of 2026-11-21: shipping box picked up at a fixed 18:00, players spot door signs themselves (no board hints), real rooms instead of fading roofs, bedtime unchanged, rain and clearing the back fields both in Phase 2. 13 tasks: close Phase-001, real rooms, Bramblewick Green first ring, shipping box and pricing, storage chest, house-visit orders with the freshness bonus, Orders list, rain, clearing Field A, a new animal, sticker book, smoothness and HUD budget, playtest.
+- **0.2 — 2026-11-21:** Owner picks: **sheep** for Task 2.10; rooms are entered by **walking into the doorway**.
+- **0.3 — 2026-11-21:** **Plan approved by the owner** ("ok can"); `open_orders` on Back/Select decided; Task 2.1 started.
+- **0.4 — 2026-11-21:** **Task 2.1 done:** Phase-001 closed, docs synced, owner decisions written back; Notes filled.

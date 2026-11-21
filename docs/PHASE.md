@@ -1,7 +1,7 @@
 # PHASE.md — Development Roadmap: Prototype to Production
 
 > **Status:** Planning draft — **re-planned for the direction reset 2026-11-19**
-> **Version:** 0.10  
+> **Version:** 0.11  
 > **Last updated:** 2026-11-21  
 > **Purpose:** High-level overview of development from the first playable prototype to a final, production-ready game. Each phase document expands this roadmap — `docs/Phase-001.md` exists today; Phase-002 through Release are **planned** documents to be written when their phase is scheduled.
 
@@ -23,8 +23,8 @@ A **3D, realistic but kid-friendly, educational** farming game for **PC**, seen 
 
 | Phase | Document | Goal | Platform |
 |-------|----------|------|----------|
-| **Phase 001** | `docs/Phase-001.md` | **First playable (vertical slice):** day clock, clearing, day-based growth and neglect, foraging, first orders, order board, seed shop, coop + hens with the loss rule, versioned save, short onboarding — built in 2D (Tasks 1.1–1.13), then **moved to 3D** with placeholder primitive meshes (Tasks 1.14–1.20, owner 2026-11-21) | PC |
-| **Phase 002** | `docs/Phase-002.md` (**draft for owner approval**, 2026-11-21) | Economy depth: **real rooms** for buildings (owner 2026-11-21), Bramblewick Green's first ring, **shipping box** (take items back out until the fixed **18:00** pickup, owner 2026-11-21), seasonal/demand pricing, the order freshness bonus over the box (+30/+20/+10 %, then the order is gone), the storage chest, **house-visit orders** (sign at the door, talk to take the order, send it through the box; every order incl. Marlow's; the baker's, allotment neighbour's and shopkeeper's places open in T1 when they arrive), Marlow's board → village noticeboard, the on-screen Orders list, rain, clearing the back fields (scythe/hammer/axe), sheep or beehive, stickers | PC |
+| **Phase 001** ✅ built, closed 2026-11-21 (child playtest still open) | `docs/Phase-001.md` | **First playable (vertical slice):** day clock, clearing, day-based growth and neglect, foraging, first orders, order board, seed shop, coop + hens with the loss rule, versioned save, short onboarding — built in 2D (Tasks 1.1–1.13), then **moved to 3D** with placeholder primitive meshes (Tasks 1.14–1.20, owner 2026-11-21) | PC |
+| **Phase 002** — in progress | `docs/Phase-002.md` (approved by the owner 2026-11-21) | Economy depth: **real rooms** for buildings (owner 2026-11-21), Bramblewick Green's first ring, **shipping box** (take items back out until the fixed **18:00** pickup, owner 2026-11-21), seasonal/demand pricing, the order freshness bonus over the box (+30/+20/+10 %, then the order is gone), the storage chest, **house-visit orders** (sign at the door, talk to take the order, send it through the box; every order incl. Marlow's; the baker's, allotment neighbour's and shopkeeper's places open in T1 when they arrive), Marlow's board → village noticeboard, the on-screen Orders list, rain, clearing the back fields (scythe/hammer/axe), sheep or beehive, stickers | PC |
 | **Phase 003** | `docs/Phase-003.md` (planned) | Farm growth: barn (cow, sheep), **fish pond**, kitchen processing (jam, bread, cheese, pie), workshop & blueprints, more neighbours, **local co-op with dynamic split screen** | PC |
 | **Phase 004** | `docs/Phase-004.md` (planned) | **Automation**: sprinklers, auto-feeders, pond auto-feeder, helpers, silo, greenhouse; fishing at the brook, travelling merchant, optional Butterfly Garden request | PC |
 | **Phase 005** | `docs/Phase-005.md` (planned) | Long-term goals: festivals & contests, quality products, farm charm & decorations, collections, hydroponics, farm shop, lane restoration, showcase, mastery | PC |
@@ -77,3 +77,4 @@ Each `docs/Phase-00N.md` breaks its milestone into **session tasks**. One task =
 - **0.8 — 2026-11-21:** **Selling and house-visit orders (owner decisions 2026-11-21).** Phase 002 builds the **shipping box** first and **house-visit orders** as neighbours' places open, plus the order **freshness bonus** over the box (orders can expire; guardrail reworded: nothing lost besides the missed money); **Kit's market stall deferred** (phase not set).
 - **0.9 — 2026-11-21:** **Switch to 3D (owner decision 2026-11-21):** vision and §6 art updated (fixed angled top-down 3D camera, cartoony colourful look, primitive placeholders, handheld performance budget); Phase 001 row and §4 add the 3D migration (Tasks 1.14–1.20) before the playtest.
 - **0.10 — 2026-11-21:** Phase 002 row: `docs/Phase-002.md` drafted for owner approval; shipping box picked up at 18:00; real rooms and the village's first ring added (owner 2026-11-21).
+- **0.11 — 2026-11-21:** Phase 001 closed (built; child playtest still open); Phase 002 approved and in progress (Task 2.1 doc sync).

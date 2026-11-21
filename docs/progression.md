@@ -1,7 +1,7 @@
 # Progression: Farm Growth, Automation, and Long-Term Goals
 
 > **Status:** Design draft — **restructured 2026-11-19**
-> **Version:** 0.13
+> **Version:** 0.14
 > **Last updated:** 2026-11-21
 > **Purpose:** How the farm grows from a tangled plot to a full, automated farm (*Harvest Moon*-style), what limits it at each point, and what there is to chase once it runs well. Replaces the old parent-controlled layers and five-stage age map. Everything after the core farm loop is **optional**.
 
@@ -48,7 +48,7 @@ Tiers are reached by **what the farm is**, not by time played or age. They gate 
 | **T4 — Automated farm** | First sprinkler or auto-feeder placed | **Land** begins to bite | Sprinklers (all grades), auto-feeders, pond auto-feeder, greenhouse, garden sprites | Bulk orders, catering |
 | **T5 — Full land** | All five back fields cleared | **Land only** | Hydroponics, farm shop, lane restoration, endgame goals (§6) | Standing orders, festival catering |
 
-**Where the valley opens** (places.md §2): **T1** the farm, the lane, the village green, the brook's near bank · **T2** Hazel Wood (Kit's first axe clears the fallen log), bakery, general store, village hall, the villagers' cottages (farmhands) · **T3** footbridge → far bank and Mill Pond (restoration step 1), smithy, friend's cottage · **T4** watermill (step 2), clinic, carpenter's yard, library · **T5** stile → Lantern Hill and the Old Quarry (step 3), inn.
+**Where the valley opens** (places.md §2): **T1** the farm, the lane, the village green, the brook's near bank, and the bakery, allotments and general store as their neighbours arrive (owner 2026-11-21) · **T2** Hazel Wood (Kit's first axe clears the fallen log), village hall, the villagers' cottages (farmhands) · **T3** footbridge → far bank and Mill Pond (restoration step 1), smithy, friend's cottage · **T4** watermill (step 2), clinic, carpenter's yard, library · **T5** stile → Lantern Hill and the Old Quarry (step 3), inn.
 
 **Tools across tiers:** watering can (start) → bigger can, hoe, scythe (T2) → brush, fishing rod (T2) → upgraded tools (T3+, at the village smithy). Tool upgrades cost money and materials; old tools never disappear.
 
@@ -198,3 +198,4 @@ Missing a mystery means waiting for it to return next year.
 - **0.11 — 2026-11-20:** **Windmill / water pump removed (owner decision 2026-11-20):** dropped from T4 unlocks; flour comes from the restored watermill (§6.4); the rare weathervane now sits on the barn.
 - **0.12 — 2026-11-21:** **Order variety (owner decision 2026-11-21):** T1 orders vary in size and include occasional baskets, daily standing orders and quick bonuses; the baker, allotment neighbour and shopkeeper post on the board from T1 (§7).
 - **0.13 — 2026-11-21:** **Selling and house-visit orders (owner decisions 2026-11-21).** T2 no longer opens the market stall (deferred to a later phase); it opens **house-visit orders** as neighbours' places open (orders come from signs at open houses' doors and are sent through the shipping box; the baker's, allotment neighbour's and shopkeeper's places open in T1 when they arrive). §5 gains the house-visit stage (freshness bonus, orders simply gone after three nights) and notes the shipping box for unordered goods.
+- **0.14 — 2026-11-21:** "Where the valley opens" synced with the owner decision of 2026-11-21: the bakery, allotments and general store open in **T1** as their neighbours arrive (was T2 for the bakery and store) — Phase-002 Task 2.1 doc sync.

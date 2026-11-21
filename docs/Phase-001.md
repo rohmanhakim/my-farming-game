@@ -1,7 +1,7 @@
 # Phase-001 — First Playable (Vertical Slice)
 
-> **Status:** In progress — Tasks 1.1–1.4 and 1.10 done; Tasks 1.5–1.9 and 1.11–1.12 built in 2D, pending human playtest; Task 1.13 software part done, playtest pending; **3D migration (Tasks 1.14–1.20, owner decision 2026-11-21): Tasks 1.14–1.20 done (the slice runs in 3D; 1.15–1.20 pending human playtest)** — the playtest runs on the 3D build (2026-11-21)  
-> **Version:** 0.50  
+> **Status:** **Closed 2026-11-21 — the owner moved on to Phase-002** (retrospective and doc sync in Phase-002 Task 2.1). All 20 tasks built; the slice runs in 3D. Still open: a playtest with children (Task 1.13 — the owner has played it and the feeding/action fix is in) and a Windows frame-rate check. Tasks 1.5–1.9, 1.11–1.20 stay *pending human playtest* until children have played  
+> **Version:** 0.51  
 > **Last updated:** 2026-11-21  
 > **Milestone:** 1 — First playable  
 > **Purpose:** Break Milestone 1 down into session tasks. Each task produces one scoped, playtested artifact that can be created and validated in a single session with AI assistance.
@@ -789,8 +789,8 @@ The owner switched the game from 2D three-quarter top-down to **3D with a fixed,
 - [x] The slice runs in **3D** with the fixed angled top-down camera; no 2D world code is left — Tasks 1.15–1.20, 2026-11-21
 - [x] Performance budget met on the PC and the handheld profile (project-structure.md §16, handheld draw-call line revised to 250) — `tools/perf_check.sh` on the M1, 2026-11-21; a console devkit check comes with console work
 - [ ] A new player (6+) completes the guided start and the first two orders with little or no explanation
-- [ ] Crops grow by day, yellow at 2 dry days, and are lost at 3; hens and the cow are lost at 3 unfed days with the gentle card
-- [ ] Starting hens and cow work (feed, eggs, milk, loss rule); buying seeds at the shed and ordering feed by phone work at economy.md prices
+- [x] Crops grow by day, yellow at 2 dry days, and are lost at 3; hens and the cow are lost at 3 unfed days with the gentle card
+- [x] Starting hens and cow work (feed, eggs, milk, loss rule); buying seeds at the shed and ordering feed by phone work at economy.md prices
 - [x] The clock stops indoors (house, coop, barn, seed shed) and in every menu — software tests 2026-11-21 (still worth confirming in the playtest)
 - [x] Game saves and loads correctly (versioned) — Task 1.10 tests, 2026-11-21
 - [ ] Stable frame rate on target PC hardware — ≈ 120 fps on the owner's M1 MacBook Air (2026-11-21); a Windows PC check is still needed
@@ -869,3 +869,4 @@ Phase-002 (planned — docs/PHASE.md §3): the shipping box with seasonal and de
 - **0.48 — 2026-11-21:** **Task 1.19 done — pending human playtest.** The 3D day/night light (built in the 1.15 pass) checked and tuned: night and small hours raised to ≥ 50 % of midday; windows glow at dusk; Notes filled.
 - **0.49 — 2026-11-21:** **Task 1.20 done — pending human playtest.** Windowed performance check (`tools/perf_check.sh`): 242 draw calls, ≈ 67k triangles, ≈ 88 fps on the M1 for both profiles; placeholders and static scenery baked into vertex-coloured meshes; handheld draw-call line revised 150 → 250 (HUD ≈ 84); shader-compile hitch logged. Exit criteria updated; the 3D migration is complete (playtests pending).
 - **0.50 — 2026-11-21:** **Task 1.13 playtest fix (owner's first look at the 3D build):** trough slots, one per animal (owner pick), and action feedback (tool in hand, use motion, puffs, darker wet soil); playtest findings recorded.
+- **0.51 — 2026-11-21:** **Phase closed for Phase-002 (owner moved on; Phase-002 Task 2.1 retrospective).** Status header updated; exit criteria for the crop and animal rules ticked (automated checks in 3D + the owner's own play); the child playtest and the Windows frame-rate check stay open.

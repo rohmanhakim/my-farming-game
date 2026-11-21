@@ -1,7 +1,7 @@
 # Controls
 
 > **Status:** Brainstorming draft
-> **Version:** 0.16
+> **Version:** 0.17
 > **Last updated:** 2026-11-21
 > **Purpose:** Control schemes (gamepad and keyboard + mouse) for this kind of game, adjusted to the scope of the game described in the GDD. **PC first, consoles (Switch, PlayStation) later; no touch/mobile.** Tables use XBOX button names, but any modern controller works by position (see §2 *Any controller*). All mappings are tentative (see GDD open question Q5) and subject to playtesting.
 
@@ -29,7 +29,7 @@
 | Open collectathon inventory | Y | Opens the collectathon slot grid. Picture-based, no reading required. (The Collection Book lives in the pause menu.) **Phase-001 (Task 1.4):** Y opens the simple bag (auto-stacked items + wallet); Y or B closes it. |
 | Open care menu | Right Stick (RS) click, or on-screen care icon | Dedicated button — the D-pad stays reserved for movement. Shows care meters for every animal and the fish pond, and which need attention. Picture icons. |
 | Pause menu / calendar & settings | Start | Opens pause: day/night indicator, season calendar, Collection Book, sticker book, settings (volume, read-aloud, nudges, break reminder), save, quit. |
-| Open / close the Orders list *(owner 2026-11-21, Phase-002)* | Back (Select) — View on Xbox, Create/touchpad on PlayStation, − on Switch *(proposed)* | Same as the on-screen Orders button on the HUD: picture cards of every taken order (GDD §4). B or Back closes it. |
+| Open / close the Orders list *(owner 2026-11-21, Phase-002)* | Back (Select) — View on Xbox, Create on PlayStation, − on Switch *(decided 2026-11-21, owner)* | Same as the on-screen Orders button on the HUD: picture cards of every taken order (GDD §4). B or Back closes it. |
 | Help tooltip / inspect | *(needs a new button — proposed: hold LT)* | Shows a contextual hint or spoken/visual cue for the highlighted object. **Deferred — no Phase-001 task builds it** (the hint ladder in characters.md §8 covers help for now). Back/Select moved to the Orders list (2026-11-21). |
 | Switch camera corner *(owner 2026-11-21, 3D)* | Right Stick flick left or right | Swaps the diagonal camera between the south-east and south-west corners with a short glide; one switch per flick; not while a menu is open. Same position on every pad. |
 | Reserved (unassigned in prototype) | LT / RT | Held for future tools or camera options if needed. |
@@ -137,3 +137,4 @@ Two ways to do everything, available at the same time, exactly as DST does it: *
 - **0.14 — 2026-11-21:** **3D switch (owner decision 2026-11-21, GDD v0.45):** movement is camera-relative under the fixed 3D camera, Kit's model turns 8-way while the tool front stays 4-way; mouse clicks pick through a camera ray (objects first, then the ground); still no camera control of any kind. No binding changes.
 - **0.15 — 2026-11-21:** **Diagonal camera (owner decision 2026-11-21):** movement stays screen-relative; the 4-way tool front follows the grid (diagonal on screen) with a tie rule for straight screen directions. No binding changes.
 - **0.16 — 2026-11-21:** **Camera corner switch (owner 2026-11-21):** right stick flick left/right (any pad) or Q swaps the 3D camera between the south-east and south-west corners; free rotation and zoom stay excluded.
+- **0.17 — 2026-11-21:** Orders list on Back/Select decided (owner 2026-11-21).

@@ -1,7 +1,7 @@
 # Crops
 
 > **Status:** Brainstorming draft
-> **Version:** 0.11
+> **Version:** 0.12
 > **Last updated:** 2026-11-21
 > **Purpose:** Crops in the game, their seasons, growth days, uses, and the watering/neglect rule. All names are tentative; every element is a proposal pending playtesting. Prices live in [economy.md](./economy.md).
 
@@ -14,6 +14,7 @@ Crops are the heart of the farm economy: they fill orders, sell at the market, f
 - **Day-based growth, like *Harvest Moon*** (owner decision 2026-11-19): every crop takes **at least one in-game day**; most take several.
 - **Crops need water every day.** **2 dry days in a row → yellow; 3 dry days in a row → gone** (challenge-layers.md §2). Watering a yellow crop recovers it.
 - **Season-aware:** each crop sprouts only in its season(s); out-of-season seeds don't sprout (no loss). The **greenhouse** and **hydroponics** grow anything year-round.
+- **Harvesting (owner-approved 2026-11-21, as built in Phase-001):** any tool picks a ripe crop (no need to switch to hands), and a **ripe crop never dries out** — it waits for Kit even without water.
 - **Harvested goods don't spoil.**
 - **No fixed bed limit** — any cleared tile can be tilled; money, clearing, and finally land are the limits (buildings.md §2).
 
@@ -118,3 +119,4 @@ Golden pumpkin, giant variants, merchant-only seeds — progression.md §6.2.
 - **0.9 — 2026-11-20:** Bedtime reference updated to 21:30 (GDD v0.31).
 - **0.10 — 2026-11-20:** **Windmill / water pump removed (owner decision 2026-11-20):** flour is milled at the village watermill.
 - **0.11 — 2026-11-21:** Sell row: shipping box first, market stall deferred (owner decision 2026-11-21); neighbour orders pay more than the box.
+- **0.12 — 2026-11-21:** Written back from Phase-001 (owner-approved 2026-11-21): any tool harvests a ripe crop; ripe crops never dry out.
