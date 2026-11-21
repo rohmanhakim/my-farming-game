@@ -1,7 +1,7 @@
 # Items
 
 > **Status:** Brainstorming draft — **updated for the direction reset 2026-11-19**
-> **Version:** 0.10
+> **Version:** 0.11
 > **Last updated:** 2026-11-21
 > **Purpose:** Items the player can obtain: tools, produce, processed goods, building and automation items, decorations, and rare items. All names are tentative; every element is a proposal pending playtesting.
 
@@ -20,7 +20,7 @@ Items are readable at a glance and stored in picture-based, auto-stacking slots 
 | **Hands** | Action | Plant, harvest, talk, give, place. |
 | **Watering can** | Tool | Water beds (required for growth). |
 | **Seed bag** | Tool | Plants seeds. Starts with **one carrot seed packet (9 seeds)** (owner 2026-11-20), enough for Marlow's 5-carrot order. |
-| **Feed scoop** | Tool | Scoops feed from a coop or barn feed bin to feed the animals. Kit has it from the start (the starting hens and cow need feeding on Day 1). |
+| **Feed scoop** | Tool | Fills one trough slot per animal in the coop or barn, taking a portion from the building's feed bin (owner 2026-11-21). Kit has it from the start (the starting hens and cow need feeding on Day 1). |
 | **Purse** | Wallet | 500 coins (economy.md). |
 | **Old family hoe** | Tool | Till cleared ground. |
 
@@ -120,3 +120,4 @@ Rare seeds, rare breeds, legendary fish, contest ribbons and trophies, fossils/s
 - **0.8 — 2026-11-20:** **Windmill / water pump removed (owner decision 2026-11-20):** flour is milled at the village watermill.
 - **0.9 — 2026-11-20:** Starting loadout synced with Phase-001 v0.28: "seed box" renamed **seed bag** with one carrot packet (9 seeds, owner decision; was "two or three seeds"), and the **feed scoop** added (the starting animals need it from Day 1).
 - **0.10 — 2026-11-21:** Order board becomes the **village noticeboard** from Phase-002 (owner 2026-11-21): orders come from signs at neighbours' doors; help-wanted cards stay on the noticeboard.
+- **0.11 — 2026-11-21:** Feed scoop fills one trough slot per animal (owner decision 2026-11-21).

@@ -1,7 +1,7 @@
 # Playtest 001 — First Playable (Phase-001 Task 1.13)
 
 > **Status:** Ready to run on the **3D build** (Tasks 1.14–1.20 done 2026-11-21) — no sessions held yet
-> **Version:** 0.4
+> **Version:** 0.5
 > **Last updated:** 2026-11-21
 > **Purpose:** The checklist for playtesting the Phase-001 vertical slice: how to set up a run, what to try for each task (1.5–1.12), and the observation sheet with the GDD §14 questions. Findings go back into `Phase-001.md` Task 1.13 *Playtest findings*.
 
@@ -25,7 +25,7 @@
 | **1.6 Lane, Marlow, berries** | Walk through the gate up the lane. Talk to Marlow (A): say Not now (B), then Yes. Pick 3 bushes. Give him the berries (45 coins). Open his ledger in the shed. | Does a 6-year-old understand the bubble (berries ×3 → coins 45) before accepting? Is "No hurry" kind? |
 | **1.7 Order board** | After the berries, use the board by the shed (top of the lane, left of the shed door). Take an order, cancel one, hand one in. Sleep and look again: sizes vary, the same item can be wanted twice, some cards are baskets (2–3 items), some show "+N today" (quick bonus). Collect eggs → the baker writes; deliver a carrot order → the allotment neighbour; 5 orders → the shopkeeper. After 4 orders to one neighbour, a daily order (calendar icon) appears: subscribe, deliver once a day (HUD chip gets ✓), stop it any time. | Are the cards readable at a glance? Are baskets, daily orders and the "today" bonus understood? |
 | **1.8 Shop & phone** | Before 07:30 use the shed counter (closed sign). At 08:00+ buy carrot and flower seeds. Try a hen (coop full). Spend down to a few coins and try again. In the bag, press the flower packet, then plant. Use the phone at home before and after 18:00 and check the bins next morning. | Are prices and "not enough coins" understandable? Is the closed sign clear? |
-| **1.9 Hens & cow** | Choose the feed scoop, use the coop bin, then the cow. Next morning collect eggs and milk. Skip feeding for 1, 2 and 3 days. | Are the hearts and need icons noticed (they show once Kit is inside)? Is the loss card gentle, not frightening? Is the warning noticed? |
+| **1.9 Hens & cow** | Choose the feed scoop (Kit now holds it) and fill each trough slot in the coop, then the cow's slot in the barn (grain / hay shows in the slot). Next morning collect eggs and milk. Skip feeding for 1, 2 and 3 days. | Are the hearts and need icons noticed (they show once Kit is inside)? Is the loss card gentle, not frightening? Is the warning noticed? |
 | **1.10 Save/load** | Play a day, quit (pause → Quit), start again. | Everything back as it was? |
 | **1.11 Pause & light** | Start / Esc / the pause button. Save, Settings (volume, Hints, Read aloud, Break reminder), Quit. Watch the light from dawn to dusk (F3). | Is dusk dim but readable? Are the menu icons understandable? |
 | **1.12 Guided start** | From a new game, follow the hint chip and the arrow: door → weeds → plant → water → Marlow → berries → hand over → board → feed hens and cow → goal. Turn Hints off in Settings and check no hints appear. | Does a 6–8-year-old finish in ≈ 5 minutes without help? Is anything confusing or blocking? |
@@ -57,3 +57,4 @@ Anything that crashed, froze or looked wrong: ______
 - **0.2 — 2026-11-21:** Order board row updated for the order variety (sizes, baskets, quick bonus, daily orders, new neighbours) and the 45-coin first order (no premium).
 - **0.3 — 2026-11-21:** Status: the playtest now runs on the 3D build after Task 1.20 (owner switched to 3D); Task 1.20 updates the rows to the 3D build.
 - **0.4 — 2026-11-21:** Updated for the 3D build (Tasks 1.14–1.20): click the window for focus, camera corner switch, preset keys, roof/wall fade and occluder questions, animal icons show inside.
+- **0.5 — 2026-11-21:** Feeding row updated for the trough slots; actions now show Kit's tool, a use motion and a puff.

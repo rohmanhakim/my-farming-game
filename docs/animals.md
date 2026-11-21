@@ -1,7 +1,7 @@
 # Animals & Fish Pond
 
 > **Status:** Design draft — **updated for the direction reset 2026-11-19**
-> **Version:** 0.7
+> **Version:** 0.8
 > **Last updated:** 2026-11-20
 > **Purpose:** Farm animals, the fish pond, and the lane's wild creatures. Care is real responsibility: well-cared animals give better products; neglected animals are gone. Kid-friendly presentation — no sickness, no vet, no on-screen death.
 
@@ -42,6 +42,7 @@ Animals need **food once per in-game day** (the same daily rhythm as watering cr
 | **2** | Icon flashes, heart ⅓; Ada or Marlow mentions it | Warning |
 | **3** | — | **The animal is gone.** Message card: gravestone picture + "*Bramble the hen is gone. Hens need food every day.*" plus a tip ("An auto-feeder can help"). |
 
+- **How feeding works (owner decision 2026-11-21, after the first playtest):** each coop and barn has a **trough with one slot per animal**. With the feed scoop Kit fills a slot (or uses the animal itself): one portion leaves the building's feed bin, the food shows in the slot and that animal is fed for the day. The food stays visible until the night, when the animals eat it, so an **empty slot in the morning means "fill me"**. The bin only stores feed and shows how much is left (it no longer feeds everyone with one press).
 - **Feeding resets the count to 0.** Brushing (sheep) and flowers nearby (bees) raise quality but are not survival needs.
 - **Beehives** need no feeding; with no flowers within 5 tiles for 3 days in a warm season the colony leaves (empty-hive picture instead of a gravestone). Asleep in Winter: no loss.
 - **Fish:** one feed per day feeds the whole pond; 3 unfed days → the pond's fish are gone (one card). Overfeeding is not punished.
@@ -142,3 +143,4 @@ Butterflies and fireflies are always released — never kept or sold.
 - **0.5 — 2026-11-19:** **Owner decisions:** animal numbers capped by **housing capacity** (5-stall barn = 5 animals; coop 5/10 hens; pond 10/25 fish). Meter-drain-by-mode replaced by the single-mode **daily feeding rule: 3 unfed days in a row → gone** (warnings on days 1–2), matching the crops' 3-dry-days rule. Pond capacity, output, and land footprint added; economy.md linked.
 - **0.6 — 2026-11-20:** §6 Fish Pond rewritten for **water tiles** (buildings.md §3.1): free natural pond in Field E, ponds grow tile by tile and merge, ≈ 2 fish per 3 wide tiles, one feed per connected pond; fish can also come from Mill Pond (places.md v0.10).
 - **0.7 — 2026-11-20:** Pond auto-feeder has its own 30-day hopper filled by phone orders (owner decision: machines are set-and-forget).
+- **0.8 — 2026-11-21:** **Trough slots (owner decision 2026-11-21, playtest):** one slot per animal in the coop and barn, filled one by one with the feed scoop; food shows until the night; the bin only stores feed.

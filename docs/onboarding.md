@@ -1,7 +1,7 @@
 # Onboarding — The Short Start
 
 > **Status:** Proposal — new document
-> **Version:** 0.5
+> **Version:** 0.6
 > **Last updated:** 2026-11-21
 > **Purpose:** How a new player (ages 6+) learns the game. Owner direction (2026-11-19): **short** — the guided part should take about **5 minutes**, not 30. After that, the game teaches through gentle, one-time nudges while the player plays freely.
 
@@ -27,7 +27,7 @@
 | 6 | Forage | Pick berries from bushes on the lane (marked with a sparkle) | Forage | 60 s |
 | 7 | First order | Hand the berries to Marlow → coins pop into the wallet; the **order board** appears | Money | 30 s |
 | 8 | Second order | Marlow pins "5 carrots" to the board and points at Kit's garden | Orders match what you grow | 20 s |
-| 9 | Feed the animals | Back home, Ada shows the 5 hens and the cow: scoop feed into the coop and barn | Animals need food every day | 40 s |
+| 9 | Feed the animals | Back home, Ada shows the 5 hens and the cow: fill each trough slot with the feed scoop (the arrow points at the next empty slot) | Animals need food every day | 40 s |
 | 10 | Free play | A goal icon shows "Feed lasts 7 days 🌾 — earn coins for more" | Saving for a goal | — |
 
 **Total ≈ 5 minutes.** From here the player is free.
@@ -76,3 +76,4 @@ Playtest with 6–8-year-olds: can they finish the guided start without adult he
 - **0.3 — 2026-11-19:** Starting hens and cow: new step 9 (feed the animals), goal is earning coins before the week of feed runs out; nudges for low feed and first eggs/milk.
 - **0.4 — 2026-11-19:** Low-feed nudge points to phoning the feed seller (number left by the parents) and its 18:00 cut-off.
 - **0.5 — 2026-11-21:** Note that the guided start's board steps change in Phase-002 (orders from door signs, shipping box, Orders button); table kept as built for Phase-001.
+- **0.6 — 2026-11-21:** Step 9 uses the trough slots (owner decision 2026-11-21).

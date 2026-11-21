@@ -182,6 +182,7 @@ public partial class FarmGrid : Node3D, IToolTarget
         }
         if (done != TileAction.Nothing)
         {
+            ShowActionPuff(done, cell);
             EmitSignal(SignalName.TileChanged, cell);
             EmitSignal(SignalName.ToolUsed, (int)done, cell);
             QueueRedraw();
@@ -190,6 +191,25 @@ public partial class FarmGrid : Node3D, IToolTarget
             ShowHint(cell, HintFor(t)); // a soft puff and the tool this tile needs (hint ladder step 1)
         return done;
     }
+
+    /// <summary>What a tool did, made visible (Task 1.13 playtest fix): dirt, water, seeds or a golden pop.</summary>
+    private void ShowActionPuff(TileAction done, Vector2I cell)
+    {
+        if (!IsInsideTree()) return;
+        Color c = done switch
+        {
+            TileAction.Watered => Puff.Water,
+            TileAction.Planted => Puff.Seed,
+            TileAction.Harvested => Puff.Gold,
+            TileAction.Cleared => Puff.Leaf,
+            _ => Puff.Dirt,
+        };
+        Puff.At(this, CellCenter(cell), c, done == TileAction.Harvested ? 20 : 14);
+        LastPuff = done;
+    }
+
+    /// <summary>The last action that showed a puff (tests).</summary>
+    public TileAction LastPuff { get; private set; } = TileAction.Nothing;
 
     private static TileAction Plant(CropTile t)
     {
@@ -379,7 +399,7 @@ public partial class FarmGrid : Node3D, IToolTarget
             StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered, MouseFilter = Control.MouseFilterEnum.Ignore,
         };
         _hintPin = new WorldPin { Name = "Hint", Shown = false };
-        _hintPin.AddChild(new Puff());
+        _hintPin.AddChild(new HintPuff());
         _hintPin.AddChild(_hintIcon);
         AddChild(_hintPin);
     }
@@ -490,9 +510,9 @@ public partial class FarmGrid : Node3D, IToolTarget
     /// <summary>True while the wrong-tool puff shows (tests).</summary>
     public bool HintShowing => _hintPin != null && _hintPin.Shown;
 
-    private partial class Puff : Control
+    private partial class HintPuff : Control
     {
-        public Puff() { MouseFilter = MouseFilterEnum.Ignore; }
+        public HintPuff() { MouseFilter = MouseFilterEnum.Ignore; }
         public override void _Draw()
         {
             DrawCircle(new Vector2(-12, 6), 10, new Color(1, 1, 1, 0.5f));

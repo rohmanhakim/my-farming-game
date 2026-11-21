@@ -7,8 +7,8 @@ namespace MyFarmingGame.World;
 
 /// <summary>
 /// A building's feed bin (Task 1.8): shows how many portions are left (a number on the bin).
-/// Using it shows the feed icon and the count in the picture bubble. Task 1.9 adds feeding the
-/// animals with the feed scoop from here.
+/// Using it shows the feed icon, the count and how many animals are still hungry. Animals are fed
+/// at the trough slots (<see cref="TroughSlot"/>, owner 2026-11-21), each taking a portion from here.
 /// </summary>
 public partial class FeedBin : Prop
 {
@@ -65,12 +65,11 @@ public partial class FeedBin : Prop
     public override void Interact(Node3D player)
     {
         if (House == null) return;
-        if (ToolBelt.Instance?.Active == Tool.FeedScoop && House.Hungry > 0)
-        {
-            if (House.FeedAll() == 0) ShowEmpty(GetTree(), House);
-            return;
-        }
-        PictureBubbleView.Find(GetTree())?.Show("", "", new[] { new BubbleChip(ItemIds.SpriteName(House.FeedItem), "×" + House.Feed) },
+        // Owner 2026-11-21: animals are fed one by one at the trough, so the bin shows what is left
+        // and where the food goes.
+        bool scoop = ToolBelt.Instance?.Active == Tool.FeedScoop;
+        PictureBubbleView.Find(GetTree())?.Show("", scoop && House.Hungry > 0 ? "Fill a trough slot for each animal." : "",
+            new[] { new BubbleChip(ItemIds.SpriteName(House.FeedItem), "×" + House.Feed), new BubbleChip("tool_feed_scoop", House.Hungry > 0 ? House.Hungry + " hungry" : "✓") },
             new[] { BubbleButton.Close() });
     }
 

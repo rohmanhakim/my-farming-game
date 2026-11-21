@@ -101,9 +101,11 @@ public partial class TestRunner
         Check(await Until(() => ob.Step == OnboardingStep.FirstOrder), "3 handfuls of berries → step 7 (hand them over)");
         om.Deliver(OrderManager.FirstOrderId);
         Check(await Until(() => ob.Step == OnboardingStep.FeedAnimals), "order paid, board up → steps 7–8 done, step 9 (feed the animals)");
-        Check(director.Arrow.Target == hens.Bin.GlobalPosition && chip.Text.Contains("Feed"), "the arrow points at the coop's feed bin");
+        Check(director.Arrow.Target == hens.Slots[0].GlobalPosition && chip.Text.Contains("Feed"), "the arrow points at the coop's first empty trough slot");
+        hens.FeedOne(hens.Animals[0]);
+        Check(director.GuideTarget() == hens.Slots[1].GlobalPosition, "…then at the next empty slot");
         hens.FeedAll();
-        Check(director.GuideTarget() == cows.Bin.GlobalPosition, "…then at the barn's bin");
+        Check(director.GuideTarget() == cows.Slots[0].GlobalPosition, "…then at the cow's slot in the barn");
         cows.FeedAll();
         Check(await Until(() => ob.Step == OnboardingStep.FreePlay) && chip.Text.Contains("Feed lasts 7 days"), "all fed → step 10: the free-play goal 'Feed lasts 7 days — earn coins for more'");
         Check(!director.Arrow.Visible, "no arrow in free play");

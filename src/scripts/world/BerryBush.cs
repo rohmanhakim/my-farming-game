@@ -90,6 +90,7 @@ public partial class BerryBush : Prop
         HasBerries = false;
         PickedOnDay = GameClock.Instance?.Day ?? 1;
         Inventory.Instance?.Add(ItemIds.Berries);
+        Puff.At(this, GlobalPosition + new Vector3(0, 0.5f, 0), new Color("#3b4fd0"), 12, 1.8f);
         Refresh();
         EmitSignal(SignalName.Picked);
     }

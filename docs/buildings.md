@@ -1,7 +1,7 @@
 # Buildings & Farm Structures
 
 > **Status:** Brainstorming draft
-> **Version:** 0.11
+> **Version:** 0.12
 > **Last updated:** 2026-11-21
 > **Purpose:** Everything Kit can build on the farm — cost, footprint, capacity, when it unlocks, what it teaches, and how it fits the land. Sized against the farm map below so the land is a real, countable limit. Costs come from [economy.md](./economy.md) (≈ half the real Australian price). All numbers are proposals pending playtesting.
 
@@ -93,6 +93,7 @@ If a player wants three barns, a second greenhouse, and a big orchard, something
 ## 5. Placement rules
 
 - Every building except the kitchen and market stall uses farm tiles (the shipping box takes 1 path tile by the door), and can only be placed on **cleared** land.
+- **Troughs (owner 2026-11-21):** every coop and barn has a trough with one slot per animal (capacity), filled with the feed scoop from the bin.
 - **Feed bins:** every coop, barn, and pond has a built-in feed bin; home-ordered feed is delivered into it at Dawn (economy.md §2). Once a **silo** (coop/barn feed) or a **pond auto-feeder** (fish food) exists, orders go there instead and the auto-feeders draw from it, so Kit only tops up about once a month.
 - **Starting buildings (owner decision 2026-11-19):** the old coop (with 5 hens) and old barn (with 1 cow) are free and usable as they are; they can be upgraded (big coop / big barn) or moved like any other building.
 - Buildings can be **moved** for free and **sold back** for half what Kit paid.
@@ -130,3 +131,4 @@ If a player wants three barns, a second greenhouse, and a big orchard, something
 - **0.9 — 2026-11-20:** **Machines simplified (owner decision 2026-11-20):** sprinklers need **no water source** (hidden pipes, priced in: 400 / 1,200 / 2,500); water tiles and the windmill no longer feed sprinklers (windmill mills flour and powers hydroponics). Silo and pond auto-feeder hopper are filled straight from phone orders and harvests; auto-feeders last weeks, with a low-feed warning.
 - **0.10 — 2026-11-20:** **Windmill / water pump removed (owner decision 2026-11-20):** sprinklers no longer need it, flour comes from the restored village watermill (T4), and hydroponics needs no power. §4 example: 9 more crop tiles (~439).
 - **0.11 — 2026-11-21:** **Selling (owner decision 2026-11-21):** added the **shipping box** (free family box by the front door, proposed; built in Phase-002); the **market stall is deferred** to a later phase and, if it returns, works as "set prices and leave it".
+- **0.12 — 2026-11-21:** Coops and barns get a trough with one slot per animal (owner decision 2026-11-21).

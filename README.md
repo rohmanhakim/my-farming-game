@@ -133,6 +133,7 @@ Full plan: [`docs/PHASE.md`](./docs/PHASE.md).
 | [Onboarding (`docs/onboarding.md`)](./docs/onboarding.md) | 🆕 The ≈ 5-minute guided start and Day 1–7 nudges. |
 | [Roadmap (`docs/PHASE.md`)](./docs/PHASE.md) | Phases from prototype to release; guardrails. |
 | [Phase-001 (`docs/Phase-001.md`)](./docs/Phase-001.md) | Current phase task list. |
+| [Phase-002 (`docs/Phase-002.md`)](./docs/Phase-002.md) | 🆕 Draft plan for owner approval: real rooms, the village's first ring, shipping box (18:00 pickup), house-visit orders with the freshness bonus, storage chest, Orders list, rain, clearing Field A, a new animal, stickers. |
 | [Playtest 001 (`docs/playtest-001.md`)](./docs/playtest-001.md) | 🆕 How to run the first-playable playtest: setup, what to try per task, GDD §14 observation sheet. |
 | [Project Structure (`docs/project-structure.md`)](./docs/project-structure.md) | Technical contract: folders, scene architecture (Main/Level ownership, layers, process modes), naming, InputMap/autoload registries, version control, verification commands. |
 

@@ -53,9 +53,10 @@ public sealed class AnimalData
 /// chicken feed, 1 egg each) or the old barn (stalls for 5, 1 cow, hay, 4 milk cans).
 ///
 /// * Feed bin: <see cref="Feed"/> portions (starts with ≈ 7 days), filled by phone deliveries at
-///   Dawn (<see cref="FeedStore"/>). With the feed scoop, using the bin feeds every hungry animal
-///   one portion (<see cref="FeedAll"/>); using one animal feeds just that one (<see cref="FeedOne"/>).
-///   Once per day each.
+///   Dawn (<see cref="FeedStore"/>). A <b>trough with one slot per animal</b> (<see cref="Slots"/>,
+///   owner 2026-11-21): with the feed scoop, filling a slot (or using its animal) takes one portion
+///   from the bin and feeds that animal (<see cref="FeedOne"/>); the food shows until the night.
+///   <see cref="FeedAll"/> stays for rules and tests. Once per day each.
 /// * Night (<see cref="GameClock.DayEnded"/> → <see cref="EndDay"/>): a fed animal resets its count
 ///   and has its product ready next morning; an unfed one counts a day; at 3 unfed days in a row it
 ///   is gone (<see cref="AnimalLost"/>; the UI shows the gentle card). Nothing else is removed.
@@ -79,6 +80,10 @@ public partial class AnimalHouse : Node3D
     [Export] public Vector3 BinOffset { get; set; } = Vector3.Zero;
     /// <summary>Where each animal stands (one per capacity slot), relative to this node (metres).</summary>
     [Export] public Vector3[] Spots { get; set; } = { new(0.625f, 0, 1.1f), new(1.5f, 0, 1.1f), new(2.35f, 0, 1.1f), new(0.625f, 0, 2.1f), new(1.5f, 0, 2.1f) };
+    /// <summary>Where each trough slot stands (one per capacity slot), relative to this node (metres).</summary>
+    [Export] public Vector3[] SlotSpots { get; set; } = System.Array.Empty<Vector3>();
+    /// <summary>Which way Kit stands from a slot to fill it (on the ground; into the room).</summary>
+    [Export] public Vector3 SlotApproach { get; set; } = new(0, 0, 0.6f);
     /// <summary>When false the house ignores the clock (rule tests call <see cref="EndDay"/>).</summary>
     [Export] public bool ListenToClock { get; set; } = true;
 
@@ -99,6 +104,9 @@ public partial class AnimalHouse : Node3D
     public IReadOnlyList<AnimalData> Animals => _animals;
     public bool HasRoom => _animals.Count < Capacity;
     public FeedBin Bin { get; private set; }
+    private readonly List<TroughSlot> _slots = new();
+    /// <summary>The trough slots; slot i feeds animal i.</summary>
+    public IReadOnlyList<TroughSlot> Slots => _slots;
     private readonly List<FarmAnimal> _entities = new();
     public IReadOnlyList<FarmAnimal> Entities => _entities;
 
@@ -123,6 +131,12 @@ public partial class AnimalHouse : Node3D
         if (!_started) ResetForNewGame();
         Bin = new FeedBin { Name = "FeedBin", Position = BinOffset, House = this };
         AddChild(Bin);
+        for (int i = 0; SlotSpots != null && i < SlotSpots.Length; i++)
+        {
+            var slot = new TroughSlot { Name = "Slot" + (i + 1), House = this, Index = i, Position = SlotSpots[i], ApproachOffset = SlotApproach };
+            AddChild(slot);
+            _slots.Add(slot);
+        }
         RebuildEntities();
         if (!ListenToClock) return;
         _clock = GameClock.Instance;
@@ -244,6 +258,8 @@ public partial class AnimalHouse : Node3D
         int n = a.ProductReady;
         a.ProductReady = 0;
         Inventory.Instance?.Add(ProductItem, n);
+        var who = _entities.FirstOrDefault(e => e.Data == a);
+        if (who != null) Puff.At(who, who.GlobalPosition + new Vector3(0, 0.3f, 0), Puff.Gold, 16);
         OrderManager.Instance?.NoteProduced(ProductItem);
         EmitSignal(SignalName.Collected, ProductItem, n);
         EmitSignal(SignalName.AnimalsChanged);

@@ -145,6 +145,70 @@ public partial class PlayerController : CharacterBody3D
         if (Model != null) // start looking the way Kit faces
             Model.Rotation = new Vector3(0, YawFor(FacingVector(Facing)), 0);
         AddToGroup(Group);
+        // The active tool in Kit's hand (Task 1.13 playtest fix, owner 2026-11-21).
+        Hand = new NamedModel { Name = "Hand", Position = HandRest };
+        Model?.AddChild(Hand);
+        if (ToolBelt.Instance != null)
+        {
+            ToolBelt.Instance.ActiveToolChanged += OnToolChanged;
+            OnToolChanged((int)ToolBelt.Instance.Active);
+        }
+    }
+
+    public override void _ExitTree()
+    {
+        if (ToolBelt.Instance != null && IsInstanceValid(ToolBelt.Instance))
+            ToolBelt.Instance.ActiveToolChanged -= OnToolChanged;
+    }
+
+    /// <summary>Where the held tool sits on Kit's model (right side, waist high, a little forward).</summary>
+    public static readonly Vector3 HandRest = new(0.36f, 0.85f, -0.12f);
+
+    /// <summary>The tool Kit holds (a <see cref="NamedModel"/> "tool_…"; hidden for bare hands).</summary>
+    public NamedModel Hand { get; private set; }
+
+    /// <summary>Model name of the tool in Kit's hand ("" = hands).</summary>
+    public static string HandModel(Tool t) => t switch
+    {
+        Tool.Hoe => "tool_hoe",
+        Tool.WateringCan => "tool_watering_can",
+        Tool.SeedBag => "tool_seed_bag",
+        Tool.FeedScoop => "tool_feed_scoop",
+        _ => "",
+    };
+
+    private void OnToolChanged(int tool)
+    {
+        if (Hand == null) return;
+        string m = HandModel((Tool)tool);
+        Hand.Visible = m != "";
+        if (m != "" && Hand.ModelName != m) Hand.ModelName = m;
+    }
+
+    private Tween _useTween;
+
+    /// <summary>Times Kit has played the "use" motion (tests).</summary>
+    public int UseCount { get; private set; }
+
+    /// <summary>Kit leans in and swings the tool (≈ 0.3 s) — shows that A / Space / a click did something.</summary>
+    public void PlayUse()
+    {
+        UseCount++;
+        var look = Model?.Model;
+        if (look == null || !IsInsideTree()) return;
+        _useTween?.Kill();
+        look.RotationDegrees = Vector3.Zero;
+        if (Hand != null) { Hand.RotationDegrees = Vector3.Zero; Hand.Position = HandRest; }
+        _useTween = CreateTween().SetParallel();
+        _useTween.TweenProperty(look, "rotation_degrees:x", -22f, 0.1f);
+        _useTween.TweenProperty(look, "rotation_degrees:x", 0f, 0.2f).SetDelay(0.1f);
+        if (Hand != null && Hand.Visible)
+        {
+            _useTween.TweenProperty(Hand, "rotation_degrees:x", -75f, 0.1f);
+            _useTween.TweenProperty(Hand, "position", HandRest + new Vector3(0, -0.25f, -0.3f), 0.1f);
+            _useTween.TweenProperty(Hand, "rotation_degrees:x", 0f, 0.2f).SetDelay(0.1f);
+            _useTween.TweenProperty(Hand, "position", HandRest, 0.2f).SetDelay(0.1f);
+        }
     }
 
     /// <summary>The camera rig in use, if any (screen ↔ ground directions).</summary>
@@ -185,7 +249,7 @@ public partial class PlayerController : CharacterBody3D
             {
                 // Object click: walk to it, then use it. No hold-to-follow.
                 _mouseHeld = false;
-                WalkTo(clicked.ApproachPoint, () => { if (clicked.CanInteract) clicked.Interact(this); });
+                WalkTo(clicked.ApproachPoint, () => { if (clicked.CanInteract) { PlayUse(); clicked.Interact(this); } });
             }
             else if (GroundAt(mb.Position) is Vector3 ground)
             {
@@ -207,6 +271,7 @@ public partial class PlayerController : CharacterBody3D
             if (near != null)
             {
                 CancelWalkTo();
+                PlayUse();
                 near.Interact(this);
                 GetViewport().SetInputAsHandled();
             }
@@ -234,6 +299,7 @@ public partial class PlayerController : CharacterBody3D
         var target = ToolTargetAt(FrontPoint);
         if (target == null) return false;
         CancelWalkTo();
+        PlayUse();
         target.UseToolAt(ToolBelt.Instance?.Active ?? Tool.Hands, FrontPoint);
         return true;
     }
@@ -249,7 +315,10 @@ public partial class PlayerController : CharacterBody3D
             CancelWalkTo();
             if (d.LengthSquared() > 0.0003f) Face(FacingFor(-d, Facing));
             if (ToolsAllowed)
+            {
+                PlayUse();
                 target.UseToolAt(ToolBelt.Instance?.Active ?? Tool.Hands, center);
+            }
             return;
         }
         // Stand beside the tile on Kit's side; if that spot is blocked, try the other sides.
@@ -263,7 +332,10 @@ public partial class PlayerController : CharacterBody3D
         {
             Face(face);
             if (ToolsAllowed)
+            {
+                PlayUse();
                 target.UseToolAt(ToolBelt.Instance?.Active ?? Tool.Hands, center);
+            }
         });
     }
 

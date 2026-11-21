@@ -1,7 +1,7 @@
 # Economy & Balance Sheet
 
 > **Status:** First draft for owner review — new document
-> **Version:** 0.16
+> **Version:** 0.17
 > **Last updated:** 2026-11-21
 > **Purpose:** Prices, income, and costs, plus a balance check showing how long each goal takes. Owner rule (2026-11-19): **what Kit sells ≈ real-world price; what Kit buys ≈ half the real price** (the kid-friendly part). **Real prices are Australian (owner decision 2026-11-20)**: a big-farm country with cheap animals and hay, which keeps hens and sheep worth buying. The full price list is the spreadsheet **[`data/economy.csv`](./data/economy.csv)** (79 items; opens in Excel/Sheets). Most real prices are estimates and must be checked before they are final (§6).
 
@@ -20,7 +20,7 @@
 
 | Rule | Value |
 |---|---|
-| **Sell price** (shipping box; the market stall is deferred to a later phase) | ≈ real Australian retail price × 10 coins per A$. **Shipping box (owner 2026-11-21):** whatever is in the box when Kit sleeps sells at this price (with quality, seasonal and demand rules); items can be taken back out until then |
+| **Sell price** (shipping box; the market stall is deferred to a later phase) | ≈ real Australian retail price × 10 coins per A$. **Shipping box (owner 2026-11-21):** whatever is in the box at the **18:00 pickup** (owner 2026-11-21, replaces "when Kit sleeps") sells at this price (with quality, seasonal and demand rules); items can be taken back out until then |
 | **Buy price** (seeds, animals, feed, tools, buildings, automation) | ≈ **half** real Australian price (A$ × 5) |
 | **Quality** | ★ ×1 · ★★ ×1.25 · ★★★ ×1.5 sell price |
 | **Seasonal price** | Out-of-season produce sells at ×1.5 (e.g. greenhouse tomatoes in winter) |
@@ -162,3 +162,4 @@ All figures sell the raw product at ★ quality through the shipping box, with b
 - **0.14 — 2026-11-21:** Order pricing row: mixed baskets ×1.1, same-day quick bonus +20 %, daily standing orders (owner order-variety decision 2026-11-21). The ×1.25 premium is still awaiting the owner's decision.
 - **0.15 — 2026-11-21:** **Order premium decided (owner 2026-11-21): none.** Normal orders pay the sell price; only mixed baskets (×1.1) and same-day quick-bonus orders (+20 %) pay extra. The paybacks in §5 were already computed without a premium, so they stand.
 - **0.16 — 2026-11-21:** **Shipping box and house-visit orders (owner decisions 2026-11-21).** Sell price now names the **shipping box** (sells what is in it when Kit sleeps; items can be taken back out until then); the **market stall is deferred** to a later phase. Neighbour orders pay the sell price plus a **freshness bonus** (+30 % / +20 % / +10 % by night sent, then the order is gone; owner), switched on in Phase-002 with the box; orders are sent through the box. Balance-check notes say paybacks are box prices.
+- **0.17 — 2026-11-21:** Shipping-box pickup at a fixed 18:00 (owner 2026-11-21).

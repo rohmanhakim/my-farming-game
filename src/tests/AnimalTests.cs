@@ -127,20 +127,44 @@ public partial class TestRunner
             await Frames(2);
         }
 
-        // Feed the hens with the scoop at the bin (gamepad A).
+        // Owner playtest 2026-11-21: one trough slot per animal; the bin alone feeds nobody.
+        Check(hens.Slots.Count == 5 && cows.Slots.Count == 5, "the coop and the barn each have a trough with 5 slots");
+        Check(hens.Slots.All(sl => coop.Interior.HasPoint(new Vector2(sl.ApproachPoint.X, sl.ApproachPoint.Z))), "every coop slot can be reached from inside");
         ToolBelt.Instance.Select(Tool.FeedScoop);
+        await Frames(2);
+        Check(player.Hand.Visible && player.Hand.ModelName == "tool_feed_scoop", "Kit holds the feed scoop");
         player.GlobalPosition = hens.Bin.ApproachPoint;
         await Frames(5);
         Check(clock.IsIndoors, "the coop stops the clock");
         await Tap(JoyButton.A);
-        Check(hens.Animals.All(a => a.FedToday) && hens.Feed == 30, "feed scoop + A at the coop bin feeds all 5 hens");
-        // Feed the cow at the cow itself.
+        Check(hens.Hungry == 5 && hens.Feed == 35 && bubble.IsOpen && bubble.Chips.Any(c => c.Label == "5 hungry"),
+            "A at the bin feeds nobody; it shows the feed left and 5 hungry hens");
+        await CloseBubbles(bubble);
+        int uses = player.UseCount;
+        bool slotsOk = true;
+        for (int i = 0; i < 5; i++)
+        {
+            var slot = hens.Slots[i];
+            player.GlobalPosition = slot.ApproachPoint;
+            await Frames(4);
+            slotsOk &= !slot.HasFood && slot.PromptVisible;
+            await Tap(JoyButton.A);
+            slotsOk &= slot.HasFood && hens.Animals[i].FedToday && slot.GetNode<Node3D>("Food").Visible;
+        }
+        Check(slotsOk && hens.Hungry == 0 && hens.Feed == 30, "A at each trough slot with the scoop: grain shows in the slot and that hen is fed (5 portions used)");
+        Check(player.UseCount >= uses + 5, "Kit plays the use motion for every slot");
+        await Tap(JoyButton.A);
+        Check(hens.Feed == 30, "a full slot takes no more feed");
+        // Feed the cow at her slot.
         var cow = cows.Entities[0];
-        player.GlobalPosition = cow.ApproachPoint;
+        var cowSlot = cows.Slots[0];
+        player.GlobalPosition = cowSlot.ApproachPoint;
         await Frames(5);
         await Tap(JoyButton.A);
-        Check(cows.Animals[0].FedToday && cows.Feed == 6, "feed scoop + A at the cow feeds her");
+        Check(cows.Animals[0].FedToday && cows.Feed == 6 && cowSlot.HasFood, "feed scoop + A at the cow's slot feeds her (hay shows)");
+        Check(cows.Slots.Skip(1).All(sl => !sl.HasFood && !sl.WantsFood), "slots without an animal stay empty");
         await Sleep();
+        Check(hens.Slots.All(sl => !sl.HasFood) && !cowSlot.HasFood, "overnight the animals eat: every slot is empty in the morning");
         Check(hens.Animals.All(a => a.ProductReady == 1) && cows.Animals[0].ProductReady == 4, "next morning: an egg per hen, 4 milk cans");
         Check(!hens.Entities[0].ProductVisible, "with Kit in the house, the coop's roof hides the hens' egg icons (as in 2D)");
         player.GlobalPosition = coop.DoorInside;

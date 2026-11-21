@@ -51,7 +51,10 @@ FloorColor = Color(0.86, 0.76, 0.46, 1)
 
 [node name="Hens" type="Node3D" parent="Coop" unique_id=2129443987]
 script = ExtResource("14_house")
-BinOffset = Vector3(3.31, 0, 0.81)
+BinOffset = Vector3(0.45, 0, 1.75)
+Spots = [Vector3(1.3, 0, 1.4), Vector3(2.1, 0, 1.4), Vector3(2.9, 0, 1.4), Vector3(1.7, 0, 2.1), Vector3(2.6, 0, 2.1)]
+SlotSpots = [Vector3(0.6, 0, 0.45), Vector3(1.3, 0, 0.45), Vector3(2.0, 0, 0.45), Vector3(2.7, 0, 0.45), Vector3(3.4, 0, 0.45)]
+SlotApproach = Vector3(0, 0, 0.6)
 
 [node name="Barn" type="Node3D" parent="." unique_id=45064053]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0, 25)
@@ -68,7 +71,10 @@ Kind = "cow"
 FeedItem = "hay"
 StartingFeed = 7
 StartingNames = PackedStringArray("Maple")
-BinOffset = Vector3(0.875, 0, 3.44)
+BinOffset = Vector3(0.6, 0, 0.6)
+Spots = [Vector3(3, 0, 2.9), Vector3(1.2, 0, 2.9), Vector3(4.8, 0, 2.9), Vector3(1.2, 0, 1.3), Vector3(4.8, 0, 1.3)]
+SlotSpots = [Vector3(3, 0, 4.5), Vector3(1.2, 0, 4.5), Vector3(4.8, 0, 4.5), Vector3(2.1, 0, 4.5), Vector3(3.9, 0, 4.5)]
+SlotApproach = Vector3(0, 0, -0.6)
 
 [node name="SeedShed" type="Node3D" parent="." unique_id=1006960459]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0, -23)

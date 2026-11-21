@@ -201,8 +201,11 @@ public partial class TestRunner
         Check(grid.HighlightedCell == cell, "the tile in front of Kit is highlighted");
         var belt = ToolBelt.Instance;
         belt.Select(Tool.Hands);
+        int usesBefore = player.UseCount;
         await Tap(JoyButton.A);
         Check(grid.Get(cell).Soil == Soil.Clear, "gamepad A with hands pulls the weeds in front");
+        Check(player.UseCount == usesBefore + 1 && grid.LastPuff == TileAction.Cleared && !player.Hand.Visible,
+            "pulling weeds plays Kit's use motion and a leaf puff; bare hands hold nothing");
         belt.Select(Tool.Hoe);
         Key(Godot.Key.Space, true); await Frames(1); Key(Godot.Key.Space, false); await Frames(2);
         Check(grid.Get(cell).Soil == Soil.Tilled, "Space with the hoe tills it");
@@ -211,7 +214,8 @@ public partial class TestRunner
         Check(grid.Get(cell).HasCrop && Inventory.Instance.Count(ItemIds.CarrotSeeds) == 8, "gamepad A with the seed bag plants a carrot");
         belt.Select(Tool.WateringCan);
         await Tap(JoyButton.A);
-        Check(grid.Get(cell).Watered, "gamepad A with the can waters it");
+        Check(grid.Get(cell).Watered && grid.LastPuff == TileAction.Watered && player.Hand.ModelName == "tool_watering_can",
+            "gamepad A with the can waters it (water drops; Kit holds the can)");
 
         // Mouse: click a weed tile → Kit walks beside it, faces it, pulls the weeds.
         belt.Select(Tool.Hands);

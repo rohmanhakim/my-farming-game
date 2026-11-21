@@ -3,9 +3,11 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://doxjrlkg5ief0"
-path="res://.godot/imported/tree_3_a_forest_texture.png-824614f2ee8108193ed2b3547b7a6a53.ctex"
+path.s3tc="res://.godot/imported/tree_3_a_forest_texture.png-824614f2ee8108193ed2b3547b7a6a53.s3tc.ctex"
+path.etc2="res://.godot/imported/tree_3_a_forest_texture.png-824614f2ee8108193ed2b3547b7a6a53.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "6f92bcdea27804b5dea8237b30198816"
@@ -14,11 +16,11 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/models/world/tree_3_a_forest_texture.png"
-dest_files=["res://.godot/imported/tree_3_a_forest_texture.png-824614f2ee8108193ed2b3547b7a6a53.ctex"]
+dest_files=["res://.godot/imported/tree_3_a_forest_texture.png-824614f2ee8108193ed2b3547b7a6a53.s3tc.ctex", "res://.godot/imported/tree_3_a_forest_texture.png-824614f2ee8108193ed2b3547b7a6a53.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -40,4 +42,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0

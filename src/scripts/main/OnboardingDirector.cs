@@ -288,7 +288,8 @@ public partial class OnboardingDirector : Node
             case OnboardingStep.SecondOrder: return _board?.GlobalPosition;
             case OnboardingStep.FeedAnimals:
                 var h = new[] { _hens, _cows }.FirstOrDefault(x => x != null && x.Animals.Any(a => !a.FedToday));
-                return h?.Bin?.GlobalPosition;
+                var slot = h?.Slots.FirstOrDefault(sl => sl.WantsFood);
+                return slot?.GlobalPosition ?? h?.Bin?.GlobalPosition; // the first empty trough slot
             default: return null;
         }
     }

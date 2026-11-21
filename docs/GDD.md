@@ -1,7 +1,7 @@
 # Game Design Document
 
 > **Status:** Brainstorming draft — **direction reset 2026-11-19** (see v0.19–v0.20 change log)
-> **Version:** 0.47
+> **Version:** 0.48
 > **Last updated:** 2026-11-21
 > **Purpose:** A living document for shaping the game together. Confirmed owner decisions are marked **decided**; everything else is a proposal, not a commitment.
 
@@ -163,7 +163,7 @@ Orders are the main income, but **none of these is mandatory**: the player decid
 | Way | What it gives | Notes |
 |---|---|---|
 | **Neighbour orders** | Money, relationship, repeat/bigger orders | Main income (above). |
-| **Shipping box** *(owner decision 2026-11-21)* | Money | A box beside the house. Kit chooses what goes in and can **take items back out until pickup** (when Kit sleeps); only what is in the box at pickup sells, at the **normal sell price** (quality, seasonal and demand pricing as in economy.md). Pays less than neighbour orders, and is also how accepted orders are sent (above). Kit never has to sell everything: what stays out of the box waits in the bag or the **storage chest** at the house (inventory.md §4), and harvested goods never spoil. **The market stall is deferred to a later phase** — one way to sell at a time; if it returns it is "set prices and leave it", so Kit is free to do other things. |
+| **Shipping box** *(owner decision 2026-11-21)* | Money | A box beside the house. Kit chooses what goes in and can **take items back out until pickup** (a **fixed 18:00 every day**, owner 2026-11-21 — replaces "when Kit sleeps"; the freshness bonus's "nights" are these daily pickups); only what is in the box at pickup sells, at the **normal sell price** (quality, seasonal and demand pricing as in economy.md). Pays less than neighbour orders, and is also how accepted orders are sent (above). Kit never has to sell everything: what stays out of the box waits in the bag or the **storage chest** at the house (inventory.md §4), and harvested goods never spoil. **The market stall is deferred to a later phase** — one way to sell at a time; if it returns it is "set prices and leave it", so Kit is free to do other things. |
 | **Town board & festival contests** | Money, ribbons, unique items | Board posts one-off jobs (e.g. "fix the fence"); seasonal festivals hold produce and animal contests judged on quality. |
 | **Foraging, fishing & exploring** | Wild goods to use, sell, or deliver | Berries, mushrooms, herbs along the lane; fishing at the brook; finds while exploring. |
 | **Travelling merchants** | Trades, rare seeds, rare items | Visit on certain days; trade goods for goods, or buy rarities. |
@@ -213,7 +213,7 @@ One rule for everything that lives on the farm: **3 days in a row without care �
 | 2 | **Morning** | 07:30–10:30 | Bright, clear | Mr. Marlow at the gate; seed shed open; butterflies visit flowers |
 | 3 | **Midday** | 10:30–13:30 | Highest, brightest | Neighbours out and about (a good time for house visits) |
 | 4 | **Afternoon** | 13:30–16:30 | Long light | Brook keeper on warm afternoons; travelling merchant on visiting days |
-| 5 | **Evening** | 16:30–19:30 | Gold → amber | Shops close; last chance to change what is in the shipping box (picked up when Kit sleeps) |
+| 5 | **Evening** | 16:30–19:30 | Gold → amber | Shops close; the shipping box is picked up at **18:00** (owner 2026-11-21) |
 | 6 | **Dusk** | 19:30–22:30 | Lane darkens | Fireflies in season; Marlow may be indoors |
 | 7 | **Night** | 22:30–01:30 | Dark, quiet palette | Seed shed lit; Moon Petal glows |
 | 8 | **Small hours** | 01:30–04:30 | Deepest dark | Quiet only |
@@ -435,7 +435,7 @@ Playtests with children are conducted with appropriate adult supervision and con
 13. **RESOLVED (v0.26, reset v0.29–v0.33):** day length 17 real minutes (04:30 → 21:30, 60 s per in-game hour).
 14. **RESOLVED (v0.26):** 30-day seasons, 120-day year (Harvest Moon).
 15. **✅ DECIDED (2026-11-21, owner) — order pay: sell price + freshness bonus.** First decided as no premium; once the shipping box (normal sell price) was chosen, orders had to pay more. Final: the normal sell price plus **+30 % / +20 % / +10 %** if sent the night Kit takes the order / the next night / the night after; then the order is simply gone. Switched on with the box (Phase-002); Phase-001 keeps its plain price and occasional +20 % same-day bonus. Mixed baskets ×1.1 stack on top (economy.md §2).
-16. **⚠️ OPEN — interior scenes.** Phase-001 enters buildings on the same map (roof fades, §4). Do later buildings need separate interior scenes (a fade to a room map)? Decide in Phase-002 planning; the kitchen upgrade is the first likely case. (The 3D switch keeps same-map buildings: the roof and the camera-side wall fade.)
+16. **✅ DECIDED (2026-11-21, owner) — real rooms.** From Phase-002 the house, coop, barn, seed shed and the neighbours' places are rooms Kit walks into (Phase-002 Task 2.2); outside, buildings stay solid with the occluder fade. *Was:* **OPEN — interior scenes.** Phase-001 enters buildings on the same map (roof fades, §4). Do later buildings need separate interior scenes (a fade to a room map)? Decide in Phase-002 planning; the kitchen upgrade is the first likely case. (The 3D switch keeps same-map buildings: the roof and the camera-side wall fade.)
 17. **⚠️ OPEN — outlines and final art source (2026-11-21).** Do 3D models get a drawn outline (keeps the old comics feel) or plain toon shading? Which source for real models: Kenney CC0 3D packs, Blender by the team, AI-generated 3D, or a mix (one consistent style either way)? Decide at the first art pass; placeholders don't need it.
 
 ## Related documents
@@ -509,3 +509,4 @@ Playtests with children are conducted with appropriate adult supervision and con
 - **0.45 — 2026-11-21:** **Switch to 3D (owner decision 2026-11-21).** The game is now 3D with a **fixed, angled top-down camera** (mood reference: *Find Your Words*), replacing "fully 2D". §1 high concept, pillar 9 and §9 art direction rewritten: cartoony, colourful, rounded 3D with soft toon shading and ≈ 5-head proportions kept; placeholder primitive meshes with flat colours, swapped for real models by name; a handheld-friendly budget for the later Switch version. §13: Compatibility renderer kept (draws 3D), Jolt physics. All gameplay rules are unchanged. New open question 17 (outlines, final model source). Migration tasks: Phase-001 Tasks 1.14–1.20.
 - **0.46 — 2026-11-21:** **Diagonal camera (owner decision 2026-11-21):** the fixed 3D camera is tilted ≈ 50–55° (not straight down) **and turned roughly 45° (not necessarily exact)**, looking across the farm from a corner, so the grid runs diagonally on screen; buildings fade the roof and both camera-side walls. Controls stay screen-relative (controls.md v0.15).
 - **0.47 — 2026-11-21:** **Camera pick (owner 2026-11-21, Task 1.14):** tilt 45°, turn 45°, south-east corner, perspective; the player may **switch between the south-east and south-west corners** (right stick left/right on any pad, or Q) — no free rotation or zoom.
+- **0.48 — 2026-11-21:** **Owner decisions for Phase-002 (2026-11-21):** shipping box picked up at a **fixed 18:00** (not when Kit sleeps; the freshness-bonus nights are these pickups); **Q16 decided — real rooms** for the house, coop, barn, seed shed and neighbours' places. Phase-002 plan: docs/Phase-002.md.

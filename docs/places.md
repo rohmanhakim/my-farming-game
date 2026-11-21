@@ -1,7 +1,7 @@
 # Places
 
 > **Status:** Brainstorming draft — **world map redesigned 2026-11-20 (Bramblewick Vale)**
-> **Version:** 0.15
+> **Version:** 0.16
 > **Last updated:** 2026-11-21
 > **Purpose:** The places the player can explore. The lane is now the road into **Bramblewick Vale**, a small valley of **five areas plus Kit's farm** (owner decision 2026-11-20, replaces "one lane, eight places, no map"). Sizes, layout, unlocks, and navigation rules live here; the story of each place lives in [world.md](./world.md). All names are tentative and every element is a proposal pending playtesting.
 
@@ -99,7 +99,7 @@ The farm keeps exactly the land in buildings.md §2 — front garden plus Fields
 - **Bottom row:** Field E along the brook (west) with the **natural pond**, Field A directly **behind the house** with the **old barn** at its back edge, Field B (east).
 - **One cross-shaped path** (2 tiles wide) joins every field to the front door. Most beds are within 25 tiles (≈ 10 s) of the door; the farthest corner of Field E is ≈ 40 tiles (≈ 16 s).
 - **Animal yard:** a 12 × 6 strip beside the old barn, free from the start, fits a second barn (6 × 5) and a big coop (6 × 4) side by side.
-- **Shipping box** (Phase-002, owner 2026-11-21): beside the front door, 1 × 1 on the front-garden path, so filling it is on the way to bed; picked up when Kit sleeps (mechanics.md §5).
+- **Shipping box** (Phase-002, owner 2026-11-21): beside the front door, 1 × 1 on the front-garden path, handy on the way in and out; picked up at a fixed 18:00 (owner 2026-11-21, mechanics.md §5).
 - Fields are fixed in size and place; **what goes inside them is flexible** — once cleared, any tile can hold beds or buildings, and buildings move freely (buildings.md §5).
 - **Water:** the natural pond in Field E is fed by the brook; new water must connect to it (buildings.md §3.1).
 
@@ -173,3 +173,4 @@ A round trip to the farthest spot costs about **1.2 in-game hours** of Kit's 04:
 - **0.13 — 2026-11-21:** **Selling and house-visit orders (owner decisions 2026-11-21).** Kit's market stall deferred to a later phase (the market stand stays for the travelling merchant); the **shipping box** placed beside the farmhouse door (§3); new navigation rule: **order signs** — a basket with a picture note on a neighbour's doorstep shows a house that wants something; Kit knocks and talks to the neighbour, and sends the goods through the shipping box. The bakery, allotments and general store open in T1 when their neighbour arrives; Marlow's board becomes the village noticeboard (no orders).
 - **0.14 — 2026-11-21:** Scale note for the **3D switch** (owner decision 2026-11-21): 1 tile = 1 m on the 3D ground; the 20 × 11-tile screen stays the camera's framing target. Sizes and walking times unchanged.
 - **0.15 — 2026-11-21:** Diagonal 3D camera (owner 2026-11-21): map north is no longer screen-up; north-facing doors flagged for Task 1.15. Layout unchanged.
+- **0.16 — 2026-11-21:** Shipping box picked up at 18:00 (owner 2026-11-21).
